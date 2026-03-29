@@ -665,36 +665,65 @@ function renderSelDay(){
   const d=S.selD,dow=d.getDay(),c=ci(d),sp=SP[dow],sd=getSkinD(d),sa=SA[sd];
   const per=inP(d)||preP(d);
   const ds=d.getDate()+' '+MN[d.getMonth()];
+  const idx=dow%7;
+  const m1=M1[idx],ms=M1S[idx],m2=M2[idx];
+  const exs=EX[dow]||[];
+  const ea=(per)&&sa.p.includes('Retinol')?{l:'Regl Dönemine Özel',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Bu hafta retinol atla'}:sa;
+
+  // Detay içerikleri
+  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Önemli:</b><br>• En az 30 dk, tercihen 1 saat aç karnına bekle<br>• Çay, kahve, süt içme — sadece su<br>• Kalsiyum içeren takviyelerle aynı anda alma</div>`;
+  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">Levotiron'dan en az 1 saat sonra al. Sabah ilk dozun bu.</div>`;
+  const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SM.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}</div>`;
+  const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Toplam ${exs.length} hareket · Soğuma unutma!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Dinlenme günü. Hafif yürüyüş veya 15 dk esneme yapabilirsin.</div>`;
+  const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday + Omega-3 + Kolajen yemekle</div></div>`;
+  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${m2.i} ${m2.n}</span><span style="color:var(--gold);font-weight:600;">${m2.k} kcal</span></div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m2.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div></div>`;
+  const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Son adım: COSRX Snail Peptide Eye Cream</div></div>`;
+  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt & eklem desteği</div><div style="padding:4px 0;">💊 <b>Magnezyum</b> — uyku kalitesi & kas gevşemesi</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce al.</div></div>`;
+
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
       <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Gün ${c.day}</span>
     </div>
-    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl dönemi/öncesi:</strong> Cilt bakımında retinol ve AHA/BHA'yı azalt. Egzersiz ağırlıklarını hafifçe düşürebilirsin.</div></div></div>`:''}
-    <div class="card">
-      <div class="ch"><h3>Günün Özeti</h3></div>
-      <div class="cb">
-        <div class="dsumm">
-          <div class="drow"><div class="dicon">💪</div><div class="dc"><div class="dlbl">Egzersiz</div><div class="dval">${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</div>${sp?`<div class="dsub">${sp.f}</div>`:''}</div></div>
-          <div class="drow"><div class="dicon">🥩</div><div class="dc"><div class="dlbl">Diyet</div><div class="dval">IF 13:00–18:00 · ~1.400 kcal</div></div></div>
-          <div class="drow"><div class="dicon">✨</div><div class="dc"><div class="dlbl">Cilt Bakımı</div><div class="dval">${sa.e} ${sa.l}</div><div class="dsub">${sa.p.split('(')[0].trim()}</div></div></div>
-        </div>
-      </div>
-    </div>
+    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl dönemi/öncesi:</strong> Cilt bakımında retinol ve AHA/BHA'yı azalt.</div></div></div>`:''}
     <div class="slbl">⏰ Günlük Program</div>
     <div class="card"><div class="cb"><div class="tl">
-      ${tli('06:00','Levotiron','Aç karnına · Su ile al · 1 saat yemek yeme','tm')}
-      ${tli('07:00','Qalyviz (1. doz)','Levotiron\'dan 1 saat sonra','tm')}
-      ${tli('07:00','Sabah Cilt Bakımı','Temizlik → SPF son adım','ts')}
-      ${tli('11:00',sp?'💪 '+sp.n:'🧘 Aktif Dinlenme',sp?sp.f:'Hafif yürüyüş veya esneme','te')}
-      ${tli('13:00','1. Öğün','Calciday + Omega-3 + Kolajen yemekle','td')}
-      ${tli('17:30','2. Öğün','Calciday (2.) + Kreatin yemekle · Qalyviz sonra','td')}
-      ${tli('22:30','Akşam Cilt Bakımı',sa.e+' '+sa.l+' · '+sa.p.split('(')[0].trim(),'ts')}
-      ${tli('23:00','Kolajen + Magnezyum','Yatmadan önce','tm')}
+      ${tliX('06:00','💊 Levotiron','Aç karnına · Su ile al','tm',levotiron_detail)}
+      ${tliX('07:00','💊 Qalyviz (1. doz)','1 saat sonra','tm',qalyviz_detail)}
+      ${tliX('07:00','☀️ Sabah Cilt Bakımı','6 adım · SPF son','ts',skin_morning_detail)}
+      ${tliX('11:00',sp?'💪 '+sp.n:'🧘 Aktif Dinlenme',sp?sp.f+' · '+exs.length+' hareket':'Hafif yürüyüş','te',ex_detail)}
+      ${tliX('13:00','🥩 1. Öğün',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('17:30','🥩 2. Öğün',m2.n,'td',meal2_detail)}
+      ${tliX('22:30','🌙 Akşam Cilt Bakımı',ea.e+' '+ea.l,'ts',skin_eve_detail)}
+      ${tliX('23:00','💊 Kolajen + Magnezyum','Yatmadan önce','tm',supp_night_detail)}
     </div></div></div>`;
 }
 
-function tli(t,ti,d,tag){return`<div class="tli"><div class="tlt">${t}</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">${ti}</div><div class="tlde">${d}</div><span class="tltag ${tag}">${tag.replace('t','')}</span></div></div>`;}
+function tliX(t,ti,d,tag,detail){
+  const uid='tli_'+Math.random().toString(36).substr(2,6);
+  return`<div class="tli" style="cursor:pointer;" onclick="toggleTli('${uid}')">
+    <div class="tlt">${t}</div>
+    <div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div>
+    <div class="tlc">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="tlti">${ti}</div>
+        <span id="${uid}_arr" style="font-size:12px;color:var(--text-light);transition:transform 0.2s;display:inline-block;">›</span>
+      </div>
+      <div class="tlde">${d}</div>
+      <span class="tltag ${tag}">${tag.replace('t','')}</span>
+      <div id="${uid}" style="display:none;margin-top:4px;">${detail}</div>
+    </div>
+  </div>`;
+}
+
+function toggleTli(uid){
+  const el=document.getElementById(uid);
+  const arr=document.getElementById(uid+'_arr');
+  if(!el)return;
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  if(arr)arr.style.transform=open?'rotate(0deg)':'rotate(90deg)';
+}
 
 // DİYET
 function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();}
