@@ -2,2104 +2,711 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bengisu — Kişisel Program</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bengisu ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #FAF7F2;
-  --warm-white: #FFFEF9;
-  --blush: #F2C4B8;
-  --rose: #D97B6C;
-  --deep-rose: #B85C4E;
-  --sage: #8BA888;
-  --sage-light: #C8D9C6;
-  --mocha: #6B4F3A;
-  --caramel: #C49A6C;
-  --charcoal: #2C2420;
-  --text: #3A2E28;
-  --text-light: #8A7A72;
-  --border: #E8E0D8;
-  --card: #FFFFFF;
-  --shadow: 0 2px 20px rgba(44,36,32,0.08);
-  --shadow-hover: 0 8px 40px rgba(44,36,32,0.15);
-  --radius: 16px;
-  --radius-sm: 10px;
+  --bg:#FDF8F5;--surface:#FFFFFF;--surface2:#FBF5F0;
+  --pink:#E8A598;--pink-deep:#C97B6E;--pink-soft:#F2D4CE;--pink-pale:#FBF0EE;
+  --mauve:#C4A5B8;--mauve-soft:#EDE1E9;
+  --sage:#A8BBA5;--sage-soft:#DCE8DA;
+  --gold:#C9A96E;--gold-soft:#F0E4CE;
+  --text:#3D2E2A;--text-mid:#7A6560;--text-light:#B09A95;
+  --border:#EEE4DF;--border-soft:#F5EDEA;
+  --shadow:0 4px 24px rgba(180,120,100,0.12);
+  --r:18px;--r-sm:12px;--r-xs:8px;
 }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);}
+.nb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:16px;cursor:pointer;border:none;background:transparent;min-width:58px;}
+.nb .ni{font-size:22px;transition:transform 0.2s;}
+.nb .nl{font-size:10px;font-weight:500;color:var(--text-light);letter-spacing:0.5px;text-transform:uppercase;}
+.nb.active .nl{color:var(--pink-deep);font-weight:600;}
+.nb.active .ni{transform:scale(1.15);}
+.nb.active{background:var(--pink-pale);}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-}
+/* PAGES */
+.page{display:none;animation:fi 0.25s ease;}
+.page.active{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ─── SIDEBAR ─── */
-.sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: var(--charcoal);
-  display: flex;
-  flex-direction: column;
-  padding: 32px 0;
-  position: fixed;
-  left: 0; top: 0; bottom: 0;
-  z-index: 100;
-}
+/* TOP BAR */
+.topbar{padding:56px 20px 20px;background:linear-gradient(160deg,var(--pink-pale) 0%,var(--bg) 60%);position:relative;overflow:hidden;}
+.topbar::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,var(--pink-soft) 0%,transparent 70%);border-radius:50%;}
+.tb-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--pink-deep);margin-bottom:6px;}
+.topbar h1{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--text);line-height:1.2;}
+.topbar h1 em{font-style:italic;color:var(--pink-deep);}
+.tb-sub{font-size:13px;color:var(--text-mid);margin-top:6px;}
 
-.sidebar-logo {
-  padding: 0 24px 32px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.sidebar-logo h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  color: var(--cream);
-  letter-spacing: 0.5px;
-}
-.sidebar-logo p {
-  font-size: 11px;
-  color: var(--text-light);
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-}
+/* CYCLE STRIP */
+.cstrip{margin:0 16px 16px;background:linear-gradient(135deg,var(--mauve-soft),var(--pink-pale));border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px;border:1px solid var(--border);}
+.cicon{font-size:28px;flex-shrink:0;}
+.cinfo .cphase{font-size:13px;font-weight:600;color:var(--text);}
+.cinfo .cdetail{font-size:12px;color:var(--text-mid);margin-top:2px;}
+.cbadge{margin-left:auto;background:white;border-radius:12px;padding:6px 12px;text-align:center;flex-shrink:0;box-shadow:0 2px 8px rgba(180,120,100,0.1);}
+.cbadge .cn{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--pink-deep);line-height:1;}
+.cbadge .cl{font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;}
 
-.sidebar-nav {
-  flex: 1;
-  padding: 24px 0;
-}
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:0 2px 12px rgba(180,120,100,0.08);overflow:hidden;margin:0 16px 16px;}
+.ch{padding:16px 18px 12px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;}
+.ch h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;}
+.cb{padding:16px 18px;}
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 24px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: rgba(255,255,255,0.5);
-  font-size: 14px;
-  font-weight: 500;
-  border-left: 3px solid transparent;
-  text-decoration: none;
-}
-.nav-item:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.05); }
-.nav-item.active {
-  color: var(--blush);
-  border-left-color: var(--blush);
-  background: rgba(242,196,184,0.08);
-}
-.nav-item .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+/* SEC LABEL */
+.slbl{font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--text-light);padding:20px 20px 10px;}
 
-.sidebar-footer {
-  padding: 24px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-.cycle-badge {
-  background: rgba(242,196,184,0.12);
-  border: 1px solid rgba(242,196,184,0.25);
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-}
-.cycle-badge .cycle-label { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-.cycle-badge .cycle-day { font-size: 22px; font-weight: 600; color: var(--blush); margin: 2px 0; }
-.cycle-badge .cycle-phase { font-size: 11px; color: rgba(255,255,255,0.6); }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:50px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;transition:all 0.2s;letter-spacing:0.3px;}
+.btn:active{transform:scale(0.97);}
+.bp{background:var(--pink-deep);color:white;}
+.bsoft{background:var(--pink-pale);color:var(--pink-deep);border:1px solid var(--pink-soft);}
+.bsage{background:var(--sage-soft);color:#5a7a57;border:1px solid var(--sage);}
+.bghost{background:transparent;color:var(--pink-deep);border:1px solid var(--pink-soft);}
+.bsm{padding:7px 14px;font-size:12px;}
+.bfull{width:100%;}
 
-/* ─── MAIN ─── */
-.main {
-  margin-left: 240px;
-  flex: 1;
-  min-height: 100vh;
-  padding: 0;
-}
+/* WEEK STRIP */
+.wstrip{display:flex;gap:8px;padding:0 16px 16px;overflow-x:auto;scrollbar-width:none;}
+.wstrip::-webkit-scrollbar{display:none;}
+.wd{flex-shrink:0;width:52px;padding:10px 6px;border-radius:14px;background:var(--surface);border:1px solid var(--border);text-align:center;cursor:pointer;transition:all 0.2s;}
+.wd.active{background:var(--pink-deep);border-color:var(--pink-deep);}
+.wd.active .wdn,.wd.active .wdnum{color:white;}
+.wdn{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);font-weight:600;}
+.wdnum{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);line-height:1.2;margin:2px 0;}
+.wddot{width:5px;height:5px;border-radius:50%;margin:0 auto;}
+.wd.active .wddot{background:rgba(255,255,255,0.5);}
+.wd.gym .wddot{background:var(--sage);}
+.wd.rest .wddot{background:var(--border);}
 
-.page { display: none; }
-.page.active { display: block; }
+/* TIMELINE */
+.tl{display:flex;flex-direction:column;}
+.tli{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-soft);}
+.tli:last-child{border-bottom:none;padding-bottom:0;}
+.tlt{min-width:52px;font-size:12px;font-weight:600;color:var(--pink-deep);padding-top:2px;}
+.tlline{display:flex;flex-direction:column;align-items:center;}
+.tldot{width:9px;height:9px;border-radius:50%;background:var(--pink-soft);border:2px solid var(--pink);flex-shrink:0;margin-top:3px;}
+.tlbar{width:1px;flex:1;background:var(--border-soft);margin-top:3px;}
+.tlc{flex:1;}
+.tlti{font-size:14px;font-weight:500;color:var(--text);}
+.tlde{font-size:12px;color:var(--text-mid);margin-top:2px;line-height:1.5;}
+.tltag{display:inline-block;margin-top:5px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.tm{background:var(--pink-pale);color:var(--pink-deep);}
+.td{background:var(--sage-soft);color:#5a7a57;}
+.ts{background:var(--gold-soft);color:#8a6a30;}
+.te{background:var(--mauve-soft);color:#7a5a70;}
 
-/* ─── PAGE HEADER ─── */
-.page-header {
-  padding: 40px 48px 32px;
-  background: var(--warm-white);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-.page-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  color: var(--charcoal);
-  font-weight: 700;
-}
-.page-header p { color: var(--text-light); margin-top: 6px; font-size: 14px; }
+/* NOTICE */
+.notice{border-radius:var(--r-sm);padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;line-height:1.5;}
+.np{background:var(--pink-pale);border:1px solid var(--pink-soft);color:var(--pink-deep);}
+.ns{background:var(--sage-soft);border:1px solid var(--sage);color:#4a6e47;}
+.ng{background:var(--gold-soft);border:1px solid var(--gold);color:#7a5a20;}
+.nm{background:var(--mauve-soft);border:1px solid var(--mauve);color:#6a4a60;}
+.nicon{font-size:16px;flex-shrink:0;}
 
-.page-body { padding: 40px 48px; }
+/* STATS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 16px;}
+.sbox{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 12px;text-align:center;}
+.sv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--text);line-height:1;}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-top:4px;}
+.sd{font-size:12px;font-weight:600;margin-top:4px;}
+.sd.good{color:var(--sage)}.sd.warn{color:var(--pink-deep);}
 
-/* ─── CARDS ─── */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-.card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.card-header h3 { font-size: 15px; font-weight: 600; color: var(--charcoal); }
-.card-body { padding: 24px; }
+/* PROGRESS */
+.pw{margin-bottom:16px;}
+.plbls{display:flex;justify-content:space-between;font-size:11px;color:var(--text-light);margin-bottom:6px;}
+.pt{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--pink-soft),var(--pink-deep));transition:width 0.6s ease;}
+.pnote{font-size:12px;color:var(--sage);font-weight:600;margin-top:6px;}
 
-/* ─── GRID ─── */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+/* EXERCISE */
+.exi{border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:10px;overflow:hidden;}
+.exh{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);cursor:pointer;}
+.exc{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.exc.done{background:var(--sage);border-color:var(--sage);}
+.exc.done::after{content:'✓';color:white;font-size:13px;font-weight:700;}
+.exn{flex:1;font-size:14px;font-weight:500;color:var(--text);}
+.exn.done{text-decoration:line-through;color:var(--text-light);}
+.exs{font-size:12px;color:var(--text-light);flex-shrink:0;}
+.exb{display:none;padding:14px;border-top:1px solid var(--border-soft);background:var(--surface2);}
+.exb.open{display:block;}
+.mtags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.mtag{padding:3px 10px;background:var(--mauve-soft);border-radius:20px;font-size:11px;color:#7a5a70;}
+.exhow{font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px;}
+.exhow ol{padding-left:16px;}
+.exhow li{margin-bottom:5px;}
+.exacts{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* ─── BUTTONS ─── */
-.btn {
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.btn-primary { background: var(--rose); color: white; }
-.btn-primary:hover { background: var(--deep-rose); transform: translateY(-1px); }
-.btn-secondary { background: var(--cream); color: var(--text); border: 1px solid var(--border); }
-.btn-secondary:hover { background: var(--border); }
-.btn-sm { padding: 6px 14px; font-size: 12px; }
-.btn-ghost { background: transparent; color: var(--rose); border: 1px solid var(--blush); }
-.btn-ghost:hover { background: rgba(242,196,184,0.15); }
-.btn-sage { background: var(--sage); color: white; }
-.btn-sage:hover { background: #6d8a6a; }
+/* FOOD */
+.fi{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-soft);}
+.fi:last-of-type{border-bottom:none;}
+.ficon{font-size:22px;flex-shrink:0;}
+.fin{flex:1;}
+.fname{font-size:14px;font-weight:500;color:var(--text);}
+.fmac{font-size:11px;color:var(--text-light);margin-top:2px;}
+.fkcal{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);flex-shrink:0;}
 
-/* ─── STAT PILL ─── */
-.stat-pill {
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-}
-.stat-pill .stat-val { font-size: 24px; font-weight: 700; color: var(--charcoal); font-family: 'Playfair Display', serif; }
-.stat-pill .stat-lbl { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-.stat-pill .stat-delta { font-size: 12px; margin-top: 6px; font-weight: 600; }
-.stat-pill .stat-delta.good { color: var(--sage); }
-.stat-pill .stat-delta.warn { color: var(--rose); }
+/* MACRO ROW */
+.mrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.mbox{text-align:center;padding:12px 6px;background:var(--surface2);border-radius:var(--r-xs);border:1px solid var(--border);}
+.mval{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--text);}
+.mlbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);margin-top:2px;}
 
-/* ─── TIMELINE ─── */
-.timeline { display: flex; flex-direction: column; gap: 0; }
-.timeline-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.timeline-item:last-child { border-bottom: none; }
-.timeline-time {
-  min-width: 60px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--rose);
-  padding-top: 2px;
-  font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.5px;
-}
-.timeline-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--blush);
-  margin-top: 5px;
-  flex-shrink: 0;
-  border: 2px solid var(--rose);
-}
-.timeline-content { flex: 1; }
-.timeline-title { font-size: 14px; font-weight: 600; color: var(--charcoal); }
-.timeline-desc { font-size: 12px; color: var(--text-light); margin-top: 3px; }
-.timeline-tag {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-top: 6px;
-}
-.tag-diet { background: rgba(139,168,136,0.15); color: var(--sage); }
-.tag-meds { background: rgba(217,123,108,0.15); color: var(--rose); }
-.tag-skin { background: rgba(196,154,108,0.15); color: var(--caramel); }
-.tag-exercise { background: rgba(107,79,58,0.15); color: var(--mocha); }
+/* SKIN */
+.sstep{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--border-soft);}
+.sstep:last-child{border-bottom:none;}
+.snum{width:22px;height:22px;border-radius:50%;background:var(--pink-pale);border:1px solid var(--pink-soft);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--pink-deep);flex-shrink:0;}
+.sprod{font-size:13px;font-weight:500;color:var(--text);}
+.snote{font-size:11px;color:var(--text-mid);margin-top:2px;}
+.sabadge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-top:5px;}
+.bret{background:var(--pink-pale);color:var(--pink-deep);border:1px solid var(--pink-soft);}
+.brest{background:var(--mauve-soft);color:#7a5a70;border:1px solid var(--mauve);}
+.baha{background:var(--gold-soft);color:#8a6a30;border:1px solid var(--gold);}
+.bmask{background:var(--sage-soft);color:#5a7a57;border:1px solid var(--sage);}
 
-/* ─── CALENDAR ─── */
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin-top: 16px;
-}
-.cal-header-cell {
-  text-align: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 8px 0;
-}
-.cal-cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.15s;
-  position: relative;
-  border: 1px solid transparent;
-  color: var(--text);
-}
-.cal-cell:hover { background: var(--cream); border-color: var(--border); }
-.cal-cell.today { background: var(--charcoal); color: white; font-weight: 700; }
-.cal-cell.selected { background: var(--rose); color: white; border-color: var(--deep-rose); }
-.cal-cell.has-period { background: rgba(217,123,108,0.12); }
-.cal-cell.has-period::after {
-  content: '';
-  position: absolute;
-  bottom: 4px; left: 50%; transform: translateX(-50%);
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--rose);
-}
-.cal-cell.gym-day::before {
-  content: '';
-  position: absolute;
-  top: 4px; right: 4px;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--sage);
-}
-.cal-cell.empty { cursor: default; }
-.cal-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-.cal-nav h4 { font-family: 'Playfair Display', serif; font-size: 18px; }
-.cal-nav-btn {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  width: 32px; height: 32px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  color: var(--text);
-}
-.cal-nav-btn:hover { background: var(--cream); }
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(61,46,42,0.4);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:flex-end;}
+.mo.open{display:flex;}
+.modal{background:white;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.15);animation:su 0.3s ease;}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhandle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
+.modal h3{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:6px;}
+.msub{font-size:13px;color:var(--text-mid);margin-bottom:18px;}
+.macts{display:flex;gap:10px;margin-top:20px;}
 
-/* ─── FOOD ITEM ─── */
-.food-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-}
-.food-item:last-child { border-bottom: none; }
-.food-info { flex: 1; }
-.food-name { font-size: 14px; font-weight: 600; color: var(--charcoal); }
-.food-macros { font-size: 12px; color: var(--text-light); margin-top: 3px; }
-.food-kcal { font-size: 14px; font-weight: 700; color: var(--caramel); min-width: 60px; text-align: right; }
+/* ALT */
+.alt{border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;cursor:pointer;margin-bottom:8px;transition:all 0.15s;}
+.alt:active{background:var(--pink-pale);}
+.alt.sel{border-color:var(--pink-deep);background:var(--pink-pale);}
+.aname{font-size:14px;font-weight:500;}
+.adesc{font-size:12px;color:var(--text-mid);margin-top:3px;}
+.ayt{font-size:12px;color:var(--pink-deep);margin-top:6px;display:inline-block;}
 
-/* ─── EXERCISE ITEM ─── */
-.exercise-item {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-.exercise-header {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  background: var(--warm-white);
-  gap: 12px;
-}
-.exercise-check {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  border: 2px solid var(--border);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-.exercise-check.done { background: var(--sage); border-color: var(--sage); }
-.exercise-check.done::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
-.exercise-name { flex: 1; font-size: 14px; font-weight: 600; color: var(--charcoal); }
-.exercise-sets { font-size: 12px; color: var(--text-light); }
-.exercise-body { padding: 12px 16px; background: white; display: none; border-top: 1px solid var(--border); }
-.exercise-body.open { display: block; }
-.exercise-how { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 12px; }
-.exercise-how ol { padding-left: 18px; }
-.exercise-how ol li { margin-bottom: 6px; }
-.muscle-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.muscle-tag {
-  padding: 3px 10px;
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 11px;
-  color: var(--text-light);
-}
-.exercise-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+/* UPLOAD */
+.upzone{border:2px dashed var(--border);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;}
+.upzone input{display:none;}
+.upicon{font-size:40px;margin-bottom:10px;}
+.uptxt{font-size:13px;color:var(--text-mid);line-height:1.6;}
 
-/* ─── SKIN DAY ─── */
-.skin-step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px dashed var(--border);
-}
-.skin-step:last-child { border-bottom: none; }
-.skin-arrow { color: var(--blush); font-size: 16px; flex-shrink: 0; }
-.skin-product { font-size: 14px; font-weight: 500; color: var(--charcoal); }
-.skin-note { font-size: 12px; color: var(--text-light); }
-.skin-time-block { margin-bottom: 20px; }
-.skin-time-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--text-light);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.skin-time-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* AI BOX */
+.aibox{background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r-sm);padding:16px;font-size:13px;line-height:1.7;color:var(--text);margin-top:14px;}
 
-/* ─── ALERT / NOTICE ─── */
-.notice {
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  font-size: 13px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.notice-rose { background: rgba(217,123,108,0.1); border: 1px solid rgba(217,123,108,0.25); color: var(--deep-rose); }
-.notice-sage { background: rgba(139,168,136,0.1); border: 1px solid rgba(139,168,136,0.3); color: #4a7a47; }
-.notice-caramel { background: rgba(196,154,108,0.1); border: 1px solid rgba(196,154,108,0.3); color: var(--mocha); }
-.notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+/* SPINNER */
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:sp 0.7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes sp{to{transform:rotate(360deg)}}
 
-/* ─── PROGRESS BAR ─── */
-.progress-bar-wrap { margin-bottom: 12px; }
-.progress-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-light); margin-bottom: 6px; }
-.progress-bar-track { height: 8px; background: var(--cream); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-.progress-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blush), var(--rose)); transition: width 0.5s ease; }
+/* CAL */
+.cnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cnav h4{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;}
+.cnbtn{background:var(--surface2);border:1px solid var(--border);border-radius:10px;width:34px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text);}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.chdr{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);padding:6px 0;}
+.cc{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;font-size:13px;transition:all 0.15s;position:relative;color:var(--text);}
+.cc:active{background:var(--pink-pale);}
+.cc.today{background:var(--text);color:white;font-weight:600;}
+.cc.sel{background:var(--pink-deep);color:white;}
+.cc.hper{background:var(--pink-pale);}
+.cc.hper::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pink-deep);}
+.cc.gym::before{content:'';position:absolute;top:3px;right:3px;width:4px;height:4px;border-radius:50%;background:var(--sage);}
 
-/* ─── RENPHO UPLOAD ─── */
-.upload-zone {
-  border: 2px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 40px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.upload-zone:hover { border-color: var(--blush); background: rgba(242,196,184,0.05); }
-.upload-zone input { display: none; }
-.upload-icon { font-size: 36px; margin-bottom: 12px; }
-.upload-text { font-size: 14px; color: var(--text-light); }
-.upload-text strong { color: var(--text); }
+/* DAY SUMMARY */
+.dsumm{background:var(--surface2);border-radius:var(--r-sm);padding:14px;}
+.drow{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.drow:last-child{margin-bottom:0;}
+.dicon{font-size:18px;flex-shrink:0;width:28px;}
+.dc .dlbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);font-weight:600;}
+.dc .dval{font-size:14px;font-weight:500;color:var(--text);margin-top:1px;}
+.dc .dsub{font-size:12px;color:var(--text-mid);}
 
-/* ─── MODAL ─── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: white;
-  border-radius: 20px;
-  padding: 32px;
-  max-width: 520px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
-.modal h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 16px; color: var(--charcoal); }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+/* INPUTS */
+input[type=number],select{width:100%;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--border);font-family:'Jost',sans-serif;font-size:14px;background:var(--surface);color:var(--text);-webkit-appearance:none;}
+input:focus,select:focus{outline:none;border-color:var(--pink);}
+label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-weight:500;}
+.fr{margin-bottom:14px;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
-/* ─── ALTERNATIVE LIST ─── */
-.alt-item {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 8px;
-}
-.alt-item:hover { border-color: var(--rose); background: rgba(217,123,108,0.04); }
-.alt-item.selected { border-color: var(--rose); background: rgba(217,123,108,0.08); }
-.alt-item-name { font-size: 14px; font-weight: 600; color: var(--charcoal); }
-.alt-item-desc { font-size: 12px; color: var(--text-light); margin-top: 3px; }
-
-/* ─── LOADING ─── */
-.loading-spinner {
-  display: inline-block;
-  width: 18px; height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.ai-response {
-  background: linear-gradient(135deg, rgba(242,196,184,0.15), rgba(139,168,136,0.1));
-  border: 1px solid rgba(242,196,184,0.4);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text);
-  margin-top: 16px;
-}
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 900px) {
-  .sidebar { width: 64px; }
-  .sidebar-logo, .nav-item span, .sidebar-footer { display: none; }
-  .main { margin-left: 64px; }
-  .page-header, .page-body { padding: 24px; }
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-}
-
-/* ─── WEEK STRIP ─── */
-.week-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  margin-bottom: 28px;
-}
-.week-strip::-webkit-scrollbar { height: 4px; }
-.week-strip::-webkit-scrollbar-track { background: var(--cream); }
-.week-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.week-day-btn {
-  flex-shrink: 0;
-  width: 60px;
-  padding: 10px 8px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: white;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-}
-.week-day-btn:hover { border-color: var(--blush); }
-.week-day-btn.active { background: var(--charcoal); border-color: var(--charcoal); color: white; }
-.week-day-btn .wd-name { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.6; }
-.week-day-btn .wd-num { font-size: 18px; font-weight: 700; font-family: 'Playfair Display', serif; margin: 2px 0; }
-.week-day-btn .wd-dot { width: 5px; height: 5px; border-radius: 50%; margin: 0 auto; }
-.week-day-btn.active .wd-dot { background: var(--blush); }
-.week-day-btn:not(.active) .wd-dot { background: var(--sage); }
-
-/* ─── MACRO RING ─── */
-.macro-row { display: flex; gap: 12px; margin-top: 16px; }
-.macro-box { flex: 1; text-align: center; padding: 14px 8px; background: var(--cream); border-radius: 12px; border: 1px solid var(--border); }
-.macro-val { font-size: 20px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--charcoal); }
-.macro-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-top: 3px; }
-.macro-sub { font-size: 11px; color: var(--rose); margin-top: 2px; }
-
-/* ─── SECTION TITLE ─── */
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  color: var(--charcoal);
-  margin-bottom: 16px;
-  margin-top: 28px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.section-title:first-child { margin-top: 0; }
-
-/* ─── TABS ─── */
-.tab-row { display: flex; gap: 4px; background: var(--cream); border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid var(--border); }
-.tab-btn {
-  flex: 1;
-  padding: 9px;
-  border-radius: 9px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-light);
-  transition: all 0.2s;
-}
-.tab-btn.active { background: white; color: var(--charcoal); box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-weight: 600; }
-
-/* ─── PERIOD PHASE PILL ─── */
-.phase-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-}
-.phase-menstrual { background: rgba(217,123,108,0.15); color: var(--deep-rose); }
-.phase-follicular { background: rgba(139,168,136,0.15); color: #4a7a47; }
-.phase-ovulation { background: rgba(196,154,108,0.15); color: var(--mocha); }
-.phase-luteal { background: rgba(107,79,58,0.12); color: var(--mocha); }
+/* TABLE */
+.mtbl{width:100%;border-collapse:collapse;font-size:12px;}
+.mtbl th{text-align:left;padding:8px 6px;color:var(--text-light);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.8px;border-bottom:2px solid var(--border);}
+.mtbl td{padding:10px 6px;border-bottom:1px solid var(--border-soft);color:var(--text);}
 </style>
 </head>
 <body>
 
-<!-- ─── SIDEBAR ─── -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <h1>Bengisu</h1>
-    <p>Kişisel Program</p>
-  </div>
-  <nav class="sidebar-nav">
-    <a class="nav-item active" onclick="showPage('takvim')">
-      <span class="nav-icon">📅</span>
-      <span>Takvim</span>
-    </a>
-    <a class="nav-item" onclick="showPage('diyet')">
-      <span class="nav-icon">🥩</span>
-      <span>Diyet</span>
-    </a>
-    <a class="nav-item" onclick="showPage('egzersiz')">
-      <span class="nav-icon">💪</span>
-      <span>Egzersiz</span>
-    </a>
-    <a class="nav-item" onclick="showPage('cilt')">
-      <span class="nav-icon">✨</span>
-      <span>Cilt Bakımı</span>
-    </a>
-    <a class="nav-item" onclick="showPage('olcum')">
-      <span class="nav-icon">📊</span>
-      <span>Ölçüm & Analiz</span>
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="cycle-badge">
-      <div class="cycle-label">Döngü</div>
-      <div class="cycle-day" id="sidebar-cycle-day">27</div>
-      <div class="cycle-phase" id="sidebar-cycle-phase">Luteal Faz</div>
-    </div>
-  </div>
-</aside>
-
-<!-- ─── MAIN ─── -->
-<main class="main">
-
-<!-- ══════════════════════════════════════
-     TAKVİM SAYFASI
-══════════════════════════════════════ -->
+<!-- TAKVİM -->
 <div id="page-takvim" class="page active">
-  <div class="page-header">
-    <div>
-      <h2>Takvim</h2>
-      <p>Günlük planını seç ve takip et</p>
-    </div>
-    <div id="today-phase-badge"></div>
+  <div class="topbar">
+    <div class="tb-label">Kişisel Program</div>
+    <h1>Merhaba, <em>Bengisu</em> ✨</h1>
+    <div class="tb-sub" id="today-str"></div>
   </div>
-  <div class="page-body">
-    <div class="grid-2" style="gap:32px; align-items:start;">
-
-      <!-- Sol: Takvim -->
-      <div>
-        <div class="card">
-          <div class="card-body">
-            <div class="cal-nav">
-              <button class="cal-nav-btn" onclick="calPrev()">‹</button>
-              <h4 id="cal-month-title"></h4>
-              <button class="cal-nav-btn" onclick="calNext()">›</button>
-            </div>
-            <div class="cal-grid" id="cal-grid"></div>
-            <div style="display:flex;gap:16px;margin-top:16px;font-size:11px;color:var(--text-light);">
-              <span>🟢 Gym günü</span>
-              <span style="color:var(--rose);">● Regl dönemi</span>
-              <span style="background:var(--charcoal);color:white;padding:2px 8px;border-radius:6px;">Bugün</span>
-            </div>
-          </div>
-        </div>
+  <div id="cycle-strip-el"></div>
+  <div class="card">
+    <div class="cb">
+      <div class="cnav">
+        <button class="cnbtn" onclick="cPrev()">‹</button>
+        <h4 id="cal-title"></h4>
+        <button class="cnbtn" onclick="cNext()">›</button>
       </div>
-
-      <!-- Sağ: Seçilen Gün -->
-      <div id="selected-day-panel">
-        <div id="selected-day-content"></div>
+      <div class="cgrid" id="cal-grid"></div>
+      <div style="display:flex;gap:14px;margin-top:12px;font-size:10px;color:var(--text-light);flex-wrap:wrap;">
+        <span>🟢 Gym</span><span style="color:var(--pink-deep);">● Regl</span>
+        <span style="background:var(--text);color:white;padding:1px 7px;border-radius:5px;">Bugün</span>
       </div>
     </div>
   </div>
+  <div id="sel-day"></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     DİYET SAYFASI
-══════════════════════════════════════ -->
+<!-- DİYET -->
 <div id="page-diyet" class="page">
-  <div class="page-header">
-    <div>
-      <h2>Diyet</h2>
-      <p>Carnivore · IF 13:00–18:00 · ~1.400 kcal</p>
-    </div>
-    <div style="display:flex;gap:10px;">
-      <span id="diet-phase-badge"></span>
-    </div>
+  <div class="topbar">
+    <div class="tb-label">Beslenme Planı</div>
+    <h1><em>Diyet</em> 🥩</h1>
+    <div class="tb-sub">Carnivore · IF 13:00–18:00</div>
   </div>
-  <div class="page-body">
-
-    <!-- Haftalık strip -->
-    <div class="week-strip" id="diet-week-strip"></div>
-
-    <!-- Macro hedefleri -->
-    <div class="card" style="margin-bottom:24px;">
-      <div class="card-header">
-        <h3>Günlük Makro Hedefleri</h3>
-        <span id="diet-selected-date" style="font-size:13px;color:var(--text-light);"></span>
-      </div>
-      <div class="card-body">
-        <div id="diet-phase-notice"></div>
-        <div class="macro-row">
-          <div class="macro-box">
-            <div class="macro-val">1.400</div>
-            <div class="macro-lbl">Kalori</div>
-            <div class="macro-sub">kcal</div>
-          </div>
-          <div class="macro-box">
-            <div class="macro-val">125g</div>
-            <div class="macro-lbl">Protein</div>
-            <div class="macro-sub">hedef</div>
-          </div>
-          <div class="macro-box">
-            <div class="macro-val">105g</div>
-            <div class="macro-lbl">Yağ</div>
-            <div class="macro-sub">hedef</div>
-          </div>
-          <div class="macro-box">
-            <div class="macro-val">5g</div>
-            <div class="macro-lbl">Karbonhidrat</div>
-            <div class="macro-sub">maks</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Öğünler -->
-    <div class="grid-2" style="gap:24px;align-items:start;">
-      <div class="card">
-        <div class="card-header">
-          <h3>🍽 1. Öğün — 13:00</h3>
-        </div>
-        <div class="card-body" id="meal1-content"></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>🍽 2. Öğün — 17:30</h3>
-        </div>
-        <div class="card-body" id="meal2-content"></div>
-      </div>
-    </div>
-
-    <!-- AI Değiştir -->
-    <div class="card" style="margin-top:24px;">
-      <div class="card-header">
-        <h3>🤖 Besin Değiştir</h3>
-      </div>
-      <div class="card-body">
-        <p style="font-size:13px;color:var(--text-light);margin-bottom:12px;">Menüden değiştirmek istediğin besini seç, sistem sana eşdeğer carnivore alternatifleri önerecek.</p>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <select id="food-swap-select" style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:13px;background:white;color:var(--text);">
-            <option value="">Besin seç...</option>
-          </select>
-          <button class="btn btn-primary" onclick="swapFood()">
-            Alternatif Öner
-          </button>
-        </div>
-        <div id="food-swap-result"></div>
+  <div class="wstrip" id="d-strip"></div>
+  <div id="d-notice" style="margin:0 16px 12px;"></div>
+  <div class="card">
+    <div class="ch"><h3>Makro Hedefler</h3><span id="d-datelbl" style="font-size:12px;color:var(--text-light);"></span></div>
+    <div class="cb">
+      <div class="mrow">
+        <div class="mbox"><div class="mval">1.400</div><div class="mlbl">kcal</div></div>
+        <div class="mbox"><div class="mval">125g</div><div class="mlbl">Protein</div></div>
+        <div class="mbox"><div class="mval">105g</div><div class="mlbl">Yağ</div></div>
+        <div class="mbox"><div class="mval">5g</div><div class="mlbl">Karb</div></div>
       </div>
     </div>
   </div>
+  <div class="slbl">1. Öğün — 13:00</div>
+  <div class="card"><div class="cb" id="m1b"></div></div>
+  <div class="slbl">2. Öğün — 17:30</div>
+  <div class="card"><div class="cb" id="m2b"></div></div>
+  <div class="slbl">Supplement Zamanlaması</div>
+  <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
+  <div class="slbl">Besin Değiştir</div>
+  <div class="card">
+    <div class="cb">
+      <div class="fr"><label>Değiştirmek istediğin besin</label><select id="fsel"></select></div>
+      <button class="btn bp bfull" onclick="swapFood()">🔄 Carnivore Alternatif Öner</button>
+      <div id="fswap-res"></div>
+    </div>
+  </div>
+  <div style="height:8px;"></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     EGZERSİZ SAYFASI
-══════════════════════════════════════ -->
+<!-- EGZERSİZ -->
 <div id="page-egzersiz" class="page">
-  <div class="page-header">
-    <div>
-      <h2>Egzersiz</h2>
-      <p>6 günlük split · Diz dostu program</p>
-    </div>
+  <div class="topbar">
+    <div class="tb-label">Antrenman Programı</div>
+    <h1 id="ex-title"><em>Egzersiz</em> 💪</h1>
+    <div class="tb-sub" id="ex-sub"></div>
   </div>
-  <div class="page-body">
-
-    <div class="week-strip" id="ex-week-strip"></div>
-
-    <!-- Gün başlığı -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div id="ex-day-title" style="font-family:'Playfair Display',serif;font-size:24px;color:var(--charcoal);"></div>
-        <div id="ex-day-focus" style="font-size:13px;color:var(--text-light);margin-top:4px;"></div>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn btn-sage btn-sm" onclick="markWorkoutDone()">✓ Antrenmanı Tamamladım</button>
-      </div>
-    </div>
-
-    <!-- Dinlenme günü -->
-    <div id="rest-day-msg" style="display:none;">
-      <div class="notice notice-sage">
-        <div class="notice-icon">🛌</div>
-        <div>
-          <strong>Dinlenme Günü</strong><br>
-          <span style="font-size:12px;">Bugün aktif dinlenme. Hafif yürüyüş veya esneme yapabilirsin.</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Egzersiz listesi -->
-    <div id="exercise-list"></div>
-
-    <!-- Soğuma -->
-    <div id="cooldown-section" style="margin-top:24px;"></div>
-
-    <!-- Haftalık özet -->
-    <div class="card" style="margin-top:24px;">
-      <div class="card-header"><h3>📈 Bu Haftaki Antrenmanlar</h3></div>
-      <div class="card-body">
-        <div id="weekly-workout-summary" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-      </div>
-    </div>
+  <div class="wstrip" id="e-strip"></div>
+  <div id="e-rest" style="margin:0 16px 12px;display:none;">
+    <div class="notice nm"><div class="nicon">🛌</div><div><strong>Dinlenme Günü</strong><br>Hafif yürüyüş veya esneme yapabilirsin.</div></div>
   </div>
+  <div id="e-list"></div>
+  <div id="e-cool"></div>
+  <div class="card" style="margin-top:0;">
+    <div class="ch"><h3>Bu Haftanın Özeti</h3></div>
+    <div class="cb" id="e-week"></div>
+  </div>
+  <div style="height:8px;"></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     CİLT BAKIMI SAYFASI
-══════════════════════════════════════ -->
+<!-- CİLT -->
 <div id="page-cilt" class="page">
-  <div class="page-header">
-    <div>
-      <h2>Cilt Bakımı</h2>
-      <p>7 günlük döngü · Karma cilt · Anti-aging</p>
-    </div>
-    <div id="cilt-phase-badge"></div>
+  <div class="topbar">
+    <div class="tb-label">Skincare Rutini</div>
+    <h1><em>Cilt Bakımı</em> ✨</h1>
+    <div class="tb-sub">7 Günlük Döngü · Karma Cilt</div>
   </div>
-  <div class="page-body">
-
-    <div class="week-strip" id="cilt-week-strip"></div>
-
-    <!-- Döngü notu -->
-    <div id="cilt-cycle-notice" style="margin-bottom:20px;"></div>
-
-    <div class="grid-2" style="gap:24px;align-items:start;">
-      <!-- Sabah -->
-      <div class="card">
-        <div class="card-header">
-          <h3>☀️ Sabah Rutini</h3>
-          <span id="cilt-day-label" style="font-size:12px;color:var(--text-light);"></span>
-        </div>
-        <div class="card-body" id="morning-routine"></div>
-      </div>
-
-      <!-- Akşam -->
-      <div class="card">
-        <div class="card-header">
-          <h3>🌙 Akşam Rutini</h3>
-          <span id="cilt-evening-active" style="font-size:12px;color:var(--rose);font-weight:600;"></span>
-        </div>
-        <div class="card-body" id="evening-routine"></div>
-      </div>
-    </div>
-
-    <!-- Göz kremi reminder -->
-    <div class="notice notice-caramel" style="margin-top:20px;">
-      <div class="notice-icon">👁️</div>
-      <div>
-        <strong>Her Akşam — Son Adım:</strong> COSRX Advanced Snail Peptide Eye Cream<br>
-        <span style="font-size:12px;">Tüm adımların bittikten sonra, en son olarak uygula.</span>
-      </div>
-    </div>
-
-    <!-- Silikon fırça -->
-    <div id="brush-reminder" style="margin-top:12px;"></div>
-
-    <!-- Ürün listesi -->
-    <div class="card" style="margin-top:24px;">
-      <div class="card-header"><h3>🛍 Ürün Listesi</h3></div>
-      <div class="card-body" id="product-list"></div>
-    </div>
+  <div class="wstrip" id="c-strip"></div>
+  <div id="c-notice" style="margin:0 16px 12px;"></div>
+  <div class="slbl">☀️ Sabah Rutini</div>
+  <div class="card"><div class="cb" id="c-morn"></div></div>
+  <div class="slbl">🌙 Akşam Rutini</div>
+  <div class="card">
+    <div class="ch"><h3>Akşam</h3><span id="c-active-badge"></span></div>
+    <div class="cb" id="c-eve"></div>
   </div>
+  <div style="margin:0 16px 12px;">
+    <div class="notice ng"><div class="nicon">👁️</div><div><strong>Her Akşam Son Adım:</strong><br>COSRX Advanced Snail Peptide Eye Cream</div></div>
+  </div>
+  <div id="c-brush" style="margin:0 16px 12px;"></div>
+  <div class="slbl">🛍 Ürün Listesi</div>
+  <div class="card"><div class="cb" id="c-prods"></div></div>
+  <div style="height:8px;"></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     ÖLÇÜM & ANALİZ SAYFASI
-══════════════════════════════════════ -->
+<!-- ÖLÇÜM -->
 <div id="page-olcum" class="page">
-  <div class="page-header">
-    <div>
-      <h2>Ölçüm & Analiz</h2>
-      <p>Renpho verileri · Haftalık karşılaştırma</p>
+  <div class="topbar">
+    <div class="tb-label">Vücut Takibi</div>
+    <h1><em>Ölçüm</em> 📊</h1>
+    <div class="tb-sub">Haziran hedefi: 57–58 kg</div>
+  </div>
+  <div class="card">
+    <div class="ch"><h3>Haziran Hedefi</h3></div>
+    <div class="cb">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">79.65</div>
+        <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
+      </div>
+      <div class="pw">
+        <div class="plbls"><span>81.1 kg</span><span>57 kg</span></div>
+        <div class="pt"><div class="pf" id="pbar"></div></div>
+      </div>
+      <div class="pnote" id="pnote"></div>
     </div>
   </div>
-  <div class="page-body">
-
-    <!-- Hedef ilerlemesi -->
-    <div class="card" style="margin-bottom:24px;">
-      <div class="card-header"><h3>🎯 Haziran Hedefi</h3></div>
-      <div class="card-body">
-        <div style="display:flex;align-items:center;gap:24px;margin-bottom:20px;flex-wrap:wrap;">
-          <div style="text-align:center;">
-            <div style="font-size:36px;font-weight:700;font-family:'Playfair Display',serif;color:var(--charcoal);" id="current-weight-display">79.65</div>
-            <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;">Şu An (kg)</div>
-          </div>
-          <div style="flex:1;">
-            <div class="progress-bar-wrap">
-              <div class="progress-bar-label">
-                <span>81.1 kg (başlangıç)</span>
-                <span>57 kg (hedef)</span>
-              </div>
-              <div class="progress-bar-track">
-                <div class="progress-bar-fill" id="weight-progress-bar" style="width:0%"></div>
-              </div>
-            </div>
-            <div style="font-size:13px;color:var(--sage);font-weight:600;margin-top:8px;" id="weight-progress-text"></div>
-          </div>
-        </div>
-        <div class="grid-4" id="body-stats-grid"></div>
+  <div class="sgrid" id="sgrid"></div>
+  <div class="slbl">Pazartesi Ölçümü</div>
+  <div class="card">
+    <div class="cb">
+      <div class="upzone" onclick="document.getElementById('rinp').click()">
+        <input type="file" id="rinp" accept="image/*" multiple onchange="handleUp(event)">
+        <div class="upicon">📱</div>
+        <div class="uptxt"><strong>Renpho ekran görüntüsü yükle</strong><br>Haftada bir Pazartesi sabahı</div>
       </div>
-    </div>
-
-    <!-- Renpho yükleme -->
-    <div class="grid-2" style="gap:24px;align-items:start;">
-      <div class="card">
-        <div class="card-header"><h3>📤 Bu Hafta Renpho Yükle</h3></div>
-        <div class="card-body">
-          <div class="upload-zone" onclick="document.getElementById('renpho-upload').click()">
-            <input type="file" id="renpho-upload" accept="image/*" multiple onchange="handleRenphoUpload(event)">
-            <div class="upload-icon">📱</div>
-            <div class="upload-text">
-              <strong>Renpho ekran görüntüsü yükle</strong><br>
-              Haftada bir Pazartesi sabahı ölçüm yap ve yükle
-            </div>
-          </div>
-          <div id="renpho-preview" style="margin-top:12px;"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><h3>🤖 AI Analiz</h3></div>
-        <div class="card-body">
-          <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">Renpho fotoğrafını yükle, AI sana geçen haftayla karşılaştırmalı yorum yapsın.</p>
-          <button class="btn btn-primary" onclick="analyzeRenpho()" id="analyze-btn" disabled>
-            Analiz Et
-          </button>
-          <div id="renpho-analysis"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Geçmiş -->
-    <div class="card" style="margin-top:24px;">
-      <div class="card-header">
-        <h3>📅 Ölçüm Geçmişi</h3>
-        <button class="btn btn-secondary btn-sm" onclick="showAddMeasurement()">+ Ekle</button>
-      </div>
-      <div class="card-body" id="measurement-history"></div>
+      <div id="rprev" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"></div>
+      <button class="btn bp bfull" style="margin-top:12px;" onclick="analyzeR()" id="abtn" disabled>🤖 AI Analiz Et</button>
+      <div id="rres"></div>
     </div>
   </div>
+  <div class="slbl">Ölçüm Ekle</div>
+  <div class="card">
+    <div class="cb">
+      <div class="fgrid">
+        <div class="fr"><label>Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="79.6"></div>
+        <div class="fr"><label>Vücut Yağı (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
+        <div class="fr"><label>Kas Kitlesi (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
+        <div class="fr"><label>Bel (cm)</label><input type="number" id="mwa" step="0.5" placeholder="84"></div>
+        <div class="fr"><label>Kalça (cm)</label><input type="number" id="mh" step="0.5" placeholder="110"></div>
+        <div class="fr"><label>Uyluk (cm)</label><input type="number" id="mt" step="0.5" placeholder="65"></div>
+      </div>
+      <button class="btn bp bfull" onclick="saveM()">💾 Kaydet</button>
+    </div>
+  </div>
+  <div class="slbl">Geçmiş</div>
+  <div class="card"><div class="cb" id="mhist" style="overflow-x:auto;"></div></div>
+  <div style="height:8px;"></div>
 </div>
 
-</main>
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nb active" onclick="showP('takvim',this)"><span class="ni">📅</span><span class="nl">Takvim</span></button>
+  <button class="nb" onclick="showP('diyet',this)"><span class="ni">🥩</span><span class="nl">Diyet</span></button>
+  <button class="nb" onclick="showP('egzersiz',this)"><span class="ni">💪</span><span class="nl">Egzersiz</span></button>
+  <button class="nb" onclick="showP('cilt',this)"><span class="ni">✨</span><span class="nl">Cilt</span></button>
+  <button class="nb" onclick="showP('olcum',this)"><span class="ni">📊</span><span class="nl">Ölçüm</span></button>
+</nav>
 
-<!-- ─── MODAL: Egzersiz Değiştir ─── -->
-<div class="modal-overlay" id="swap-exercise-modal">
+<!-- MODAL: Egzersiz Değiştir -->
+<div class="mo" id="swap-modal">
   <div class="modal">
-    <h3>💪 Alternatif Hareket</h3>
-    <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;" id="swap-modal-desc"></p>
-    <div id="swap-alternatives"></div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal('swap-exercise-modal')">İptal</button>
-      <button class="btn btn-primary" onclick="confirmSwap()">Değiştir</button>
-    </div>
-  </div>
-</div>
-
-<!-- ─── MODAL: Ölçüm Ekle ─── -->
-<div class="modal-overlay" id="add-measurement-modal">
-  <div class="modal">
-    <h3>📊 Ölçüm Ekle</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Kilo (kg)</label>
-        <input type="number" id="m-weight" step="0.1" placeholder="79.6" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Vücut Yağı (%)</label>
-        <input type="number" id="m-fat" step="0.1" placeholder="34.1" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Kas Kitlesi (kg)</label>
-        <input type="number" id="m-muscle" step="0.1" placeholder="49.3" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Bel (cm)</label>
-        <input type="number" id="m-waist" step="0.5" placeholder="84" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Kalça (cm)</label>
-        <input type="number" id="m-hip" step="0.5" placeholder="110" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-      <div>
-        <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:6px;">Uyluk (cm)</label>
-        <input type="number" id="m-thigh" step="0.5" placeholder="65" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;">
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal('add-measurement-modal')">İptal</button>
-      <button class="btn btn-primary" onclick="saveMeasurement()">Kaydet</button>
+    <div class="mhandle"></div>
+    <h3>Hareketi Değiştir 🔄</h3>
+    <div class="msub" id="swap-sub"></div>
+    <div id="swap-alts"></div>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('swap-modal')">İptal</button>
+      <button class="btn bp" style="flex:2;" onclick="confirmSwap()">Değiştir</button>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-// VERİ — REGL DÖNGÜSÜ
-// ══════════════════════════════════════════════
-const PERIOD_CONFIG = {
-  lastStart: new Date('2026-03-03'),
-  avgCycleLength: 27,
-  avgPeriodLength: 5
-};
-
-function getCycleInfo(date = new Date()) {
-  const daysSinceStart = Math.floor((date - PERIOD_CONFIG.lastStart) / (1000*60*60*24));
-  const cycleDay = ((daysSinceStart % PERIOD_CONFIG.avgCycleLength) + PERIOD_CONFIG.avgCycleLength) % PERIOD_CONFIG.avgCycleLength + 1;
-  let phase, phaseClass, emoji;
-  if (cycleDay <= PERIOD_CONFIG.avgPeriodLength) {
-    phase = 'Menstrüasyon'; phaseClass = 'phase-menstrual'; emoji = '🔴';
-  } else if (cycleDay <= 13) {
-    phase = 'Foliküler Faz'; phaseClass = 'phase-follicular'; emoji = '🌱';
-  } else if (cycleDay <= 16) {
-    phase = 'Ovülasyon'; phaseClass = 'phase-ovulation'; emoji = '🌸';
-  } else {
-    phase = 'Luteal Faz'; phaseClass = 'phase-luteal'; emoji = '🌙';
-  }
-  const nextPeriod = new Date(PERIOD_CONFIG.lastStart);
-  nextPeriod.setDate(nextPeriod.getDate() + Math.ceil(daysSinceStart / PERIOD_CONFIG.avgCycleLength) * PERIOD_CONFIG.avgCycleLength);
-  return { cycleDay, phase, phaseClass, emoji, nextPeriod };
+// REGL
+const PER={last:new Date('2026-03-03'),cyc:27,dur:5};
+function ci(d=new Date()){
+  const days=Math.floor((d-PER.last)/86400000);
+  const day=((days%PER.cyc)+PER.cyc)%PER.cyc+1;
+  if(day<=PER.dur)return{day,phase:'Menstrüasyon',emoji:'🔴',cls:'np'};
+  if(day<=13)return{day,phase:'Foliküler Faz',emoji:'🌱',cls:'ns'};
+  if(day<=16)return{day,phase:'Ovülasyon',emoji:'🌸',cls:'ng'};
+  return{day,phase:'Luteal Faz',emoji:'🌙',cls:'nm'};
 }
+const inP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day<=PER.dur;};
+const preP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day>=(PER.cyc-4);};
 
-function isInPeriod(date) {
-  const daysSince = Math.floor((date - PERIOD_CONFIG.lastStart) / (1000*60*60*24));
-  const cycleDay = ((daysSince % PERIOD_CONFIG.avgCycleLength) + PERIOD_CONFIG.avgCycleLength) % PERIOD_CONFIG.avgCycleLength + 1;
-  return cycleDay >= 1 && cycleDay <= PERIOD_CONFIG.avgPeriodLength;
-}
+// SPLITS
+const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Kalça · Bacak · Core'},2:{n:'Push',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Arka Bacak · Kalça · Core'},4:{n:'Pull',e:'🏋️',f:'Sırt · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Tam Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Omuz · Kol · Core'}};
 
-function isPremenstrual(date) {
-  const daysSince = Math.floor((date - PERIOD_CONFIG.lastStart) / (1000*60*60*24));
-  const cycleDay = ((daysSince % PERIOD_CONFIG.avgCycleLength) + PERIOD_CONFIG.avgCycleLength) % PERIOD_CONFIG.avgCycleLength + 1;
-  return cycleDay >= (PERIOD_CONFIG.avgCycleLength - 4);
-}
+const EX={
+1:[
+{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Ön uyluk','Kalça'],h:'Barı omzuna al. Ayaklar omuz genişliğinde. Kalçanı arkaya gönder. Uyluklar yere paralel olunca kalk.',y:'smith machine squat form'},
+{id:'lp',n:'Leg Press',s:'4×15',m:['Ön uyluk','Kalça'],h:'Sırtın platforma yaslanmış. 90 dereceye in, topuklarından it. Dizler kilitlenmesin.',y:'leg press proper form'},
+{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Dış kalça','Glute medius'],h:'Pedleri dışarı it. Kontrollü geri gel. Tepe noktada 1 sn tut.',y:'hip abductor machine form'},
+{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü, kalçana bant tak. Topuklardan ite, kalçanı kaldır. Tepe 2 sn sık.',y:'glute bridge band form'},
+{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Ön uyluk','Kalça'],h:'Her elde dumbbell. Büyük adım geriye. İki diz 90 derece. Ön topuktan ite geri gel.',y:'reverse lunge dumbbell'},
+{id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Diz çök. Halatı başının yanında tut. Core\'u bükerek eğil. Kalça sabit.',y:'cable crunch abs form'},
+],2:[
+{id:'dbp',n:'İnkline Dumbbell Press',s:'4×12',m:['Üst göğüs','Omuz'],h:'45 derece bank. Dirsekler 45 açılı. Tepe noktada sık.',y:'incline dumbbell press'},
+{id:'lr',n:'Lateral Raise',s:'4×15',m:['Orta omuz'],h:'Kolları T\'ye kaldır. Deltayı çalıştır. 2 sn tepe.',y:'lateral raise proper form'},
+{id:'fr',n:'Front Raise',s:'3×12',m:['Ön omuz'],h:'Öne omuz hizasına kaldır. Kontrollü ini.',y:'dumbbell front raise'},
+{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Omuz','Triceps'],h:'Başın üzerine it. Core sık, bel düz.',y:'dumbbell shoulder press'},
+{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit. Aşağı it, tepe noktada sık.',y:'tricep cable pushdown'},
+{id:'hkr',n:'Hanging Knee Raise',s:'4×15',m:['Alt karın','Core'],c:1,h:'Bardan asıl. Dizleri göğse çek. Salınma yapma.',y:'hanging knee raise abs'},
+],3:[
+{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Dizler hafif bükülü. Kalçayı geriye gönder. Dumbbelllar bacak boyunca kayar. SIRT DÜZ.',y:'romanian deadlift dumbbell'},
+{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstring'],h:'Topukları kalçaya çek. Kontrollü in.',y:'lying leg curl machine'},
+{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['İç uyluk','Kalça'],h:'Ayaklar geniş, parmaklar dışa. Ortada dumbbell. Dik dur.',y:'sumo squat dumbbell'},
+{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Kalça','Glute'],h:'Bileğe sabitle. Bacağı geriye ve yukarıya it. Kalçayı sık.',y:'cable kickback glutes'},
+{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Baldır'],h:'Sadece parmak uçları platformda. Tepe 2 sn.',y:'leg press calf raise'},
+{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Oblique'],c:1,h:'Kablo yanında dur. Göğüs hizasında öne it. Döndürme.',y:'pallof press core'},
+],4:[
+{id:'lat',n:'Lat Pulldown (Geniş)',s:'4×12',m:['Sırt','Lat','Biceps'],h:'Göğsüne çek. Kürek kemiklerini birleştir. Yavaş bırak.',y:'lat pulldown wide grip'},
+{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Orta sırt','Biceps'],h:'Göbeğine çek. Omurga dik. Kürek birleştir.',y:'seated cable row form'},
+{id:'fp',n:'Face Pull',s:'3×15',m:['Arka omuz'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda.',y:'face pull cable form'},
+{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Sırt','Biceps'],h:'Bankta destekle. Kalçana doğru çek. Sırt kasını hisset.',y:'single arm dumbbell row'},
+{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Dirsekler sabit. Tepe 1 sn sık.',y:'dumbbell bicep curl form'},
+{id:'abw',n:'Ab Wheel Rollout',s:'3×10',m:['Core','Karın'],c:1,h:'Dizlerde. Öne yuvarla, bel çökmeden. Kasıtla geri çek.',y:'ab wheel rollout beginner'},
+],5:[
+{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Kalça','Glute max','Hamstring'],h:'Sırtı banka daya. Barbell kalça çukuruna (ped koy!). Topuklardan it. Tepe 2 sn sık.',y:'hip thrust barbell form'},
+{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Kalça','Core'],h:'Bir bacak havada. Tek bacakla hip thrust.',y:'single leg hip thrust'},
+{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Arka omuz','Üst sırt'],h:'Bandı öne uzat. T şeklinde aç. Kürek kemiklerini birleştir.',y:'band pull apart form'},
+{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Derin karın (TVA)'],c:1,h:'Nefes ver, karnı içeri ve yukarı çek. Göbeği omurgaya götür. 30 sn tut. Göbek için en etkili!',y:'stomach vacuum exercise'},
+{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Kalçayı geriye gönder. Sırt DÜZ. Kalçayı sıkarak dik dur.',y:'dumbbell deadlift form'},
+{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Side plank 3) Shoulder tap. Her sette farklı.',y:'plank variations core'},
+],6:[
+{id:'arn',n:'Arnold Press',s:'4×12',m:['Tüm omuz'],h:'Çene önünde avuçlar sana baksın. Kaldırırken döndür, tepe noktada avuçlar öne.',y:'arnold press dumbbell'},
+{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Üst trapez','Ön omuz'],h:'Dar tutuş, çen altına çek. Dirsekler dışa ve yukarıya.',y:'upright row cable form'},
+{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Avuç içi içe dönük. Dirsek sabit. Yavaşça in.',y:'hammer curl form'},
+{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Bankta yat. Barı alnına doğru indir. Dirsekler sabit yukarıda.',y:'skull crusher ez bar'},
+{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Orta omuz'],h:'15 tekrar normal, hemen yarıya geç 15 daha.',y:'lateral raise drop set'},
+{id:'rt',n:'Russian Twist (Ağırlıklı)',s:'4×20',m:['Oblique','Core'],c:1,h:'Dizler bükülü, sırt hafif arkada. Sağa-sola dön.',y:'russian twist weighted'},
+]};
 
-// ══════════════════════════════════════════════
-// VERİ — EGZERSİZ PROGRAMI
-// ══════════════════════════════════════════════
-const SPLITS = {
-  0: null, // Pazar - Dinlenme
-  1: { name: 'Legs & Glute', emoji: '🦵', focus: 'Kalça · Bacak ön · Core', color: '#8BA888' },
-  2: { name: 'Push', emoji: '💪', focus: 'Göğüs · Omuz · Triceps · Core', color: '#D97B6C' },
-  3: { name: 'Legs & Hamstring', emoji: '🦵', focus: 'Arka bacak · Kalça · Core', color: '#8BA888' },
-  4: { name: 'Pull', emoji: '🏋️', focus: 'Sırt · Biceps · Core', color: '#C49A6C' },
-  5: { name: 'Glute & Core', emoji: '🍑', focus: 'Hip thrust ağırlıklı · Tam Core', color: '#B85C4E' },
-  6: { name: 'Shoulders & Arms', emoji: '🙆', focus: 'Omuz · Kol · Core', color: '#6B4F3A' },
-};
+const CD={1:{n:'Kalça & Bacak Soğuma',d:'Butterfly stretch · Pigeon pose · Quad stretch',y:'hip glute cooldown stretch'},2:{n:'Göğüs & Omuz Soğuma',d:'Göğüs açma · Omuz germe · Tricep stretch',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Kalça Soğuma',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Sırt & Kol Soğuma',d:'Lat stretch · Child pose · Bicep stretch',y:'back bicep cooldown stretch'},5:{n:'Glute & Core Soğuma',d:'Pigeon pose · Supine twist · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Omuz & Kol Soğuma',d:'Overhead tricep · Cross-body omuz · Wrist stretch',y:'shoulder arm cooldown stretch'}};
 
-const EXERCISES = {
-  1: [ // Pazartesi - Legs & Glute
-    { id:'sq', name:'Smith Machine Squat', sets:'4×12', muscles:['Ön uyluk','Kalça'], core:false,
-      how:'Smith machine barını omzuna al. Ayaklar omuz genişliğinde, parmak uçları hafif dışa. Kalçanı arkaya ve aşağıya göndererek in. Uyluklar yere paralel olunca kalk. Diz güvenliği için makineyi kullan.',
-      yt:'smith machine squat form tutorial' },
-    { id:'lp', name:'Leg Press', sets:'4×15', muscles:['Ön uyluk','Kalça'], core:false,
-      how:'Sırtın tamamen platforma yaslanmış olsun. Ayaklar orta-üst pozisyonda. 90 dereceye kadar in, topuklarından ite. Dizlerin kilitlenmesin.',
-      yt:'leg press proper form tutorial' },
-    { id:'abductor', name:'Abductor Makinesi', sets:'3×20', muscles:['Dış kalça','Glute medius'], core:false,
-      how:'Koltuğa otur, pedleri dışarı doğru it. Kontrollü geri gel. Hız değil kas kasılması önemli. Tepe noktada 1 sn tut.',
-      yt:'hip abductor machine form' },
-    { id:'gb', name:'Glute Bridge (Bant ile)', sets:'4×15', muscles:['Kalça','Hamstring'], core:false,
-      how:'Sırtüstü yat. Kalçana bant tak. Topuklarından iterek kalçanı kaldır. Tepe noktada kalçanı güçlüce sık, 2 sn kal.',
-      yt:'glute bridge resistance band form' },
-    { id:'lunge_r', name:'Reverse Lunge (Dumbbell)', sets:'3×12 her taraf', muscles:['Ön uyluk','Kalça','Denge'], core:false,
-      how:'Her elde dumbbell. Büyük adım geriye at. Her iki diz 90 derece. Ön bacak topuğundan ite, geri gel. Gövde dik kalsın.',
-      yt:'reverse lunge dumbbell form' },
-    { id:'cc', name:'Cable Crunch', sets:'4×15', muscles:['Karın','Core'], core:true,
-      how:'Kablo makinesine diz çök. Halatı başının yanında tut. Sadece core\'u bükerek karına doğru eğil. Kalça sabit kalsın, hareket omurgadan gelsin.',
-      yt:'cable crunch proper form abs' },
-  ],
-  2: [ // Salı - Push
-    { id:'dbp', name:'Dumbbell Chest Press (İnkline)', sets:'4×12', muscles:['Göğüs üst','Omuz ön','Triceps'], core:false,
-      how:'45 derece eğimli bankta. Her elde dumbbell, göğüs hizasında. Dirsekler 45 derece açılı. Tepe noktada kasları sık.',
-      yt:'incline dumbbell press form' },
-    { id:'lraise', name:'Lateral Raise', sets:'4×15', muscles:['Orta omuz'], core:false,
-      how:'Hafif öne eğilerek yap. Kollarını T şeklinde kaldır, dirseği biraz bükülü. Omuzdan yukarı — trapezi değil deltayı çalıştır. 2 sn tepe.',
-      yt:'lateral raise proper form dumbbell' },
-    { id:'frontraise', name:'Dumbbell Front Raise', sets:'3×12', muscles:['Ön omuz'], core:false,
-      how:'Dumbbell\'ı öne doğru kaldır, omuz hizasına kadar. Salıma yapma, kontrollü ini. Alternating (bir el bir el) daha etkili.',
-      yt:'dumbbell front raise form' },
-    { id:'dsp', name:'Dumbbell Shoulder Press', sets:'4×12', muscles:['Omuz','Triceps'], core:false,
-      how:'Otur veya dik dur. Dumbbelllar omuz hizasında, avuç içleri öne. Başın üzerine doğru it. Core\'u sık, bel düz kalsın.',
-      yt:'dumbbell shoulder press form' },
-    { id:'tc', name:'Tricep Cable Pushdown', sets:'3×15', muscles:['Triceps'], core:false,
-      how:'Kabloyu yukarıdan al. Dirsekler yanında sabit. Sadece ön kolu aşağı it. Tepe noktada tricepsi sık.',
-      yt:'tricep cable pushdown form' },
-    { id:'hkr', name:'Hanging Knee Raise', sets:'4×15', muscles:['Alt karın','Core'], core:true,
-      how:'Bardan asıl. Dizlerini göğsüne doğru çek. Salınma yapma — kontrollü. Yavaşça in. Güçleşince bacakları uzatarak yap.',
-      yt:'hanging knee raise form abs' },
-  ],
-  3: [ // Çarşamba - Legs & Hamstring
-    { id:'rdl', name:'Romanian Deadlift', sets:'4×12', muscles:['Hamstring','Kalça','Alt sırt'], core:false,
-      how:'Dumbbelllar önde, dizler hafif bükülü. Kalçanı geriye göndererek öne eğil. Dumbbelllar bacak boyunca kayar. Hamstringte gerilim hissedince dur. Kalçayı sıkarak kalk. Sırt DÜMDÜZ kalsın.',
-      yt:'romanian deadlift dumbbell form' },
-    { id:'legcurl', name:'Leg Curl Makinesi', sets:'4×15', muscles:['Hamstring'], core:false,
-      how:'Yüz üstü yat. Makine pedi ayak bileklerinde. Topuklarını kalçana doğru çek. Kontrollü ini. Salıma yapma.',
-      yt:'lying leg curl machine form' },
-    { id:'sumo', name:'Sumo Squat (Dumbbell)', sets:'3×15', muscles:['İç uyluk','Kalça','Ön uyluk'], core:false,
-      how:'Ayaklar normalden geniş, parmaklar dışa. Ortada dumbbell tut. Diz hizasında parmak uçların olsun. Kalçanı aşağı indirirken dik dur.',
-      yt:'sumo squat dumbbell form' },
-    { id:'hipext', name:'Cable Hip Extension (Kickback)', sets:'3×15 her taraf', muscles:['Kalça','Glute'], core:false,
-      how:'Kablo makinesinin yanında dur, bileğe sabitle. Bacağını geriye ve yukarıya doğru it. Kalçayı sık. Gövde sabit kalsın.',
-      yt:'cable hip extension kickback glutes' },
-    { id:'calfpress', name:'Leg Press Calf Raise', sets:'3×20', muscles:['Baldır'], core:false,
-      how:'Leg press makinesinde, sadece ayak uçları platformda. Topukları aşağı-yukarı. Tepe noktada 2 sn tut.',
-      yt:'leg press calf raise form' },
-    { id:'pallof', name:'Pallof Press', sets:'3×12 her taraf', muscles:['Core','Oblique'], core:true,
-      how:'Kablo makinesinin yanında dur. Göğüs hizasında halatı tut. Düz öne it — vücudu döndürme. Geri çek. Kablo seni döndürmeye çalışır, direnç buda aslında egzersiz.',
-      yt:'pallof press core stability form' },
-  ],
-  4: [ // Perşembe - Pull
-    { id:'latpull', name:'Lat Pulldown (Geniş Tutuş)', sets:'4×12', muscles:['Sırt üst','Lat','Biceps'], core:false,
-      how:'Geniş tutuşla halatı tut. Göğsüne doğru çek. Dirsekler aşağıya ve yana. Omuzları düşür, kürek kemiklerini birleştir. Yavaşça bırak.',
-      yt:'lat pulldown proper form wide grip' },
-    { id:'cablerow', name:'Seated Cable Row', sets:'4×12', muscles:['Orta sırt','Rhomboid','Biceps'], core:false,
-      how:'Otur, dizler hafif bükülü. Göbeğine doğru çek. Dirsekler vücuda yakın. Omurga dik. Kürek kemiklerini birleştir tepe noktada.',
-      yt:'seated cable row proper form' },
-    { id:'facepull', name:'Face Pull', sets:'3×15', muscles:['Arka omuz','Rotator cuff'], core:false,
-      how:'Kablo yüz hizasında. Halatı yüze doğru çek — iki eli kulaklara getiriyormuş gibi. Dirsekler yukarıda. Duruş için çok önemli.',
-      yt:'face pull cable proper form' },
-    { id:'dbrow', name:'Dumbbell Row (Tek Kol)', sets:'3×12 her taraf', muscles:['Sırt','Biceps'], core:false,
-      how:'Bir elini bankta destekle. Dumbbell\'ı kalçana doğru çek. Sırt kasını hisset. Dirsek vücuya yakın, yukarı gitsin.',
-      yt:'dumbbell row single arm form' },
-    { id:'curl', name:'Dumbbell Bicep Curl', sets:'3×15', muscles:['Biceps'], core:false,
-      how:'Dirsekler sabit. Sadece ön kol hareket eder. Tepe noktada 1 sn sık. Alternating veya aynı anda — ikisi de olur.',
-      yt:'dumbbell bicep curl proper form' },
-    { id:'abwheel', name:'Ab Wheel Rollout', sets:'3×10', muscles:['Core','Karın','Omuz'], core:true,
-      how:'Dizlerin üzerinde. Tekerleği öne yuvarla — belin çökmeden ne kadar uzanabiliyorsan. Geri gel. Tekerleği yavaşça çekme kasıyla geri getir.',
-      yt:'ab wheel rollout beginner form' },
-  ],
-  5: [ // Cuma - Glute & Core
-    { id:'ht', name:'Hip Thrust (Barbell / Smith)', sets:'5×12', muscles:['Kalça','Glute max','Hamstring'], core:false,
-      how:'Sırtını banka daya. Barbell kalça çukuruna gelecek (ped koy!). Topuklarından it, kalçanı kaldır. Tepe noktada omuz-kalça-diz düz çizgi. 2 sn sık. YAVAŞçA ini.',
-      yt:'hip thrust barbell form tutorial' },
-    { id:'ht2', name:'Single Leg Hip Thrust', sets:'3×12 her taraf', muscles:['Kalça','Glute','Core'], core:false,
-      how:'Bir bacak havada, tek bacakla hip thrust. Asimetriyi düzeltmek için mükemmel. Çalışan bacağın topuğundan it.',
-      yt:'single leg hip thrust form' },
-    { id:'bpa', name:'Band Pull-Apart', sets:'3×20', muscles:['Arka omuz','Üst sırt'], core:false,
-      how:'Bandı öne uzat, omuz genişliğinde. T şeklinde aç. Kürek kemiklerini birleştir. Yavaş geri gel.',
-      yt:'band pull apart upper back form' },
-    { id:'vacuumex', name:'Stomach Vacuum', sets:'3×30sn', muscles:['TVA (derin karın)'], core:true,
-      how:'Derin nefes ver, karnını içeri ve yukarıya doğru çek — sanki göbeğini omurganla buluşturuyorsun. 30 sn tut. Nefes almaya çalış bu pozisyonda. Göbek küçültme için en etkili.',
-      yt:'stomach vacuum exercise how to' },
-    { id:'dbdeadlift', name:'Dumbbell Deadlift', sets:'4×12', muscles:['Hamstring','Kalça','Alt sırt'], core:false,
-      how:'Dumbbellar önde. Dizler hafif bükülü. Kalçayı geriye gönder, öne eğil. Dumbbellar bacak boyunca kayar. Sırt düz — ASLA kamburlaşma. Kalçayı sıkarak dik dur.',
-      yt:'dumbbell deadlift form beginner' },
-    { id:'plank', name:'Plank (3 varyasyon)', sets:'3×45sn', muscles:['Core','Omuz','Sırt'], core:true,
-      how:'1) Standart plank — dirsek planck. 2) Side plank (her taraf). 3) Plank shoulder tap. Her sette farklı varyasyon yap.',
-      yt:'plank variations core workout' },
-  ],
-  6: [ // Cumartesi - Shoulders & Arms
-    { id:'arnoldp', name:'Arnold Press', sets:'4×12', muscles:['Tüm omuz'], core:false,
-      how:'Dumbbellları çene önünde tut, avuç içleri sana baksın. Kaldırırken döndür, tepe noktada avuçlar öne baksın. İnerken geri döndür.',
-      yt:'arnold press form dumbbell' },
-    { id:'upr', name:'Upright Row (Kablo)', sets:'3×15', muscles:['Üst trapez','Ön omuz'], core:false,
-      how:'Kabloyu dar tutuşla çen altına kadar çek. Dirsekler dışa ve yukarıya gitsin. Boyun ağrısı yaparsa bırak.',
-      yt:'upright row cable form' },
-    { id:'hamcurl2', name:'Hammer Curl', sets:'3×15', muscles:['Biceps brachii','Brachialis'], core:false,
-      how:'Avuç içi içe dönük (nötr tutuş). Dirsek sabit. Kaldır, tepe noktada sık, yavaşça in.',
-      yt:'hammer curl form tutorial' },
-    { id:'skulls', name:'Skull Crusher (EZ Bar / Dumbbell)', sets:'3×12', muscles:['Triceps'], core:false,
-      how:'Bankta yat. Barı alnına doğru indir — ama almına değil. Dirsekler sabit yukarıda. Güçlüce it.',
-      yt:'skull crusher ez bar form' },
-    { id:'latshrug', name:'Lateral Raise Drop Set', sets:'3×(15+15)', muscles:['Orta omuz'], core:false,
-      how:'15 tekrar normal ağırlıkla, hemen sonra yarı ağırlığa geç 15 daha. Durdurma. Bu omuz bombalama yöntemi.',
-      yt:'lateral raise drop set technique' },
-    { id:'russiantwist', name:'Russian Twist (Ağırlıklı)', sets:'4×20', muscles:['Oblique','Core'], core:true,
-      how:'Dizler bükülü, sırt hafif arkada. Ağırlık (dumbbell/plaka) iki elde. Sağa-sola dön. Her temas 1 tekrar. Yavaş ve kontrollü.',
-      yt:'russian twist weighted proper form' },
-  ],
-};
-
-const COOLDOWNS = {
-  1: { name: 'Kalça & Bacak Soğuma', yt: 'hip glute quad stretch cooldown', desc: 'Butterfly stretch, pigeon pose, quad stretch' },
-  2: { name: 'Göğüs & Omuz Soğuma', yt: 'chest shoulder tricep stretch cooldown', desc: 'Göğüs açma, omuz çapraz germe, tricep stretch' },
-  3: { name: 'Hamstring & Kalça Soğuma', yt: 'hamstring hip flexor cooldown stretch', desc: 'Hamstring esnetme, hip flexor, IT band' },
-  4: { name: 'Sırt & Biceps Soğuma', yt: 'back bicep lat stretch cooldown', desc: 'Lat stretch, child pose, bicep wall stretch' },
-  5: { name: 'Glute & Core Soğuma', yt: 'glute core hip stretch cooldown yoga', desc: 'Pigeon pose, supine twist, dead bug stretch' },
-  6: { name: 'Omuz & Kol Soğuma', yt: 'shoulder arm tricep stretch routine cooldown', desc: 'Overhead tricep, cross-body omuz, wrist stretch' },
-};
-
-// ══════════════════════════════════════════════
-// VERİ — CİLT BAKIMI
-// ══════════════════════════════════════════════
-const SKIN_ROUTINE = {
-  morning: [
-    'Tea Tree Foaming Face Wash',
-    'COSRX 6 Peptide Skin Booster (nemli cilde)',
-    'Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)',
-    'Florence Bio C Vitamini Serumu',
-    'Medicube Collagen Jelly Cream',
-    'COSRX SPF50 PA++++ (son adım — evde bile!)',
-  ],
-  eveningBase: [
-    'Garnier BHA Purifying Cleanser',
-    'COSRX 6 Peptide Skin Booster',
-  ],
-  eveningActives: {
-    1: { label: '🔴 Retinol Gecesi', product: 'The Ordinary Retinol %0.2 in Squalane', note: 'Üstüne Bioderma Atoderm Crème Ultra (tampon)' },
-    2: { label: '💤 Dinlenme', product: 'Medicube Collagen Jelly Cream', note: 'Sadece nemlendirici' },
-    3: { label: '🔴 Retinol Gecesi', product: 'The Ordinary Retinol %0.2 in Squalane', note: 'Üstüne Bioderma Atoderm Crème Ultra (tampon)' },
-    4: { label: '🟣 AHA/BHA Toner', product: 'COSRX AHA/BHA Clarifying Toner', note: '10 dakika beklet, sonra Medicube' },
-    5: { label: '🔴 Retinol Gecesi', product: 'The Ordinary Retinol %0.2 in Squalane', note: 'Üstüne Bioderma Atoderm Crème Ultra (tampon)' },
-    6: { label: '💤 Dinlenme', product: 'Medicube Collagen Jelly Cream', note: 'Sadece nemlendirici' },
-    7: { label: '🎭 Sheet Mask', product: 'Sheet Mask (seçimin)', note: 'Maske + Medicube ile bitir' },
-  },
-  periodOverride: 'Regl öncesi/süresince: Retinol haftada 1\'e indir, AHA/BHA toner atla. Boş akşamlar: Peptide Booster + Medicube yeterli.',
-};
-
-// ══════════════════════════════════════════════
-// VERİ — DİYET
-// ══════════════════════════════════════════════
-const MEAL_PLANS = {
-  // Günlük dönen plan (7 farklı gün)
-  meal1: [
-    { name: '200g Dana Kıyma Köfte', protein: 40, fat: 28, kcal: 420 },
-    { name: '250g Izgara Kuzu Pirzola', protein: 45, fat: 30, kcal: 460 },
-    { name: '200g Somon Fileto', protein: 40, fat: 26, kcal: 390 },
-    { name: '3 Yumurta + 150g Dana Antrikot', protein: 42, fat: 30, kcal: 440 },
-    { name: '200g Tavuk But (derisiz)', protein: 44, fat: 18, kcal: 360 },
-    { name: '200g Dana Kaburga', protein: 36, fat: 34, kcal: 460 },
-    { name: '250g Levrek/Çipura', protein: 42, fat: 14, kcal: 300 },
-  ],
-  meal1_side: [
-    { name: '3 Yumurta (haşlama)', protein: 18, fat: 15, kcal: 210 },
-    { name: '2 Yumurta (sahanda, tereyağı)', protein: 12, fat: 18, kcal: 210 },
-    { name: '100g Hellim (ızgara)', protein: 16, fat: 20, kcal: 240 },
-    { name: '150g Beyaz Peynir', protein: 18, fat: 22, kcal: 280 },
-    { name: '100g Pastırma', protein: 20, fat: 12, kcal: 190 },
-    { name: '100g Sucuk', protein: 14, fat: 26, kcal: 290 },
-    { name: '2 Yumurta + 50g Pastırma', protein: 22, fat: 18, kcal: 255 },
-  ],
-  meal2: [
-    { name: '250g Dana Antrikot', protein: 48, fat: 32, kcal: 490 },
-    { name: '300g Izgara Dana Bonfile', protein: 58, fat: 22, kcal: 440 },
-    { name: '200g Kuzu Tandır', protein: 42, fat: 28, kcal: 420 },
-    { name: '250g Dana Karaciğer (soğanlı)', protein: 46, fat: 18, kcal: 380 },
-    { name: '300g Rib Eye Steak', protein: 54, fat: 36, kcal: 560 },
-    { name: '250g T-Bone Steak', protein: 52, fat: 30, kcal: 490 },
-    { name: '200g Dana Dil', protein: 38, fat: 32, kcal: 440 },
-  ],
-};
-
-const FOOD_SWAPS = {
-  'Dana': ['Kuzu', 'Hindi', 'Tavuk But', 'Bıldırcın'],
-  'Kıyma': ['Kuzu kıyma', 'Hindi kıyma', 'Dana antrikot'],
-  'Somon': ['Levrek', 'Çipura', 'Uskumru', 'Hamsi (taze)'],
-  'Tavuk': ['Hindi', 'Bıldırcın', 'Dana But'],
-  'Yumurta': ['Hellim', 'Beyaz peynir', 'Pastırma'],
-};
-
-// ══════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════
-let state = {
-  currentPage: 'takvim',
-  calYear: new Date().getFullYear(),
-  calMonth: new Date().getMonth(),
-  selectedDate: new Date(),
-  selectedWeekDay: new Date().getDay(),
-  dietDay: new Date(),
-  exDay: new Date(),
-  ciltDay: new Date(),
-  workoutsDone: JSON.parse(localStorage.getItem('workoutsDone') || '{}'),
-  exerciseSwaps: JSON.parse(localStorage.getItem('exerciseSwaps') || '{}'),
-  measurements: JSON.parse(localStorage.getItem('measurements') || '[]'),
-  swapTarget: null,
-  renphoImages: [],
-};
-
-// ══════════════════════════════════════════════
-// NAVİGASYON
-// ══════════════════════════════════════════════
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes(name)) n.classList.add('active');
-  });
-  state.currentPage = name;
-  if (name === 'diyet') renderDietPage();
-  if (name === 'egzersiz') renderExercisePage();
-  if (name === 'cilt') renderSkinPage();
-  if (name === 'olcum') renderMeasurementPage();
-}
-
-// ══════════════════════════════════════════════
-// TAKVİM
-// ══════════════════════════════════════════════
-const TR_MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-const TR_DAYS = ['Pt','Sa','Ça','Pe','Cu','Ct','Pz'];
-
-function renderCalendar() {
-  const year = state.calYear, month = state.calMonth;
-  document.getElementById('cal-month-title').textContent = `${TR_MONTHS[month]} ${year}`;
-  const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
-  TR_DAYS.forEach(d => {
-    const h = document.createElement('div');
-    h.className = 'cal-header-cell'; h.textContent = d;
-    grid.appendChild(h);
-  });
-  const firstDay = new Date(year, month, 1).getDay();
-  const offset = firstDay === 0 ? 6 : firstDay - 1;
-  for (let i = 0; i < offset; i++) {
-    const e = document.createElement('div'); e.className = 'cal-cell empty';
-    grid.appendChild(e);
-  }
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-  const today = new Date();
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(year, month, d);
-    const cell = document.createElement('div');
-    cell.className = 'cal-cell';
-    cell.textContent = d;
-    if (date.toDateString() === today.toDateString()) cell.classList.add('today');
-    if (date.toDateString() === state.selectedDate.toDateString()) cell.classList.add('selected');
-    if (isInPeriod(date)) cell.classList.add('has-period');
-    if (date.getDay() !== 0) cell.classList.add('gym-day');
-    cell.onclick = () => selectDay(date);
-    grid.appendChild(cell);
-  }
-}
-
-function selectDay(date) {
-  state.selectedDate = date;
-  renderCalendar();
-  renderSelectedDay();
-}
-
-function calPrev() { state.calMonth--; if (state.calMonth < 0) { state.calMonth=11; state.calYear--; } renderCalendar(); }
-function calNext() { state.calMonth++; if (state.calMonth > 11) { state.calMonth=0; state.calYear++; } renderCalendar(); }
-
-function renderSelectedDay() {
-  const date = state.selectedDate;
-  const dayOfWeek = date.getDay();
-  const split = SPLITS[dayOfWeek];
-  const cycleInfo = getCycleInfo(date);
-  const dayNum = date.getDate();
-  const monthName = TR_MONTHS[date.getMonth()];
-  const skinDayNum = (getSkinDayNum(date));
-
-  const panel = document.getElementById('selected-day-content');
-
-  // Supplement timeline for this day
-  const suppItems = buildSupplementTimeline();
-  // Skin
-  const skinActive = SKIN_ROUTINE.eveningActives[skinDayNum];
-  const isPeriod = isInPeriod(date) || isPremenstrual(date);
-
-  panel.innerHTML = `
-    <div style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-      <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--charcoal);">${dayNum} ${monthName}</h3>
-      <span class="phase-pill ${cycleInfo.phaseClass}">${cycleInfo.emoji} ${cycleInfo.phase} · Gün ${cycleInfo.cycleDay}</span>
-    </div>
-
-    ${isPeriod ? `<div class="notice notice-rose"><div class="notice-icon">🔴</div><div><strong>Regl dönemi / öncesi:</strong> Cilt bakımında retinol ve AHA/BHA'yı azalt. Egzersizde ağırlıkları biraz düşürebilirsin.</div></div>` : ''}
-
-    <!-- Gün Özeti -->
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-header"><h3>📋 Günün Özeti</h3></div>
-      <div class="card-body">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="padding:12px;background:var(--cream);border-radius:10px;border:1px solid var(--border);">
-            <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">💪 Egzersiz</div>
-            <div style="font-size:14px;font-weight:600;color:var(--charcoal);">${split ? split.emoji + ' ' + split.name : '🛌 Dinlenme'}</div>
-            ${split ? `<div style="font-size:12px;color:var(--text-light);margin-top:3px;">${split.focus}</div>` : ''}
-          </div>
-          <div style="padding:12px;background:var(--cream);border-radius:10px;border:1px solid var(--border);">
-            <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">✨ Cilt Bakımı</div>
-            <div style="font-size:14px;font-weight:600;color:var(--charcoal);">${skinActive.label}</div>
-            <div style="font-size:12px;color:var(--text-light);margin-top:3px;">${skinActive.product.split('(')[0].trim()}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Günlük Zaman Çizelgesi -->
-    <div class="card">
-      <div class="card-header"><h3>⏰ Günlük Program</h3></div>
-      <div class="card-body">
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-time">06:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">Levotiron (aç karnına)</div>
-              <div class="timeline-desc">Su ile al, 1 saat yemek yeme</div>
-              <span class="timeline-tag tag-meds">İlaç</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">07:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">Kalk & Sabah Rutini</div>
-              <div class="timeline-desc">Sabah cilt bakımı (temizlik → SPF)</div>
-              <span class="timeline-tag tag-skin">Cilt Bakımı</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">07:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">Qalyviz (1. doz)</div>
-              <div class="timeline-desc">Levotiron'dan 1 saat sonra</div>
-              <span class="timeline-tag tag-meds">İlaç</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">11:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">${split ? '💪 Antrenman — ' + split.name : '🧘 Aktif Dinlenme / Yürüyüş'}</div>
-              <div class="timeline-desc">${split ? split.focus + ' · 6-7 hareket' : 'Hafif hareket, esneme önerilir'}</div>
-              <span class="timeline-tag tag-exercise">Egzersiz</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">13:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">1. Öğün (IF penceresi açılıyor)</div>
-              <div class="timeline-desc">Calciday + Omega-3 + Kolajen yemekle</div>
-              <span class="timeline-tag tag-diet">Beslenme</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">17:30</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">2. Öğün (IF penceresi kapanıyor)</div>
-              <div class="timeline-desc">Calciday (2.) + Kreatin yemekle; Qalyviz yemekten sonra</div>
-              <span class="timeline-tag tag-diet">Beslenme</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">22:30</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">Akşam Cilt Bakımı</div>
-              <div class="timeline-desc">${skinActive.label} · ${skinActive.product.split('(')[0].trim()}</div>
-              <span class="timeline-tag tag-skin">Cilt Bakımı</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-time">23:00</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">Yatmadan Önce</div>
-              <div class="timeline-desc">Kolajen + Magnezyum</div>
-              <span class="timeline-tag tag-meds">Supplement</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function buildSupplementTimeline() {
-  return [
-    { time: '06:00', name: 'Levotiron', note: 'Aç karnına' },
-    { time: '07:00', name: 'Qalyviz (1. doz)', note: '1 saat sonra' },
-    { time: '13:00', name: 'Calciday + Omega-3 + Kolajen', note: '1. öğünle' },
-    { time: '17:30', name: 'Calciday (2.) + Kreatin + Qalyviz', note: '2. öğünle/sonra' },
-    { time: '23:00', name: 'Kolajen + Magnezyum', note: 'Yatmadan önce' },
-  ];
-}
-
-// ══════════════════════════════════════════════
 // DİYET
-// ══════════════════════════════════════════════
-function renderDietPage() {
-  renderWeekStrip('diet-week-strip', state.dietDay, (d) => { state.dietDay = d; renderDietDay(); });
-  renderDietDay();
+const M1=[{n:'200g Dana Kıyma Köfte',i:'🥩',p:40,f:28,k:420},{n:'250g Izgara Kuzu Pirzola',i:'🍖',p:45,f:30,k:460},{n:'200g Somon Fileto',i:'🐟',p:40,f:26,k:390},{n:'3 Yumurta + 150g Dana Antrikot',i:'🥚',p:42,f:30,k:440},{n:'200g Tavuk But',i:'🍗',p:44,f:18,k:360},{n:'200g Dana Kaburga',i:'🥩',p:36,f:34,k:460},{n:'250g Levrek/Çipura',i:'🐟',p:42,f:14,k:300}];
+const M1S=[{n:'3 Yumurta (haşlama)',i:'🥚',p:18,f:15,k:210},{n:'2 Yumurta (sahanda)',i:'🍳',p:12,f:18,k:210},{n:'100g Hellim (ızgara)',i:'🧀',p:16,f:20,k:240},{n:'150g Beyaz Peynir',i:'🧀',p:18,f:22,k:280},{n:'100g Pastırma',i:'🥩',p:20,f:12,k:190},{n:'100g Sucuk',i:'🌭',p:14,f:26,k:290},{n:'2 Yumurta + 50g Pastırma',i:'🍳',p:22,f:18,k:255}];
+const M2=[{n:'250g Dana Antrikot',i:'🥩',p:48,f:32,k:490},{n:'300g Izgara Bonfile',i:'🥩',p:58,f:22,k:440},{n:'200g Kuzu Tandır',i:'🍖',p:42,f:28,k:420},{n:'250g Dana Karaciğer',i:'🫀',p:46,f:18,k:380},{n:'300g Rib Eye Steak',i:'🥩',p:54,f:36,k:560},{n:'250g T-Bone Steak',i:'🥩',p:52,f:30,k:490},{n:'200g Dana Dil',i:'🥩',p:38,f:32,k:440}];
+
+// CİLT
+const SM=['Tea Tree Foaming Face Wash','COSRX 6 Peptide Skin Booster (nemli cilde)','Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)','Florence Bio C Vitamini Serumu','Medicube Collagen Jelly Cream','COSRX SPF50 PA++++ (evde bile!)'];
+const SEB=['Garnier BHA Purifying Cleanser','COSRX 6 Peptide Skin Booster'];
+const SA={1:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},2:{l:'Dinlenme',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},3:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},4:{l:'AHA/BHA Toner',b:'baha',e:'🟣',p:'COSRX AHA/BHA Clarifying Toner',no:'10 dakika beklet, sonra Medicube'},5:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},6:{l:'Dinlenme',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},7:{l:'Sheet Mask',b:'bmask',e:'🎭',p:'Sheet Mask (seçimin)',no:'Maske + Medicube ile bitir'}};
+
+// STATE
+const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[]};
+const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+
+// NAV
+function showP(n,b){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  if(b)b.classList.add('active');
+  window.scrollTo(0,0);
+  if(n==='diyet')renderDiet();
+  if(n==='egzersiz')renderEx();
+  if(n==='cilt')renderSkin();
+  if(n==='olcum')renderMeas();
 }
 
-function renderDietDay() {
-  const d = state.dietDay;
-  const dayIdx = d.getDay();
-  const mealIdx = (dayIdx) % 7;
-  const cycleInfo = getCycleInfo(d);
-  const isPeriod = isInPeriod(d) || isPremenstrual(d);
-
-  document.getElementById('diet-selected-date').textContent = d.getDate() + ' ' + TR_MONTHS[d.getMonth()];
-
-  // Phase notice
-  const noticeEl = document.getElementById('diet-phase-notice');
-  if (isPeriod) {
-    noticeEl.innerHTML = `<div class="notice notice-rose"><div class="notice-icon">🔴</div><div><strong>${cycleInfo.phase}:</strong> Bugün hafif şişkinlik ve istek artışı normal. Kalori hedefini 100-150 kcal artırabilirsin. Ekstra protein öncelikli.</div></div>`;
-  } else {
-    noticeEl.innerHTML = '';
-  }
-
-  const m1 = MEAL_PLANS.meal1[mealIdx];
-  const m1s = MEAL_PLANS.meal1_side[mealIdx];
-  const m2 = MEAL_PLANS.meal2[mealIdx];
-
-  // Food swap select güncelle
-  const sel = document.getElementById('food-swap-select');
-  sel.innerHTML = '<option value="">Besin seç...</option>';
-  [m1, m1s, m2].forEach(item => {
-    const opt = document.createElement('option');
-    opt.value = item.name; opt.textContent = item.name;
-    sel.appendChild(opt);
-  });
-
-  document.getElementById('meal1-content').innerHTML = renderFoodItem(m1, true) + renderFoodItem(m1s, true) +
-    `<div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
-      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--charcoal);">
-        <span>Toplam</span>
-        <span style="color:var(--caramel);">${m1.kcal + m1s.kcal} kcal</span>
-      </div>
-    </div>`;
-
-  document.getElementById('meal2-content').innerHTML = renderFoodItem(m2, true) +
-    `<div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
-      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--charcoal);">
-        <span>Toplam</span>
-        <span style="color:var(--caramel);">${m2.kcal} kcal</span>
-      </div>
-      <div style="font-size:12px;color:var(--text-light);margin-top:8px;">💊 Calciday (2.) + Kreatin yemekle · Qalyviz yemekten sonra</div>
-    </div>`;
-}
-
-function renderFoodItem(item, showSwap) {
-  return `
-    <div class="food-item">
-      <div class="food-info">
-        <div class="food-name">${item.name}</div>
-        <div class="food-macros">P: ${item.protein}g · Y: ${item.fat}g</div>
-      </div>
-      <div class="food-kcal">${item.kcal} kcal</div>
-    </div>`;
-}
-
-async function swapFood() {
-  const sel = document.getElementById('food-swap-select');
-  const food = sel.value;
-  if (!food) return;
-
-  const resultEl = document.getElementById('food-swap-result');
-  resultEl.innerHTML = `<div class="ai-response"><span class="loading-spinner"></span> Alternatifler hazırlanıyor...</div>`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: `Sen bir carnivore diyet uzmanısın. Bengisu'nun diyetinde "${food}" var. Ona eşdeğer makroya sahip (protein/yağ/kalori benzer) 3 carnivore alternatif öner. Kısa ve net listele. Format: "1. [Miktar] [Besin] — P:[g]g Y:[g]g [kcal]kcal — Not: [kısa not]". Sadece et, balık, yumurta, peynir gibi carnivore uyumlu besinler. Türkçe cevap ver.`
-        }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'Alternatif bulunamadı.';
-    resultEl.innerHTML = `<div class="ai-response">🥩 <strong>"${food}"</strong> için alternatifler:<br><br>${text.replace(/\n/g, '<br>')}</div>`;
-  } catch (e) {
-    resultEl.innerHTML = `<div class="ai-response">❌ Bağlantı hatası. Tekrar dene.</div>`;
+// CALENDAR
+function renderCal(){
+  const y=S.calY,m=S.calM;
+  document.getElementById('cal-title').textContent=MN[m]+' '+y;
+  const g=document.getElementById('cal-grid');g.innerHTML='';
+  DN.forEach(d=>{const h=document.createElement('div');h.className='chdr';h.textContent=d;g.appendChild(h);});
+  const first=new Date(y,m,1).getDay(),off=first===0?6:first-1;
+  for(let i=0;i<off;i++){const e=document.createElement('div');e.className='cc';g.appendChild(e);}
+  const days=new Date(y,m+1,0).getDate(),today=new Date();
+  for(let d=1;d<=days;d++){
+    const date=new Date(y,m,d),cell=document.createElement('div');
+    cell.className='cc';cell.textContent=d;
+    if(date.toDateString()===today.toDateString())cell.classList.add('today');
+    if(date.toDateString()===S.selD.toDateString())cell.classList.add('sel');
+    if(inP(date))cell.classList.add('hper');
+    if(date.getDay()!==0)cell.classList.add('gym');
+    cell.onclick=()=>{S.selD=date;renderCal();renderSelDay();};
+    g.appendChild(cell);
   }
 }
+function cPrev(){S.calM--;if(S.calM<0){S.calM=11;S.calY--;}renderCal();}
+function cNext(){S.calM++;if(S.calM>11){S.calM=0;S.calY++;}renderCal();}
 
-// ══════════════════════════════════════════════
+function renderSelDay(){
+  const d=S.selD,dow=d.getDay(),c=ci(d),sp=SP[dow],sd=getSkinD(d),sa=SA[sd];
+  const per=inP(d)||preP(d);
+  const ds=d.getDate()+' '+MN[d.getMonth()];
+  document.getElementById('sel-day').innerHTML=`
+    <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Gün ${c.day}</span>
+    </div>
+    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl dönemi/öncesi:</strong> Cilt bakımında retinol ve AHA/BHA'yı azalt. Egzersiz ağırlıklarını hafifçe düşürebilirsin.</div></div></div>`:''}
+    <div class="card">
+      <div class="ch"><h3>Günün Özeti</h3></div>
+      <div class="cb">
+        <div class="dsumm">
+          <div class="drow"><div class="dicon">💪</div><div class="dc"><div class="dlbl">Egzersiz</div><div class="dval">${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</div>${sp?`<div class="dsub">${sp.f}</div>`:''}</div></div>
+          <div class="drow"><div class="dicon">🥩</div><div class="dc"><div class="dlbl">Diyet</div><div class="dval">IF 13:00–18:00 · ~1.400 kcal</div></div></div>
+          <div class="drow"><div class="dicon">✨</div><div class="dc"><div class="dlbl">Cilt Bakımı</div><div class="dval">${sa.e} ${sa.l}</div><div class="dsub">${sa.p.split('(')[0].trim()}</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slbl">⏰ Günlük Program</div>
+    <div class="card"><div class="cb"><div class="tl">
+      ${tli('06:00','Levotiron','Aç karnına · Su ile al · 1 saat yemek yeme','tm')}
+      ${tli('07:00','Qalyviz (1. doz)','Levotiron\'dan 1 saat sonra','tm')}
+      ${tli('07:00','Sabah Cilt Bakımı','Temizlik → SPF son adım','ts')}
+      ${tli('11:00',sp?'💪 '+sp.n:'🧘 Aktif Dinlenme',sp?sp.f:'Hafif yürüyüş veya esneme','te')}
+      ${tli('13:00','1. Öğün','Calciday + Omega-3 + Kolajen yemekle','td')}
+      ${tli('17:30','2. Öğün','Calciday (2.) + Kreatin yemekle · Qalyviz sonra','td')}
+      ${tli('22:30','Akşam Cilt Bakımı',sa.e+' '+sa.l+' · '+sa.p.split('(')[0].trim(),'ts')}
+      ${tli('23:00','Kolajen + Magnezyum','Yatmadan önce','tm')}
+    </div></div></div>`;
+}
+
+function tli(t,ti,d,tag){return`<div class="tli"><div class="tlt">${t}</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">${ti}</div><div class="tlde">${d}</div><span class="tltag ${tag}">${tag.replace('t','')}</span></div></div>`;}
+
+// DİYET
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();}
+function renderDietDay(){
+  const d=S.dD,idx=d.getDay()%7,c=ci(d),per=inP(d)||preP(d);
+  document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
+  document.getElementById('d-notice').innerHTML=per?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Kalori hedefini 100-150 kcal artırabilirsin. Ekstra protein öncelikli.</div></div>`:'';
+  const m1=M1[idx],ms=M1S[idx],m2=M2[idx];
+  const sel=document.getElementById('fsel');sel.innerHTML='<option value="">Besin seç...</option>';
+  [m1,ms,m2].forEach(i=>{const o=document.createElement('option');o.value=i.n;o.textContent=i.n;sel.appendChild(o);});
+  document.getElementById('m1b').innerHTML=fItem(m1)+fItem(ms)+`<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:600;">Toplam</span><span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k} kcal</span></div><div style="font-size:11px;color:var(--text-mid);margin-top:8px;">💊 Calciday + Omega-3 + Kolajen yemekle</div>`;
+  document.getElementById('m2b').innerHTML=fItem(m2)+`<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:600;">Toplam</span><span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span></div><div style="font-size:11px;color:var(--text-mid);margin-top:8px;">💊 Calciday (2.) + Kreatin yemekle · Qalyviz yemekten sonra</div>`;
+  document.getElementById('supp-tl').innerHTML=[{t:'06:00',n:'Levotiron',d:'Aç karnına'},{t:'07:00',n:'Qalyviz (1. doz)',d:'1 saat sonra'},{t:'13:00',n:'Calciday + Omega-3 + Kolajen',d:'1. öğünle'},{t:'17:30',n:'Calciday (2.) + Kreatin + Qalyviz',d:'2. öğünle / sonra'},{t:'23:00',n:'Kolajen + Magnezyum',d:'Yatmadan önce'}].map(s=>`<div class="tli"><div class="tlt">${s.t}</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">${s.n}</div><div class="tlde">${s.d}</div></div></div>`).join('');
+}
+function fItem(f){return`<div class="fi"><div class="ficon">${f.i}</div><div class="fin"><div class="fname">${f.n}</div><div class="fmac">P: ${f.p}g · Y: ${f.f}g</div></div><div class="fkcal">${f.k}</div></div>`;}
+async function swapFood(){
+  const food=document.getElementById('fsel').value;if(!food)return;
+  const res=document.getElementById('fswap-res');
+  res.innerHTML=`<div class="aibox"><span class="spin"></span> Alternatifler hazırlanıyor...</div>`;
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:`Carnivore diyet uzmanısın. "${food}" için eşdeğer makroya sahip 3 carnivore alternatif öner. Format: "1. [Miktar] [Besin] — P:[g]g Y:[g]g [kcal]kcal". Türkçe, kısa.`}]})});
+  const data=await r.json();res.innerHTML=`<div class="aibox">🥩 <strong>${food}</strong> yerine:<br><br>${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
+  catch(e){res.innerHTML=`<div class="aibox">❌ Bağlantı hatası.</div>`;}
+}
+
 // EGZERSİZ
-// ══════════════════════════════════════════════
-function renderExercisePage() {
-  renderWeekStrip('ex-week-strip', state.exDay, (d) => { state.exDay = d; renderExerciseDay(); });
-  renderExerciseDay();
-  renderWeeklySummary();
-}
-
-function renderExerciseDay() {
-  const d = state.exDay;
-  const dow = d.getDay();
-  const split = SPLITS[dow];
-  const exercises = EXERCISES[dow];
-  const dateKey = d.toDateString();
-
-  document.getElementById('ex-day-title').textContent = split ? split.emoji + ' ' + split.name : '🛌 Dinlenme Günü';
-  document.getElementById('ex-day-focus').textContent = split ? split.focus : 'Aktif dinlenme · Hafif yürüyüş önerilir';
-
-  const restMsg = document.getElementById('rest-day-msg');
-  const exList = document.getElementById('exercise-list');
-  const cooldown = document.getElementById('cooldown-section');
-
-  if (!split || !exercises) {
-    restMsg.style.display = 'block';
-    exList.innerHTML = '';
-    cooldown.innerHTML = '';
-    return;
-  }
-  restMsg.style.display = 'none';
-
-  const currentExercises = state.exerciseSwaps[dateKey] ?
-    exercises.map((ex, i) => state.exerciseSwaps[dateKey][i] || ex) : exercises;
-
-  exList.innerHTML = '';
-  currentExercises.forEach((ex, idx) => {
-    const doneKey = `${dateKey}_${idx}`;
-    const isDone = state.workoutsDone[doneKey];
-    const div = document.createElement('div');
-    div.className = 'exercise-item';
-    div.innerHTML = `
-      <div class="exercise-header" onclick="toggleExercise(this)">
-        <div class="exercise-check ${isDone ? 'done' : ''}" onclick="toggleDone(event,'${doneKey}',this)"></div>
-        <div style="flex:1;">
-          <div class="exercise-name" style="${isDone ? 'text-decoration:line-through;color:var(--text-light)' : ''}">${ex.core ? '🎯 ' : ''}${ex.name}</div>
-          <div class="exercise-sets">${ex.sets}</div>
-        </div>
-        <div style="font-size:12px;color:var(--text-light);">▼</div>
-      </div>
-      <div class="exercise-body">
-        <div class="muscle-tags">
-          ${ex.muscles.map(m => `<span class="muscle-tag">${m}</span>`).join('')}
-          ${ex.core ? '<span class="muscle-tag" style="background:rgba(217,123,108,0.1);border-color:rgba(217,123,108,0.3);color:var(--rose);">Core</span>' : ''}
-        </div>
-        <div class="exercise-how"><ol>${ex.how.split('. ').filter(s=>s.length>10).map(s=>`<li>${s}.</li>`).join('')}</ol></div>
-        <div class="exercise-actions">
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.yt)}" target="_blank" class="btn btn-secondary btn-sm">▶ YouTube'da İzle</a>
-          <button class="btn btn-ghost btn-sm" onclick="openSwapModal(${idx}, '${dow}', '${dateKey}')">🔄 Değiştir</button>
-        </div>
-      </div>
-    `;
-    exList.appendChild(div);
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();}
+function renderExDay(){
+  const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
+  document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</em>`;
+  document.getElementById('ex-sub').textContent=sp?sp.f:'Aktif dinlenme · Hafif yürüyüş önerilir';
+  document.getElementById('e-rest').style.display=sp?'none':'block';
+  const list=document.getElementById('e-list');list.innerHTML='';
+  if(!sp||!exs){document.getElementById('e-cool').innerHTML='';return;}
+  const curEx=exs.map((ex,i)=>(S.swaps[dk]&&S.swaps[dk][i])||ex);
+  curEx.forEach((ex,i)=>{
+    const dk2=dk+'_'+i,done=S.done[dk2];
+    const div=document.createElement('div');div.className='exi';
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow"><ol>${ex.h.split('. ').filter(s=>s.length>8).map(s=>`<li>${s}.</li>`).join('')}</ol></div><div class="exacts"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.y)}" target="_blank" class="btn bsoft bsm">▶ Video</a><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div></div>`;
+    list.appendChild(div);
   });
+  const cd=CD[dow];
+  document.getElementById('e-cool').innerHTML=cd?`<div class="slbl">🧘 Soğuma — ${cd.n}</div><div class="card"><div class="cb"><div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">${cd.d}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.y)}" target="_blank" class="btn bsage bsm">▶ Soğuma Videosu</a></div></div>`:'';
+}
+function toggleEx(h){h.nextElementSibling.classList.toggle('open');}
+function toggleDone(e,k,el){e.stopPropagation();S.done[k]=!S.done[k];localStorage.setItem('done',JSON.stringify(S.done));renderExDay();renderWeekSum();}
+function openSwap(idx,dow,dk){
+  S.sTarget={idx,dow,dk};const ex=EX[dow][idx];
+  document.getElementById('swap-sub').textContent=`"${ex.n}" yerine aynı kas grubunu çalıştıran hareket:`;
+  const alts=getAlts(ex);S.sAlts=alts;S.sIdx=null;
+  document.getElementById('swap-alts').innerHTML=alts.map((a,i)=>`<div class="alt" onclick="selAlt(this,${i})"><div class="aname">${a.n} <span style="font-size:11px;color:var(--text-light);">${a.s}</span></div><div class="adesc">${a.m.join(' · ')}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(a.y)}" target="_blank" onclick="event.stopPropagation()" class="ayt">▶ Örnek video</a></div>`).join('');
+  document.getElementById('swap-modal').classList.add('open');
+}
+function getAlts(ex){const all=Object.values(EX).flat(),seen=new Set();return all.filter(e=>e.id!==ex.id&&e.m.some(m=>ex.m.includes(m))&&!seen.has(e.id)&&seen.add(e.id)).slice(0,5);}
+function selAlt(el,i){document.querySelectorAll('.alt').forEach(a=>a.classList.remove('sel'));el.classList.add('sel');S.sIdx=i;}
+function confirmSwap(){if(S.sIdx===null)return;const{idx,dk}=S.sTarget;if(!S.swaps[dk])S.swaps[dk]={};S.swaps[dk][idx]=S.sAlts[S.sIdx];localStorage.setItem('swaps',JSON.stringify(S.swaps));closeM('swap-modal');renderExDay();}
+function renderWeekSum(){
+  const el=document.getElementById('e-week');if(!el)return;
+  const today=new Date(),mon=new Date(today);mon.setDate(today.getDate()-today.getDay()+1);
+  el.innerHTML=`<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;">${DN.map((dn,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);const sp=SP[d.getDay()],dk=d.toDateString(),exs=EX[d.getDay()]||[],done=exs.filter((_,j)=>S.done[dk+'_'+j]).length,isT=d.toDateString()===today.toDateString();return`<div onclick="S.eD=new Date('${dk}');renderStrip('e-strip',S.eD,dd=>{S.eD=dd;renderExDay();});renderExDay();" style="flex-shrink:0;width:52px;padding:10px 6px;border-radius:14px;background:${isT?'var(--text)':'var(--surface)'};border:1px solid ${isT?'var(--text)':'var(--border)'};text-align:center;cursor:pointer;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:${isT?'rgba(255,255,255,0.6)':'var(--text-light)'};">${dn}</div><div style="font-size:18px;margin:3px 0;">${sp?sp.e:'🛌'}</div><div style="font-size:11px;color:${isT?'rgba(255,255,255,0.7)':'var(--text-light)'};">${sp?done+'/'+exs.length:'-'}</div></div>`;}).join('')}</div>`;
+}
 
-  // Soğuma
-  const cd = COOLDOWNS[dow];
-  if (cd) {
-    cooldown.innerHTML = `
-      <div class="card">
-        <div class="card-header">
-          <h3>🧘 Soğuma & Esneme — ${cd.name}</h3>
-        </div>
-        <div class="card-body">
-          <p style="font-size:13px;color:var(--text-light);margin-bottom:12px;">${cd.desc}</p>
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.yt)}" target="_blank" class="btn btn-sage btn-sm">▶ Soğuma Videosu</a>
-        </div>
-      </div>
-    `;
+// CİLT
+function getSkinD(d){const ref=new Date('2026-03-25');return((Math.floor((d-ref)/86400000)%7)+7)%7+1;}
+function renderSkin(){renderStrip('c-strip',S.cD,d=>{S.cD=d;renderSkinDay();});renderSkinDay();renderProds();}
+function renderSkinDay(){
+  const d=S.cD,sd=getSkinD(d),c=ci(d),per=inP(d),pre=preP(d);
+  const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Regl Dönemine Özel',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Bu hafta retinol atla'}:sa;
+  document.getElementById('c-notice').innerHTML=(per||pre)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Retinol haftada 1'e indir, AHA/BHA toner atla.</div></div>`:`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.phase} · Gün ${c.day}:</strong> Normal döngü rutinine devam. Döngü günü ${sd}.</div></div>`;
+  document.getElementById('c-active-badge').innerHTML=`<span class="sabadge ${ea.b}">${ea.e} ${ea.l}</span>`;
+  document.getElementById('c-morn').innerHTML=SM.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div>${i===1?'<div class="snote">💧 Nemli cilde sur</div>':i===5?'<div class="snote">☀️ Son adım — evde bile atlatma!</div>':''}</div></div>`).join('');
+  let eh=SEB.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div></div></div>`).join('');
+  eh+=`<div class="sstep" style="background:var(--pink-pale);border-radius:10px;padding:10px;margin-top:6px;"><div class="snum" style="background:var(--pink-soft);">★</div><div><div class="sprod" style="color:var(--pink-deep);">${ea.e} ${ea.l}</div><div class="sprod">${ea.p}</div><div class="snote">${ea.no}</div>${sd===4?'<div class="snote" style="color:var(--pink-deep);font-weight:600;">⏱ 10 dakika beklet!</div>':''}</div></div>`;
+  if(!ea.p.includes('Retinol')&&!ea.p.includes('Mask'))eh+=`<div class="sstep"><div class="snum">${SEB.length+2}</div><div><div class="sprod">Medicube Collagen Jelly Cream</div></div></div>`;
+  document.getElementById('c-eve').innerHTML=eh;
+  document.getElementById('c-brush').innerHTML=[1,3,5].includes(d.getDay())?`<div class="notice ng"><div class="nicon">🫧</div><div><strong>Silikon Fırça Günü:</strong> Sabah temizliğinde kullan.</div></div>`:'';
+}
+function renderProds(){
+  document.getElementById('c-prods').innerHTML=[{c:'Temizlik',i:['Tea Tree Foaming Face Wash (sabah)','Garnier BHA Purifying Cleanser (akşam)']},{c:'Booster / Toner',i:['COSRX 6 Peptide Skin Booster','COSRX AHA/BHA Clarifying Toner (Gün 4)']},{c:'Serum / Ampoule',i:['Koreaco Brightening Ampoule — Alpha-Arbutin %2 + Niacinamide %10','Florence Bio C Vitamini Serumu']},{c:'Aktifler (Gece)',i:['The Ordinary Retinol %0.2 in Squalane (Gün 1,3,5)']},{c:'Nemlendirici',i:['Medicube Collagen Jelly Cream','Bioderma Atoderm Crème Ultra (retinol geceleri)']},{c:'Güneş Koruyucu',i:['COSRX Ultra-Light Invisible Sunscreen SPF50 PA++++']},{c:'Göz Kremi',i:['COSRX Advanced Snail Peptide Eye Cream (her akşam)']}].map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>`<div style="font-size:13px;padding:5px 0;border-bottom:1px dashed var(--border-soft);">· ${i}</div>`).join('')}</div>`).join('');
+}
+
+// ÖLÇÜM
+function renderMeas(){
+  const l=S.meas.length?S.meas[S.meas.length-1]:{weight:79.65,fat:34.1,muscle:49.3,waist:84,hip:110},pr=S.meas.length>1?S.meas[S.meas.length-2]:null;
+  const cur=l.weight||79.65;
+  document.getElementById('cwbig').textContent=cur.toFixed(2);
+  const prog=Math.max(0,Math.min(100,((81.1-cur)/(81.1-57))*100));
+  document.getElementById('pbar').style.width=prog+'%';
+  document.getElementById('pnote').textContent=`✓ ${(81.1-cur).toFixed(2)} kg verildi · ${(cur-57).toFixed(2)} kg kaldı`;
+  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Kas Kitlesi',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
+  const hist=document.getElementById('mhist');
+  hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm eklenmemiş.</p>';
+}
+function handleUp(e){S.rData=[];const p=document.getElementById('rprev');p.innerHTML='';Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{S.rData.push(ev.target.result);const img=document.createElement('img');img.src=ev.target.result;img.style.cssText='width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid var(--border);';p.appendChild(img);document.getElementById('abtn').disabled=false;};r.readAsDataURL(f);});}
+async function analyzeR(){
+  if(!S.rData.length)return;
+  const btn=document.getElementById('abtn'),res=document.getElementById('rres');
+  btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
+  const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 81.1 kg · Hedef: 57-58 kg (Haziran 2026) · Regl: ${c.phase}, Gün ${c.day} · Carnivore IF · Gym: haftada 6 gün (yeni başladı)\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\nAnaliz et: 1) Bu hafta özeti 2) Değişimler 3) Regl etkisi? 4) Ne iyi gidiyor? 5) Dikkat edilmesi gereken? 6) Haziran hedefine ulaşabilir mi?\n\nTürkçe, samimi, kısa yaz.`}]}]})});
+  const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
+  catch(e){res.innerHTML=`<div class="aibox">❌ Bağlantı hatası.</div>`;}
+  btn.innerHTML='🤖 Tekrar Analiz Et';btn.disabled=false;
+}
+function saveM(){
+  const m={date:new Date().toLocaleDateString('tr-TR'),weight:parseFloat(document.getElementById('mw').value)||0,fat:parseFloat(document.getElementById('mf').value)||null,muscle:parseFloat(document.getElementById('mm').value)||null,waist:parseFloat(document.getElementById('mwa').value)||null,hip:parseFloat(document.getElementById('mh').value)||null,thigh:parseFloat(document.getElementById('mt').value)||null};
+  if(!m.weight){alert('Kilo girilmedi');return;}
+  S.meas.push(m);localStorage.setItem('meas',JSON.stringify(S.meas));
+  ['mw','mf','mm','mwa','mh','mt'].forEach(id=>document.getElementById(id).value='');
+  renderMeas();
+}
+
+// YARDIMCILAR
+function renderStrip(id,activeD,cb){
+  const el=document.getElementById(id);if(!el)return;
+  const today=new Date(),mon=new Date(today);mon.setDate(today.getDate()-today.getDay()+1);
+  el.innerHTML='';
+  for(let i=0;i<7;i++){
+    const d=new Date(mon);d.setDate(mon.getDate()+i);
+    const btn=document.createElement('div');
+    btn.className='wd'+(d.toDateString()===activeD.toDateString()?' active':'')+(SP[d.getDay()]?' gym':' rest');
+    btn.innerHTML=`<div class="wdn">${DN[i]}</div><div class="wdnum">${d.getDate()}</div><div class="wddot"></div>`;
+    btn.onclick=()=>{cb(new Date(d));el.querySelectorAll('.wd').forEach(b=>b.classList.remove('active'));btn.classList.add('active');};
+    el.appendChild(btn);
   }
 }
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.getElementById('swap-modal').addEventListener('click',function(e){if(e.target===this)closeM('swap-modal');});
 
-function toggleExercise(header) {
-  const body = header.nextElementSibling;
-  body.classList.toggle('open');
+// INIT
+function init(){
+  const today=new Date(),c=ci();
+  const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
+  document.getElementById('cycle-strip-el').innerHTML=`<div class="cstrip"><div class="cicon">${c.emoji}</div><div class="cinfo"><div class="cphase">${c.phase}</div><div class="cdetail">Son regl: 3 Mart · Döngü ~27 gün</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">gün</div></div></div>`;
+  if(!S.meas.length){S.meas.push({date:'09.03.2026',weight:79.65,fat:34.1,muscle:49.3,waist:84,hip:110,thigh:65});localStorage.setItem('meas',JSON.stringify(S.meas));}
+  renderCal();renderSelDay();
 }
-
-function toggleDone(e, key, checkEl) {
-  e.stopPropagation();
-  state.workoutsDone[key] = !state.workoutsDone[key];
-  localStorage.setItem('workoutsDone', JSON.stringify(state.workoutsDone));
-  renderExerciseDay();
-}
-
-function markWorkoutDone() {
-  const d = state.exDay;
-  const dow = d.getDay();
-  const exercises = EXERCISES[dow];
-  if (!exercises) return;
-  const dateKey = d.toDateString();
-  exercises.forEach((_, idx) => { state.workoutsDone[`${dateKey}_${idx}`] = true; });
-  localStorage.setItem('workoutsDone', JSON.stringify(state.workoutsDone));
-  renderExerciseDay();
-  renderWeeklySummary();
-}
-
-function openSwapModal(idx, dow, dateKey) {
-  state.swapTarget = { idx, dow: parseInt(dow), dateKey };
-  const ex = EXERCISES[parseInt(dow)][idx];
-  document.getElementById('swap-modal-desc').textContent = `"${ex.name}" yerine aynı kas grubunu çalıştıran başka bir hareket seç:`;
-
-  // Aynı kasları çalıştıran alternatifler
-  const alternatives = getAlternatives(ex);
-  const container = document.getElementById('swap-alternatives');
-  container.innerHTML = alternatives.map((alt, i) => `
-    <div class="alt-item" onclick="selectAlt(this, ${i})">
-      <div class="alt-item-name">${alt.name} <span style="font-size:12px;color:var(--text-light);">${alt.sets}</span></div>
-      <div class="alt-item-desc">${alt.muscles.join(' · ')} — ${alt.how.split('.')[0]}.</div>
-      <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(alt.yt)}" target="_blank" onclick="event.stopPropagation()" style="font-size:12px;color:var(--rose);margin-top:6px;display:inline-block;">▶ Örnek video</a>
-    </div>
-  `).join('');
-
-  document.getElementById('swap-exercise-modal').classList.add('open');
-  state.swapAltIndex = null;
-  state.swapAlternatives = alternatives;
-}
-
-function getAlternatives(ex) {
-  const allExercises = Object.values(EXERCISES).flat();
-  const sameMuscle = allExercises.filter(e =>
-    e.id !== ex.id && e.muscles.some(m => ex.muscles.includes(m))
-  );
-  const seen = new Set();
-  return sameMuscle.filter(e => { if (seen.has(e.id)) return false; seen.add(e.id); return true; }).slice(0, 5);
-}
-
-function selectAlt(el, idx) {
-  document.querySelectorAll('.alt-item').forEach(a => a.classList.remove('selected'));
-  el.classList.add('selected');
-  state.swapAltIndex = idx;
-}
-
-function confirmSwap() {
-  if (state.swapAltIndex === null) return;
-  const { idx, dateKey } = state.swapTarget;
-  if (!state.exerciseSwaps[dateKey]) state.exerciseSwaps[dateKey] = {};
-  state.exerciseSwaps[dateKey][idx] = state.swapAlternatives[state.swapAltIndex];
-  localStorage.setItem('exerciseSwaps', JSON.stringify(state.exerciseSwaps));
-  closeModal('swap-exercise-modal');
-  renderExerciseDay();
-}
-
-function renderWeeklySummary() {
-  const container = document.getElementById('weekly-workout-summary');
-  if (!container) return;
-  const today = new Date();
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay() + 1);
-
-  const days = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
-  container.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(startOfWeek);
-    d.setDate(startOfWeek.getDate() + i);
-    const dow = d.getDay() === 0 ? 7 : d.getDay();
-    const split = SPLITS[d.getDay()];
-    const dateKey = d.toDateString();
-    const exercises = EXERCISES[d.getDay()];
-    let doneCount = 0;
-    if (exercises) exercises.forEach((_, idx) => { if (state.workoutsDone[`${dateKey}_${idx}`]) doneCount++; });
-    const total = exercises ? exercises.length : 0;
-    const isToday = d.toDateString() === today.toDateString();
-
-    const pill = document.createElement('div');
-    pill.style.cssText = `padding:10px 14px;border-radius:12px;border:1px solid var(--border);text-align:center;cursor:pointer;background:${isToday ? 'var(--charcoal)' : 'var(--cream)'};color:${isToday ? 'white' : 'var(--text)'};min-width:70px;`;
-    pill.innerHTML = `
-      <div style="font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.8px;">${days[i]}</div>
-      <div style="font-size:18px;margin:3px 0;">${split ? split.emoji : '🛌'}</div>
-      <div style="font-size:11px;${!split?'opacity:0.4':''}">${split ? (doneCount + '/' + total) : '-'}</div>
-    `;
-    pill.onclick = () => { state.exDay = d; renderWeekStrip('ex-week-strip', state.exDay, (dd) => { state.exDay = dd; renderExerciseDay(); }); renderExerciseDay(); };
-    container.appendChild(pill);
-  }
-}
-
-// ══════════════════════════════════════════════
-// CİLT BAKIMI
-// ══════════════════════════════════════════════
-function getSkinDayNum(date) {
-  const ref = new Date('2026-03-25'); // bilinen Gün 1 referansı
-  const diff = Math.floor((date - ref) / (1000*60*60*24));
-  return ((diff % 7) + 7) % 7 + 1;
-}
-
-function renderSkinPage() {
-  renderWeekStrip('cilt-week-strip', state.ciltDay, (d) => { state.ciltDay = d; renderSkinDay(); });
-  renderSkinDay();
-  renderProductList();
-}
-
-function renderSkinDay() {
-  const d = state.ciltDay;
-  const skinDay = getSkinDayNum(d);
-  const active = SKIN_ROUTINE.eveningActives[skinDay];
-  const cycleInfo = getCycleInfo(d);
-  const isPeriod = isInPeriod(d);
-  const isPrePeriod = isPremenstrual(d);
-
-  document.getElementById('cilt-day-label').textContent = `Döngü Günü ${skinDay}`;
-  document.getElementById('cilt-evening-active').textContent = active.label;
-
-  // Cycle notice
-  const notice = document.getElementById('cilt-cycle-notice');
-  if (isPeriod || isPrePeriod) {
-    notice.innerHTML = `<div class="notice notice-rose"><div class="notice-icon">🔴</div><div><strong>${cycleInfo.phase}:</strong> ${SKIN_ROUTINE.periodOverride}</div></div>`;
-  } else {
-    notice.innerHTML = `<div class="notice notice-sage"><div class="notice-icon">${cycleInfo.emoji}</div><div><strong>${cycleInfo.phase} · Döngü Günü ${cycleInfo.cycleDay}:</strong> Normal döngü rutinine devam.</div></div>`;
-  }
-
-  // Badge
-  document.getElementById('cilt-phase-badge').innerHTML = `<span class="phase-pill ${cycleInfo.phaseClass}">${cycleInfo.emoji} ${cycleInfo.phase}</span>`;
-
-  // Sabah
-  const morning = document.getElementById('morning-routine');
-  morning.innerHTML = SKIN_ROUTINE.morning.map((p, i) => `
-    <div class="skin-step">
-      <div class="skin-arrow">→</div>
-      <div>
-        <div class="skin-product">${p}</div>
-        ${i === 1 ? '<div class="skin-note">💧 Nemli cilde sur</div>' : ''}
-        ${i === 5 ? '<div class="skin-note">☀️ Son adım — evde bile atlatma!</div>' : ''}
-      </div>
-    </div>
-  `).join('');
-
-  // Akşam
-  const evening = document.getElementById('evening-routine');
-  const effectiveActive = (isPeriod || isPrePeriod) && active.product.includes('Retinol') ?
-    { label: '💤 Regl dönemine özel', product: 'Medicube Collagen Jelly Cream', note: 'Bu hafta retinol atla, sadece nemlendirici' } : active;
-
-  let eveningHtml = SKIN_ROUTINE.eveningBase.map(p => `
-    <div class="skin-step">
-      <div class="skin-arrow">→</div>
-      <div><div class="skin-product">${p}</div></div>
-    </div>
-  `).join('');
-
-  eveningHtml += `
-    <div class="skin-step" style="background:rgba(217,123,108,0.05);border-radius:8px;padding:8px;margin-top:4px;">
-      <div class="skin-arrow" style="color:var(--rose);">★</div>
-      <div>
-        <div class="skin-product" style="color:var(--rose);">${effectiveActive.label}</div>
-        <div class="skin-product">${effectiveActive.product}</div>
-        <div class="skin-note">${effectiveActive.note}</div>
-        ${skinDay === 4 ? '<div class="skin-note" style="color:var(--rose);">⏱ 10 dakika beklet!</div>' : ''}
-      </div>
-    </div>
-  `;
-
-  if (!effectiveActive.product.includes('Retinol')) {
-    eveningHtml += `<div class="skin-step"><div class="skin-arrow">→</div><div><div class="skin-product">Medicube Collagen Jelly Cream</div></div></div>`;
-  }
-
-  evening.innerHTML = eveningHtml;
-
-  // Silikon fırça
-  const dayNum = d.getDay();
-  const brushDays = [1, 3, 5]; // Pzt, Çar, Cum
-  const brushEl = document.getElementById('brush-reminder');
-  if (brushDays.includes(dayNum)) {
-    brushEl.innerHTML = `<div class="notice notice-caramel"><div class="notice-icon">🫧</div><div><strong>Silikon Fırça Günü:</strong> Sabah temizliğinde silikon fırçayı kullan (haftada 2-3 kez).</div></div>`;
-  } else {
-    brushEl.innerHTML = '';
-  }
-}
-
-function renderProductList() {
-  const products = [
-    { cat: 'Temizlik', items: ['Tea Tree Foaming Face Wash (sabah)', 'Garnier BHA Purifying Cleanser (akşam)'] },
-    { cat: 'Booster / Toner', items: ['COSRX 6 Peptide Skin Booster', 'COSRX AHA/BHA Clarifying Toner (Gün 4)'] },
-    { cat: 'Serum / Ampoule', items: ['Koreaco Brightening Ampoule — Alpha-Arbutin %2 + Niacinamide %10', 'Florence Bio C Vitamini Serumu'] },
-    { cat: 'Aktifler (Gece)', items: ['The Ordinary Retinol %0.2 in Squalane (Gün 1,3,5)'] },
-    { cat: 'Nemlendirici', items: ['Medicube Collagen Jelly Cream', 'Bioderma Atoderm Crème Ultra (retinol geceleri)'] },
-    { cat: 'Güneş Koruyucu', items: ['COSRX Ultra-Light Invisible Sunscreen SPF50 PA++++'] },
-    { cat: 'Göz Kremi', items: ['COSRX Advanced Snail Peptide Eye Cream (her akşam son adım)'] },
-  ];
-  document.getElementById('product-list').innerHTML = products.map(cat => `
-    <div style="margin-bottom:16px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-light);margin-bottom:8px;">${cat.cat}</div>
-      ${cat.items.map(item => `<div style="font-size:13px;color:var(--charcoal);padding:6px 0;border-bottom:1px dashed var(--border);">• ${item}</div>`).join('')}
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════
-// ÖLÇÜM & ANALİZ
-// ══════════════════════════════════════════════
-function renderMeasurementPage() {
-  // Progress bar
-  const current = state.measurements.length > 0 ? state.measurements[state.measurements.length-1].weight : 79.65;
-  const start = 81.1, target = 57;
-  const progress = ((start - current) / (start - target)) * 100;
-  document.getElementById('current-weight-display').textContent = current.toFixed(2);
-  document.getElementById('weight-progress-bar').style.width = Math.max(0, Math.min(100, progress)) + '%';
-  const remaining = current - target;
-  document.getElementById('weight-progress-text').textContent = `✓ ${(start - current).toFixed(2)} kg verildi · ${remaining.toFixed(2)} kg kaldı`;
-
-  // Mevcut stats
-  const latest = state.measurements[state.measurements.length-1] || { weight:79.65, fat:34.1, muscle:49.3, waist:84, hip:110, thigh:65 };
-  const prev = state.measurements[state.measurements.length-2];
-  document.getElementById('body-stats-grid').innerHTML = [
-    { label: 'Vücut Yağı', val: latest.fat + '%', delta: prev ? (latest.fat - prev.fat).toFixed(1) : null, good: '<0' },
-    { label: 'Kas Kitlesi', val: latest.muscle + 'kg', delta: prev ? (latest.muscle - prev.muscle).toFixed(1) : null, good: '>0' },
-    { label: 'Bel', val: latest.waist + 'cm', delta: prev ? (latest.waist - prev.waist).toFixed(1) : null, good: '<0' },
-    { label: 'Kalça', val: latest.hip + 'cm', delta: prev ? (latest.hip - prev.hip).toFixed(1) : null, good: '<0' },
-  ].map(s => `
-    <div class="stat-pill">
-      <div class="stat-val">${s.val}</div>
-      <div class="stat-lbl">${s.label}</div>
-      ${s.delta !== null ? `<div class="stat-delta ${((s.good.includes('<0') && parseFloat(s.delta) < 0) || (s.good.includes('>0') && parseFloat(s.delta) > 0)) ? 'good' : 'warn'}">${parseFloat(s.delta) > 0 ? '+' : ''}${s.delta}</div>` : ''}
-    </div>
-  `).join('');
-
-  // Geçmiş
-  renderMeasurementHistory();
-}
-
-function renderMeasurementHistory() {
-  const el = document.getElementById('measurement-history');
-  if (state.measurements.length === 0) {
-    el.innerHTML = '<p style="color:var(--text-light);font-size:13px;text-align:center;padding:20px;">Henüz ölçüm eklenmemiş. Pazartesi sabahı Renpho ölçüm yap!</p>';
-    return;
-  }
-  el.innerHTML = `
-    <table style="width:100%;border-collapse:collapse;font-size:13px;">
-      <thead>
-        <tr style="border-bottom:2px solid var(--border);">
-          ${['Tarih','Kilo','Yağ %','Kas','Bel','Kalça'].map(h => `<th style="text-align:left;padding:8px 4px;color:var(--text-light);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.8px;">${h}</th>`).join('')}
-        </tr>
-      </thead>
-      <tbody>
-        ${[...state.measurements].reverse().map((m, i) => `
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:10px 4px;font-weight:600;">${m.date}</td>
-            <td style="padding:10px 4px;">${m.weight} kg</td>
-            <td style="padding:10px 4px;">${m.fat || '-'}%</td>
-            <td style="padding:10px 4px;">${m.muscle || '-'} kg</td>
-            <td style="padding:10px 4px;">${m.waist || '-'} cm</td>
-            <td style="padding:10px 4px;">${m.hip || '-'} cm</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
-}
-
-let renphoImagesData = [];
-
-function handleRenphoUpload(event) {
-  const files = Array.from(event.target.files);
-  renphoImagesData = [];
-  const preview = document.getElementById('renpho-preview');
-  preview.innerHTML = '';
-
-  files.forEach((file, i) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      renphoImagesData.push(e.target.result);
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--border);margin-right:8px;';
-      preview.appendChild(img);
-      if (renphoImagesData.length > 0) {
-        document.getElementById('analyze-btn').disabled = false;
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function analyzeRenpho() {
-  if (renphoImagesData.length === 0) return;
-  const btn = document.getElementById('analyze-btn');
-  const resultEl = document.getElementById('renpho-analysis');
-  btn.innerHTML = '<span class="loading-spinner"></span> Analiz ediliyor...';
-  btn.disabled = true;
-
-  const cycleInfo = getCycleInfo();
-  const latest = state.measurements[state.measurements.length-1];
-  const prev = state.measurements[state.measurements.length-2];
-
-  const messages = [{
-    role: 'user',
-    content: [
-      ...renphoImagesData.map(img => ({
-        type: 'image',
-        source: { type: 'base64', media_type: 'image/jpeg', data: img.split(',')[1] }
-      })),
-      {
-        type: 'text',
-        text: `Sen Bengisu'nun kişisel sağlık koçusun. Renpho uygulamasından alınan bu ölçüm ekran görüntülerini analiz et.
-        
-Bengisu hakkında bilgiler:
-- Başlangıç: 81.1 kg (Mart 2026 başı)
-- Hedef: 57-58 kg (Haziran 2026)
-- Regl döngüsü: ${cycleInfo.phase}, döngü günü ${cycleInfo.cycleDay}
-- Diyet: Carnivore + IF (13:00-18:00)
-- Antrenman: Haftada 6 gün gym (yeni başladı)
-${prev ? `- Önceki ölçüm: ${prev.weight}kg, %${prev.fat} yağ, ${prev.muscle}kg kas` : ''}
-
-Lütfen şunları analiz et:
-1. 📊 Bu haftanın ölçüm özeti
-2. 📈 Önceki haftaya göre değişim (varsa)
-3. 💬 Regl dönemine göre yorum (bu dönemde bazı değişimler normal mi?)
-4. ✅ Ne iyi gidiyor?
-5. ⚠️ Dikkat edilmesi gereken var mı?
-6. 🎯 Bu hıza devam ederse Haziran hedefine ulaşır mı?
-
-Türkçe, samimi ve destekleyici bir dille yaz. Uzun olmak zorunda değil.`
-      }
-    ]
-  }];
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 800, messages })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'Analiz yapılamadı.';
-    resultEl.innerHTML = `<div class="ai-response">${text.replace(/\n/g, '<br>')}</div>`;
-  } catch (e) {
-    resultEl.innerHTML = `<div class="ai-response">❌ Bağlantı hatası.</div>`;
-  }
-
-  btn.innerHTML = 'Analiz Et';
-  btn.disabled = false;
-}
-
-function showAddMeasurement() {
-  document.getElementById('add-measurement-modal').classList.add('open');
-}
-
-function saveMeasurement() {
-  const m = {
-    date: new Date().toLocaleDateString('tr-TR'),
-    weight: parseFloat(document.getElementById('m-weight').value) || 0,
-    fat: parseFloat(document.getElementById('m-fat').value) || null,
-    muscle: parseFloat(document.getElementById('m-muscle').value) || null,
-    waist: parseFloat(document.getElementById('m-waist').value) || null,
-    hip: parseFloat(document.getElementById('m-hip').value) || null,
-    thigh: parseFloat(document.getElementById('m-thigh').value) || null,
-  };
-  state.measurements.push(m);
-  localStorage.setItem('measurements', JSON.stringify(state.measurements));
-  closeModal('add-measurement-modal');
-  renderMeasurementPage();
-}
-
-// ══════════════════════════════════════════════
-// YARDIMCI FONKSIYONLAR
-// ══════════════════════════════════════════════
-function renderWeekStrip(containerId, activeDate, onSelect) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  const today = new Date();
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay() + 1);
-  const dayNames = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
-  container.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(startOfWeek);
-    d.setDate(startOfWeek.getDate() + i);
-    const btn = document.createElement('div');
-    btn.className = 'week-day-btn' + (d.toDateString() === activeDate.toDateString() ? ' active' : '');
-    btn.innerHTML = `
-      <div class="wd-name">${dayNames[i]}</div>
-      <div class="wd-num">${d.getDate()}</div>
-      <div class="wd-dot"></div>
-    `;
-    btn.onclick = () => {
-      onSelect(new Date(d));
-      container.querySelectorAll('.week-day-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-    container.appendChild(btn);
-  }
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-// ══════════════════════════════════════════════
-// İLK YÜKLEME
-// ══════════════════════════════════════════════
-function init() {
-  // Sidebar cycle info
-  const cycle = getCycleInfo();
-  document.getElementById('sidebar-cycle-day').textContent = cycle.cycleDay;
-  document.getElementById('sidebar-cycle-phase').textContent = cycle.phase;
-
-  // Today phase badge (takvim)
-  const badge = document.getElementById('today-phase-badge');
-  if (badge) badge.innerHTML = `<span class="phase-pill ${cycle.phaseClass}">${cycle.emoji} ${cycle.phase} · Gün ${cycle.cycleDay}</span>`;
-
-  // Takvim
-  renderCalendar();
-  renderSelectedDay();
-
-  // Default ölçüm (başlangıç)
-  if (state.measurements.length === 0) {
-    state.measurements.push({
-      date: '09.03.2026', weight: 79.65, fat: 34.1, muscle: 49.3, waist: 84, hip: 110, thigh: 65
-    });
-    localStorage.setItem('measurements', JSON.stringify(state.measurements));
-  }
-}
-
 init();
 </script>
 </body>
