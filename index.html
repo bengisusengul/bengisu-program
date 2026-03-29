@@ -926,14 +926,14 @@ function renderDietDay(){
         <span style="font-size:13px;font-weight:600;">Meal Total</span>
         <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span>
       </div>
-      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağı (${morningExtra.kcal} kcal) morning fat, reduce by ${fatAdj}g g fat in this meal</div>`:''}
+      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Morning fat (${morningExtra.kcal} kcal) morning fat, reduce by ${fatAdj}g g fat in this meal</div>`:''}
       <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2nd) + Creatine with meal · Qalyviz after</div>
     </div>`;
 
   // Supplement timeline
   document.getElementById('supp-tl').innerHTML=`
     <div class="tli"><div class="tlt">07:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Levotiron</div><div class="tlde">Empty stomach · water only</div></div></div>
-    <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1. doz)</div><div class="tlde">1 hour after Levothyroxine${morningType==='olive'?' · zeytinyağı karışımını da al':''}</div></div></div>
+    <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1st dose)</div><div class="tlde">1 hour after Levothyroxine${morningType==='olive'?' · · also take olive oil mix':''}</div></div></div>
     <div class="tli" style="background:${morningType==='coconut'?'rgba(200,168,136,0.08)':'rgba(139,168,136,0.08)'};border-radius:10px;padding:4px;">
       <div class="tlt">${morningExtra.time}</div><div class="tlline"><div class="tldot" style="border-color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};"></div><div class="tlbar"></div></div>
       <div class="tlc">
@@ -942,8 +942,8 @@ function renderDietDay(){
         <div style="font-size:11px;margin-top:3px;color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};">${morningExtra.note} · ${morningExtra.kcal} kcal · ${morningExtra.fat}g yağ</div>
       </div>
     </div>
-    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün</div><div class="tlde">Calciday + Omega-3 + Collagen with meal</div></div></div>
-    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Calciday (2nd) + Creatine with meal · Qalyviz after</div></div></div>
+    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1st Meal</div><div class="tlde">Calciday + Omega-3 + Collagen with meal</div></div></div>
+    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2nd Meal</div><div class="tlde">Calciday (2nd) + Creatine with meal · Qalyviz after</div></div></div>
     <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Before bed</div></div></div>`;
 
   // Günlük makro özeti
