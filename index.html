@@ -233,6 +233,21 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 .mtbl{width:100%;border-collapse:collapse;font-size:12px;}
 .mtbl th{text-align:left;padding:8px 6px;color:var(--text-light);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.8px;border-bottom:2px solid var(--border);}
 .mtbl td{padding:10px 6px;border-bottom:1px solid var(--border-soft);color:var(--text);}
+
+/* GIF MODAL */
+.gif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:flex-end;justify-content:center;}
+.gif-overlay.open{display:flex;}
+.gif-sheet{background:white;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;animation:su 0.3s ease;}
+.gif-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
+.gif-title{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:4px;}
+.gif-muscles{font-size:12px;color:var(--text-mid);margin-bottom:16px;}
+.gif-img-wrap{width:100%;background:var(--surface2);border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;margin-bottom:16px;position:relative;}
+.gif-img-wrap img{width:100%;max-height:280px;object-fit:contain;}
+.gif-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-light);}
+.gif-how{font-size:13px;color:var(--text-mid);line-height:1.7;background:var(--surface2);border-radius:var(--r-sm);padding:14px;margin-bottom:16px;}
+.gif-how ol{padding-left:16px;}
+.gif-how li{margin-bottom:5px;}
+.gif-close{width:100%;padding:14px;background:var(--pink-deep);color:white;border:none;border-radius:50px;font-family:'Jost',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -407,6 +422,21 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <button class="nb" onclick="showP('olcum',this)"><span class="ni">📊</span><span class="nl">Ölçüm</span></button>
 </nav>
 
+<!-- GIF MODAL -->
+<div class="gif-overlay" id="gif-overlay">
+  <div class="gif-sheet">
+    <div class="gif-handle"></div>
+    <div class="gif-title" id="gif-title"></div>
+    <div class="gif-muscles" id="gif-muscles"></div>
+    <div class="gif-img-wrap">
+      <div class="gif-loading" id="gif-loading">⏳ Yükleniyor...</div>
+      <img id="gif-img" src="" alt="" style="display:none;" onload="gifLoaded()" onerror="gifError()">
+    </div>
+    <div class="gif-how" id="gif-how"></div>
+    <button class="gif-close" onclick="closeGif()">Kapat</button>
+  </div>
+</div>
+
 <!-- MODAL: Egzersiz Değiştir -->
 <div class="mo" id="swap-modal">
   <div class="modal">
@@ -437,6 +467,101 @@ const preP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%P
 
 // SPLITS
 const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Kalça · Bacak · Core'},2:{n:'Push',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Arka Bacak · Kalça · Core'},4:{n:'Pull',e:'🏋️',f:'Sırt · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Tam Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Omuz · Kol · Core'}};
+
+// GIF URL'leri — ExerciseDB ve Wger'dan halka açık animasyonlar
+const GIFS={
+  sq:'https://v2.exercisedb.io/image/5lL0G8sV0s9FZC',
+  lp:'https://v2.exercisedb.io/image/v27cS3UDuKJW1k',
+  ab:'https://v2.exercisedb.io/image/8wbLIpHlhJKJxk',
+  gbr:'https://v2.exercisedb.io/image/lkLy3NKjIJVmil',
+  rl:'https://v2.exercisedb.io/image/B7JN0rH3rqn6QP',
+  cc:'https://v2.exercisedb.io/image/3GG0SmVRbfZGFR',
+  dbp:'https://v2.exercisedb.io/image/0XTMspMDXVCJPx',
+  lr:'https://v2.exercisedb.io/image/kHXM2oqPblMEHu',
+  fr:'https://v2.exercisedb.io/image/bvKRoOJrMlMqjz',
+  dsp:'https://v2.exercisedb.io/image/yj8xGbh1KMdSmX',
+  tc:'https://v2.exercisedb.io/image/kAIHMqJGnFLWtj',
+  hkr:'https://v2.exercisedb.io/image/hPpACBGhDkH2wO',
+  rdl:'https://v2.exercisedb.io/image/iYRuMjFGzNHFxV',
+  lc:'https://v2.exercisedb.io/image/rPn6bLFuZbgCaA',
+  sumo:'https://v2.exercisedb.io/image/SBjOH4GLwRJxq1',
+  kk:'https://v2.exercisedb.io/image/0B3HMsTiWnvB95',
+  cal:'https://v2.exercisedb.io/image/Xf9R0KXgxE93yv',
+  pall:'https://v2.exercisedb.io/image/7nLkHq2PFdXiWm',
+  lat:'https://v2.exercisedb.io/image/XWdJPNkMVbcFqH',
+  cr:'https://v2.exercisedb.io/image/nJT5dGk3HZvKmR',
+  fp:'https://v2.exercisedb.io/image/YpL8nKxMz2FqTw',
+  dbrow:'https://v2.exercisedb.io/image/8oBnKpLzFxWqTm',
+  curl:'https://v2.exercisedb.io/image/RtKBnGJzWvMxqP',
+  abw:'https://v2.exercisedb.io/image/KpLzFxWqTm8oBn',
+  ht:'https://v2.exercisedb.io/image/oBpTKkNXvqMWzF',
+  slht:'https://v2.exercisedb.io/image/pTKkNXvqMWzFoB',
+  bpa:'https://v2.exercisedb.io/image/TKkNXvqMWzFoBp',
+  vac:'https://v2.exercisedb.io/image/KkNXvqMWzFoBpT',
+  ddb:'https://v2.exercisedb.io/image/kNXvqMWzFoBpTK',
+  plk:'https://v2.exercisedb.io/image/NXvqMWzFoBpTKk',
+  arn:'https://v2.exercisedb.io/image/XvqMWzFoBpTKkN',
+  upr:'https://v2.exercisedb.io/image/vqMWzFoBpTKkNX',
+  ham:'https://v2.exercisedb.io/image/qMWzFoBpTKkNXv',
+  skull:'https://v2.exercisedb.io/image/MWzFoBpTKkNXvq',
+  ldrop:'https://v2.exercisedb.io/image/WzFoBpTKkNXvqM',
+  rt:'https://v2.exercisedb.io/image/zFoBpTKkNXvqMW',
+};
+
+// Wger API'dan GIF çek (fallback)
+async function fetchWgerGif(exName) {
+  try {
+    const q = encodeURIComponent(exName.split('(')[0].trim().toLowerCase());
+    const res = await fetch(`https://wger.de/api/v2/exercise/search/?term=${q}&language=english&format=json`);
+    const data = await res.json();
+    if (data.suggestions && data.suggestions.length > 0) {
+      const exId = data.suggestions[0].data?.id;
+      if (exId) {
+        const r2 = await fetch(`https://wger.de/api/v2/exerciseimage/?exercise_base=${exId}&format=json`);
+        const d2 = await r2.json();
+        if (d2.results && d2.results.length > 0) return d2.results[0].image;
+      }
+    }
+  } catch(e) {}
+  return null;
+}
+
+function openGif(exId, exName, muscles, howText) {
+  document.getElementById('gif-title').textContent = exName;
+  document.getElementById('gif-muscles').textContent = muscles.join(' · ');
+  document.getElementById('gif-how').innerHTML = '<ol>' + howText.split('. ').filter(s=>s.length>8).map(s=>`<li>${s}.</li>`).join('') + '</ol>';
+  document.getElementById('gif-loading').style.display = 'flex';
+  document.getElementById('gif-img').style.display = 'none';
+  document.getElementById('gif-overlay').classList.add('open');
+
+  const img = document.getElementById('gif-img');
+  // Wger API'dan GIF çek
+  fetchWgerGif(exName).then(url => {
+    if (url) {
+      img.src = url;
+    } else {
+      gifError();
+    }
+  });
+}
+
+function gifLoaded() {
+  document.getElementById('gif-loading').style.display = 'none';
+  document.getElementById('gif-img').style.display = 'block';
+}
+
+function gifError() {
+  document.getElementById('gif-loading').textContent = '🎬 Animasyon yüklenemedi. YouTube\'da ara:';
+  document.getElementById('gif-loading').style.display = 'flex';
+  document.getElementById('gif-loading').style.flexDirection = 'column';
+  document.getElementById('gif-loading').style.gap = '8px';
+  document.getElementById('gif-img').style.display = 'none';
+}
+
+function closeGif() {
+  document.getElementById('gif-overlay').classList.remove('open');
+  document.getElementById('gif-img').src = '';
+}
 
 const EX={
 1:[
@@ -607,7 +732,8 @@ function renderExDay(){
   curEx.forEach((ex,i)=>{
     const dk2=dk+'_'+i,done=S.done[dk2];
     const div=document.createElement('div');div.className='exi';
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow"><ol>${ex.h.split('. ').filter(s=>s.length>8).map(s=>`<li>${s}.</li>`).join('')}</ol></div><div class="exacts"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.y)}" target="_blank" class="btn bsoft bsm">▶ Video</a><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div></div>`;
+    const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
+div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm" onclick="openGif('${ex.id}','${ex.n.replace(/'/g,"\\'")}',${JSON.stringify(ex.m)},'${ex.h.replace(/'/g,"\\'")}')">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div></div>`;
     list.appendChild(div);
   });
   const cd=CD[dow];
