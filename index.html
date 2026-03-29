@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -253,11 +253,11 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 </head>
 <body>
 
-<!-- TAKVİM -->
+<!-- CALENDAR -->
 <div id="page-takvim" class="page active">
   <div class="topbar">
-    <div class="tb-label">Kişisel Program</div>
-    <h1>Merhaba, <em>Bengisu</em> ✨</h1>
+    <div class="tb-label">Personal Program</div>
+    <h1>Hey, <em>Bengisu</em> ✨</h1>
     <div class="tb-sub" id="today-str"></div>
   </div>
   <div id="cycle-strip-el"></div>
@@ -271,107 +271,107 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
       <div class="cgrid" id="cal-grid"></div>
       <div style="display:flex;gap:14px;margin-top:12px;font-size:10px;color:var(--text-light);flex-wrap:wrap;">
         <span>🟢 Gym</span><span style="color:var(--pink-deep);">● Regl</span>
-        <span style="background:var(--text);color:white;padding:1px 7px;border-radius:5px;">Bugün</span>
+        <span style="background:var(--text);color:white;padding:1px 7px;border-radius:5px;">Today</span>
       </div>
     </div>
   </div>
   <div id="sel-day"></div>
 </div>
 
-<!-- DİYET -->
+<!-- DIET -->
 <div id="page-diyet" class="page">
   <div class="topbar">
-    <div class="tb-label">Beslenme Planı</div>
-    <h1><em>Diyet</em> 🥩</h1>
-    <div class="tb-sub">Carnivore · IF 13:00–18:00</div>
+    <div class="tb-label">Nutrition Plan</div>
+    <h1><em>Diet</em> 🥩</h1>
+    <div class="tb-sub">Carnivore · IF 1pm–6pm</div>
   </div>
   <div class="wstrip" id="d-strip"></div>
   <div id="d-notice" style="margin:0 16px 12px;"></div>
   <div class="card">
-    <div class="ch"><h3>Makro Hedefler</h3><span id="d-datelbl" style="font-size:12px;color:var(--text-light);"></span></div>
+    <div class="ch"><h3>Macro Targets</h3><span id="d-datelbl" style="font-size:12px;color:var(--text-light);"></span></div>
     <div class="cb">
       <div class="mrow">
         <div class="mbox"><div class="mval">1.400</div><div class="mlbl">kcal</div></div>
         <div class="mbox"><div class="mval">125g</div><div class="mlbl">Protein</div></div>
-        <div class="mbox"><div class="mval">105g</div><div class="mlbl">Yağ</div></div>
-        <div class="mbox"><div class="mval">5g</div><div class="mlbl">Karb</div></div>
+        <div class="mbox"><div class="mval">105g</div><div class="mlbl">Fat</div></div>
+        <div class="mbox"><div class="mval">5g</div><div class="mlbl">Carbs</div></div>
       </div>
     </div>
   </div>
-  <div class="slbl">1. Öğün — 13:00</div>
+  <div class="slbl">1st Meal — 1:00 PM</div>
   <div class="card"><div class="cb" id="m1b"></div></div>
-  <div class="slbl">2. Öğün — 17:30</div>
+  <div class="slbl">2nd Meal — 5:30 PM</div>
   <div class="card"><div class="cb" id="m2b"></div></div>
-  <div class="slbl">Supplement Zamanlaması</div>
+  <div class="slbl">Supplement Schedule</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
 
-  <!-- Günlük makro özeti -->
+  <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:24px;">
-    <div class="ch"><h3>Günlük Makro Özeti</h3></div>
+    <div class="ch"><h3>Daily Macro Summary</h3></div>
     <div class="cb" id="d-macro-summary"></div>
   </div>
 
   <div style="height:8px;"></div>
 </div>
 
-<!-- EGZERSİZ -->
+<!-- WORKOUT -->
 <div id="page-egzersiz" class="page">
   <div class="topbar">
-    <div class="tb-label">Antrenman Programı</div>
-    <h1 id="ex-title"><em>Egzersiz</em> 💪</h1>
+    <div class="tb-label">Workout Program</div>
+    <h1 id="ex-title"><em>Workout</em> 💪</h1>
     <div class="tb-sub" id="ex-sub"></div>
   </div>
   <div class="wstrip" id="e-strip"></div>
   <div id="e-rest" style="margin:0 16px 12px;display:none;">
-    <div class="notice nm"><div class="nicon">🛌</div><div><strong>Dinlenme Günü</strong><br>Hafif yürüyüş veya esneme yapabilirsin.</div></div>
+    <div class="notice nm"><div class="nicon">🛌</div><div><strong>Rest Day</strong><br>You can do a light walk or stretching.</div></div>
   </div>
   <div id="e-list"></div>
   <div id="e-cool"></div>
   <div class="card" style="margin-top:0;">
-    <div class="ch"><h3>Bu Haftanın Özeti</h3></div>
+    <div class="ch"><h3>This Week's Summary</h3></div>
     <div class="cb" id="e-week"></div>
   </div>
   <div style="height:8px;"></div>
 </div>
 
-<!-- CİLT -->
+<!-- SKIN -->
 <div id="page-cilt" class="page">
   <div class="topbar">
-    <div class="tb-label">Skincare Rutini</div>
-    <h1><em>Cilt Bakımı</em> ✨</h1>
-    <div class="tb-sub">7 Günlük Döngü · Karma Cilt</div>
+    <div class="tb-label">Skincare Routine</div>
+    <h1><em>Skincare</em> ✨</h1>
+    <div class="tb-sub">7-Day Cycle · Combination Skin</div>
   </div>
   <div class="wstrip" id="c-strip"></div>
   <div id="c-notice" style="margin:0 16px 12px;"></div>
-  <div class="slbl">☀️ Sabah Rutini</div>
+  <div class="slbl">☀️ Morning Routine</div>
   <div class="card"><div class="cb" id="c-morn"></div></div>
-  <div class="slbl">🌙 Akşam Rutini</div>
+  <div class="slbl">🌙 Evening Routine</div>
   <div class="card">
-    <div class="ch"><h3>Akşam</h3><span id="c-active-badge"></span></div>
+    <div class="ch"><h3>Evening</h3><span id="c-active-badge"></span></div>
     <div class="cb" id="c-eve"></div>
   </div>
   <div style="margin:0 16px 12px;">
-    <div class="notice ng"><div class="nicon">👁️</div><div><strong>Her Akşam Son Adım:</strong><br>COSRX Advanced Snail Peptide Eye Cream</div></div>
+    <div class="notice ng"><div class="nicon">👁️</div><div><strong>Every Evening Last Step:</strong><br>COSRX Advanced Snail Peptide Eye Cream</div></div>
   </div>
   <div id="c-brush" style="margin:0 16px 12px;"></div>
-  <div class="slbl">🛍 Ürün Listesi</div>
+  <div class="slbl">🛍 Product List</div>
   <div class="card"><div class="cb" id="c-prods"></div></div>
   <div style="height:8px;"></div>
 </div>
 
-<!-- ÖLÇÜM -->
+<!-- METRICS -->
 <div id="page-olcum" class="page">
   <div class="topbar">
-    <div class="tb-label">Vücut Takibi</div>
-    <h1><em>Ölçüm</em> 📊</h1>
-    <div class="tb-sub">Haziran hedefi: 57–58 kg</div>
+    <div class="tb-label">Body Tracking</div>
+    <h1><em>Metrics</em> 📊</h1>
+    <div class="tb-sub">June target: 57–58 kg</div>
   </div>
   <div class="card">
-    <div class="ch"><h3>Haziran Hedefi</h3></div>
+    <div class="ch"><h3>June Goal</h3></div>
     <div class="cb">
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">79.65</div>
-        <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
+        <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · now</div>
       </div>
       <div class="pw">
         <div class="plbls"><span>81.1 kg</span><span>57 kg</span></div>
@@ -381,56 +381,56 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     </div>
   </div>
   <div class="sgrid" id="sgrid"></div>
-  <div class="slbl">Pazartesi Ölçümü</div>
+  <div class="slbl">Pazartesi Metricsü</div>
   <div class="card">
     <div class="cb">
       <div class="upzone" onclick="document.getElementById('rinp').click()">
         <input type="file" id="rinp" accept="image/*" multiple onchange="handleUp(event)">
         <div class="upicon">📱</div>
-        <div class="uptxt"><strong>Renpho ekran görüntüsü yükle</strong><br>Haftada bir Pazartesi sabahı</div>
+        <div class="uptxt"><strong>Upload Renpho screenshot</strong><br>Once a week, Monday morning</div>
       </div>
       <div id="rprev" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"></div>
-      <button class="btn bp bfull" style="margin-top:12px;" onclick="analyzeR()" id="abtn" disabled>🤖 AI Analiz Et</button>
+      <button class="btn bp bfull" style="margin-top:12px;" onclick="analyzeR()" id="abtn" disabled>🤖 AI Analysis</button>
       <div id="rres"></div>
     </div>
   </div>
-  <div class="slbl">Ölçüm Ekle</div>
+  <div class="slbl">Metrics Ekle</div>
   <div class="card">
     <div class="cb">
       <div class="fgrid">
-        <div class="fr"><label>Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="79.6"></div>
-        <div class="fr"><label>Vücut Yağı (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
-        <div class="fr"><label>Kas Kitlesi (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
-        <div class="fr"><label>Bel (cm)</label><input type="number" id="mwa" step="0.5" placeholder="84"></div>
-        <div class="fr"><label>Kalça (cm)</label><input type="number" id="mh" step="0.5" placeholder="110"></div>
-        <div class="fr"><label>Uyluk (cm)</label><input type="number" id="mt" step="0.5" placeholder="65"></div>
+        <div class="fr"><label>Weight (kg)</label><input type="number" id="mw" step="0.1" placeholder="79.6"></div>
+        <div class="fr"><label>Body Fat (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
+        <div class="fr"><label>Muscle Mass (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
+        <div class="fr"><label>Waist (cm)</label><input type="number" id="mwa" step="0.5" placeholder="84"></div>
+        <div class="fr"><label>Hip (cm)</label><input type="number" id="mh" step="0.5" placeholder="110"></div>
+        <div class="fr"><label>Thigh (cm)</label><input type="number" id="mt" step="0.5" placeholder="65"></div>
       </div>
-      <button class="btn bp bfull" onclick="saveM()">💾 Kaydet</button>
+      <button class="btn bp bfull" onclick="saveM()">💾 Save</button>
     </div>
   </div>
-  <div class="slbl">Geçmiş</div>
+  <div class="slbl">History</div>
   <div class="card"><div class="cb" id="mhist" style="overflow-x:auto;"></div></div>
   <div style="height:8px;"></div>
 </div>
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
-  <button class="nb active" onclick="showP('takvim',this)"><span class="ni">📅</span><span class="nl">Takvim</span></button>
-  <button class="nb" onclick="showP('diyet',this)"><span class="ni">🥩</span><span class="nl">Diyet</span></button>
-  <button class="nb" onclick="showP('egzersiz',this)"><span class="ni">💪</span><span class="nl">Egzersiz</span></button>
-  <button class="nb" onclick="showP('cilt',this)"><span class="ni">✨</span><span class="nl">Cilt</span></button>
-  <button class="nb" onclick="showP('olcum',this)"><span class="ni">📊</span><span class="nl">Ölçüm</span></button>
+  <button class="nb active" onclick="showP('takvim',this)"><span class="ni">📅</span><span class="nl">Calendar</span></button>
+  <button class="nb" onclick="showP('diyet',this)"><span class="ni">🥩</span><span class="nl">Diet</span></button>
+  <button class="nb" onclick="showP('egzersiz',this)"><span class="ni">💪</span><span class="nl">Workout</span></button>
+  <button class="nb" onclick="showP('cilt',this)"><span class="ni">✨</span><span class="nl">Skin</span></button>
+  <button class="nb" onclick="showP('olcum',this)"><span class="ni">📊</span><span class="nl">Metrics</span></button>
 </nav>
 
 <!-- FOOD ALTS MODAL -->
 <div class="mo" id="food-alts-modal">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3 id="food-alts-title">Alternatif Seç 🥩</h3>
-    <div class="msub">Makrona uygun carnivore alternatifleri. Seçince o gün için kaydedilir.</div>
+    <h3 id="food-alts-title">Pick Alternative 🥩</h3>
+    <div class="msub">Carnivore alternatives matched to your macros. Saved for that day.</div>
     <div id="food-alts-list"></div>
     <div class="macts">
-      <button class="btn bghost" style="flex:1;" onclick="closeM('food-alts-modal')">İptal</button>
+      <button class="btn bghost" style="flex:1;" onclick="closeM('food-alts-modal')">Cancel</button>
     </div>
   </div>
 </div>
@@ -442,24 +442,42 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="gif-title" id="gif-title"></div>
     <div class="gif-muscles" id="gif-muscles"></div>
     <div class="gif-img-wrap">
-      <div class="gif-loading" id="gif-loading">⏳ Yükleniyor...</div>
+      <div class="gif-loading" id="gif-loading">⏳ Loading...</div>
       <img id="gif-img" src="" alt="" style="display:none;" onload="gifLoaded()" onerror="gifError()">
     </div>
     <div class="gif-how" id="gif-how"></div>
-    <button class="gif-close" onclick="closeGif()">Kapat</button>
+    <button class="gif-close" onclick="closeGif()">Close</button>
   </div>
 </div>
 
-<!-- MODAL: Egzersiz Değiştir -->
+<!-- SWAP MODAL -->
 <div class="mo" id="swap-modal">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3>Hareketi Değiştir 🔄</h3>
+    <h3>Swap Exercise 🔄</h3>
     <div class="msub" id="swap-sub"></div>
-    <div id="swap-alts"></div>
+
+    <!-- GIF -->
+    <div id="swap-gif-wrap" style="width:100%;background:var(--surface2);border-radius:var(--r);overflow:hidden;min-height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;">
+      <div id="swap-gif-loading" style="font-size:13px;color:var(--text-light);">⏳ Loading animation...</div>
+      <img id="swap-gif-img" src="" alt="" style="width:100%;max-height:200px;object-fit:contain;display:none;"
+        onload="document.getElementById('swap-gif-loading').style.display='none';this.style.display='block';"
+        onerror="document.getElementById('swap-gif-loading').textContent='🎬 Animation not found';">
+    </div>
+
+    <!-- Öneri kartı -->
+    <div id="swap-current-alt" style="border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;background:var(--pink-pale);margin-bottom:12px;"></div>
+
+    <!-- Navigasyon -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <button class="btn bghost bsm" onclick="prevAlt()">‹ Prev</button>
+      <span id="swap-counter" style="font-size:12px;color:var(--text-light);"></span>
+      <button class="btn bghost bsm" onclick="nextAlt()">Next ›</button>
+    </div>
+
     <div class="macts">
-      <button class="btn bghost" style="flex:1;" onclick="closeM('swap-modal')">İptal</button>
-      <button class="btn bp" style="flex:2;" onclick="confirmSwap()">Değiştir</button>
+      <button class="btn bghost" style="flex:1;" onclick="closeM('swap-modal')">Cancel</button>
+      <button class="btn bp" style="flex:2;" onclick="confirmSwap()">✓ Select This</button>
     </div>
   </div>
 </div>
@@ -470,18 +488,18 @@ const PER={last:new Date('2026-03-03'),cyc:27,dur:5};
 function ci(d=new Date()){
   const days=Math.floor((d-PER.last)/86400000);
   const day=((days%PER.cyc)+PER.cyc)%PER.cyc+1;
-  if(day<=PER.dur)return{day,phase:'Menstrüasyon',emoji:'🔴',cls:'np'};
-  if(day<=13)return{day,phase:'Foliküler Faz',emoji:'🌱',cls:'ns'};
-  if(day<=16)return{day,phase:'Ovülasyon',emoji:'🌸',cls:'ng'};
-  return{day,phase:'Luteal Faz',emoji:'🌙',cls:'nm'};
+  if(day<=PER.dur)return{day,phase:'Menstruation',emoji:'🔴',cls:'np'};
+  if(day<=13)return{day,phase:'Follicular Phase',emoji:'🌱',cls:'ns'};
+  if(day<=16)return{day,phase:'Ovulation',emoji:'🌸',cls:'ng'};
+  return{day,phase:'Luteal Phase',emoji:'🌙',cls:'nm'};
 }
 const inP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day<=PER.dur;};
 const preP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day>=(PER.cyc-4);};
 
 // SPLITS
-const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Kalça · Bacak · Core'},2:{n:'Push',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Arka Bacak · Kalça · Core'},4:{n:'Pull',e:'🏋️',f:'Sırt · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Tam Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Omuz · Kol · Core'}};
+const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Glutes · Legs · Core'},2:{n:'Push',e:'💪',f:'Chest · Shoulder · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Hamstrings · Glutes · Core'},4:{n:'Pull',e:'🏋️',f:'Back · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Full Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Shoulders · Arms · Core'}};
 
-// GIF URL'leri — ExerciseDB ve Wger'dan halka açık animasyonlar
+// GIF URLs — public animations from ExerciseDB and Wger
 const GIFS={
   sq:'https://v2.exercisedb.io/image/5lL0G8sV0s9FZC',
   lp:'https://v2.exercisedb.io/image/v27cS3UDuKJW1k',
@@ -521,7 +539,7 @@ const GIFS={
   rt:'https://v2.exercisedb.io/image/zFoBpTKkNXvqMW',
 };
 
-// Wger API'dan GIF çek (fallback)
+// Fetch GIF from Wger API (fallback)
 async function fetchWgerGif(exName) {
   try {
     const q = encodeURIComponent(exName.split('(')[0].trim().toLowerCase());
@@ -548,7 +566,7 @@ function openGif(exId, exName, muscles, howText) {
   document.getElementById('gif-overlay').classList.add('open');
 
   const img = document.getElementById('gif-img');
-  // Wger API'dan GIF çek
+  // Fetch GIF from Wger API
   fetchWgerGif(exName).then(url => {
     if (url) {
       img.src = url;
@@ -564,7 +582,7 @@ function gifLoaded() {
 }
 
 function gifError() {
-  document.getElementById('gif-loading').textContent = '🎬 Animasyon yüklenemedi. YouTube\'da ara:';
+  document.getElementById('gif-loading').textContent = '🎬 Animation not found. Search on YouTube:';
   document.getElementById('gif-loading').style.display = 'flex';
   document.getElementById('gif-loading').style.flexDirection = 'column';
   document.getElementById('gif-loading').style.gap = '8px';
@@ -578,65 +596,65 @@ function closeGif() {
 
 const EX={
 1:[
-{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Ön uyluk','Kalça'],h:'Barı omzuna al. Ayaklar omuz genişliğinde. Kalçanı arkaya gönder. Uyluklar yere paralel olunca kalk.',y:'smith machine squat form'},
-{id:'lp',n:'Leg Press',s:'4×15',m:['Ön uyluk','Kalça'],h:'Sırtın platforma yaslanmış. 90 dereceye in, topuklarından it. Dizler kilitlenmesin.',y:'leg press proper form'},
-{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Dış kalça','Glute medius'],h:'Pedleri dışarı it. Kontrollü geri gel. Tepe noktada 1 sn tut.',y:'hip abductor machine form'},
-{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü, kalçana bant tak. Topuklardan ite, kalçanı kaldır. Tepe 2 sn sık.',y:'glute bridge band form'},
-{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Ön uyluk','Kalça'],h:'Her elde dumbbell. Büyük adım geriye. İki diz 90 derece. Ön topuktan ite geri gel.',y:'reverse lunge dumbbell'},
-{id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Diz çök. Halatı başının yanında tut. Core\'u bükerek eğil. Kalça sabit.',y:'cable crunch abs form'},
+{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Quads','Hip'],h:'Place bar on shoulders. Feet shoulder-width. Push hips back. Lower until thighs are parallel.',y:'smith machine squat form'},
+{id:'lp',n:'Leg Press',s:'4×15',m:['Quads','Hip'],h:'Back flat on pad. Lower to 90 degrees, push through heels. Do not lock knees.',y:'leg press proper form'},
+{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Outer glutes','Glute medius'],h:'Push pads outward. Controlled return. Hold 1 sec at top.',y:'hip abductor machine form'},
+{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Hip','Hamstrings'],h:'Lie on back, band around hips. Drive through heels. Squeeze glutes 2 sec at top.',y:'glute bridge band form'},
+{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Quads','Hip'],h:'Dumbbells in each hand. Big step back. Both knees 90 degrees. Push from front heel.',y:'reverse lunge dumbbell'},
+{id:'cc',n:'Cable Crunch',s:'4×15',m:['Abs','Core'],c:1,h:'Diz çök. Halatı başının yanında tut. Core'u bükerek eğil. Hip sabit.',y:'cable crunch abs form'},
 ],2:[
-{id:'dbp',n:'İnkline Dumbbell Press',s:'4×12',m:['Üst göğüs','Omuz'],h:'45 derece bank. Dirsekler 45 açılı. Tepe noktada sık.',y:'incline dumbbell press'},
-{id:'lr',n:'Lateral Raise',s:'4×15',m:['Orta omuz'],h:'Kolları T\'ye kaldır. Deltayı çalıştır. 2 sn tepe.',y:'lateral raise proper form'},
-{id:'fr',n:'Front Raise',s:'3×12',m:['Ön omuz'],h:'Öne omuz hizasına kaldır. Kontrollü ini.',y:'dumbbell front raise'},
-{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Omuz','Triceps'],h:'Başın üzerine it. Core sık, bel düz.',y:'dumbbell shoulder press'},
-{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit. Aşağı it, tepe noktada sık.',y:'tricep cable pushdown'},
-{id:'hkr',n:'Hanging Knee Raise',s:'4×15',m:['Alt karın','Core'],c:1,h:'Bardan asıl. Dizleri göğse çek. Salınma yapma.',y:'hanging knee raise abs'},
+{id:'dbp',n:'Incline Dumbbell Press',s:'4×12',m:['Upper chest','Shoulders'],h:'45 degree bench. Elbows at 45. Squeeze at top.',y:'incline dumbbell press'},
+{id:'lr',n:'Lateral Raise',s:'4×15',m:['Mid deltoid'],h:'Raise arms to T. Work the deltoid. 2 sec at top.',y:'lateral raise proper form'},
+{id:'fr',n:'Front Raise',s:'3×12',m:['Front deltoid'],h:'Raise to shoulder height. Controlled descent.',y:'dumbbell front raise'},
+{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Shoulders','Triceps'],h:'Press overhead. Brace core, keep back flat.',y:'dumbbell shoulder press'},
+{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Elbows locked. Push down, squeeze at bottom.',y:'tricep cable pushdown'},
+{id:'hkr',n:'Hanging Knee Raise',s:'4×15',m:['Lower abs','Core'],c:1,h:'Hang from bar. Pull knees to chest. No swinging.',y:'hanging knee raise abs'},
 ],3:[
-{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Dizler hafif bükülü. Kalçayı geriye gönder. Dumbbelllar bacak boyunca kayar. SIRT DÜZ.',y:'romanian deadlift dumbbell'},
-{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstring'],h:'Topukları kalçaya çek. Kontrollü in.',y:'lying leg curl machine'},
-{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['İç uyluk','Kalça'],h:'Ayaklar geniş, parmaklar dışa. Ortada dumbbell. Dik dur.',y:'sumo squat dumbbell'},
-{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Kalça','Glute'],h:'Bileğe sabitle. Bacağı geriye ve yukarıya it. Kalçayı sık.',y:'cable kickback glutes'},
-{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Baldır'],h:'Sadece parmak uçları platformda. Tepe 2 sn.',y:'leg press calf raise'},
-{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Oblique'],c:1,h:'Kablo yanında dur. Göğüs hizasında öne it. Döndürme.',y:'pallof press core'},
+{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstrings','Hip'],h:'Slight knee bend. Push hips back. Dumbbells slide down legs. BACK STRAIGHT.',y:'romanian deadlift dumbbell'},
+{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstrings'],h:'Curl heels to glutes. Controlled release.',y:'lying leg curl machine'},
+{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['Inner thigh','Hip'],h:'Wide stance, toes out. Dumbbell in center. Stay upright.',y:'sumo squat dumbbell'},
+{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Hip','Glute'],h:'Attach to ankle. Kick leg back and up. Squeeze glute.',y:'cable kickback glutes'},
+{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Calves'],h:'Only toes on platform. Hold 2 sec at top.',y:'leg press calf raise'},
+{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Oblique'],c:1,h:'Stand beside cable. Press straight out at chest height. No rotation.',y:'pallof press core'},
 ],4:[
-{id:'lat',n:'Lat Pulldown (Geniş)',s:'4×12',m:['Sırt','Lat','Biceps'],h:'Göğsüne çek. Kürek kemiklerini birleştir. Yavaş bırak.',y:'lat pulldown wide grip'},
-{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Orta sırt','Biceps'],h:'Göbeğine çek. Omurga dik. Kürek birleştir.',y:'seated cable row form'},
-{id:'fp',n:'Face Pull',s:'3×15',m:['Arka omuz'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda.',y:'face pull cable form'},
-{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Sırt','Biceps'],h:'Bankta destekle. Kalçana doğru çek. Sırt kasını hisset.',y:'single arm dumbbell row'},
-{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Dirsekler sabit. Tepe 1 sn sık.',y:'dumbbell bicep curl form'},
-{id:'abw',n:'Ab Wheel Rollout',s:'3×10',m:['Core','Karın'],c:1,h:'Dizlerde. Öne yuvarla, bel çökmeden. Kasıtla geri çek.',y:'ab wheel rollout beginner'},
+{id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×12',m:['Back','Lat','Biceps'],h:'Pull to chest. Squeeze shoulder blades. Slow release.',y:'lat pulldown wide grip'},
+{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Mid back','Biceps'],h:'Pull to navel. Spine straight. Squeeze shoulder blades.',y:'seated cable row form'},
+{id:'fp',n:'Face Pull',s:'3×15',m:['Rear deltoid'],h:'Cable at face height. Pull to ears. Elbows high.',y:'face pull cable form'},
+{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Back','Biceps'],h:'Support on bench. Pull toward hip. Feel your back muscle.',y:'single arm dumbbell row'},
+{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Elbows locked. Squeeze 1 sec at top.',y:'dumbbell bicep curl form'},
+{id:'abw',n:'Ab Wheel Rollout',s:'3×10',m:['Core','Abs'],c:1,h:'On knees. Roll forward without dropping hips. Pull back with core.',y:'ab wheel rollout beginner'},
 ],5:[
-{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Kalça','Glute max','Hamstring'],h:'Sırtı banka daya. Barbell kalça çukuruna (ped koy!). Topuklardan it. Tepe 2 sn sık.',y:'hip thrust barbell form'},
-{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Kalça','Core'],h:'Bir bacak havada. Tek bacakla hip thrust.',y:'single leg hip thrust'},
-{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Arka omuz','Üst sırt'],h:'Bandı öne uzat. T şeklinde aç. Kürek kemiklerini birleştir.',y:'band pull apart form'},
-{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Derin karın (TVA)'],c:1,h:'Nefes ver, karnı içeri ve yukarı çek. Göbeği omurgaya götür. 30 sn tut. Göbek için en etkili!',y:'stomach vacuum exercise'},
-{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Kalçayı geriye gönder. Sırt DÜZ. Kalçayı sıkarak dik dur.',y:'dumbbell deadlift form'},
-{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Side plank 3) Shoulder tap. Her sette farklı.',y:'plank variations core'},
+{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Hip','Glute max','Hamstrings'],h:'Upper back on bench. Barbell in hip crease (use pad!). Drive through heels. Hold 2s at top.',y:'hip thrust barbell form'},
+{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Hip','Core'],h:'One leg raised. Single-leg hip thrust.',y:'single leg hip thrust'},
+{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Rear deltoid','Upper back'],h:'Hold band in front. Open to T shape. Squeeze shoulder blades.',y:'band pull apart form'},
+{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Deep core (TVA)'],c:1,h:'Exhale, pull belly in and up toward spine. Hold 30 sec. Best for shrinking waist!',y:'stomach vacuum exercise'},
+{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstrings','Hip'],h:'Push hips back. BACK STRAIGHT. Squeeze glutes to stand tall.',y:'dumbbell deadlift form'},
+{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Shoulders'],c:1,h:'1) Standard plank 2) Side plank 3) Shoulder tap. Different each set.',y:'plank variations core'},
 ],6:[
-{id:'arn',n:'Arnold Press',s:'4×12',m:['Tüm omuz'],h:'Çene önünde avuçlar sana baksın. Kaldırırken döndür, tepe noktada avuçlar öne.',y:'arnold press dumbbell'},
-{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Üst trapez','Ön omuz'],h:'Dar tutuş, çen altına çek. Dirsekler dışa ve yukarıya.',y:'upright row cable form'},
-{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Avuç içi içe dönük. Dirsek sabit. Yavaşça in.',y:'hammer curl form'},
-{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Bankta yat. Barı alnına doğru indir. Dirsekler sabit yukarıda.',y:'skull crusher ez bar'},
-{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Orta omuz'],h:'15 tekrar normal, hemen yarıya geç 15 daha.',y:'lateral raise drop set'},
-{id:'rt',n:'Russian Twist (Ağırlıklı)',s:'4×20',m:['Oblique','Core'],c:1,h:'Dizler bükülü, sırt hafif arkada. Sağa-sola dön.',y:'russian twist weighted'},
+{id:'arn',n:'Arnold Press',s:'4×12',m:['Full shoulder'],h:'Palms facing you at chin. Rotate as you press up, palms forward at top.',y:'arnold press dumbbell'},
+{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Upper traps','Front deltoid'],h:'Narrow grip, pull to chin. Elbows out and up.',y:'upright row cable form'},
+{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Neutral grip. Elbow locked. Slow descent.',y:'hammer curl form'},
+{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Lie on bench. Lower bar toward forehead. Elbows fixed overhead.',y:'skull crusher ez bar'},
+{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Mid deltoid'],h:'15 reps at full weight, immediately drop to half weight for 15 more.',y:'lateral raise drop set'},
+{id:'rt',n:'Russian Twist (Weighted)',s:'4×20',m:['Oblique','Core'],c:1,h:'Knees bent, lean back slightly. Rotate side to side.',y:'russian twist weighted'},
 ]};
 
-const CD={1:{n:'Kalça & Bacak Soğuma',d:'Butterfly stretch · Pigeon pose · Quad stretch',y:'hip glute cooldown stretch'},2:{n:'Göğüs & Omuz Soğuma',d:'Göğüs açma · Omuz germe · Tricep stretch',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Kalça Soğuma',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Sırt & Kol Soğuma',d:'Lat stretch · Child pose · Bicep stretch',y:'back bicep cooldown stretch'},5:{n:'Glute & Core Soğuma',d:'Pigeon pose · Supine twist · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Omuz & Kol Soğuma',d:'Overhead tricep · Cross-body omuz · Wrist stretch',y:'shoulder arm cooldown stretch'}};
+const CD={1:{n:'Glutes & Legs Cooldown',d:'Butterfly stretch · Pigeon pose · Quad stretch',y:'hip glute cooldown stretch'},2:{n:'Chest & Shoulder Cooldown',d:'Chest opener · Shoulder stretch · Tricep stretch',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Hip Cooldown',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Back & Arms Cooldown',d:'Lat stretch · Child pose · Bicep wall stretch',y:'back bicep cooldown stretch'},5:{n:'Glute & Core Cooldown',d:'Pigeon pose · Supine twist · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Shoulder & Arms Cooldown',d:'Overhead tricep · Cross-body shoulder · Wrist stretch',y:'shoulder arm cooldown stretch'}};
 
-// DİYET
-const M1=[{n:'200g Dana Kıyma Köfte',i:'🥩',p:40,f:28,k:420},{n:'250g Izgara Kuzu Pirzola',i:'🍖',p:45,f:30,k:460},{n:'200g Somon Fileto',i:'🐟',p:40,f:26,k:390},{n:'3 Yumurta + 150g Dana Antrikot',i:'🥚',p:42,f:30,k:440},{n:'200g Tavuk But',i:'🍗',p:44,f:18,k:360},{n:'200g Dana Kaburga',i:'🥩',p:36,f:34,k:460},{n:'250g Levrek/Çipura',i:'🐟',p:42,f:14,k:300}];
-const M1S=[{n:'3 Yumurta (haşlama)',i:'🥚',p:18,f:15,k:210},{n:'2 Yumurta (sahanda)',i:'🍳',p:12,f:18,k:210},{n:'100g Hellim (ızgara)',i:'🧀',p:16,f:20,k:240},{n:'150g Beyaz Peynir',i:'🧀',p:18,f:22,k:280},{n:'100g Pastırma',i:'🥩',p:20,f:12,k:190},{n:'100g Sucuk',i:'🌭',p:14,f:26,k:290},{n:'2 Yumurta + 50g Pastırma',i:'🍳',p:22,f:18,k:255}];
-const M2=[{n:'250g Dana Antrikot',i:'🥩',p:48,f:32,k:490},{n:'300g Izgara Bonfile',i:'🥩',p:58,f:22,k:440},{n:'200g Kuzu Tandır',i:'🍖',p:42,f:28,k:420},{n:'250g Dana Karaciğer',i:'🫀',p:46,f:18,k:380},{n:'300g Rib Eye Steak',i:'🥩',p:54,f:36,k:560},{n:'250g T-Bone Steak',i:'🥩',p:52,f:30,k:490},{n:'200g Dana Dil',i:'🥩',p:38,f:32,k:440}];
+// DIET
+const M1=[{n:'200g Ground Beef Patties',i:'🥩',p:40,f:28,k:420},{n:'250g Grilled Lamb Chops',i:'🍖',p:45,f:30,k:460},{n:'200g Salmon Fillet',i:'🐟',p:40,f:26,k:390},{n:'3 Eggs + 150g Beef Ribeye',i:'🥚',p:42,f:30,k:440},{n:'200g Chicken Thighs',i:'🍗',p:44,f:18,k:360},{n:'200g Beef Ribs',i:'🥩',p:36,f:34,k:460},{n:'250g Sea Bass/Bream',i:'🐟',p:42,f:14,k:300}];
+const M1S=[{n:'3 Boiled Eggs',i:'🥚',p:18,f:15,k:210},{n:'2 Fried Eggs',i:'🍳',p:12,f:18,k:210},{n:'100g Grilled Halloumi',i:'🧀',p:16,f:20,k:240},{n:'150g White Cheese',i:'🧀',p:18,f:22,k:280},{n:'100g Pastirma (Cured Beef)',i:'🥩',p:20,f:12,k:190},{n:'100g Spicy Beef Sausage',i:'🌭',p:14,f:26,k:290},{n:'2 Eggs + 50g Pastirma',i:'🍳',p:22,f:18,k:255}];
+const M2=[{n:'250g Beef Ribeye',i:'🥩',p:48,f:32,k:490},{n:'300g Grilled Beef Tenderloin',i:'🥩',p:58,f:22,k:440},{n:'200g Slow-Roast Lamb',i:'🍖',p:42,f:28,k:420},{n:'250g Beef Liver',i:'🫀',p:46,f:18,k:380},{n:'300g Rib Eye Steak',i:'🥩',p:54,f:36,k:560},{n:'250g T-Bone Steak',i:'🥩',p:52,f:30,k:490},{n:'200g Beef Tongue',i:'🥩',p:38,f:32,k:440}];
 
-// CİLT
-const SM=['Tea Tree Foaming Face Wash','COSRX 6 Peptide Skin Booster (nemli cilde)','Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)','Florence Bio C Vitamini Serumu','Medicube Collagen Jelly Cream','COSRX SPF50 PA++++ (evde bile!)'];
+// SKIN
+const SM=['Tea Tree Foaming Face Wash','COSRX 6 Peptide Skin Booster (on damp skin)','Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)','Florence Bio Vitamin C Serum','Medicube Collagen Jelly Cream','COSRX SPF50 PA++++ (even indoors!)'];
 const SEB=['Garnier BHA Purifying Cleanser','COSRX 6 Peptide Skin Booster'];
-const SA={1:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},2:{l:'Dinlenme',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},3:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},4:{l:'AHA/BHA Toner',b:'baha',e:'🟣',p:'COSRX AHA/BHA Clarifying Toner',no:'10 dakika beklet, sonra Medicube'},5:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üstüne Bioderma Atoderm Crème Ultra (tampon)'},6:{l:'Dinlenme',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},7:{l:'Sheet Mask',b:'bmask',e:'🎭',p:'Sheet Mask (seçimin)',no:'Maske + Medicube ile bitir'}};
+const SA={1:{l:'Retinol Night',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Layer Bioderma Atoderm Crème Ultra on top (buffer)'},2:{l:'Rest Night',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Moisturiser only'},3:{l:'Retinol Night',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Layer Bioderma Atoderm Crème Ultra on top (buffer)'},4:{l:'AHA/BHA Toner',b:'baha',e:'🟣',p:'COSRX AHA/BHA Clarifying Toner',no:'Leave 10 mins, then Medicube'},5:{l:'Retinol Night',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Layer Bioderma Atoderm Crème Ultra on top (buffer)'},6:{l:'Rest Night',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Moisturiser only'},7:{l:'Sheet Mask',b:'bmask',e:'🎭',p:'Sheet Mask (seçimin)',no:'Mask + finish with Medicube'}};
 
 // STATE
 const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[]};
-const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 // NAV
 function showP(n,b){
@@ -681,41 +699,41 @@ function renderSelDay(){
   const idx=dow%7;
   const m1=M1[idx],ms=M1S[idx],m2=M2[idx];
   const exs=EX[dow]||[];
-  const ea=(per)&&sa.p.includes('Retinol')?{l:'Regl Dönemine Özel',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Bu hafta retinol atla'}:sa;
+  const ea=(per)&&sa.p.includes('Retinol')?{l:'Period Protocol',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
 
-  // Detay içerikleri
+  // Detail content
   const morningType=getMorningType(d);
   const morningExtra = morningType==='coconut'
-    ? {time:'10:00',icon:'🥥',name:'Kahve + Hindistan Cevizi Yağı',detail:'1 tatlı kaşığı · IF bozmaz · Ketoza giriş · ~45 kcal'}
-    : {time:'11:00',icon:'🫒',name:'Zeytinyağı + Sumak Karışımı',detail:'1 yemek kaşığı zeytinyağı + sumak + kaya tuzu + ½ limon · ~120 kcal'};
+    ? {time:'10:00',icon:'🥥',name:'Coffee + Coconut Oil',detail:'1 tsp · Does not break IF · Enters ketosis · ~45 kcal'}
+    : {time:'11:00',icon:'🫒',name:'Olive Oil + Sumac Mix',detail:'1 tbsp olive oil + sumac + rock salt + ½ lemon · ~120 kcal'};
 
-  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Önemli:</b><br>• En az 30 dk, tercihen 1 saat aç karnına bekle<br>• Çay, kahve, süt içme — sadece su<br>• Kalsiyum içeren takviyelerle aynı anda alma</div>`;
-  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">Levotiron'dan en az 1 saat sonra al (08:00).<br>${morningType==='olive'?'<b>Bugün zeytinyağı günü</b> — karışımı da Qalyviz ile aynı saatte alabilirsin.':'Bugün hindistan cevizi günü — Qalyviz sade al.'}</div>`;
-  const morning_detail=`<div style="background:${morningType==='coconut'?'var(--gold-soft)':'var(--sage-soft)'};border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${morningExtra.detail}<br><br><b>IF bozulmuyor</b> — sadece yağ içerdiği için insülin salgılatmıyor.</div>`;
+  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Important:</b><br>• Wait at least 30 min, ideally 1 hour on empty stomach<br>• No tea, coffee, or milk — water only<br>• Do not take alongside calcium supplements</div>`;
+  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">Take at least 1 hour after Levotiron (8am).<br>${morningType==='olive'?'<b>Olive oil day</b> — you can take the mix at the same time as Qalyviz.':'Coconut oil day — take Qalyviz plain.'}</div>`;
+  const morning_detail=`<div style="background:${morningType==='coconut'?'var(--gold-soft)':'var(--sage-soft)'};border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${morningExtra.detail}<br><br><b>Does not break IF</b> — pure fat does not spike insulin.</div>`;
   const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SM.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}</div>`;
-  const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Toplam ${exs.length} hareket · Soğuma unutma!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Dinlenme günü. Hafif yürüyüş veya 15 dk esneme yapabilirsin.</div>`;
-  const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday + Omega-3 + Kolajen yemekle</div></div>`;
-  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${m2.i} ${m2.n}</span><span style="color:var(--gold);font-weight:600;">${m2.k} kcal</span></div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m2.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div></div>`;
-  const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Son adım: COSRX Snail Peptide Eye Cream</div></div>`;
-  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt & eklem desteği</div><div style="padding:4px 0;">💊 <b>Magnezyum</b> — uyku kalitesi & kas gevşemesi</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce al.</div></div>`;
+  const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Total ${exs.length} exercises · Don't skip cooldown!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Rest day. Light walk or 15 min stretching is fine.</div>`;
+  const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Total</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday + Omega-3 + Collagen with meal</div></div>`;
+  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${m2.i} ${m2.n}</span><span style="color:var(--gold);font-weight:600;">${m2.k} kcal</span></div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Total</span><span style="color:var(--gold);font-weight:700;">${m2.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday (2nd) + Creatine with meal · Qalyviz after</div></div>`;
+  const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Last step: COSRX Snail Peptide Eye Cream</div></div>`;
+  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Collagen</b> — skin & joint support</div><div style="padding:4px 0;">💊 <b>Magnesium</b> — sleep quality & muscle relaxation</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Take 30 min before bed.</div></div>`;
 
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
-      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Gün ${c.day}</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Day ${c.day}</span>
     </div>
-    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl dönemi/öncesi:</strong> Cilt bakımında retinol ve AHA/BHA'yı azalt.</div></div></div>`:''}
-    <div class="slbl">⏰ Günlük Program</div>
+    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Period / pre-period:</strong> Reduce retinol and AHA/BHA in skincare.</div></div></div>`:''}
+    <div class="slbl">⏰ Daily Schedule</div>
     <div class="card"><div class="cb"><div class="tl">
-      ${tliX('06:00','💊 Levotiron','Aç karnına · Su ile al','tm',levotiron_detail)}
-      ${tliX('07:00','💊 Qalyviz (1. doz)','1 saat sonra','tm',qalyviz_detail)}
-      ${tliX('07:00','☀️ Sabah Cilt Bakımı','6 adım · SPF son','ts',skin_morning_detail)}
-      ${tliX('08:00','💊 Qalyviz (1. doz)','Levotiron\'dan 1 saat sonra','tm',qalyviz_detail)}
+      ${tliX('07:00','💊 Levotiron','Empty stomach · water only · wait 1 hour','tm',levotiron_detail)}
+      ${tliX('07:15','☀️ Morning Skincare','6 steps · SPF last','ts',skin_morning_detail)}
+      ${tliX('07:30','🫁 Stomach Vacuum','3 × 30 sec · fasted · every single morning','te','<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>No exceptions — every morning.</b><br><br>• Exhale fully, pull navel toward spine<br>• Hold 30 seconds, breathe slowly through nose<br>• 3 sets · 30 sec rest between sets<br><br><span style="color:var(--pink-deep);">⭐ Fasted = maximum effect on deep core (TVA)</span></div>')}
+      ${tliX('08:00','💊 Qalyviz (1st dose)','1 hour after Levotiron','tm',qalyviz_detail)}
       ${tliX(morningExtra.time,morningExtra.icon+' '+morningExtra.name,morningExtra.detail.split('·')[0].trim(),morningType==='coconut'?'tg':'ts',morning_detail)}
-      ${tliX('13:00','🥩 1. Öğün',m1.n+' + '+ms.n,'td',meal1_detail)}
-      ${tliX('17:30','🥩 2. Öğün',m2.n,'td',meal2_detail)}
-      ${tliX('22:30','🌙 Akşam Cilt Bakımı',ea.e+' '+ea.l,'ts',skin_eve_detail)}
-      ${tliX('23:00','💊 Kolajen + Magnezyum','Yatmadan önce','tm',supp_night_detail)}
+      ${tliX('13:00','🥩 1st Meal',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('17:30','🥩 2nd Meal',m2.n,'td',meal2_detail)}
+      ${tliX('22:30','🌙 Evening Skincare',ea.e+' '+ea.l,'ts',skin_eve_detail)}
+      ${tliX('23:00','💊 Collagen + Magnesium','Before bed','tm',supp_night_detail)}
     </div></div></div>`;
 }
 
@@ -746,78 +764,78 @@ function toggleTli(uid){
 }
 
 // ══════════════════════════════════════════
-// SABAH DÖNGÜSÜ (gün aşırı)
+// MORNING CYCLE (alternating days)
 // ══════════════════════════════════════════
-// Başlangıç: 29 Mart 2026 = Gün 1 (hindistan cevizi günü)
+// Start: 29 March 2026 = Day 1 (coconut oil day)
 const MORNING_START = new Date('2026-03-29');
 function getMorningType(date) {
   const diff = Math.floor((date - MORNING_START) / 86400000);
-  return diff % 2 === 0 ? 'coconut' : 'olive'; // çift=hindistan, tek=zeytinyağı
+  return diff % 2 === 0 ? 'coconut' : 'olive'; // even=coconut, odd=olive
 }
 
 // ══════════════════════════════════════════
-// ÖĞÜN ALTERNATİFLERİ (makro uyumlu, ghee/tereyağ dahil)
+// MEAL ALTERNATIVES (macro-matched, ghee/butter included)
 // ══════════════════════════════════════════
-// Her alternatif: {n: isim, i: emoji, p: protein, f: yağ, k: kalori, note: not}
+// Her alternatif: {n: isim, i: emoji, p: protein, f: fat, k: kalori, note: not}
 const ALTS = {
-  // ANA ET ALTERNATİFLERİ (~200-300g, ~38-48g protein)
+  // MAIN MEAT (~200-300g, ~38-48g protein)
   et_ana: [
-    {n:'250g Dana Antrikot (ghee ile)',i:'🥩',p:48,f:34,k:500,note:'Ghee ile mühürle'},
-    {n:'300g Izgara Bonfile',i:'🥩',p:58,f:22,k:440,note:'Kaya tuzu + karabiber'},
-    {n:'250g Kuzu Pirzola (tereyağ ile)',i:'🍖',p:45,f:36,k:510,note:'Tereyağda pişir'},
-    {n:'200g Kuzu Tandır',i:'🍖',p:42,f:28,k:420,note:'Kendi yağında pişmiş'},
-    {n:'250g Dana Kaburga',i:'🥩',p:40,f:38,k:510,note:'Yavaş pişirme ideal'},
-    {n:'200g Dana Karaciğer (soğanlı)',i:'🫀',p:46,f:18,k:380,note:'A vitamini deposu'},
-    {n:'300g Rib Eye Steak',i:'🥩',p:54,f:40,k:580,note:'Mermer yağlı, lezzetli'},
-    {n:'200g Dana Dil (haşlama)',i:'🥩',p:38,f:32,k:440,note:'Kaya tuzu + limon'},
-    {n:'200g Kuzu Böbrek (tereyağ)',i:'🫘',p:36,f:20,k:330,note:'Hızlı pişer'},
-    {n:'250g T-Bone Steak',i:'🥩',p:52,f:32,k:500,note:'Kemikli, kolajen'},
-    {n:'200g Dana Kalp (ghee)',i:'🫀',p:40,f:22,k:370,note:'Koenzim Q10 kaynağı'},
-    {n:'300g Kuzu Kol (fırında)',i:'🍖',p:50,f:34,k:510,note:'Kemikten yağ salar'},
+    {n:'250g Beef Ribeye (with ghee)',i:'🥩',p:48,f:34,k:500,note:'Sear with ghee'},
+    {n:'300g Grilled Beef Tenderloin',i:'🥩',p:58,f:22,k:440,note:'Rock salt + black pepper'},
+    {n:'250g Lamb Chops (with butter)',i:'🍖',p:45,f:36,k:510,note:'Cook in butter'},
+    {n:'200g Slow-Roast Lamb',i:'🍖',p:42,f:28,k:420,note:'Slow cooked in own fat'},
+    {n:'250g Beef Ribs',i:'🥩',p:40,f:38,k:510,note:'Slow cooking is ideal'},
+    {n:'200g Beef Liver (with onions)',i:'🫀',p:46,f:18,k:380,note:'Rich in vitamin A'},
+    {n:'300g Rib Eye Steak',i:'🥩',p:54,f:40,k:580,note:'Marbled fat, delicious'},
+    {n:'200g Boiled Beef Tongue',i:'🥩',p:38,f:32,k:440,note:'Rock salt + lemon'},
+    {n:'200g Lamb Kidney (with butter)',i:'🫘',p:36,f:20,k:330,note:'Cooks quickly'},
+    {n:'250g T-Bone Steak',i:'🥩',p:52,f:32,k:500,note:'Bone-in, collagen-rich'},
+    {n:'200g Beef Heart (with ghee)',i:'🫀',p:40,f:22,k:370,note:'CoQ10 source'},
+    {n:'300g Oven Lamb Shoulder',i:'🍖',p:50,f:34,k:510,note:'Bone releases fat'},
   ],
-  // KÜMES ETİ (~200-250g)
+  // POULTRY (~200-250g)
   kumes: [
-    {n:'250g Tavuk But (derili, ghee)',i:'🍗',p:44,f:28,k:430,note:'Derisi açık kalsın'},
-    {n:'200g Hindi But (tereyağ)',i:'🦃',p:42,f:20,k:360,note:'Büyük porsiyon hissi'},
-    {n:'3 Bıldırcın (bütün)',i:'🐦',p:38,f:24,k:380,note:'Küçük ama besleyici'},
+    {n:'250g Chicken Thighs (skin-on, ghee)',i:'🍗',p:44,f:28,k:430,note:'Keep skin side up'},
+    {n:'200g Turkey Thigh (with butter)',i:'🦃',p:42,f:20,k:360,note:'Large portion feel'},
+    {n:'3 Whole Quail',i:'🐦',p:38,f:24,k:380,note:'Small but nutrient-dense'},
   ],
   // BALIK (~200-250g)
   balik: [
-    {n:'200g Somon Fileto (ghee)',i:'🐟',p:40,f:28,k:410,note:'Omega-3 en yüksek'},
-    {n:'250g Levrek (fırın/ızgara)',i:'🐟',p:42,f:14,k:300,note:'Hafif yağ günleri'},
-    {n:'250g Çipura (tuz kabuğu)',i:'🐟',p:40,f:12,k:280,note:'Temiz protein'},
-    {n:'200g Uskumru (ghee)',i:'🐟',p:38,f:30,k:430,note:'Omega-3 + D vitamini'},
-    {n:'300g Hamsi (taze, ızgara)',i:'🐟',p:42,f:18,k:340,note:'Kılçık dahil yenebilir'},
-    {n:'200g Ton Balığı (taze)',i:'🐟',p:44,f:12,k:300,note:'Konserve değil, taze'},
-    {n:'200g Sardalya (ızgara)',i:'🐟',p:36,f:20,k:340,note:'Kalsiyum + omega-3'},
+    {n:'200g Salmon Fillet (with ghee)',i:'🐟',p:40,f:28,k:410,note:'Highest omega-3'},
+    {n:'250g Sea Bass (baked/grilled)',i:'🐟',p:42,f:14,k:300,note:'Good for lighter fat days'},
+    {n:'250g Sea Bream (salt crust)',i:'🐟',p:40,f:12,k:280,note:'Clean protein'},
+    {n:'200g Mackerel (with ghee)',i:'🐟',p:38,f:30,k:430,note:'Omega-3 + vitamin D'},
+    {n:'300g Fresh Anchovies (grilled)',i:'🐟',p:42,f:18,k:340,note:'Bones are edible'},
+    {n:'200g Fresh Tuna',i:'🐟',p:44,f:12,k:300,note:'Fresh not canned'},
+    {n:'200g Grilled Sardines',i:'🐟',p:36,f:20,k:340,note:'Calcium + omega-3'},
   ],
-  // YUMURTA/SÜT ÜRÜNLERI (yan öğün)
+  // EGGS/DAIRY (side meal)
   yumurta: [
-    {n:'4 Yumurta (sahanda, tereyağ)',i:'🍳',p:24,f:24,k:320,note:'Tereyağda pişir'},
-    {n:'3 Yumurta + 50g Pastırma',i:'🥚',p:28,f:22,k:320,note:'Protein boost'},
-    {n:'3 Yumurta + 30g Tereyağ',i:'🍳',p:18,f:30,k:350,note:'Keto dostu'},
-    {n:'100g Hellim (ızgara)',i:'🧀',p:16,f:20,k:240,note:'Ghee ile kızart'},
-    {n:'150g Beyaz Peynir + 2 Yumurta',i:'🧀',p:26,f:28,k:370,note:'Tuz dikkat'},
-    {n:'100g Pastırma + 2 Yumurta',i:'🥩',p:26,f:20,k:290,note:'Hızlı hazır'},
-    {n:'100g Sucuk + 2 Yumurta',i:'🌭',p:20,f:30,k:350,note:'Baharatlı seçenek'},
-    {n:'150g Kaşar + 2 Yumurta',i:'🧀',p:28,f:30,k:390,note:'Yüksek protein+yağ'},
-    {n:'4 Yumurta (haşlama) + 20g Ghee',i:'🥚',p:24,f:30,k:380,note:'Kolay hazır'},
-    {n:'3 Yumurta + 50g Kavurma',i:'🥩',p:30,f:26,k:370,note:'Kendi yağında kavurma'},
+    {n:'4 Eggs (fried in butter)',i:'🍳',p:24,f:24,k:320,note:'Cook in butter'},
+    {n:'3 Eggs + 50g Pastirma',i:'🥚',p:28,f:22,k:320,note:'Protein boost'},
+    {n:'3 Eggs + 30g Butter',i:'🍳',p:18,f:30,k:350,note:'Keto-friendly'},
+    {n:'100g Grilled Halloumi',i:'🧀',p:16,f:20,k:240,note:'Fry in ghee'},
+    {n:'150g White Cheese + 2 Eggs',i:'🧀',p:26,f:28,k:370,note:'Watch sodium'},
+    {n:'100g Pastirma + 2 Eggs',i:'🥩',p:26,f:20,k:290,note:'Quick to prepare'},
+    {n:'100g Beef Sausage + 2 Eggs',i:'🌭',p:20,f:30,k:350,note:'Spiced option'},
+    {n:'150g Kashkaval + 2 Eggs',i:'🧀',p:28,f:30,k:390,note:'High protein+fat'},
+    {n:'4 Boiled Eggs + 20g Ghee',i:'🥚',p:24,f:30,k:380,note:'Easy to prepare'},
+    {n:'3 Eggs + 50g Kavurma (braised meat)',i:'🥩',p:30,f:26,k:370,note:'Braised in own fat'},
   ],
-  // 2. ÖĞÜN ANA ET
-  et_akşam: [
-    {n:'300g Dana Antrikot (ghee)',i:'🥩',p:58,f:36,k:560,note:'Akşam en iyi seçim'},
-    {n:'350g Izgara Kuzu But',i:'🍖',p:62,f:38,k:590,note:'Büyük porsiyon'},
-    {n:'250g Bonfile (tereyağ)',i:'🥩',p:48,f:24,k:420,note:'Yalın protein'},
-    {n:'300g Kuzu Kaburga',i:'🍖',p:50,f:44,k:600,note:'Kemikten kolajen'},
-    {n:'250g Dana Şekerpare (haşlama)',i:'🥩',p:46,f:30,k:460,note:'Kolajen açısından zengin'},
-    {n:'300g Tavuk But (derili, fırın)',i:'🍗',p:54,f:30,k:490,note:'Büyük porsiyon'},
-    {n:'250g Somon (tereyağ+dereotu)',i:'🐟',p:48,f:32,k:490,note:'Balık günü'},
-    {n:'300g Hindi Kızartma (ghee)',i:'🦃',p:56,f:26,k:470,note:'Düşük yağ versiyonu'},
-    {n:'200g Dana Ciğer (soğan+ghee)',i:'🫀',p:44,f:20,k:370,note:'Demir zengini'},
-    {n:'350g Kuzu Tandır',i:'🍖',p:60,f:38,k:580,note:'Yavaş pişirilmiş'},
-    {n:'250g Rib Eye (ghee+biberiye)',i:'🥩',p:50,f:42,k:580,note:'En lezzetli'},
-    {n:'300g Hamsi (fırın)',i:'🐟',p:52,f:22,k:410,note:'Omega-3 yükleme'},
+  // 2ND MEAL MAIN
+  et_dinner: [
+    {n:'300g Beef Ribeye (with ghee)',i:'🥩',p:58,f:36,k:560,note:'Best choice for dinner'},
+    {n:'350g Grilled Lamb Leg',i:'🍖',p:62,f:38,k:590,note:'Large portion'},
+    {n:'250g Tenderloin (with butter)',i:'🥩',p:48,f:24,k:420,note:'Lean protein'},
+    {n:'300g Lamb Ribs',i:'🍖',p:50,f:44,k:600,note:'Collagen from bone'},
+    {n:'250g Beef Shank (slow boiled)',i:'🥩',p:46,f:30,k:460,note:'Collagen-rich'},
+    {n:'300g Chicken Thighs (skin-on, baked)',i:'🍗',p:54,f:30,k:490,note:'Large portion'},
+    {n:'250g Salmon (butter+dill)',i:'🐟',p:48,f:32,k:490,note:'Fish day'},
+    {n:'300g Turkey Roast (with ghee)',i:'🦃',p:56,f:26,k:470,note:'Lower fat option'},
+    {n:'200g Beef Liver (onion+ghee)',i:'🫀',p:44,f:20,k:370,note:'Iron-rich'},
+    {n:'350g Slow-Roast Lamb',i:'🍖',p:60,f:38,k:580,note:'Slow-cooked'},
+    {n:'250g Rib Eye (ghee+rosemary)',i:'🥩',p:50,f:42,k:580,note:'Most flavourful'},
+    {n:'300g Baked Anchovies',i:'🐟',p:52,f:22,k:410,note:'Omega-3 loading'},
   ],
 };
 
@@ -825,17 +843,17 @@ const ALTS = {
 function getAltList(foodId, slot) {
   if(slot==='m1_main') return ALTS.et_ana;
   if(slot==='m1_side') return ALTS.yumurta;
-  if(slot==='m2_main') return ALTS.et_akşam;
+  if(slot==='m2_main') return ALTS.et_dinner;
   return ALTS.et_ana;
 }
 
-// Seçili öğün takibi
+// Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
 
 function openFoodAlts(foodId, slot, dayKey) {
   const list = getAltList(foodId, slot);
   const current = SEL_MEALS[dayKey+'_'+slot];
-  document.getElementById('food-alts-title').textContent = slot==='m1_side' ? 'Yan öğün değiştir' : slot==='m2_main' ? '2. öğün değiştir' : '1. öğün değiştir';
+  document.getElementById('food-alts-title').textContent = slot==='m1_side' ? 'Swap side meal' : slot==='m2_main' ? 'Swap 2nd meal' : 'Swap 1st meal';
   document.getElementById('food-alts-list').innerHTML = list.map((f,i)=>`
     <div class="alt ${current&&current.n===f.n?'sel':''}" onclick="selectFoodAlt('${foodId}','${slot}','${dayKey}',${i})">
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -858,7 +876,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 }
 
 // ══════════════════════════════════════════
-// DİYET RENDER
+// DIET RENDER
 // ══════════════════════════════════════════
 function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();}
 
@@ -868,24 +886,24 @@ function renderDietDay(){
   const morningType=getMorningType(d);
   document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
 
-  // Regl uyarısı
-  document.getElementById('d-notice').innerHTML=per?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Kalori hedefini 100-150 kcal artırabilirsin. Ekstra protein öncelikli.</div></div>`:'';
+  // Period warning
+  document.getElementById('d-notice').innerHTML=per?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> You can increase calorie target by 100-150 kcal. Prioritise extra protein.</div></div>`:'';
 
-  // Sabah döngüsü bilgisi
+  // Morning cycle info
   const morningExtra = morningType==='coconut'
-    ? {time:'10:00', icon:'🥥', name:'Kahve + Hindistan Cevizi Yağı', detail:'1 tatlı kaşığı hindistan cevizi yağı kahveye ekle', kcal:45, fat:5, protein:0, note:'IF bozmaz · Ketoza giriş'}
-    : {time:'11:00', icon:'🫒', name:'Zeytinyağı + Sumak Karışımı', detail:'1 yemek kaşığı zeytinyağı + sumak + kaya tuzu + ½ limon suyu', kcal:120, fat:14, protein:0, note:'Antiinflamatuar · Qalyviz ile al'};
+    ? {time:'10:00', icon:'🥥', name:'Coffee + Coconut Oil', detail:'Add 1 tsp coconut oil to coffee', kcal:45, fat:5, protein:0, note:'Does not break IF · Enters ketosis'}
+    : {time:'11:00', icon:'🫒', name:'Olive Oil + Sumac Mix', detail:'1 tbsp olive oil + sumac + rock salt + ½ lemon juice', kcal:120, fat:14, protein:0, note:'Anti-inflammatory · Take with Qalyviz'};
 
-  // Yağ günü makro ayarı (2. öğünde yağ biraz azalır)
+  // Fat day macro adjustment (reduce fat in 2nd meal)
   const fatAdj = morningType==='olive' ? 14 : 5;
 
-  // Öğünler (seçili veya varsayılan)
+  // Meals (selected or default)
   const defM1 = M1[idx], defMs = M1S[idx], defM2 = M2[idx];
   const m1 = SEL_MEALS[dayKey+'_m1_main'] || defM1;
   const ms = SEL_MEALS[dayKey+'_m1_side'] || defMs;
   const m2 = SEL_MEALS[dayKey+'_m2_main'] || defM2;
 
-  // Toplam günlük
+  // Daily total
   const totalKcal = morningExtra.kcal + m1.k + ms.k + m2.k;
   const totalP = m1.p + ms.p + m2.p;
   const totalF = morningExtra.fat + m1.f + ms.f + m2.f;
@@ -895,27 +913,27 @@ function renderDietDay(){
     fItemSwap(ms,'m1_side',dayKey)+
     `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-size:13px;font-weight:600;">Meal Total</span>
         <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k} kcal</span>
       </div>
-      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Calciday + Omega-3 + Kolajen yemekle</div>
+      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Calciday + Omega-3 + Collagen with meal</div>
     </div>`;
 
   document.getElementById('m2b').innerHTML=
     fItemSwap(m2,'m2_main',dayKey)+
     `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-size:13px;font-weight:600;">Meal Total</span>
         <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span>
       </div>
-      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağ (${morningExtra.kcal} kcal) nedeniyle bu öğünde ${fatAdj}g daha az yağ hedefle</div>`:''}
-      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div>
+      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağı (${morningExtra.kcal} kcal) morning fat, reduce by ${fatAdj}g g fat in this meal</div>`:''}
+      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2nd) + Creatine with meal · Qalyviz after</div>
     </div>`;
 
   // Supplement timeline
   document.getElementById('supp-tl').innerHTML=`
-    <div class="tli"><div class="tlt">07:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Levotiron</div><div class="tlde">Aç karnına · sadece su</div></div></div>
-    <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1. doz)</div><div class="tlde">Levotiron'dan 1 saat sonra ${morningType==='olive'?'· zeytinyağı karışımını da al':''}</div></div></div>
+    <div class="tli"><div class="tlt">07:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Levotiron</div><div class="tlde">Empty stomach · water only</div></div></div>
+    <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1. doz)</div><div class="tlde">1 hour after Levothyroxine${morningType==='olive'?' · zeytinyağı karışımını da al':''}</div></div></div>
     <div class="tli" style="background:${morningType==='coconut'?'rgba(200,168,136,0.08)':'rgba(139,168,136,0.08)'};border-radius:10px;padding:4px;">
       <div class="tlt">${morningExtra.time}</div><div class="tlline"><div class="tldot" style="border-color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};"></div><div class="tlbar"></div></div>
       <div class="tlc">
@@ -924,9 +942,9 @@ function renderDietDay(){
         <div style="font-size:11px;margin-top:3px;color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};">${morningExtra.note} · ${morningExtra.kcal} kcal · ${morningExtra.fat}g yağ</div>
       </div>
     </div>
-    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün</div><div class="tlde">Calciday + Omega-3 + Kolajen yemekle</div></div></div>
-    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div></div></div>
-    <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Yatmadan önce</div></div></div>`;
+    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün</div><div class="tlde">Calciday + Omega-3 + Collagen with meal</div></div></div>
+    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Calciday (2nd) + Creatine with meal · Qalyviz after</div></div></div>
+    <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Before bed</div></div></div>`;
 
   // Günlük makro özeti
   const macroEl = document.getElementById('d-macro-summary');
@@ -934,8 +952,8 @@ function renderDietDay(){
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);">
       <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalKcal>1550?'var(--pink-deep)':'var(--text)'};">${totalKcal}</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">kcal</div></div>
       <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalP<110?'var(--pink-deep)':'var(--sage)'};">${totalP}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Protein</div></div>
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;">${totalF}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Yağ</div></div>
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--sage);">✓</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">${morningType==='coconut'?'🥥':'🫒'} Döngü</div></div>
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;">${totalF}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Fat</div></div>
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--sage);">✓</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">${morningType==='coconut'?'🥥':'🫒'} Cycle</div></div>
     </div>`;
 }
 
@@ -953,12 +971,12 @@ function fItemSwap(f, slot, dayKey){
   </div>`;
 }
 
-// EGZERSİZ
+// WORKOUT
 function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
-  document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</em>`;
-  document.getElementById('ex-sub').textContent=sp?sp.f:'Aktif dinlenme · Hafif yürüyüş önerilir';
+  document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Rest'}</em>`;
+  document.getElementById('ex-sub').textContent=sp?sp.f:'Rest day · Light walk recommended';
   document.getElementById('e-rest').style.display=sp?'none':'block';
   const list=document.getElementById('e-list');list.innerHTML='';
   if(!sp||!exs){document.getElementById('e-cool').innerHTML='';return;}
@@ -967,7 +985,13 @@ function renderExDay(){
     const dk2=dk+'_'+i,done=S.done[dk2];
     const div=document.createElement('div');div.className='exi';
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
-div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm" onclick="openGif('${ex.id}','${ex.n.replace(/'/g,"\\'")}',${JSON.stringify(ex.m)},'${ex.h.replace(/'/g,"\\'")}')">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div></div>`;
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 How To</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Swap</button></div></div>`;
+    // GIF butonuna event listener ekle
+    const gifBtn = div.querySelector('.gif-btn');
+    if(gifBtn) gifBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      openGif(this.dataset.id, this.dataset.name, this.dataset.muscles.split(','), decodeURIComponent(this.dataset.how));
+    });
     list.appendChild(div);
   });
   const cd=CD[dow];
@@ -975,52 +999,97 @@ div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?
 }
 function toggleEx(h){h.nextElementSibling.classList.toggle('open');}
 function toggleDone(e,k,el){e.stopPropagation();S.done[k]=!S.done[k];localStorage.setItem('done',JSON.stringify(S.done));renderExDay();renderWeekSum();}
+
 function openSwap(idx,dow,dk){
-  S.sTarget={idx,dow,dk};const ex=EX[dow][idx];
-  document.getElementById('swap-sub').textContent=`"${ex.n}" yerine aynı kas grubunu çalıştıran hareket:`;
-  const alts=getAlts(ex);S.sAlts=alts;S.sIdx=null;
-  document.getElementById('swap-alts').innerHTML=alts.map((a,i)=>`<div class="alt" onclick="selAlt(this,${i})"><div class="aname">${a.n} <span style="font-size:11px;color:var(--text-light);">${a.s}</span></div><div class="adesc">${a.m.join(' · ')}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(a.y)}" target="_blank" onclick="event.stopPropagation()" class="ayt">▶ Örnek video</a></div>`).join('');
+  S.sTarget={idx,dow,dk};
+  const ex=EX[dow][idx];
+  document.getElementById('swap-sub').textContent=`"${ex.n}" replaced with same muscle group:`;
+  const alts=getAlts(ex);
+  S.sAlts=alts;
+  S.sIdx=0;
   document.getElementById('swap-modal').classList.add('open');
+  showSwapAlt(0);
 }
-function getAlts(ex){const all=Object.values(EX).flat(),seen=new Set();return all.filter(e=>e.id!==ex.id&&e.m.some(m=>ex.m.includes(m))&&!seen.has(e.id)&&seen.add(e.id)).slice(0,5);}
-function selAlt(el,i){document.querySelectorAll('.alt').forEach(a=>a.classList.remove('sel'));el.classList.add('sel');S.sIdx=i;}
-function confirmSwap(){if(S.sIdx===null)return;const{idx,dk}=S.sTarget;if(!S.swaps[dk])S.swaps[dk]={};S.swaps[dk][idx]=S.sAlts[S.sIdx];localStorage.setItem('swaps',JSON.stringify(S.swaps));closeM('swap-modal');renderExDay();}
+
+function showSwapAlt(idx){
+  const alts=S.sAlts;
+  if(!alts||!alts.length)return;
+  if(idx<0)idx=alts.length-1;
+  if(idx>=alts.length)idx=0;
+  S.sIdx=idx;
+  const a=alts[idx];
+  document.getElementById('swap-counter').textContent=`${idx+1} / ${alts.length}`;
+  document.getElementById('swap-current-alt').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+      <div style="font-size:16px;font-weight:600;color:var(--text);">${a.n}</div>
+      <span style="font-size:12px;color:var(--text-light);background:white;padding:3px 10px;border-radius:20px;">${a.s}</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">${a.m.map(m=>`<span class="mtag">${m}</span>`).join('')}</div>
+    <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">${a.h}</div>`;
+  // GIF yükle
+  const gifImg=document.getElementById('swap-gif-img');
+  const gifLoad=document.getElementById('swap-gif-loading');
+  gifImg.style.display='none';
+  gifLoad.style.display='flex';
+  gifLoad.textContent='⏳ Loading animation...';
+  fetchWgerGif(a.n).then(url=>{
+    if(url){gifImg.src=url;}
+    else{gifLoad.textContent='🎬 Animation not found';}
+  });
+}
+
+function nextAlt(){showSwapAlt(S.sIdx+1);}
+function prevAlt(){showSwapAlt(S.sIdx-1);}
+
+function getAlts(ex){
+  const all=Object.values(EX).flat(),seen=new Set();
+  return all.filter(e=>e.id!==ex.id&&e.m.some(m=>ex.m.includes(m))&&!seen.has(e.id)&&seen.add(e.id)).slice(0,8);
+}
+function confirmSwap(){
+  if(S.sIdx===null)return;
+  const{idx,dk}=S.sTarget;
+  if(!S.swaps[dk])S.swaps[dk]={};
+  S.swaps[dk][idx]=S.sAlts[S.sIdx];
+  localStorage.setItem('swaps',JSON.stringify(S.swaps));
+  closeM('swap-modal');
+  renderExDay();
+}
 function renderWeekSum(){
   const el=document.getElementById('e-week');if(!el)return;
   const today=new Date(),mon=new Date(today);mon.setDate(today.getDate()-today.getDay()+1);
   el.innerHTML=`<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;">${DN.map((dn,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);const sp=SP[d.getDay()],dk=d.toDateString(),exs=EX[d.getDay()]||[],done=exs.filter((_,j)=>S.done[dk+'_'+j]).length,isT=d.toDateString()===today.toDateString();return`<div onclick="S.eD=new Date('${dk}');renderStrip('e-strip',S.eD,dd=>{S.eD=dd;renderExDay();});renderExDay();" style="flex-shrink:0;width:52px;padding:10px 6px;border-radius:14px;background:${isT?'var(--text)':'var(--surface)'};border:1px solid ${isT?'var(--text)':'var(--border)'};text-align:center;cursor:pointer;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:${isT?'rgba(255,255,255,0.6)':'var(--text-light)'};">${dn}</div><div style="font-size:18px;margin:3px 0;">${sp?sp.e:'🛌'}</div><div style="font-size:11px;color:${isT?'rgba(255,255,255,0.7)':'var(--text-light)'};">${sp?done+'/'+exs.length:'-'}</div></div>`;}).join('')}</div>`;
 }
 
-// CİLT
+// SKIN
 function getSkinD(d){const ref=new Date('2026-03-25');return((Math.floor((d-ref)/86400000)%7)+7)%7+1;}
 function renderSkin(){renderStrip('c-strip',S.cD,d=>{S.cD=d;renderSkinDay();});renderSkinDay();renderProds();}
 function renderSkinDay(){
   const d=S.cD,sd=getSkinD(d),c=ci(d),per=inP(d),pre=preP(d);
-  const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Regl Dönemine Özel',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Bu hafta retinol atla'}:sa;
-  document.getElementById('c-notice').innerHTML=(per||pre)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Retinol haftada 1'e indir, AHA/BHA toner atla.</div></div>`:`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.phase} · Gün ${c.day}:</strong> Normal döngü rutinine devam. Döngü günü ${sd}.</div></div>`;
+  const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Period Protocol',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
+  document.getElementById('c-notice').innerHTML=(per||pre)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Reduce retinol to once a week, skip AHA/BHA toner.</div></div>`:`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.phase} · Day ${c.day}:</strong> Continue normal routine. Cycle day ${sd}.</div></div>`;
   document.getElementById('c-active-badge').innerHTML=`<span class="sabadge ${ea.b}">${ea.e} ${ea.l}</span>`;
-  document.getElementById('c-morn').innerHTML=SM.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div>${i===1?'<div class="snote">💧 Nemli cilde sur</div>':i===5?'<div class="snote">☀️ Son adım — evde bile atlatma!</div>':''}</div></div>`).join('');
+  document.getElementById('c-morn').innerHTML=SM.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div>${i===1?'<div class="snote">💧 Apply on damp skin</div>':i===5?'<div class="snote">☀️ Last step — never skip, even indoors!</div>':''}</div></div>`).join('');
   let eh=SEB.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div></div></div>`).join('');
-  eh+=`<div class="sstep" style="background:var(--pink-pale);border-radius:10px;padding:10px;margin-top:6px;"><div class="snum" style="background:var(--pink-soft);">★</div><div><div class="sprod" style="color:var(--pink-deep);">${ea.e} ${ea.l}</div><div class="sprod">${ea.p}</div><div class="snote">${ea.no}</div>${sd===4?'<div class="snote" style="color:var(--pink-deep);font-weight:600;">⏱ 10 dakika beklet!</div>':''}</div></div>`;
+  eh+=`<div class="sstep" style="background:var(--pink-pale);border-radius:10px;padding:10px;margin-top:6px;"><div class="snum" style="background:var(--pink-soft);">★</div><div><div class="sprod" style="color:var(--pink-deep);">${ea.e} ${ea.l}</div><div class="sprod">${ea.p}</div><div class="snote">${ea.no}</div>${sd===4?'<div class="snote" style="color:var(--pink-deep);font-weight:600;">⏱ 10 min wait!</div>':''}</div></div>`;
   if(!ea.p.includes('Retinol')&&!ea.p.includes('Mask'))eh+=`<div class="sstep"><div class="snum">${SEB.length+2}</div><div><div class="sprod">Medicube Collagen Jelly Cream</div></div></div>`;
   document.getElementById('c-eve').innerHTML=eh;
-  document.getElementById('c-brush').innerHTML=[1,3,5].includes(d.getDay())?`<div class="notice ng"><div class="nicon">🫧</div><div><strong>Silikon Fırça Günü:</strong> Sabah temizliğinde kullan.</div></div>`:'';
+  document.getElementById('c-brush').innerHTML=[1,3,5].includes(d.getDay())?`<div class="notice ng"><div class="nicon">🫧</div><div><strong>Silicone Brush Day:</strong> Use during morning cleanse.</div></div>`:'';
 }
 function renderProds(){
-  document.getElementById('c-prods').innerHTML=[{c:'Temizlik',i:['Tea Tree Foaming Face Wash (sabah)','Garnier BHA Purifying Cleanser (akşam)']},{c:'Booster / Toner',i:['COSRX 6 Peptide Skin Booster','COSRX AHA/BHA Clarifying Toner (Gün 4)']},{c:'Serum / Ampoule',i:['Koreaco Brightening Ampoule — Alpha-Arbutin %2 + Niacinamide %10','Florence Bio C Vitamini Serumu']},{c:'Aktifler (Gece)',i:['The Ordinary Retinol %0.2 in Squalane (Gün 1,3,5)']},{c:'Nemlendirici',i:['Medicube Collagen Jelly Cream','Bioderma Atoderm Crème Ultra (retinol geceleri)']},{c:'Güneş Koruyucu',i:['COSRX Ultra-Light Invisible Sunscreen SPF50 PA++++']},{c:'Göz Kremi',i:['COSRX Advanced Snail Peptide Eye Cream (her akşam)']}].map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>`<div style="font-size:13px;padding:5px 0;border-bottom:1px dashed var(--border-soft);">· ${i}</div>`).join('')}</div>`).join('');
+  document.getElementById('c-prods').innerHTML=[{c:'Cleansers',i:['Tea Tree Foaming Face Wash (morning)','Garnier BHA Purifying Cleanser (evening)']},{c:'Booster / Toner',i:['COSRX 6 Peptide Skin Booster','COSRX AHA/BHA Clarifying Toner (Day 4)']},{c:'Serum / Ampoule',i:['Koreaco Brightening Ampoule — Alpha-Arbutin 2% + Niacinamide 10%','Florence Bio Vitamin C Serum']},{c:'Actives (Night)',i:['The Ordinary Retinol 0.2% in Squalane (Day 1,3,5)']},{c:'Moisturisers',i:['Medicube Collagen Jelly Cream','Bioderma Atoderm Crème Ultra (retinol nights)']},{c:'Sun Protection',i:['COSRX Ultra-Light Invisible Sunscreen SPF50 PA++++']},{c:'Eye Cream',i:['COSRX Advanced Snail Peptide Eye Cream (every evening)']}].map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>`<div style="font-size:13px;padding:5px 0;border-bottom:1px dashed var(--border-soft);">· ${i}</div>`).join('')}</div>`).join('');
 }
 
-// ÖLÇÜM
+// METRICS
 function renderMeas(){
   const l=S.meas.length?S.meas[S.meas.length-1]:{weight:79.65,fat:34.1,muscle:49.3,waist:84,hip:110},pr=S.meas.length>1?S.meas[S.meas.length-2]:null;
   const cur=l.weight||79.65;
   document.getElementById('cwbig').textContent=cur.toFixed(2);
   const prog=Math.max(0,Math.min(100,((81.1-cur)/(81.1-57))*100));
   document.getElementById('pbar').style.width=prog+'%';
-  document.getElementById('pnote').textContent=`✓ ${(81.1-cur).toFixed(2)} kg verildi · ${(cur-57).toFixed(2)} kg kaldı`;
-  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Kas Kitlesi',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
+  document.getElementById('pnote').textContent=`✓ ${(81.1-cur).toFixed(2)} kg lost · ${(cur-57).toFixed(2)} kg to go`;
+  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Fatı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Muscle Mass',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Waist',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Hip',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
   const hist=document.getElementById('mhist');
-  hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm eklenmemiş.</p>';
+  hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Date</th><th>Weight</th><th>Fat</th><th>Muscle</th><th>Waist</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">No measurements yet.</p>';
 }
 function handleUp(e){S.rData=[];const p=document.getElementById('rprev');p.innerHTML='';Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{S.rData.push(ev.target.result);const img=document.createElement('img');img.src=ev.target.result;img.style.cssText='width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid var(--border);';p.appendChild(img);document.getElementById('abtn').disabled=false;};r.readAsDataURL(f);});}
 async function analyzeR(){
@@ -1028,10 +1097,10 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 81.1 kg · Hedef: 57-58 kg (Haziran 2026) · Regl: ${c.phase}, Gün ${c.day} · Carnivore IF · Gym: haftada 6 gün (yeni başladı)\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\nAnaliz et: 1) Bu hafta özeti 2) Değişimler 3) Regl etkisi? 4) Ne iyi gidiyor? 5) Dikkat edilmesi gereken? 6) Haziran hedefine ulaşabilir mi?\n\nTürkçe, samimi, kısa yaz.`}]}]})});
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Analyse Renpho measurements.\nStarting weight: 81.1 kg · Target: 57-58 kg (June 2026) · Regl: ${c.phase}, Day ${c.day} · Carnivore IF · Gym: 6 days/week (just started)\n${pr?`Previous: ${pr.weight}kg, %${pr.fat} fat`:''}\n\nAnalyse: 1) This week summary 2) Changes 3) Period effect? 4) What's going well? 5) Watch out for? 6) Can she reach the June target?\n\nWrite in English, honest and concise.`}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
-  catch(e){res.innerHTML=`<div class="aibox">❌ Bağlantı hatası.</div>`;}
-  btn.innerHTML='🤖 Tekrar Analiz Et';btn.disabled=false;
+  catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
+  btn.innerHTML='🤖 Re-analyse';btn.disabled=false;
 }
 function saveM(){
   const m={date:new Date().toLocaleDateString('tr-TR'),weight:parseFloat(document.getElementById('mw').value)||0,fat:parseFloat(document.getElementById('mf').value)||null,muscle:parseFloat(document.getElementById('mm').value)||null,waist:parseFloat(document.getElementById('mwa').value)||null,hip:parseFloat(document.getElementById('mh').value)||null,thigh:parseFloat(document.getElementById('mt').value)||null};
@@ -1061,9 +1130,9 @@ document.getElementById('swap-modal').addEventListener('click',function(e){if(e.
 // INIT
 function init(){
   const today=new Date(),c=ci();
-  const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
-  document.getElementById('cycle-strip-el').innerHTML=`<div class="cstrip"><div class="cicon">${c.emoji}</div><div class="cinfo"><div class="cphase">${c.phase}</div><div class="cdetail">Son regl: 3 Mart · Döngü ~27 gün</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">gün</div></div></div>`;
+  document.getElementById('cycle-strip-el').innerHTML=`<div class="cstrip"><div class="cicon">${c.emoji}</div><div class="cinfo"><div class="cphase">${c.phase}</div><div class="cdetail">Last period: 3 March · Cycle ~27 days</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">day</div></div></div>`;
   if(!S.meas.length){S.meas.push({date:'09.03.2026',weight:79.65,fat:34.1,muscle:49.3,waist:84,hip:110,thigh:65});localStorage.setItem('meas',JSON.stringify(S.meas));}
   renderCal();renderSelDay();
 }
