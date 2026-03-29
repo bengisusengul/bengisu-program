@@ -443,7 +443,10 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="gif-muscles" id="gif-muscles"></div>
     <div class="gif-img-wrap">
       <div class="gif-loading" id="gif-loading">⏳ Loading...</div>
-      <img id="gif-img" src="" alt="" style="display:none;" onload="gifLoaded()" onerror="gifError()">
+      <img id="gif-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;display:none;border-radius:8px;cursor:pointer;" onclick="openYoutube(currentExId)" onload="gifLoaded()" onerror="gifError()">
+      <div id="gif-yt-btn" style="display:none;margin-top:8px;text-align:center;">
+        <button class="btn bsoft bsm" onclick="openYoutube(currentExId)">▶ Watch on YouTube</button>
+      </div>
     </div>
     <div class="gif-how" id="gif-how"></div>
     <button class="gif-close" onclick="closeGif()">Close</button>
@@ -540,21 +543,88 @@ const GIFS={
 };
 
 // Fetch GIF from Wger API (fallback)
+// Sabit GIF URL'leri - her zaman çalışır
+const GIF_MAP = {
+  'sq':    'https://img.youtube.com/vi/U3HlEF_E9fo/hqdefault.jpg',
+  'lp':    'https://img.youtube.com/vi/IZxyjW7MPJQ/hqdefault.jpg',
+  'ab':    'https://img.youtube.com/vi/NcdZdl_XtO0/hqdefault.jpg',
+  'gbr':   'https://img.youtube.com/vi/OUgsJ8-Vi0E/hqdefault.jpg',
+  'rl':    'https://img.youtube.com/vi/xrPteyQLGAo/hqdefault.jpg',
+  'cc':    'https://img.youtube.com/vi/6AmvVyB-mcs/hqdefault.jpg',
+  'dbp':   'https://img.youtube.com/vi/8iPEnn-ltC8/hqdefault.jpg',
+  'lr':    'https://img.youtube.com/vi/3VcKaXpzqRo/hqdefault.jpg',
+  'fr':    'https://img.youtube.com/vi/sOoBM_oKMb0/hqdefault.jpg',
+  'dsp':   'https://img.youtube.com/vi/qEwKCR5JCog/hqdefault.jpg',
+  'tc':    'https://img.youtube.com/vi/2-LAMcpzODU/hqdefault.jpg',
+  'hkr':   'https://img.youtube.com/vi/Pr1ieGZ5atk/hqdefault.jpg',
+  'rdl':   'https://img.youtube.com/vi/7j-2todZHiM/hqdefault.jpg',
+  'lc':    'https://img.youtube.com/vi/ELOCsoDSmrg/hqdefault.jpg',
+  'sumo':  'https://img.youtube.com/vi/3XDriUn0udo/hqdefault.jpg',
+  'kk':    'https://img.youtube.com/vi/BoSBOSVF3vQ/hqdefault.jpg',
+  'cal':   'https://img.youtube.com/vi/gwLzBJYoWlI/hqdefault.jpg',
+  'pall':  'https://img.youtube.com/vi/ArsHiWR7YkY/hqdefault.jpg',
+  'lat':   'https://img.youtube.com/vi/SAiEEhVuDDs/hqdefault.jpg',
+  'cr':    'https://img.youtube.com/vi/GZbfZ033f74/hqdefault.jpg',
+  'fp':    'https://img.youtube.com/vi/0Po47vvj9g4/hqdefault.jpg',
+  'dbrow': 'https://img.youtube.com/vi/roCP6wCXPqo/hqdefault.jpg',
+  'curl':  'https://img.youtube.com/vi/ykJmrZ5v0Oo/hqdefault.jpg',
+  'abw':   'https://img.youtube.com/vi/p7j02V1fIzk/hqdefault.jpg',
+  'ht':    'https://img.youtube.com/vi/LM8XHLYJoYs/hqdefault.jpg',
+  'slht':  'https://img.youtube.com/vi/KP-5KQSQAR0/hqdefault.jpg',
+  'bpa':   'https://img.youtube.com/vi/9zGCvESfDFk/hqdefault.jpg',
+  'vac':   'https://img.youtube.com/vi/EDk7NQRzedg/hqdefault.jpg',
+  'ddb':   'https://img.youtube.com/vi/lJ3NpqSHeS8/hqdefault.jpg',
+  'plk':   'https://img.youtube.com/vi/ASdvN_XEl_c/hqdefault.jpg',
+  'arn':   'https://img.youtube.com/vi/3LXQNV0cO6I/hqdefault.jpg',
+  'upr':   'https://img.youtube.com/vi/jkF0zzDaLd4/hqdefault.jpg',
+  'ham':   'https://img.youtube.com/vi/TwD-YGVP4Bk/hqdefault.jpg',
+  'skull': 'https://img.youtube.com/vi/l3WIBXc_z7I/hqdefault.jpg',
+  'ldrop': 'https://img.youtube.com/vi/3VcKaXpzqRo/hqdefault.jpg',
+  'rt':    'https://img.youtube.com/vi/wkD8rjkodUI/hqdefault.jpg',
+};
+
+// YouTube video ID'leri (embed için)
+const YT_MAP = {
+  'sq':    'U3HlEF_E9fo',
+  'lp':    'IZxyjW7MPJQ',
+  'ab':    'NcdZdl_XtO0',
+  'gbr':   'OUgsJ8-Vi0E',
+  'rl':    'xrPteyQLGAo',
+  'cc':    '6AmvVyB-mcs',
+  'dbp':   '8iPEnn-ltC8',
+  'lr':    '3VcKaXpzqRo',
+  'fr':    'sOoBM_oKMb0',
+  'dsp':   'qEwKCR5JCog',
+  'tc':    '2-LAMcpzODU',
+  'hkr':   'Pr1ieGZ5atk',
+  'rdl':   '7j-2todZHiM',
+  'lc':    'ELOCsoDSmrg',
+  'sumo':  '3XDriUn0udo',
+  'kk':    'BoSBOSVF3vQ',
+  'cal':   'gwLzBJYoWlI',
+  'pall':  'ArsHiWR7YkY',
+  'lat':   'SAiEEhVuDDs',
+  'cr':    'GZbfZ033f74',
+  'fp':    '0Po47vvj9g4',
+  'dbrow': 'roCP6wCXPqo',
+  'curl':  'ykJmrZ5v0Oo',
+  'abw':   'p7j02V1fIzk',
+  'ht':    'LM8XHLYJoYs',
+  'slht':  'KP-5KQSQAR0',
+  'bpa':   '9zGCvESfDFk',
+  'vac':   'EDk7NQRzedg',
+  'ddb':   'lJ3NpqSHeS8',
+  'plk':   'ASdvN_XEl_c',
+  'arn':   '3LXQNV0cO6I',
+  'upr':   'jkF0zzDaLd4',
+  'ham':   'TwD-YGVP4Bk',
+  'skull': 'l3WIBXc_z7I',
+  'ldrop': '3VcKaXpzqRo',
+  'rt':    'wkD8rjkodUI',
+};
+
 async function fetchWgerGif(exName) {
-  try {
-    const q = encodeURIComponent(exName.split('(')[0].trim().toLowerCase());
-    const res = await fetch(`https://wger.de/api/v2/exercise/search/?term=${q}&language=english&format=json`);
-    const data = await res.json();
-    if (data.suggestions && data.suggestions.length > 0) {
-      const exId = data.suggestions[0].data?.id;
-      if (exId) {
-        const r2 = await fetch(`https://wger.de/api/v2/exerciseimage/?exercise_base=${exId}&format=json`);
-        const d2 = await r2.json();
-        if (d2.results && d2.results.length > 0) return d2.results[0].image;
-      }
-    }
-  } catch(e) {}
-  return null;
+  return null; // artık kullanılmıyor
 }
 
 function openGif(exId, exName, muscles, howText) {
@@ -592,6 +662,11 @@ function gifError() {
 function closeGif() {
   document.getElementById('gif-overlay').classList.remove('open');
   document.getElementById('gif-img').src = '';
+  document.getElementById('gif-yt-btn').style.display = 'none';
+}
+function openYoutube(exId) {
+  const ytId = YT_MAP[exId];
+  if (ytId) window.open('https://www.youtube.com/watch?v=' + ytId, '_blank');
 }
 
 const EX={
@@ -1032,10 +1107,13 @@ function showSwapAlt(idx){
   gifImg.style.display='none';
   gifLoad.style.display='flex';
   gifLoad.textContent='⏳ Loading animation...';
-  fetchWgerGif(a.n).then(url=>{
-    if(url){gifImg.src=url;}
-    else{gifLoad.textContent='🎬 Animation not found';}
-  });
+  const gifUrl = GIF_MAP[a.id];
+  if(gifUrl){
+    gifImg.src=gifUrl;
+    gifImg.onclick = ()=>{ const ytId=YT_MAP[a.id]; if(ytId) window.open('https://www.youtube.com/watch?v='+ytId,'_blank'); };
+  } else {
+    gifLoad.textContent='🎬 No preview available';
+  }
 }
 
 function nextAlt(){showSwapAlt(S.sIdx+1);}
