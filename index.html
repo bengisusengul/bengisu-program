@@ -99,6 +99,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .td{background:var(--sage-soft);color:#5a7a57;}
 .ts{background:var(--gold-soft);color:#8a6a30;}
 .te{background:var(--mauve-soft);color:#7a5a70;}
+.tg{background:var(--gold-soft);color:#8a5a20;}
 
 /* NOTICE */
 .notice{border-radius:var(--r-sm);padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;line-height:1.5;}
@@ -303,14 +304,13 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div class="card"><div class="cb" id="m2b"></div></div>
   <div class="slbl">Supplement Zamanlaması</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
-  <div class="slbl">Besin Değiştir</div>
-  <div class="card">
-    <div class="cb">
-      <div class="fr"><label>Değiştirmek istediğin besin</label><select id="fsel"></select></div>
-      <button class="btn bp bfull" onclick="swapFood()">🔄 Carnivore Alternatif Öner</button>
-      <div id="fswap-res"></div>
-    </div>
+
+  <!-- Günlük makro özeti -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="ch"><h3>Günlük Makro Özeti</h3></div>
+    <div class="cb" id="d-macro-summary"></div>
   </div>
+
   <div style="height:8px;"></div>
 </div>
 
@@ -421,6 +421,19 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <button class="nb" onclick="showP('cilt',this)"><span class="ni">✨</span><span class="nl">Cilt</span></button>
   <button class="nb" onclick="showP('olcum',this)"><span class="ni">📊</span><span class="nl">Ölçüm</span></button>
 </nav>
+
+<!-- FOOD ALTS MODAL -->
+<div class="mo" id="food-alts-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3 id="food-alts-title">Alternatif Seç 🥩</h3>
+    <div class="msub">Makrona uygun carnivore alternatifleri. Seçince o gün için kaydedilir.</div>
+    <div id="food-alts-list"></div>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('food-alts-modal')">İptal</button>
+    </div>
+  </div>
+</div>
 
 <!-- GIF MODAL -->
 <div class="gif-overlay" id="gif-overlay">
@@ -671,8 +684,14 @@ function renderSelDay(){
   const ea=(per)&&sa.p.includes('Retinol')?{l:'Regl Dönemine Özel',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Bu hafta retinol atla'}:sa;
 
   // Detay içerikleri
+  const morningType=getMorningType(d);
+  const morningExtra = morningType==='coconut'
+    ? {time:'10:00',icon:'🥥',name:'Kahve + Hindistan Cevizi Yağı',detail:'1 tatlı kaşığı · IF bozmaz · Ketoza giriş · ~45 kcal'}
+    : {time:'11:00',icon:'🫒',name:'Zeytinyağı + Sumak Karışımı',detail:'1 yemek kaşığı zeytinyağı + sumak + kaya tuzu + ½ limon · ~120 kcal'};
+
   const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Önemli:</b><br>• En az 30 dk, tercihen 1 saat aç karnına bekle<br>• Çay, kahve, süt içme — sadece su<br>• Kalsiyum içeren takviyelerle aynı anda alma</div>`;
-  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">Levotiron'dan en az 1 saat sonra al. Sabah ilk dozun bu.</div>`;
+  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">Levotiron'dan en az 1 saat sonra al (08:00).<br>${morningType==='olive'?'<b>Bugün zeytinyağı günü</b> — karışımı da Qalyviz ile aynı saatte alabilirsin.':'Bugün hindistan cevizi günü — Qalyviz sade al.'}</div>`;
+  const morning_detail=`<div style="background:${morningType==='coconut'?'var(--gold-soft)':'var(--sage-soft)'};border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${morningExtra.detail}<br><br><b>IF bozulmuyor</b> — sadece yağ içerdiği için insülin salgılatmıyor.</div>`;
   const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SM.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}</div>`;
   const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Toplam ${exs.length} hareket · Soğuma unutma!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Dinlenme günü. Hafif yürüyüş veya 15 dk esneme yapabilirsin.</div>`;
   const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday + Omega-3 + Kolajen yemekle</div></div>`;
@@ -691,7 +710,8 @@ function renderSelDay(){
       ${tliX('06:00','💊 Levotiron','Aç karnına · Su ile al','tm',levotiron_detail)}
       ${tliX('07:00','💊 Qalyviz (1. doz)','1 saat sonra','tm',qalyviz_detail)}
       ${tliX('07:00','☀️ Sabah Cilt Bakımı','6 adım · SPF son','ts',skin_morning_detail)}
-      ${tliX('11:00',sp?'💪 '+sp.n:'🧘 Aktif Dinlenme',sp?sp.f+' · '+exs.length+' hareket':'Hafif yürüyüş','te',ex_detail)}
+      ${tliX('08:00','💊 Qalyviz (1. doz)','Levotiron\'dan 1 saat sonra','tm',qalyviz_detail)}
+      ${tliX(morningExtra.time,morningExtra.icon+' '+morningExtra.name,morningExtra.detail.split('·')[0].trim(),morningType==='coconut'?'tg':'ts',morning_detail)}
       ${tliX('13:00','🥩 1. Öğün',m1.n+' + '+ms.n,'td',meal1_detail)}
       ${tliX('17:30','🥩 2. Öğün',m2.n,'td',meal2_detail)}
       ${tliX('22:30','🌙 Akşam Cilt Bakımı',ea.e+' '+ea.l,'ts',skin_eve_detail)}
@@ -725,27 +745,212 @@ function toggleTli(uid){
   if(arr)arr.style.transform=open?'rotate(0deg)':'rotate(90deg)';
 }
 
-// DİYET
+// ══════════════════════════════════════════
+// SABAH DÖNGÜSÜ (gün aşırı)
+// ══════════════════════════════════════════
+// Başlangıç: 29 Mart 2026 = Gün 1 (hindistan cevizi günü)
+const MORNING_START = new Date('2026-03-29');
+function getMorningType(date) {
+  const diff = Math.floor((date - MORNING_START) / 86400000);
+  return diff % 2 === 0 ? 'coconut' : 'olive'; // çift=hindistan, tek=zeytinyağı
+}
+
+// ══════════════════════════════════════════
+// ÖĞÜN ALTERNATİFLERİ (makro uyumlu, ghee/tereyağ dahil)
+// ══════════════════════════════════════════
+// Her alternatif: {n: isim, i: emoji, p: protein, f: yağ, k: kalori, note: not}
+const ALTS = {
+  // ANA ET ALTERNATİFLERİ (~200-300g, ~38-48g protein)
+  et_ana: [
+    {n:'250g Dana Antrikot (ghee ile)',i:'🥩',p:48,f:34,k:500,note:'Ghee ile mühürle'},
+    {n:'300g Izgara Bonfile',i:'🥩',p:58,f:22,k:440,note:'Kaya tuzu + karabiber'},
+    {n:'250g Kuzu Pirzola (tereyağ ile)',i:'🍖',p:45,f:36,k:510,note:'Tereyağda pişir'},
+    {n:'200g Kuzu Tandır',i:'🍖',p:42,f:28,k:420,note:'Kendi yağında pişmiş'},
+    {n:'250g Dana Kaburga',i:'🥩',p:40,f:38,k:510,note:'Yavaş pişirme ideal'},
+    {n:'200g Dana Karaciğer (soğanlı)',i:'🫀',p:46,f:18,k:380,note:'A vitamini deposu'},
+    {n:'300g Rib Eye Steak',i:'🥩',p:54,f:40,k:580,note:'Mermer yağlı, lezzetli'},
+    {n:'200g Dana Dil (haşlama)',i:'🥩',p:38,f:32,k:440,note:'Kaya tuzu + limon'},
+    {n:'200g Kuzu Böbrek (tereyağ)',i:'🫘',p:36,f:20,k:330,note:'Hızlı pişer'},
+    {n:'250g T-Bone Steak',i:'🥩',p:52,f:32,k:500,note:'Kemikli, kolajen'},
+    {n:'200g Dana Kalp (ghee)',i:'🫀',p:40,f:22,k:370,note:'Koenzim Q10 kaynağı'},
+    {n:'300g Kuzu Kol (fırında)',i:'🍖',p:50,f:34,k:510,note:'Kemikten yağ salar'},
+  ],
+  // KÜMES ETİ (~200-250g)
+  kumes: [
+    {n:'250g Tavuk But (derili, ghee)',i:'🍗',p:44,f:28,k:430,note:'Derisi açık kalsın'},
+    {n:'200g Hindi But (tereyağ)',i:'🦃',p:42,f:20,k:360,note:'Büyük porsiyon hissi'},
+    {n:'3 Bıldırcın (bütün)',i:'🐦',p:38,f:24,k:380,note:'Küçük ama besleyici'},
+  ],
+  // BALIK (~200-250g)
+  balik: [
+    {n:'200g Somon Fileto (ghee)',i:'🐟',p:40,f:28,k:410,note:'Omega-3 en yüksek'},
+    {n:'250g Levrek (fırın/ızgara)',i:'🐟',p:42,f:14,k:300,note:'Hafif yağ günleri'},
+    {n:'250g Çipura (tuz kabuğu)',i:'🐟',p:40,f:12,k:280,note:'Temiz protein'},
+    {n:'200g Uskumru (ghee)',i:'🐟',p:38,f:30,k:430,note:'Omega-3 + D vitamini'},
+    {n:'300g Hamsi (taze, ızgara)',i:'🐟',p:42,f:18,k:340,note:'Kılçık dahil yenebilir'},
+    {n:'200g Ton Balığı (taze)',i:'🐟',p:44,f:12,k:300,note:'Konserve değil, taze'},
+    {n:'200g Sardalya (ızgara)',i:'🐟',p:36,f:20,k:340,note:'Kalsiyum + omega-3'},
+  ],
+  // YUMURTA/SÜT ÜRÜNLERI (yan öğün)
+  yumurta: [
+    {n:'4 Yumurta (sahanda, tereyağ)',i:'🍳',p:24,f:24,k:320,note:'Tereyağda pişir'},
+    {n:'3 Yumurta + 50g Pastırma',i:'🥚',p:28,f:22,k:320,note:'Protein boost'},
+    {n:'3 Yumurta + 30g Tereyağ',i:'🍳',p:18,f:30,k:350,note:'Keto dostu'},
+    {n:'100g Hellim (ızgara)',i:'🧀',p:16,f:20,k:240,note:'Ghee ile kızart'},
+    {n:'150g Beyaz Peynir + 2 Yumurta',i:'🧀',p:26,f:28,k:370,note:'Tuz dikkat'},
+    {n:'100g Pastırma + 2 Yumurta',i:'🥩',p:26,f:20,k:290,note:'Hızlı hazır'},
+    {n:'100g Sucuk + 2 Yumurta',i:'🌭',p:20,f:30,k:350,note:'Baharatlı seçenek'},
+    {n:'150g Kaşar + 2 Yumurta',i:'🧀',p:28,f:30,k:390,note:'Yüksek protein+yağ'},
+    {n:'4 Yumurta (haşlama) + 20g Ghee',i:'🥚',p:24,f:30,k:380,note:'Kolay hazır'},
+    {n:'3 Yumurta + 50g Kavurma',i:'🥩',p:30,f:26,k:370,note:'Kendi yağında kavurma'},
+  ],
+  // 2. ÖĞÜN ANA ET
+  et_akşam: [
+    {n:'300g Dana Antrikot (ghee)',i:'🥩',p:58,f:36,k:560,note:'Akşam en iyi seçim'},
+    {n:'350g Izgara Kuzu But',i:'🍖',p:62,f:38,k:590,note:'Büyük porsiyon'},
+    {n:'250g Bonfile (tereyağ)',i:'🥩',p:48,f:24,k:420,note:'Yalın protein'},
+    {n:'300g Kuzu Kaburga',i:'🍖',p:50,f:44,k:600,note:'Kemikten kolajen'},
+    {n:'250g Dana Şekerpare (haşlama)',i:'🥩',p:46,f:30,k:460,note:'Kolajen açısından zengin'},
+    {n:'300g Tavuk But (derili, fırın)',i:'🍗',p:54,f:30,k:490,note:'Büyük porsiyon'},
+    {n:'250g Somon (tereyağ+dereotu)',i:'🐟',p:48,f:32,k:490,note:'Balık günü'},
+    {n:'300g Hindi Kızartma (ghee)',i:'🦃',p:56,f:26,k:470,note:'Düşük yağ versiyonu'},
+    {n:'200g Dana Ciğer (soğan+ghee)',i:'🫀',p:44,f:20,k:370,note:'Demir zengini'},
+    {n:'350g Kuzu Tandır',i:'🍖',p:60,f:38,k:580,note:'Yavaş pişirilmiş'},
+    {n:'250g Rib Eye (ghee+biberiye)',i:'🥩',p:50,f:42,k:580,note:'En lezzetli'},
+    {n:'300g Hamsi (fırın)',i:'🐟',p:52,f:22,k:410,note:'Omega-3 yükleme'},
+  ],
+};
+
+// Hangi alternatif listesini kullan
+function getAltList(foodId, slot) {
+  if(slot==='m1_main') return ALTS.et_ana;
+  if(slot==='m1_side') return ALTS.yumurta;
+  if(slot==='m2_main') return ALTS.et_akşam;
+  return ALTS.et_ana;
+}
+
+// Seçili öğün takibi
+const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
+
+function openFoodAlts(foodId, slot, dayKey) {
+  const list = getAltList(foodId, slot);
+  const current = SEL_MEALS[dayKey+'_'+slot];
+  document.getElementById('food-alts-title').textContent = slot==='m1_side' ? 'Yan öğün değiştir' : slot==='m2_main' ? '2. öğün değiştir' : '1. öğün değiştir';
+  document.getElementById('food-alts-list').innerHTML = list.map((f,i)=>`
+    <div class="alt ${current&&current.n===f.n?'sel':''}" onclick="selectFoodAlt('${foodId}','${slot}','${dayKey}',${i})">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:15px;">${f.i}</span>
+        <span style="font-size:11px;color:var(--gold);font-weight:700;">${f.k} kcal</span>
+      </div>
+      <div class="aname" style="margin-top:4px;">${f.n}</div>
+      <div style="font-size:11px;color:var(--text-mid);margin-top:2px;">P: ${f.p}g · Y: ${f.f}g ${f.note?'· '+f.note:''}</div>
+    </div>`).join('');
+  S.foodAltState = {foodId, slot, dayKey, list};
+  document.getElementById('food-alts-modal').classList.add('open');
+}
+
+function selectFoodAlt(foodId, slot, dayKey, idx) {
+  const list = S.foodAltState.list;
+  SEL_MEALS[dayKey+'_'+slot] = list[idx];
+  localStorage.setItem('sel_meals', JSON.stringify(SEL_MEALS));
+  document.getElementById('food-alts-modal').classList.remove('open');
+  renderDietDay();
+}
+
+// ══════════════════════════════════════════
+// DİYET RENDER
+// ══════════════════════════════════════════
 function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();}
+
 function renderDietDay(){
   const d=S.dD,idx=d.getDay()%7,c=ci(d),per=inP(d)||preP(d);
+  const dayKey=d.toDateString();
+  const morningType=getMorningType(d);
   document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
+
+  // Regl uyarısı
   document.getElementById('d-notice').innerHTML=per?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Kalori hedefini 100-150 kcal artırabilirsin. Ekstra protein öncelikli.</div></div>`:'';
-  const m1=M1[idx],ms=M1S[idx],m2=M2[idx];
-  const sel=document.getElementById('fsel');sel.innerHTML='<option value="">Besin seç...</option>';
-  [m1,ms,m2].forEach(i=>{const o=document.createElement('option');o.value=i.n;o.textContent=i.n;sel.appendChild(o);});
-  document.getElementById('m1b').innerHTML=fItem(m1)+fItem(ms)+`<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:600;">Toplam</span><span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k} kcal</span></div><div style="font-size:11px;color:var(--text-mid);margin-top:8px;">💊 Calciday + Omega-3 + Kolajen yemekle</div>`;
-  document.getElementById('m2b').innerHTML=fItem(m2)+`<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:600;">Toplam</span><span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span></div><div style="font-size:11px;color:var(--text-mid);margin-top:8px;">💊 Calciday (2.) + Kreatin yemekle · Qalyviz yemekten sonra</div>`;
-  document.getElementById('supp-tl').innerHTML=[{t:'06:00',n:'Levotiron',d:'Aç karnına'},{t:'07:00',n:'Qalyviz (1. doz)',d:'1 saat sonra'},{t:'13:00',n:'Calciday + Omega-3 + Kolajen',d:'1. öğünle'},{t:'17:30',n:'Calciday (2.) + Kreatin + Qalyviz',d:'2. öğünle / sonra'},{t:'23:00',n:'Kolajen + Magnezyum',d:'Yatmadan önce'}].map(s=>`<div class="tli"><div class="tlt">${s.t}</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">${s.n}</div><div class="tlde">${s.d}</div></div></div>`).join('');
+
+  // Sabah döngüsü bilgisi
+  const morningExtra = morningType==='coconut'
+    ? {time:'10:00', icon:'🥥', name:'Kahve + Hindistan Cevizi Yağı', detail:'1 tatlı kaşığı hindistan cevizi yağı kahveye ekle', kcal:45, fat:5, protein:0, note:'IF bozmaz · Ketoza giriş'}
+    : {time:'11:00', icon:'🫒', name:'Zeytinyağı + Sumak Karışımı', detail:'1 yemek kaşığı zeytinyağı + sumak + kaya tuzu + ½ limon suyu', kcal:120, fat:14, protein:0, note:'Antiinflamatuar · Qalyviz ile al'};
+
+  // Yağ günü makro ayarı (2. öğünde yağ biraz azalır)
+  const fatAdj = morningType==='olive' ? 14 : 5;
+
+  // Öğünler (seçili veya varsayılan)
+  const defM1 = M1[idx], defMs = M1S[idx], defM2 = M2[idx];
+  const m1 = SEL_MEALS[dayKey+'_m1_main'] || defM1;
+  const ms = SEL_MEALS[dayKey+'_m1_side'] || defMs;
+  const m2 = SEL_MEALS[dayKey+'_m2_main'] || defM2;
+
+  // Toplam günlük
+  const totalKcal = morningExtra.kcal + m1.k + ms.k + m2.k;
+  const totalP = m1.p + ms.p + m2.p;
+  const totalF = morningExtra.fat + m1.f + ms.f + m2.f;
+
+  document.getElementById('m1b').innerHTML=
+    fItemSwap(m1,'m1_main',dayKey)+
+    fItemSwap(ms,'m1_side',dayKey)+
+    `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k} kcal</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Calciday + Omega-3 + Kolajen yemekle</div>
+    </div>`;
+
+  document.getElementById('m2b').innerHTML=
+    fItemSwap(m2,'m2_main',dayKey)+
+    `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span>
+      </div>
+      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağ (${morningExtra.kcal} kcal) nedeniyle bu öğünde ${fatAdj}g daha az yağ hedefle</div>`:''}
+      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div>
+    </div>`;
+
+  // Supplement timeline
+  document.getElementById('supp-tl').innerHTML=`
+    <div class="tli"><div class="tlt">07:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Levotiron</div><div class="tlde">Aç karnına · sadece su</div></div></div>
+    <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1. doz)</div><div class="tlde">Levotiron'dan 1 saat sonra ${morningType==='olive'?'· zeytinyağı karışımını da al':''}</div></div></div>
+    <div class="tli" style="background:${morningType==='coconut'?'rgba(200,168,136,0.08)':'rgba(139,168,136,0.08)'};border-radius:10px;padding:4px;">
+      <div class="tlt">${morningExtra.time}</div><div class="tlline"><div class="tldot" style="border-color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};"></div><div class="tlbar"></div></div>
+      <div class="tlc">
+        <div class="tlti">${morningExtra.icon} ${morningExtra.name}</div>
+        <div class="tlde">${morningExtra.detail}</div>
+        <div style="font-size:11px;margin-top:3px;color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};">${morningExtra.note} · ${morningExtra.kcal} kcal · ${morningExtra.fat}g yağ</div>
+      </div>
+    </div>
+    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün</div><div class="tlde">Calciday + Omega-3 + Kolajen yemekle</div></div></div>
+    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Calciday (2.) + Kreatin yemekle · Qalyviz sonra</div></div></div>
+    <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Yatmadan önce</div></div></div>`;
+
+  // Günlük makro özeti
+  const macroEl = document.getElementById('d-macro-summary');
+  if(macroEl) macroEl.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);">
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalKcal>1550?'var(--pink-deep)':'var(--text)'};">${totalKcal}</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">kcal</div></div>
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalP<110?'var(--pink-deep)':'var(--sage)'};">${totalP}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Protein</div></div>
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;">${totalF}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Yağ</div></div>
+      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--sage);">✓</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">${morningType==='coconut'?'🥥':'🫒'} Döngü</div></div>
+    </div>`;
 }
-function fItem(f){return`<div class="fi"><div class="ficon">${f.i}</div><div class="fin"><div class="fname">${f.n}</div><div class="fmac">P: ${f.p}g · Y: ${f.f}g</div></div><div class="fkcal">${f.k}</div></div>`;}
-async function swapFood(){
-  const food=document.getElementById('fsel').value;if(!food)return;
-  const res=document.getElementById('fswap-res');
-  res.innerHTML=`<div class="aibox"><span class="spin"></span> Alternatifler hazırlanıyor...</div>`;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:`Carnivore diyet uzmanısın. "${food}" için eşdeğer makroya sahip 3 carnivore alternatif öner. Format: "1. [Miktar] [Besin] — P:[g]g Y:[g]g [kcal]kcal". Türkçe, kısa.`}]})});
-  const data=await r.json();res.innerHTML=`<div class="aibox">🥩 <strong>${food}</strong> yerine:<br><br>${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
-  catch(e){res.innerHTML=`<div class="aibox">❌ Bağlantı hatası.</div>`;}
+
+function fItemSwap(f, slot, dayKey){
+  return`<div class="fi">
+    <div class="ficon">${f.i}</div>
+    <div class="fin">
+      <div class="fname">${f.n}</div>
+      <div class="fmac">P: ${f.p}g · Y: ${f.f}g${f.note?' · '+f.note:''}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <div class="fkcal">${f.k}</div>
+      <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openFoodAlts('${f.n}','${slot}','${dayKey}')">🔄</button>
+    </div>
+  </div>`;
 }
 
 // EGZERSİZ
