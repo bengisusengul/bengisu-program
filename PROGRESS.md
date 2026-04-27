@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 27 Nisan 2026
+**Son güncelleme:** 27-28 Nisan 2026 (gece kapanış)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -164,8 +164,11 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-04-27 22:22 | `7ced90c` | **Step 15**: yemek kartı renk kodu + animasyonlar |
 | 2026-04-27 22:35 | `3a9a50e` | Tüm modallar dismissible (backdrop click + ESC) |
 | 2026-04-27 22:42 | `9cb6a10` | AI analizler kalan makro context'iyle çalışıyor |
+| 2026-04-27 23:xx | `be9a516` | **PROGRESS.md** oluşturuldu (bu dosya) |
 
-**Toplam:** 26 commit bu sohbette.
+**Toplam:** 27 commit bu sohbette.
+
+**Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
 ---
 
@@ -336,20 +339,22 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (27 Nisan 2026, gece)
+## 📍 Şu Anki Durum (27-28 Nisan 2026, gece kapanış)
 
 ✅ **Diet sekmesi 100% yenilendi.** AI custom food + AI öneri + recipe + ringler + heatmap + achievement + streak + cycle-aware = tam paket.
 
-⏳ **Bekliyor:**
-1. Workout sekmesi iyileştirmesi (kullanıcı 30 fikir arasından seçim yapacak)
-2. Apple Health entegrasyonu (kullanıcı 4 yoldan birini seçecek)
-3. PROGRESS.md oluşturuldu — bu dosya 🎉
+✅ **PROGRESS.md + Memory rutini kuruldu.** Yeni sohbette Claude bu dosyayı otomatik okuyup bağlama girecek.
+
+⏳ **Bekliyor (kullanıcının seçim yapması lazım):**
+1. **Workout sekmesi** iyileştirmesi — 30 fikir sundum, tema bazlı; en güçlü 3'ü Pratiklik (set-rep tracking + PR + süre) / Cycle entegrasyonu (faza özel intensity + period-friendly mode) / Motivasyon (streak + achievement + heatmap)
+2. **Apple Health entegrasyonu** — 4 yol sundum (🟢 iOS Shortcut + clipboard önerildi · 🟡 Health Auto Export $5 · 🟠 Backend Vercel+Supabase · 🔴 manuel)
 
 🎯 **Sıradaki muhtemel adımlar:**
-- Kullanıcı workout için tema seçer → Diet'e benzer atomik commit'ler
-- Apple Health için yöntem seçer → ona göre Shortcut + UI ekleme veya backend kurma
-- Cycle log girişlerini test ederken bug çıkarsa iterasyon
+- Kullanıcı workout için tema seçer → Diet'e benzer atomik commit'ler (10-15 commit)
+- Apple Health için yöntem seçer → Shortcut + UI ekleme (en pratik) veya backend kurma
+- Cycle log günlük kullanım (semptom/mood/energy giriş) test edilirse UX feedback gelebilir
+- Hook ekleme isteği gelirse `/update-config` ile PROGRESS.md auto-read tam otomatikleştirilebilir
 
 ---
 
-**Yeni sohbete başlıyorsan:** Önce bu dosyayı oku → mevcut özellikleri ve kullanıcı tercihlerini anla → bekleyen kararlara odaklan. Site'yi tarayıcıda aç, gerçek davranışı kontrol et.
+**Yeni sohbete başlıyorsan:** Önce bu dosyayı oku → mevcut özellikleri ve kullanıcı tercihlerini anla → bekleyen kararlara odaklan. Memory rutini sayesinde bu otomatik olmalı. Site'yi tarayıcıda aç, gerçek davranışı kontrol et.
