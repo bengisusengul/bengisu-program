@@ -255,6 +255,17 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* WATER — daily 8-glass tracker */
+.water-card{margin:0 16px 12px;background:linear-gradient(135deg,#e6f2f8,#f0f7fa);border:1px solid #c8dde6;border-radius:var(--r);padding:14px 16px;}
+.water-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.water-title{font-size:13px;font-weight:600;color:#3a6580;}
+.water-count{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#3a6580;}
+.water-row{display:flex;justify-content:space-between;gap:6px;}
+.water-cup{flex:1;aspect-ratio:1;border:2px solid #b5d2dd;border-radius:50%;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:all 0.2s;max-width:38px;}
+.water-cup.full{background:#7eb5cc;border-color:#5d9ab1;color:white;transform:scale(1.05);}
+.water-cup.full::after{content:'💧';}
+.water-cup:active{transform:scale(0.92);}
+
 /* MEAL — yedim checkbox + actual vs target row */
 .meal-check{width:26px;height:26px;border-radius:8px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer;background:var(--surface);}
 .meal-check.done{background:var(--sage);border-color:var(--sage);transform:scale(1.05);}
@@ -386,6 +397,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="tb-sub">Carnivore · IF 1pm–6pm</div>
   </div>
   <div class="wstrip" id="d-strip"></div>
+  <div id="water-wrap"></div>
   <div id="d-notice" style="margin:0 16px 12px;"></div>
   <div class="card">
     <div class="ch"><h3>Macro Targets</h3><span id="d-datelbl" style="font-size:12px;color:var(--text-light);"></span></div>
@@ -1290,6 +1302,32 @@ function getAltList(foodId, slot) {
 // Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
 
+// ─── WATER TRACKING ───
+function getWaterLog(){return JSON.parse(localStorage.getItem('water_log')||'{}');}
+function getWaterCount(d){return getWaterLog()[ymd(d)]||0;}
+function setWaterCount(d,n){const all=getWaterLog();all[ymd(d)]=Math.max(0,Math.min(8,n));localStorage.setItem('water_log',JSON.stringify(all));}
+function tapWaterCup(idx){
+  const cur=getWaterCount(S.dD);
+  // Tıklanan dolu ise sıfırla bu noktaya kadar; boş ise doldur bu noktaya kadar
+  const newCount = (idx+1<=cur) ? idx : (idx+1);
+  setWaterCount(S.dD,newCount);
+  renderWaterBar();
+}
+function renderWaterBar(){
+  const wrap=document.getElementById('water-wrap');
+  if(!wrap)return;
+  const c=getWaterCount(S.dD);
+  let cups='';
+  for(let i=0;i<8;i++)cups+=`<div class="water-cup ${i<c?'full':''}" onclick="tapWaterCup(${i})"></div>`;
+  wrap.innerHTML=`<div class="water-card">
+    <div class="water-head">
+      <div class="water-title">💧 Su · Hedef 8 bardak (~2L)</div>
+      <div class="water-count">${c}/8</div>
+    </div>
+    <div class="water-row">${cups}</div>
+  </div>`;
+}
+
 // ─── MEAL DONE TRACKING ───
 function getMealsDone(){return JSON.parse(localStorage.getItem('meals_done')||'{}');}
 function isMealDone(slot,dayKey){return !!getMealsDone()[dayKey+'_'+slot];}
@@ -1361,6 +1399,9 @@ function renderDietDay(){
   const dayKey=d.toDateString();
   const morningType=getMorningType(d);
   document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
+
+  // Water bar
+  renderWaterBar();
 
   // Cycle-aware macro target (luteal +100, regl +150)
   const mt=getMacroTarget(d);
