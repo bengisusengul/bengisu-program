@@ -373,12 +373,8 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div class="card">
     <div class="ch"><h3>Macro Targets</h3><span id="d-datelbl" style="font-size:12px;color:var(--text-light);"></span></div>
     <div class="cb">
-      <div class="mrow">
-        <div class="mbox"><div class="mval">1.350</div><div class="mlbl">kcal</div></div>
-        <div class="mbox"><div class="mval">140g</div><div class="mlbl">Protein</div></div>
-        <div class="mbox"><div class="mval">90g</div><div class="mlbl">Fat</div></div>
-        <div class="mbox"><div class="mval">15g</div><div class="mlbl">Carbs</div></div>
-      </div>
+      <div class="mrow" id="macro-target-row"></div>
+      <div id="macro-bonus-note" style="margin-top:10px;"></div>
     </div>
   </div>
   <div class="slbl">Günlük Akış</div>
@@ -840,6 +836,24 @@ function getZen(phase,d=new Date()){
   return list[dayOfYear%list.length];
 }
 
+// ══════════════════════════════════════════
+// MACRO TARGETS — cycle-aware (luteal +100 kcal, regl +150 kcal + iron focus)
+// ══════════════════════════════════════════
+const MACRO_BASE={kcal:1350,p:140,f:90,c:15};
+function getMacroTarget(d=new Date()){
+  const c=ci(d);
+  const base={...MACRO_BASE,bonus:null,note:null};
+  if(!c)return base;
+  if(c.phase==='Menstruation'){
+    return{kcal:1500,p:145,f:95,c:15,bonus:'+150 kcal',note:'🔴 Regl: ekstra protein + demir vurgusu'};
+  }
+  // Luteal son 6 gün (Day cycle-6 → cycle): +100 kcal protein boost
+  if(c.day>=getAvgCycleLen()-6 && c.phase==='Luteal Phase'){
+    return{kcal:1450,p:150,f:90,c:15,bonus:'+100 kcal',note:'🌙 Geç luteal: ekstra protein hak ettin 💝'};
+  }
+  return base;
+}
+
 // SPLITS
 const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Glutes · Legs · Core'},2:{n:'Push',e:'💪',f:'Chest · Shoulder · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Hamstrings · Glutes · Core'},4:{n:'Pull',e:'🏋️',f:'Back · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Full Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Shoulders · Arms · Core'}};
 
@@ -1294,6 +1308,17 @@ function renderDietDay(){
   const dayKey=d.toDateString();
   const morningType=getMorningType(d);
   document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
+
+  // Cycle-aware macro target (luteal +100, regl +150)
+  const mt=getMacroTarget(d);
+  const tRow=document.getElementById('macro-target-row');
+  if(tRow)tRow.innerHTML=`
+    <div class="mbox"><div class="mval">${mt.kcal.toLocaleString('tr-TR').replace(/,/g,'.')}</div><div class="mlbl">kcal</div></div>
+    <div class="mbox"><div class="mval">${mt.p}g</div><div class="mlbl">Protein</div></div>
+    <div class="mbox"><div class="mval">${mt.f}g</div><div class="mlbl">Fat</div></div>
+    <div class="mbox"><div class="mval">${mt.c}g</div><div class="mlbl">Carbs</div></div>`;
+  const bRow=document.getElementById('macro-bonus-note');
+  if(bRow)bRow.innerHTML=mt.note?`<div class="notice ng" style="margin-bottom:0;font-size:12px;"><div class="nicon">${mt.bonus?'⬆️':'·'}</div><div><strong>${mt.bonus||''}</strong> ${mt.note}</div></div>`:'';
 
   // Period warning
   document.getElementById('d-notice').innerHTML=(per&&c)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> You can increase calorie target by 100-150 kcal. Prioritise extra protein.</div></div>`:'';
