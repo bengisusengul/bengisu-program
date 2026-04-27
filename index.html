@@ -255,6 +255,16 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* MACRO RINGS — 4 svg ring (kcal/P/F/C) */
+.ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.ring-cell{text-align:center;}
+.ring-svg{width:64px;height:64px;display:block;margin:0 auto;}
+.ring-bg{stroke:var(--surface2);stroke-width:6;fill:none;}
+.ring-fg{stroke-width:6;fill:none;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease-out, stroke 0.3s ease;}
+.ring-num{font-family:'Cormorant Garamond',serif;font-size:14px;text-anchor:middle;font-weight:600;dominant-baseline:central;}
+.ring-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-light);margin-top:6px;font-weight:600;}
+.ring-pct{font-size:10px;font-weight:600;margin-top:2px;}
+
 /* CYCLE-AWARE DIET CARD — faza göre dinamik mesaj */
 .cycle-diet-card{margin:0 16px 16px;border-radius:var(--r);padding:18px 20px;border:1px solid var(--border);position:relative;overflow:hidden;}
 .cdc-icon{font-size:28px;line-height:1;margin-bottom:6px;}
@@ -1442,6 +1452,41 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── MACRO PROGRESS RINGS ───
+function ringColor(pct){
+  if(pct<0.8) return '#7eb5cc';      // mavi (düşük)
+  if(pct<=1.05) return '#7a9b6a';    // sage (hedef)
+  if(pct<=1.15) return '#c9a96e';    // gold (hafif aşım)
+  return '#c97b6e';                   // pink-deep (aşıldı)
+}
+function renderMacroRings(d){
+  const a=getActualMacros(d);
+  const t=getMacroTarget(d);
+  const fields=[
+    {lbl:'kcal',a:a.k,t:t.kcal,unit:''},
+    {lbl:'Protein',a:a.p,t:t.p,unit:'g'},
+    {lbl:'Yağ',a:a.f,t:t.f,unit:'g'},
+    {lbl:'Karb',a:a.c,t:t.c,unit:'g'},
+  ];
+  const r=26, circ=2*Math.PI*r;
+  return fields.map(fld=>{
+    const ratio=fld.t?fld.a/fld.t:0;
+    const visualRatio=Math.min(ratio,1);
+    const offset=circ*(1-visualRatio);
+    const color=ringColor(ratio);
+    const pctNum=Math.round(ratio*100);
+    return `<div class="ring-cell">
+      <svg class="ring-svg" viewBox="0 0 64 64">
+        <circle class="ring-bg" cx="32" cy="32" r="${r}"/>
+        <circle class="ring-fg" cx="32" cy="32" r="${r}" stroke="${color}" stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}" transform="rotate(-90 32 32)"/>
+        <text class="ring-num" x="32" y="32" fill="${color}">${fld.a}${fld.unit}</text>
+      </svg>
+      <div class="ring-lbl">${fld.lbl}</div>
+      <div class="ring-pct" style="color:${color};">/${fld.t}${fld.unit} · %${pctNum}</div>
+    </div>`;
+  }).join('');
+}
+
 // ─── CYCLE-AWARE DIET CARD ───
 const PHASE_DIET={
   'Menstruation':{
@@ -1726,28 +1771,18 @@ function renderDietDay(){
     <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Et / tavuk / balık + salata MUHAKKAK · Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div></div></div>
     <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Before bed</div></div></div>`;
 
-  // Günlük makro özeti — gerçek tüketim (yedim işaretliler) vs hedef
+  // Günlük makro özeti — 4 ring (gerçek vs hedef)
   const macroEl = document.getElementById('d-macro-summary');
-  const actual = getActualMacros(d);
-  const target = getMacroTarget(d);
-  const pctClass = (a, t) => {
-    const r = t ? a/t : 0;
-    if (r < 0.5) return 'macro-pct-low';
-    if (r < 0.85) return 'macro-pct-low';
-    if (r <= 1.05) return 'macro-pct-ok';
-    if (r <= 1.15) return 'macro-pct-warn';
-    return 'macro-pct-over';
-  };
-  const pct = (a, t) => t ? Math.round((a/t)*100) : 0;
   if(macroEl) macroEl.innerHTML=`
-    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Bugün gerçekten tüketilen <span style="color:var(--text-mid);text-transform:none;letter-spacing:0;">(işaretlediklerin)</span></div>
-    <div class="macro-actual-row">
-      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.k}</div><div class="macro-actual-lbl">kcal</div><div class="macro-actual-pct ${pctClass(actual.k,target.kcal)}">/${target.kcal} · %${pct(actual.k,target.kcal)}</div></div>
-      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.p}g</div><div class="macro-actual-lbl">Protein</div><div class="macro-actual-pct ${pctClass(actual.p,target.p)}">/${target.p}g · %${pct(actual.p,target.p)}</div></div>
-      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.f}g</div><div class="macro-actual-lbl">Yağ</div><div class="macro-actual-pct ${pctClass(actual.f,target.f)}">/${target.f}g · %${pct(actual.f,target.f)}</div></div>
-      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.c}g</div><div class="macro-actual-lbl">Karb</div><div class="macro-actual-pct ${pctClass(actual.c,target.c)}">/${target.c}g · %${pct(actual.c,target.c)}</div></div>
+    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Gerçek tüketim · işaretlediklerinden hesaplanıyor</div>
+    <div class="ring-grid">${renderMacroRings(d)}</div>
+    <div style="font-size:11px;color:var(--text-light);margin-top:14px;text-align:center;line-height:1.5;">
+      <span style="color:#7eb5cc;">●</span> düşük &nbsp;
+      <span style="color:#7a9b6a;">●</span> hedef &nbsp;
+      <span style="color:#c9a96e;">●</span> hafif aşım &nbsp;
+      <span style="color:#c97b6e;">●</span> aşıldı
     </div>
-    <div style="font-size:11px;color:var(--text-light);margin-top:10px;text-align:center;">${morningType==='coconut'?'🥥':'🫒'} Sabah cycle: ${morningType==='coconut'?'Hindistan cevizi yağı':'Zeytinyağ shot'}</div>`;
+    <div style="font-size:11px;color:var(--text-light);margin-top:6px;text-align:center;">${morningType==='coconut'?'🥥':'🫒'} Sabah cycle: ${morningType==='coconut'?'Hindistan cevizi yağı':'Zeytinyağ shot'}</div>`;
 }
 
 function fItemSwap(f, slot, dayKey){
