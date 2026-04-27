@@ -1583,6 +1583,17 @@ async function aiSuggestMeal(){
   resultEl.innerHTML='<div style="font-size:13px;color:var(--text-mid);padding:14px;background:var(--surface2);border-radius:10px;text-align:center;">⏳ Claude düşünüyor…</div>';
   const c=ci(S.dD);
   const t=getMacroTarget(S.dD);
+  const a=getActualMacros(S.dD);
+  const rem={kcal:t.kcal-a.k,p:t.p-a.p,f:t.f-a.f,c:t.c-a.c};
+  // Diğer öğün için makro payını da hesaba kat
+  const otherDone={
+    m1:isMealDone('m1_main',S.dD.toDateString())&&isMealDone('m1_side',S.dD.toDateString()),
+    m2:isMealDone('m2_main',S.dD.toDateString())&&isMealDone('m2_side',S.dD.toDateString()),
+  };
+  const otherSlot=slot==='m1'?'m2':'m1';
+  const otherAlreadyEaten=otherDone[otherSlot];
+  // Bu öğün için bütçe: eğer diğer öğün yenildiyse kalanın tamamı, değilse yarısı (kabaca)
+  const slotBudget = otherAlreadyEaten ? rem : {kcal:Math.round(rem.kcal*0.55),p:Math.round(rem.p*0.5),f:Math.round(rem.f*0.5),c:rem.c};
   // Son 3 günde yenilenler özeti
   const recent=[];
   for(let i=1;i<=3;i++){
@@ -1598,7 +1609,6 @@ async function aiSuggestMeal(){
   const slotDesc=slot==='m1'
     ? '1. öğün — yumurta + lor (max 80g) / hellim (max 100g) + ½ avokado + bol yeşillik. ET/TAVUK/BALIK YOK.'
     : '2. öğün — et / tavuk / balık + MUHAKKAK salata (yeşillik). Pişirme ghee/tereyağı, üst için sızma zeytinyağ.';
-  const targetSlot=slot==='m1'?{kcal:600,p:45,f:45}:{kcal:700,p:90,f:45};
   const promptText=`Bengisu için ${slot==='m1'?'1. öğün':'2. öğün'} önerisi.
 
 Kurallar:
@@ -1608,11 +1618,16 @@ YASAK: süt, yoğurt, peynir (lor + hellim hariç), tahıl, meyve, kuruyemiş, t
 Bağlam:
 - Cycle: ${c?c.phase+' Day '+c.day+' / ortalama döngü '+getAvgCycleLen()+'gün':'cycle takip yok'}
 - Bugünün toplam makro hedefi: ${t.kcal}kcal · ${t.p}g protein · ${t.f}g yağ · ${t.c}g karb
-- Bu öğünün hedef payı: ~${targetSlot.kcal}kcal · ~${targetSlot.p}g protein · ~${targetSlot.f}g yağ
-${recent.length?'- Son 3 günde bu öğünde yenilenler: '+recent.join(', ')+' (varyasyon yarat)':''}
+- Şimdiye kadar tüketilen: ${a.k}kcal · ${a.p}g P · ${a.f}g Y · ${a.c}g K
+- BU YEMEKTEN ÖNCE KALAN: ${rem.kcal}kcal · ${rem.p}g P · ${rem.f}g Y · ${rem.c}g K
+- Diğer öğün durumu: ${otherAlreadyEaten?'YENİLDİ — kalanın hepsini bu öğünde kullanabilirsin':'YENİLMEDİ — kalanın yarısını bu öğüne, yarısını diğerine ayır'}
+- Bu öğün için optimal hedef: ~${slotBudget.kcal}kcal · ~${slotBudget.p}g protein · ~${slotBudget.f}g yağ
+${recent.length?'- Son 3 günde bu öğünde yenilenler: '+recent.join(', ')+' (varyasyon yarat, aynısını önerme)':''}
+
+Görev: Yukarıdaki kalan makroya OPTIMAL UYGUN bir yemek öner. Kalan kalori/protein hedefini doldurmaya çalış, AŞMA.
 
 YANIT FORMATI: Sadece JSON, başka metin yazma:
-{"name":"yemek adı + miktar","kcal":N,"protein":N,"fat":N,"carbs":N,"why":"neden bu — cycle/makro/varyasyon mantığı (1-2 cümle)","recipe":"3 satır pişirme talimatı"}`;
+{"name":"yemek adı + miktar","kcal":N,"protein":N,"fat":N,"carbs":N,"why":"neden bu — cycle/kalan makro/varyasyon mantığı (1-2 cümle)","recipe":"3 satır pişirme talimatı"}`;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
@@ -1635,11 +1650,17 @@ YANIT FORMATI: Sadece JSON, başka metin yazma:
     if(!match)throw new Error('JSON bulunamadı');
     const parsed=JSON.parse(match[0]);
     S.aism.suggestion=parsed;
+    const after={kcal:rem.kcal-parsed.kcal,p:rem.p-parsed.protein,f:rem.f-parsed.fat,c:rem.c-parsed.carbs};
+    const fitColor=v=>v<-20?'var(--pink-deep)':v<20?'var(--gold)':'var(--sage)';
     resultEl.innerHTML=`<div class="ai-result-card">
       <div class="aim-name">${parsed.name}</div>
       <div class="aim-macros">${parsed.kcal} kcal · P ${parsed.protein}g · Y ${parsed.fat}g · K ${parsed.carbs}g</div>
       <div class="aim-why">💭 ${parsed.why}</div>
       <div class="aim-recipe"><strong>Pişirme:</strong> ${parsed.recipe}</div>
+      <div style="margin-top:10px;font-size:11px;background:rgba(255,255,255,0.6);padding:8px 10px;border-radius:6px;line-height:1.6;color:var(--text-mid);">
+        <div>Şu an kalan: <strong>${rem.kcal}</strong>kcal · <strong>${rem.p}</strong>g P · <strong>${rem.f}</strong>g Y</div>
+        <div>Bu yemek seçilirse: <strong style="color:${fitColor(after.kcal)};">${after.kcal}</strong>kcal · <strong style="color:${fitColor(after.p)};">${after.p}</strong>g P · <strong style="color:${fitColor(after.f)};">${after.f}</strong>g Y kalır</div>
+      </div>
     </div>
     <button class="btn bsoft bfull" style="margin-top:10px;" onclick="aiSuggestMeal()">🔄 Başka bir öneri</button>`;
     document.getElementById('aism-accept').style.display='inline-flex';
@@ -1705,6 +1726,10 @@ async function aiEstimateMacros(){
   }
   const resultEl=document.getElementById('cfm-ai-result');
   resultEl.innerHTML='<div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--surface2);border-radius:10px;text-align:center;">⏳ Claude düşünüyor…</div>';
+  // Kalan makro bağlamı — AI bunu bilirse daha akıllı feedback verir
+  const t=getMacroTarget(S.dD);
+  const a=getActualMacros(S.dD);
+  const rem={kcal:t.kcal-a.k,p:t.p-a.p,f:t.f-a.f,c:t.c-a.c};
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
@@ -1716,10 +1741,27 @@ async function aiEstimateMacros(){
       },
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
-        max_tokens:300,
+        max_tokens:400,
         messages:[{
           role:'user',
-          content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"\n\nYANIT FORMATI: Sadece JSON döndür, başka hiçbir metin yazma:\n{"name":"temizlenmiş yemek adı","kcal":N,"protein":N,"fat":N,"carbs":N,"confidence":"high|medium|low"}\n\nÖrnek girdi: "250g tavuk şiş + ezme + ayran"\nÖrnek çıktı: {"name":"250g Tavuk Şiş + Ezme + Ayran","kcal":520,"protein":48,"fat":22,"carbs":18,"confidence":"medium"}`
+          content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"
+
+Bağlam (kullanıcının kalan makrosuna uyumluluk için):
+- Bugünün toplam hedefi: ${t.kcal} kcal · ${t.p}g protein · ${t.f}g yağ · ${t.c}g karb
+- Şimdiye kadar tüketilen: ${a.k} kcal · ${a.p}g P · ${a.f}g Y · ${a.c}g K
+- BU YEMEKTEN ÖNCE KALAN: ${rem.kcal} kcal · ${rem.p}g P · ${rem.f}g Y · ${rem.c}g K
+
+Görev:
+1. Yemeğin makro değerlerini tahmin et (servis miktarıyla)
+2. Bu yemek kalan makroya nasıl etki eder, kısaca yorumla
+
+YANIT FORMATI: Sadece JSON, başka metin yazma:
+{"name":"temizlenmiş yemek adı + miktar","kcal":N,"protein":N,"fat":N,"carbs":N,"confidence":"high|medium|low","fit":"good|tight|over","note":"1 cümle: kalan makroyla uyum yorumu (TR)"}
+
+fit kuralı:
+- "good": yemek kalanın <70%'ini doldurur, geri kalan öğünler için yer var
+- "tight": kalanın %70-100'ünü doldurur, gün dolmaya yakın
+- "over": kalanı aşar (yemek > kalan kalori veya protein)`
         }]
       })
     });
@@ -1738,7 +1780,29 @@ async function aiEstimateMacros(){
     document.getElementById('cfm-c').value=parsed.carbs;
     document.getElementById('cfm-text').value=parsed.name;
     const confTr={high:'yüksek güven',medium:'orta güven',low:'düşük güven'};
-    resultEl.innerHTML=`<div class="notice ng" style="margin-top:8px;"><div class="nicon">💭</div><div><strong>AI tahmini hazır (${confTr[parsed.confidence]||parsed.confidence}):</strong> Aşağıdaki rakamları kontrol et, gerekirse düzelt, sonra Kaydet.</div></div>`;
+    const fitMap={
+      good:{icon:'🟢',label:'Hedefine uyuyor',cls:'ns'},
+      tight:{icon:'🟡',label:'Sıkışık ama olur',cls:'ng'},
+      over:{icon:'🔴',label:'Hedefi aşıyor',cls:'np'},
+    };
+    const fitInfo=fitMap[parsed.fit]||fitMap.tight;
+    // Bu yemek eklendikten SONRA kalan
+    const after={
+      kcal:rem.kcal-parsed.kcal,
+      p:rem.p-parsed.protein,
+      f:rem.f-parsed.fat,
+      c:rem.c-parsed.carbs,
+    };
+    resultEl.innerHTML=`<div class="notice ng" style="margin-top:8px;"><div class="nicon">💭</div><div>
+      <strong>AI tahmini hazır (${confTr[parsed.confidence]||parsed.confidence}):</strong> Aşağıdaki rakamları kontrol et, gerekirse düzelt, sonra Kaydet.
+    </div></div>
+    <div class="notice ${fitInfo.cls}" style="margin-top:8px;"><div class="nicon">${fitInfo.icon}</div><div>
+      <strong>${fitInfo.label}:</strong> ${parsed.note||''}
+      <div style="margin-top:8px;font-size:11px;color:var(--text-mid);background:rgba(255,255,255,0.5);padding:6px 10px;border-radius:6px;line-height:1.5;">
+        Kalan: <strong>${rem.kcal}</strong>kcal · <strong>${rem.p}</strong>g P · <strong>${rem.f}</strong>g Y · <strong>${rem.c}</strong>g K<br>
+        Bu yemekten sonra: <strong style="color:${after.kcal<0?'var(--pink-deep)':'var(--text)'};">${after.kcal}</strong>kcal · <strong style="color:${after.p<0?'var(--pink-deep)':'var(--text)'};">${after.p}</strong>g P · <strong style="color:${after.f<0?'var(--pink-deep)':'var(--text)'};">${after.f}</strong>g Y · <strong>${after.c}</strong>g K
+      </div>
+    </div></div>`;
   }catch(e){
     resultEl.innerHTML=`<div class="notice np" style="margin-top:8px;"><div class="nicon">⚠️</div><div>AI çağrısı başarısız: ${e.message}<br>Manuel olarak makroları girebilirsin.</div></div>`;
   }
@@ -2169,6 +2233,13 @@ function getActualMacros(d,opts){
   return{p,f,c,k};
 }
 
+// Kalan makro = hedef - şimdiye kadar tüketilen (negatif olabilir)
+function getRemainingMacros(d){
+  const t=getMacroTarget(d);
+  const a=getActualMacros(d);
+  return{kcal:t.kcal-a.k, p:t.p-a.p, f:t.f-a.f, c:t.c-a.c};
+}
+
 function openFoodAlts(foodId, slot, dayKey) {
   const list = getAltList(foodId, slot);
   const current = SEL_MEALS[dayKey+'_'+slot];
@@ -2316,9 +2387,18 @@ function renderDietDay(){
 
   // Günlük makro özeti — 4 ring (gerçek vs hedef)
   const macroEl = document.getElementById('d-macro-summary');
+  const rem = getRemainingMacros(d);
+  const remColor = (v) => v<0?'var(--pink-deep)':v<50?'var(--gold)':'var(--sage)';
   if(macroEl) macroEl.innerHTML=`
     <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Gerçek tüketim · işaretlediklerinden hesaplanıyor</div>
     <div class="ring-grid">${renderMacroRings(d)}</div>
+    <div style="margin-top:14px;padding:10px 12px;background:var(--surface2);border-radius:10px;text-align:center;font-size:13px;color:var(--text-mid);">
+      <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);">Kalan</span><br>
+      <strong style="color:${remColor(rem.kcal)};font-size:15px;">${rem.kcal}</strong> kcal ·
+      <strong style="color:${remColor(rem.p)};font-size:15px;">${rem.p}</strong>g P ·
+      <strong style="color:${remColor(rem.f)};font-size:15px;">${rem.f}</strong>g Y ·
+      <strong style="color:${remColor(rem.c*5)};font-size:15px;">${rem.c}</strong>g K
+    </div>
     <div style="font-size:11px;color:var(--text-light);margin-top:14px;text-align:center;line-height:1.5;">
       <span style="color:#7eb5cc;">●</span> düşük &nbsp;
       <span style="color:#7a9b6a;">●</span> hedef &nbsp;
