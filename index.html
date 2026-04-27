@@ -408,6 +408,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="tb-sub">Carnivore · IF 1pm–6pm</div>
   </div>
   <div class="wstrip" id="d-strip"></div>
+  <div id="fasting-bar"></div>
   <div id="water-wrap"></div>
   <div id="d-notice" style="margin:0 16px 12px;"></div>
   <div class="card">
@@ -1154,6 +1155,7 @@ function showP(n,b){
   document.getElementById('page-'+n).classList.add('active');
   if(b)b.classList.add('active');
   window.scrollTo(0,0);
+  if(n!=='diyet' && typeof stopFastingTimer==='function')stopFastingTimer();
   if(n==='diyet')renderDiet();
   if(n==='egzersiz')renderEx();
   if(n==='cilt')renderSkin();
@@ -1432,6 +1434,53 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── FASTING WINDOW COUNTDOWN (toggle'lı — kullanıcı gizleyebilir) ───
+let _fastingTimer=null;
+function isFastingHidden(){return localStorage.getItem('fasting_hidden')==='1';}
+function toggleFastingHidden(){
+  localStorage.setItem('fasting_hidden',isFastingHidden()?'0':'1');
+  renderFastingCountdown();
+}
+function renderFastingCountdown(){
+  const el=document.getElementById('fasting-bar');
+  if(!el)return;
+  // Gizliyse sadece küçük "göster" linki
+  if(isFastingHidden()){
+    el.innerHTML=`<div style="margin:0 16px 12px;text-align:right;"><button class="btn bghost" style="padding:4px 12px;font-size:11px;border-radius:20px;color:var(--text-light);" onclick="toggleFastingHidden()">⏱ Açlık sayacını göster</button></div>`;
+    return;
+  }
+  const now=new Date();
+  const minNow=now.getHours()*60+now.getMinutes();
+  const eatStart=13*60, eatEnd=18*60;
+  let icon, label, bg, fg;
+  if(minNow<eatStart){
+    const diff=eatStart-minNow;
+    icon='🟢';
+    label=`Yeme penceresi 13:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
+    bg='var(--sage-soft)';fg='#4a6e47';
+  } else if(minNow<eatEnd){
+    const diff=eatEnd-minNow;
+    icon='🍽';
+    label=`Yeme penceresi açık · 18:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
+    bg='var(--gold-soft)';fg='#7a5a20';
+  } else {
+    const diff=(24*60)-minNow+eatStart;
+    icon='🌙';
+    label=`Açlık · yarın 13:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
+    bg='var(--mauve-soft)';fg='#6a4a60';
+  }
+  el.innerHTML=`<div style="margin:0 16px 12px;background:${bg};border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;display:flex;align-items:center;gap:10px;font-size:13px;"><span style="font-size:20px;line-height:1;flex-shrink:0;">${icon}</span><span style="flex:1;font-weight:500;color:${fg};">${label}</span><button onclick="toggleFastingHidden()" title="Gizle" style="background:transparent;border:none;color:${fg};opacity:0.6;cursor:pointer;font-size:13px;padding:4px 6px;flex-shrink:0;">✕</button></div>`;
+}
+function startFastingTimer(){
+  if(_fastingTimer)clearInterval(_fastingTimer);
+  renderFastingCountdown();
+  if(!isFastingHidden())_fastingTimer=setInterval(renderFastingCountdown,60000);
+}
+function stopFastingTimer(){
+  if(_fastingTimer){clearInterval(_fastingTimer);_fastingTimer=null;}
+  const el=document.getElementById('fasting-bar');if(el)el.innerHTML='';
+}
+
 // ─── WATER TRACKING ───
 function getWaterLog(){return JSON.parse(localStorage.getItem('water_log')||'{}');}
 function getWaterCount(d){return getWaterLog()[ymd(d)]||0;}
@@ -1526,7 +1575,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();}
 
 function renderDietDay(){
   const d=S.dD,idx=d.getDay()%7,c=ci(d),per=inP(d)||preP(d);
