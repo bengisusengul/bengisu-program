@@ -255,6 +255,20 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* HEATMAP — 28 gün tamamlanma görseli */
+.hm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.hm-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text-light);transition:transform 0.15s;}
+.hm-cell-0{background:var(--surface2);border:1px solid var(--border);}
+.hm-cell-1{background:#e8f0e0;color:#5a7a57;}
+.hm-cell-2{background:#cee0c4;color:#4a6e47;}
+.hm-cell-3{background:#a8c0a0;color:white;}
+.hm-cell-4{background:#7a9b6a;color:white;font-weight:700;}
+.hm-cell.hm-period{box-shadow:inset 0 0 0 2px var(--pink-deep);}
+.hm-cell.hm-today{transform:scale(1.1);box-shadow:inset 0 0 0 2px var(--text);z-index:1;position:relative;}
+.hm-cell.hm-today.hm-period{box-shadow:inset 0 0 0 2px var(--pink-deep), 0 0 0 1.5px var(--text);}
+.hm-legend{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:14px;font-size:11px;color:var(--text-light);}
+.hm-legend .hm-cell{width:14px;height:14px;font-size:0;flex-shrink:0;}
+
 /* ACHIEVEMENTS — rozetler */
 .ach-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed var(--border-soft);align-items:center;}
 .ach-item:last-child{border-bottom:none;}
@@ -516,6 +530,9 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 
   <!-- Achievements -->
   <div id="achievements-wrap"></div>
+
+  <!-- Heatmap (son 28 gün) -->
+  <div id="heatmap-wrap"></div>
 
   <div style="height:8px;"></div>
 </div>
@@ -1705,6 +1722,44 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── HEATMAP (28 gün) ───
+function getDayCompletionPct(d){
+  const dayKey=d.toDateString();
+  let done=0;
+  const total=MEAL_SLOTS_REQ.length+1;
+  for(const s of MEAL_SLOTS_REQ){if(isMealDone(s,dayKey))done++;}
+  if(getWaterCount(d)>=8)done++;
+  return done/total;
+}
+function renderHeatmap(){
+  const wrap=document.getElementById('heatmap-wrap');
+  if(!wrap)return;
+  const today=new Date();today.setHours(0,0,0,0);
+  let cells='';
+  for(let i=27;i>=0;i--){
+    const d=new Date(today.getTime()-i*86400000);
+    const pct=getDayCompletionPct(d);
+    let lvl=0;
+    if(pct>=1)lvl=4;
+    else if(pct>=0.66)lvl=3;
+    else if(pct>=0.33)lvl=2;
+    else if(pct>0)lvl=1;
+    const isPeriod=isLoggedPeriodDay(d);
+    const isToday=d.getTime()===today.getTime();
+    cells+=`<div class="hm-cell hm-cell-${lvl} ${isPeriod?'hm-period':''} ${isToday?'hm-today':''}" title="${ymd(d)} · %${Math.round(pct*100)}">${d.getDate()}</div>`;
+  }
+  wrap.innerHTML=`<div class="card" style="margin-bottom:16px;">
+    <div class="ch"><h3>📅 Son 28 Gün</h3><span style="font-size:11px;color:var(--text-light);">tamamlanma yüzdesi</span></div>
+    <div class="cb">
+      <div class="hm-grid">${cells}</div>
+      <div class="hm-legend">
+        Az <span class="hm-cell hm-cell-0"></span><span class="hm-cell hm-cell-1"></span><span class="hm-cell hm-cell-2"></span><span class="hm-cell hm-cell-3"></span><span class="hm-cell hm-cell-4"></span> Tam
+        &nbsp;·&nbsp; <span class="hm-cell hm-period" style="background:var(--surface);"></span> Regl günü
+      </div>
+    </div>
+  </div>`;
+}
+
 // ─── ACHIEVEMENTS ───
 function calculateAchievements(){
   const allDone=getMealsDone();
@@ -2079,6 +2134,8 @@ function renderDietDay(){
   renderStreakBadge();
   // Achievement rozetleri
   renderAchievements();
+  // Heatmap (son 28 gün)
+  renderHeatmap();
   // Günlük hedef tamamlanmışsa confetti tetikle (yalnızca ilk geçişte)
   checkDailyCompleteTrigger();
 
