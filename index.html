@@ -255,6 +255,13 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* CYCLE-AWARE DIET CARD — faza göre dinamik mesaj */
+.cycle-diet-card{margin:0 16px 16px;border-radius:var(--r);padding:18px 20px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.cdc-icon{font-size:28px;line-height:1;margin-bottom:6px;}
+.cdc-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.cdc-msg{font-size:13px;color:var(--text-mid);line-height:1.6;}
+.cdc-bonus{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:4px 12px;background:rgba(255,255,255,0.6);border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.3px;}
+
 /* CUSTOM FOOD — AI ile listede olmayan yemek ekleme */
 .cfm-textarea{width:100%;min-height:64px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--border);font-family:'Jost',sans-serif;font-size:14px;background:var(--surface);color:var(--text);resize:vertical;-webkit-appearance:none;}
 .cfm-textarea:focus{outline:none;border-color:var(--pink);}
@@ -409,6 +416,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   </div>
   <div class="wstrip" id="d-strip"></div>
   <div id="fasting-bar"></div>
+  <div id="cycle-diet-wrap"></div>
   <div id="water-wrap"></div>
   <div id="d-notice" style="margin:0 16px 12px;"></div>
   <div class="card">
@@ -1434,6 +1442,44 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── CYCLE-AWARE DIET CARD ───
+const PHASE_DIET={
+  'Menstruation':{
+    icon:'🔴',title:'Regl günü',
+    msg:'Demir + ısıtıcı yemek + sıcak çay. Ekstra protein hak ettin, kendine yumuşak ol.',
+    bg:'linear-gradient(135deg, var(--pink-pale), #fbe0db)',
+  },
+  'Follicular Phase':{
+    icon:'🌱',title:'Folliküler — enerji yüksek',
+    msg:'Sebze çeşitliliğini arttır, hafif ama besleyici. Yeni tatlar deneme zamanı.',
+    bg:'linear-gradient(135deg, var(--sage-soft), #e8f0e0)',
+  },
+  'Ovulation':{
+    icon:'🌸',title:'Ovulasyon — en parlak hâlin',
+    msg:'Magnezyum + omega-3 odakla. Yağlı balık + bol yeşillik mükemmel uyum.',
+    bg:'linear-gradient(135deg, var(--gold-soft), #f5e8d8)',
+  },
+  'Luteal Phase':{
+    icon:'🌙',title:'Luteal — içe dön',
+    msg:'Tatlı krizleri için proteini arttır. Sıcak yemek, magnezyum, mavi ışıktan uzak dur.',
+    bg:'linear-gradient(135deg, var(--mauve-soft), #ebd9e8)',
+  },
+};
+function renderCycleDietCard(d){
+  const wrap=document.getElementById('cycle-diet-wrap');
+  if(!wrap)return;
+  const c=ci(d);
+  if(!c){wrap.innerHTML='';return;}
+  const conf=PHASE_DIET[c.phase]||PHASE_DIET['Luteal Phase'];
+  const mt=getMacroTarget(d);
+  wrap.innerHTML=`<div class="cycle-diet-card" style="background:${conf.bg};">
+    <div class="cdc-icon">${conf.icon}</div>
+    <div class="cdc-title">${conf.title} · Day ${c.day}</div>
+    <div class="cdc-msg">${conf.msg}</div>
+    ${mt.bonus?`<div class="cdc-bonus">⬆️ ${mt.bonus} bugün</div>`:''}
+  </div>`;
+}
+
 // ─── FASTING WINDOW COUNTDOWN (toggle'lı — kullanıcı gizleyebilir) ───
 let _fastingTimer=null;
 function isFastingHidden(){return localStorage.getItem('fasting_hidden')==='1';}
@@ -1585,6 +1631,8 @@ function renderDietDay(){
 
   // Water bar
   renderWaterBar();
+  // Cycle-aware diet card (faza göre dinamik mesaj)
+  renderCycleDietCard(d);
 
   // Cycle-aware macro target (luteal +100, regl +150)
   const mt=getMacroTarget(d);
