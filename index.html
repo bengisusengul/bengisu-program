@@ -1686,10 +1686,10 @@ function renderCyActions(){
   const startedToday=lastOpen && lastOpen.start===todayY;
   const inOpenPeriod=lastOpen && !startedToday;
   wrap.innerHTML=`
+    ${startedToday?`<button class="cy-action full" style="background:#fde4e0;border-color:#e8a598;color:#a04030;font-weight:600;" onclick="actUndoStart()"><div class="cy-action-i">↩️</div><div class="cy-action-l">Bugünün başlangıcını GERİ AL</div></button>`:''}
     ${!lastOpen?`<button class="cy-action start" onclick="actPeriodStart()"><div class="cy-action-i">🔴</div><div class="cy-action-l">Bugün regl başladı</div></button>`:''}
     ${inOpenPeriod?`<button class="cy-action end" onclick="actPeriodEnd()"><div class="cy-action-i">⚪</div><div class="cy-action-l">Bugün regl bitti</div></button>`:''}
-    ${startedToday?`<button class="cy-action" onclick="actUndoStart()"><div class="cy-action-i">↩️</div><div class="cy-action-l">Bugünün başlangıcını geri al</div></button>`:''}
-    <button class="cy-action ${!lastOpen?'':'full'}" onclick="openLogPast()"><div class="cy-action-i">🗓</div><div class="cy-action-l">Geçmiş regl ekle</div></button>
+    <button class="cy-action ${(!lastOpen||inOpenPeriod)?'':'full'}" onclick="openLogPast()"><div class="cy-action-i">🗓</div><div class="cy-action-l">Geçmiş regl ekle</div></button>
   `;
 }
 
