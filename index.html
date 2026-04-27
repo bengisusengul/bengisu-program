@@ -255,6 +255,23 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* MEAL — yedim checkbox + actual vs target row */
+.meal-check{width:26px;height:26px;border-radius:8px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer;background:var(--surface);}
+.meal-check.done{background:var(--sage);border-color:var(--sage);transform:scale(1.05);}
+.meal-check.done::after{content:'✓';color:white;font-size:14px;font-weight:700;}
+.fi.eaten .fname{text-decoration:line-through;color:var(--text-light);}
+.fi.eaten .fmac{color:var(--text-light);opacity:0.7;}
+.fi.eaten .fkcal{color:var(--sage);}
+.macro-actual-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft);}
+.macro-actual-cell{text-align:center;}
+.macro-actual-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;line-height:1;}
+.macro-actual-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);margin-top:3px;}
+.macro-actual-pct{font-size:11px;font-weight:600;margin-top:2px;}
+.macro-pct-low{color:#7a92aa;}
+.macro-pct-ok{color:var(--sage);}
+.macro-pct-warn{color:#c9a96e;}
+.macro-pct-over{color:var(--pink-deep);}
+
 /* CYCLE — phase hero card */
 .cy-hero{background:linear-gradient(135deg,var(--mauve-soft),var(--pink-pale));border-radius:var(--r);padding:22px 20px;margin:0 16px 16px;text-align:center;border:1px solid var(--border);}
 .cy-hero-emoji{font-size:48px;line-height:1;margin-bottom:8px;}
@@ -1273,6 +1290,42 @@ function getAltList(foodId, slot) {
 // Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
 
+// ─── MEAL DONE TRACKING ───
+function getMealsDone(){return JSON.parse(localStorage.getItem('meals_done')||'{}');}
+function isMealDone(slot,dayKey){return !!getMealsDone()[dayKey+'_'+slot];}
+function toggleMealDone(slot,dayKey){
+  const all=getMealsDone();
+  const k=dayKey+'_'+slot;
+  if(all[k])delete all[k];else all[k]=true;
+  localStorage.setItem('meals_done',JSON.stringify(all));
+  renderDietDay();
+}
+// Get actual consumed macros for a date (only "eaten" meals)
+function getActualMacros(d,opts){
+  opts=opts||{};
+  const dayKey=d.toDateString();
+  const idx=d.getDay()%7;
+  const morningType=getMorningType(d);
+  const morningKcal=morningType==='coconut'?45:120;
+  const morningFat=morningType==='coconut'?5:14;
+  const m1=SEL_MEALS[dayKey+'_m1_main']||M1[idx];
+  const ms=SEL_MEALS[dayKey+'_m1_side']||M1S[idx];
+  const m2=SEL_MEALS[dayKey+'_m2_main']||M2[idx];
+  const m2s=SEL_MEALS[dayKey+'_m2_side']||M2S[idx];
+  const slots=[
+    {key:'morning',f:{p:0,f:morningFat,c:0,k:morningKcal}},
+    {key:'m1_main',f:m1},{key:'m1_side',f:ms},
+    {key:'m2_main',f:m2},{key:'m2_side',f:m2s},
+  ];
+  let p=0,f=0,c=0,k=0;
+  for(const s of slots){
+    if(opts.all || isMealDone(s.key,dayKey)){
+      p+=s.f.p||0;f+=s.f.f||0;c+=s.f.c||0;k+=s.f.k||0;
+    }
+  }
+  return{p,f,c,k};
+}
+
 function openFoodAlts(foodId, slot, dayKey) {
   const list = getAltList(foodId, slot);
   const current = SEL_MEALS[dayKey+'_'+slot];
@@ -1371,8 +1424,9 @@ function renderDietDay(){
   document.getElementById('supp-tl').innerHTML=`
     <div class="tli"><div class="tlt">07:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Levotiron</div><div class="tlde">Empty stomach · water only</div></div></div>
     <div class="tli"><div class="tlt">08:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz (1st dose)</div><div class="tlde">1 hour after Levothyroxine${morningType==='olive'?' · · also take olive oil mix':''}</div></div></div>
-    <div class="tli" style="background:${morningType==='coconut'?'rgba(200,168,136,0.08)':'rgba(139,168,136,0.08)'};border-radius:10px;padding:4px;">
-      <div class="tlt">${morningExtra.time}</div><div class="tlline"><div class="tldot" style="border-color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};"></div><div class="tlbar"></div></div>
+    <div class="tli" style="background:${morningType==='coconut'?'rgba(200,168,136,0.08)':'rgba(139,168,136,0.08)'};border-radius:10px;padding:4px;align-items:center;">
+      <div class="tlt">${morningExtra.time}</div>
+      <div class="meal-check ${isMealDone('morning',dayKey)?'done':''}" style="width:22px;height:22px;border-radius:6px;margin-right:4px;" onclick="toggleMealDone('morning','${dayKey.replace(/'/g,"\\'")}')" title="İçtim/yedim"></div>
       <div class="tlc">
         <div class="tlti">${morningExtra.icon} ${morningExtra.name}</div>
         <div class="tlde">${morningExtra.detail}</div>
@@ -1383,19 +1437,34 @@ function renderDietDay(){
     <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Et / tavuk / balık + salata MUHAKKAK · Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div></div></div>
     <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Before bed</div></div></div>`;
 
-  // Günlük makro özeti
+  // Günlük makro özeti — gerçek tüketim (yedim işaretliler) vs hedef
   const macroEl = document.getElementById('d-macro-summary');
+  const actual = getActualMacros(d);
+  const target = getMacroTarget(d);
+  const pctClass = (a, t) => {
+    const r = t ? a/t : 0;
+    if (r < 0.5) return 'macro-pct-low';
+    if (r < 0.85) return 'macro-pct-low';
+    if (r <= 1.05) return 'macro-pct-ok';
+    if (r <= 1.15) return 'macro-pct-warn';
+    return 'macro-pct-over';
+  };
+  const pct = (a, t) => t ? Math.round((a/t)*100) : 0;
   if(macroEl) macroEl.innerHTML=`
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);">
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalKcal>1550?'var(--pink-deep)':'var(--text)'};">${totalKcal}</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">kcal</div></div>
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:${totalP<110?'var(--pink-deep)':'var(--sage)'};">${totalP}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Protein</div></div>
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;">${totalF}g</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">Fat</div></div>
-      <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--sage);">✓</div><div style="font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:0.8px;">${morningType==='coconut'?'🥥':'🫒'} Cycle</div></div>
-    </div>`;
+    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Bugün gerçekten tüketilen <span style="color:var(--text-mid);text-transform:none;letter-spacing:0;">(işaretlediklerin)</span></div>
+    <div class="macro-actual-row">
+      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.k}</div><div class="macro-actual-lbl">kcal</div><div class="macro-actual-pct ${pctClass(actual.k,target.kcal)}">/${target.kcal} · %${pct(actual.k,target.kcal)}</div></div>
+      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.p}g</div><div class="macro-actual-lbl">Protein</div><div class="macro-actual-pct ${pctClass(actual.p,target.p)}">/${target.p}g · %${pct(actual.p,target.p)}</div></div>
+      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.f}g</div><div class="macro-actual-lbl">Yağ</div><div class="macro-actual-pct ${pctClass(actual.f,target.f)}">/${target.f}g · %${pct(actual.f,target.f)}</div></div>
+      <div class="macro-actual-cell"><div class="macro-actual-val">${actual.c}g</div><div class="macro-actual-lbl">Karb</div><div class="macro-actual-pct ${pctClass(actual.c,target.c)}">/${target.c}g · %${pct(actual.c,target.c)}</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--text-light);margin-top:10px;text-align:center;">${morningType==='coconut'?'🥥':'🫒'} Sabah cycle: ${morningType==='coconut'?'Hindistan cevizi yağı':'Zeytinyağ shot'}</div>`;
 }
 
 function fItemSwap(f, slot, dayKey){
-  return`<div class="fi">
+  const done=isMealDone(slot,dayKey);
+  return`<div class="fi ${done?'eaten':''}">
+    <div class="meal-check ${done?'done':''}" onclick="toggleMealDone('${slot}','${dayKey.replace(/'/g,"\\'")}')" title="${done?'Yedim — geri al':'Bunu yediğimi işaretle'}"></div>
     <div class="ficon">${f.i}</div>
     <div class="fin">
       <div class="fname">${f.n}</div>
@@ -1403,7 +1472,7 @@ function fItemSwap(f, slot, dayKey){
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
       <div class="fkcal">${f.k}</div>
-      <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openFoodAlts('${f.n}','${slot}','${dayKey}')">🔄</button>
+      <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openFoodAlts('${f.n.replace(/'/g,"\\'")}','${slot}','${dayKey.replace(/'/g,"\\'")}')">🔄</button>
     </div>
   </div>`;
 }
