@@ -810,6 +810,19 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   </div>
 </div>
 
+<!-- RECIPE MODAL — yemek tarifi (AI cache'li) -->
+<div class="mo" id="recipe-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3 id="rcp-title">Tarif</h3>
+    <div class="msub" id="rcp-meta"></div>
+    <div id="rcp-body"></div>
+    <div class="macts">
+      <button class="btn bp bfull" onclick="closeM('recipe-modal')">Tamam</button>
+    </div>
+  </div>
+</div>
+
 <!-- AI ÖNERİ MODAL — "Bana öner" -->
 <div class="mo" id="ai-suggest-modal">
   <div class="modal">
@@ -1400,6 +1413,83 @@ function getAltList(foodId, slot) {
 
 // Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
+
+// ─── RECIPE MODAL (AI cache'li) ───
+function getRecipeCache(){return JSON.parse(localStorage.getItem('recipes_cache')||'{}');}
+function recipeKey(name){return name.toLowerCase().replace(/[^a-z0-9çğıöşü]/gi,'_').slice(0,80);}
+function openRecipe(foodName,foodMacros){
+  const cache=getRecipeCache();
+  const k=recipeKey(foodName);
+  document.getElementById('rcp-title').textContent=foodName;
+  document.getElementById('rcp-meta').innerHTML=foodMacros?`<span style="color:var(--gold);font-weight:600;">${foodMacros.k} kcal · P${foodMacros.p}g · Y${foodMacros.f}g</span>`:'';
+  S.rcpCurrent={name:foodName,macros:foodMacros};
+  if(cache[k]){
+    renderRecipe(cache[k]);
+  } else {
+    document.getElementById('rcp-body').innerHTML='<button class="btn bp bfull" onclick="aiGetRecipe()">📖 Tarif al (AI)</button><div style="font-size:11px;color:var(--text-light);text-align:center;margin-top:8px;">Bir kez al, sonsuza dek hatırlanır</div>';
+  }
+  document.getElementById('recipe-modal').classList.add('open');
+}
+async function aiGetRecipe(){
+  if(!S.rcpCurrent)return;
+  const foodName=S.rcpCurrent.name;
+  let key=localStorage.getItem('anthropic_key');
+  if(!key){
+    key=prompt('Anthropic API key (kişisel kullanım için, localStorage\'a kaydedilir):');
+    if(!key)return;
+    localStorage.setItem('anthropic_key',key.trim());
+  }
+  document.getElementById('rcp-body').innerHTML='<div style="font-size:13px;color:var(--text-mid);padding:14px;background:var(--surface2);border-radius:10px;text-align:center;">⏳ Tarif hazırlanıyor…</div>';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':localStorage.getItem('anthropic_key'),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:500,
+        messages:[{role:'user',content:`Türkiye'de tipik servis miktarı ile bu yemeğin kısa, net bir tarifini ver: "${foodName}"
+
+Kurallar:
+- Pişirmede ghee veya tereyağı kullan
+- Üst için sızma zeytinyağ
+- Süt/yoğurt/peynir (lor + hellim hariç) yok, tahıl yok, baharat dışında baharat ekleme
+
+YANIT FORMATI: Sadece JSON, başka metin yazma:
+{"ingredients":["malzeme 1 + miktar","malzeme 2"],"steps":["adım 1","adım 2","adım 3"],"time_min":N}`}]
+      })
+    });
+    if(!r.ok)throw new Error('API '+r.status);
+    const data=await r.json();
+    const content=data.content?.[0]?.text||'';
+    const match=content.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('JSON bulunamadı');
+    const parsed=JSON.parse(match[0]);
+    const cache=getRecipeCache();
+    cache[recipeKey(foodName)]=parsed;
+    localStorage.setItem('recipes_cache',JSON.stringify(cache));
+    renderRecipe(parsed);
+  }catch(e){
+    document.getElementById('rcp-body').innerHTML=`<div class="notice np"><div class="nicon">⚠️</div><div>Tarif alınamadı: ${e.message}</div></div><button class="btn bsoft bfull" style="margin-top:10px;" onclick="aiGetRecipe()">↻ Tekrar dene</button>`;
+  }
+}
+function renderRecipe(r){
+  document.getElementById('rcp-body').innerHTML=`
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-light);margin-bottom:8px;">Malzemeler</div>
+      ${(r.ingredients||[]).map(ing=>`<div style="font-size:13px;padding:5px 0;border-bottom:1px dashed var(--border-soft);">• ${ing}</div>`).join('')}
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-light);margin-bottom:8px;">Pişirme</div>
+      ${(r.steps||[]).map((step,i)=>`<div style="display:flex;gap:10px;padding:6px 0;font-size:13px;line-height:1.55;"><span style="background:var(--pink-pale);color:var(--pink-deep);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:11px;">${i+1}</span><span>${step}</span></div>`).join('')}
+    </div>
+    <div style="font-size:13px;color:var(--text-mid);text-align:center;padding:8px;background:var(--gold-soft);border-radius:8px;">⏱ Yaklaşık ${r.time_min||10} dakika</div>
+    <button class="btn bghost bfull" style="margin-top:10px;font-size:11px;color:var(--text-light);" onclick="aiGetRecipe()">↻ Yeniden al</button>`;
+}
 
 // ─── AI MEAL SUGGESTION ───
 function openAISuggest(slot){
@@ -2014,6 +2104,7 @@ function renderDietDay(){
 
 function fItemSwap(f, slot, dayKey){
   const done=isMealDone(slot,dayKey);
+  const fEnc=encodeURIComponent(f.n);
   return`<div class="fi ${done?'eaten':''}">
     <div class="meal-check ${done?'done':''}" onclick="toggleMealDone('${slot}','${dayKey.replace(/'/g,"\\'")}')" title="${done?'Yedim — geri al':'Bunu yediğimi işaretle'}"></div>
     <div class="ficon">${f.i}</div>
@@ -2023,7 +2114,10 @@ function fItemSwap(f, slot, dayKey){
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
       <div class="fkcal">${f.k}</div>
-      <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openFoodAlts('${f.n.replace(/'/g,"\\'")}','${slot}','${dayKey.replace(/'/g,"\\'")}')">🔄</button>
+      <div style="display:flex;gap:4px;">
+        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openRecipe(decodeURIComponent('${fEnc}'),{k:${f.k},p:${f.p},f:${f.f}})" title="Tarif">📖</button>
+        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openFoodAlts(decodeURIComponent('${fEnc}'),'${slot}','${dayKey.replace(/'/g,"\\'")}')" title="Alternatifler">🔄</button>
+      </div>
     </div>
   </div>`;
 }
