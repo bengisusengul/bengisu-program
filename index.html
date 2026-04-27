@@ -396,15 +396,16 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div class="card">
     <div class="cb">
       <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">✅</div><div><strong>Serbest:</strong> Yeşillik (roka, ıspanak, karalahana, semizotu, maydanoz, dereotu). Soğan ve sarımsak ölçülü.</div></div>
-      <div class="notice ng" style="margin-bottom:10px;"><div class="nicon">⚖️</div><div><strong>Sınırlı:</strong> Lor peyniri günde max <b>80 g</b> · Avokado günde max <b>½</b></div></div>
-      <div class="notice nm" style="margin-bottom:10px;"><div class="nicon">🍳</div><div><strong>Yağlar:</strong> Pişirmede <b>ghee</b> · Üstüne döküm için <b>sızma zeytinyağ</b></div></div>
-      <div class="notice np" style="margin-bottom:0;"><div class="nicon">🚫</div><div><strong>Yok:</strong> Süt, yoğurt, peynir (lor hariç) · Tahıl, meyve, kuruyemiş, tatlandırıcı</div></div>
+      <div class="notice ng" style="margin-bottom:10px;"><div class="nicon">⚖️</div><div><strong>Sınırlı:</strong> Lor peyniri günde max <b>80 g</b> · Hellim günde max <b>100 g</b> · Avokado günde max <b>½</b></div></div>
+      <div class="notice nm" style="margin-bottom:10px;"><div class="nicon">🍳</div><div><strong>Yağlar:</strong> Pişirmede <b>ghee / tereyağı</b> · Üstüne döküm için <b>sızma zeytinyağ</b></div></div>
+      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">🥗</div><div><strong>Akşam mecburi:</strong> 2. öğüne mutlaka salata / yeşillik eşlik eder</div></div>
+      <div class="notice np" style="margin-bottom:0;"><div class="nicon">🚫</div><div><strong>Yok:</strong> Süt, yoğurt, peynir (lor + hellim hariç) · Tahıl, meyve, kuruyemiş, tatlandırıcı · 1. öğünde et / tavuk / balık</div></div>
     </div>
   </div>
 
-  <div class="slbl">1st Meal — 1:00 PM</div>
+  <div class="slbl">1. Öğün — 13:00 · Yumurta + Lor/Hellim + Avokado + Yeşillik</div>
   <div class="card"><div class="cb" id="m1b"></div></div>
-  <div class="slbl">2nd Meal — 5:30 PM</div>
+  <div class="slbl">2. Öğün — 17:30 · Et / Tavuk / Balık + Salata</div>
   <div class="card"><div class="cb" id="m2b"></div></div>
   <div class="slbl">Supplement Schedule</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
@@ -1022,9 +1023,38 @@ const EX={
 const CD={1:{n:'Glutes & Legs Cooldown',d:'Butterfly stretch · Pigeon pose · Quad stretch',y:'hip glute cooldown stretch'},2:{n:'Chest & Shoulder Cooldown',d:'Chest opener · Shoulder stretch · Tricep stretch',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Hip Cooldown',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Back & Arms Cooldown',d:'Lat stretch · Child pose · Bicep wall stretch',y:'back bicep cooldown stretch'},5:{n:'Glute & Core Cooldown',d:'Pigeon pose · Supine twist · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Shoulder & Arms Cooldown',d:'Overhead tricep · Cross-body shoulder · Wrist stretch',y:'shoulder arm cooldown stretch'}};
 
 // DIET
-const M1=[{n:'200g Ground Beef Patties',i:'🥩',p:40,f:28,k:420},{n:'250g Grilled Lamb Chops',i:'🍖',p:45,f:30,k:460},{n:'200g Salmon Fillet',i:'🐟',p:40,f:26,k:390},{n:'3 Eggs + 150g Beef Ribeye',i:'🥚',p:42,f:30,k:440},{n:'200g Chicken Thighs',i:'🍗',p:44,f:18,k:360},{n:'200g Beef Ribs',i:'🥩',p:36,f:34,k:460},{n:'250g Sea Bass/Bream',i:'🐟',p:42,f:14,k:300}];
-const M1S=[{n:'3 Boiled Eggs',i:'🥚',p:18,f:15,k:210},{n:'2 Fried Eggs',i:'🍳',p:12,f:18,k:210},{n:'100g Grilled Halloumi',i:'🧀',p:16,f:20,k:240},{n:'150g White Cheese',i:'🧀',p:18,f:22,k:280},{n:'100g Pastirma (Cured Beef)',i:'🥩',p:20,f:12,k:190},{n:'100g Spicy Beef Sausage',i:'🌭',p:14,f:26,k:290},{n:'2 Eggs + 50g Pastirma',i:'🍳',p:22,f:18,k:255}];
-const M2=[{n:'250g Beef Ribeye',i:'🥩',p:48,f:32,k:490},{n:'300g Grilled Beef Tenderloin',i:'🥩',p:58,f:22,k:440},{n:'200g Slow-Roast Lamb',i:'🍖',p:42,f:28,k:420},{n:'250g Beef Liver',i:'🫀',p:46,f:18,k:380},{n:'300g Rib Eye Steak',i:'🥩',p:54,f:36,k:560},{n:'250g T-Bone Steak',i:'🥩',p:52,f:30,k:490},{n:'200g Beef Tongue',i:'🥩',p:38,f:32,k:440}];
+// 1. ÖĞÜN ANA — yumurta / lor / hellim (et / tavuk / balık YOK)
+const M1=[
+  {n:'3 yumurta (tereyağında) + 100g hellim',i:'🍳',p:34,f:35,k:445},
+  {n:'3 yumurta (tereyağında) + 80g lor',i:'🥚',p:29,f:27,k:360},
+  {n:'4 yumurta (tereyağında) + 50g lor',i:'🍳',p:31,f:30,k:380},
+  {n:'100g hellim ızgara + 2 yumurta',i:'🧀',p:28,f:32,k:380},
+  {n:'80g lor + 3 yumurta (tereyağında)',i:'🥚',p:29,f:27,k:360},
+  {n:'100g hellim + 80g lor',i:'🧀',p:27,f:24,k:320},
+  {n:'4 yumurta (sahanda, ghee) + 50g lor',i:'🍳',p:31,f:32,k:400},
+];
+// 1. ÖĞÜN YAN — avokado + yeşillik salata (zeytinyağ ölçülü)
+const M1S=[
+  {n:'½ avokado + roka salatası',i:'🥑',p:3,f:15,k:180,note:'üzerine az zeytinyağ'},
+  {n:'½ avokado + ıspanak salatası',i:'🥑',p:4,f:15,k:185,note:'limon + tuz'},
+  {n:'½ avokado + karalahana',i:'🥑',p:4,f:15,k:185,note:'el ile yumuşat'},
+  {n:'½ avokado + semizotu',i:'🥑',p:4,f:15,k:185,note:'omega-3 kaynağı'},
+  {n:'½ avokado + maydanoz-dereotu',i:'🥑',p:3,f:15,k:180,note:'sumak serpiştir'},
+  {n:'½ avokado + roka + tere',i:'🥑',p:3,f:15,k:185,note:'limon damlat'},
+  {n:'½ avokado + ıspanak + roka',i:'🥑',p:4,f:15,k:190,note:'kaya tuzu'},
+];
+// 2. ÖĞÜN ANA — et / tavuk / balık (korunur)
+const M2=[{n:'250g Dana Antrikot',i:'🥩',p:48,f:32,k:490},{n:'300g Bonfile Izgara',i:'🥩',p:58,f:22,k:440},{n:'200g Yavaş Pişmiş Kuzu',i:'🍖',p:42,f:28,k:420},{n:'250g Dana Ciğer',i:'🫀',p:46,f:18,k:380},{n:'300g Rib Eye Steak',i:'🥩',p:54,f:36,k:560},{n:'250g T-Bone Steak',i:'🥩',p:52,f:30,k:490},{n:'250g Somon Fileto',i:'🐟',p:48,f:32,k:490}];
+// 2. ÖĞÜN YAN — MUHAKKAK salata / yeşillik
+const M2S=[
+  {n:'Roka salatası + zeytinyağ + limon',i:'🥗',p:3,f:14,k:155,note:'1 yk zeytinyağ'},
+  {n:'Ispanak + zeytinyağ + sumak',i:'🥗',p:3,f:14,k:155,note:'çiğ ya da hafif kavrulmuş'},
+  {n:'Karalahana + zeytinyağ + kaya tuzu',i:'🥗',p:4,f:14,k:160,note:'el ile yumuşat'},
+  {n:'Roka + tere karışık + zeytinyağ',i:'🥗',p:3,f:14,k:155,note:'limon damlat'},
+  {n:'Semizotu + zeytinyağ + limon',i:'🥗',p:3,f:14,k:155,note:'omega-3 yeşilliği'},
+  {n:'Maydanoz + soğan + zeytinyağ',i:'🥗',p:3,f:14,k:160,note:'sumak serpiştir'},
+  {n:'Ispanak + roka + zeytinyağ + limon',i:'🥗',p:4,f:14,k:160,note:'kaya tuzu'},
+];
 
 // SKIN
 const SM=['Tea Tree Foaming Face Wash','COSRX 6 Peptide Skin Booster (on damp skin)','Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)','Florence Bio Vitamin C Serum','Medicube Collagen Jelly Cream','COSRX SPF50 PA++++ (even indoors!)'];
@@ -1078,7 +1108,7 @@ function renderSelDay(){
   const per=inP(d)||preP(d);
   const ds=d.getDate()+' '+MN[d.getMonth()];
   const idx=dow%7;
-  const m1=M1[idx],ms=M1S[idx],m2=M2[idx];
+  const m1=M1[idx],ms=M1S[idx],m2=M2[idx],m2s=M2S[idx];
   const exs=EX[dow]||[];
   const ea=(per)&&sa.p.includes('Retinol')?{l:'Period Protocol',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
 
@@ -1094,7 +1124,7 @@ function renderSelDay(){
   const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SM.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}</div>`;
   const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Total ${exs.length} exercises · Don't skip cooldown!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Rest day. Light walk or 15 min stretching is fine.</div>`;
   const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Total</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday + Omega-3 + Collagen with meal</div></div>`;
-  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${m2.i} ${m2.n}</span><span style="color:var(--gold);font-weight:600;">${m2.k} kcal</span></div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Total</span><span style="color:var(--gold);font-weight:700;">${m2.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday (2nd) + Creatine with meal · Qalyviz after</div></div>`;
+  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Total</span><span style="color:var(--gold);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div><div style="margin-top:4px;font-size:11px;color:var(--sage);">🥗 Salata MUHAKKAK</div></div>`;
   const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Last step: COSRX Snail Peptide Eye Cream</div></div>`;
   const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Collagen</b> — skin & joint support</div><div style="padding:4px 0;">💊 <b>Magnesium</b> — sleep quality & muscle relaxation</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Take 30 min before bed.</div></div>`;
 
@@ -1111,8 +1141,8 @@ function renderSelDay(){
       ${tliX('07:30','🫁 Stomach Vacuum','3 × 30 sec · fasted · every single morning','te','<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>No exceptions — every morning.</b><br><br>• Exhale fully, pull navel toward spine<br>• Hold 30 seconds, breathe slowly through nose<br>• 3 sets · 30 sec rest between sets<br><br><span style="color:var(--pink-deep);">⭐ Fasted = maximum effect on deep core (TVA)</span></div>')}
       ${tliX('08:00','💊 Qalyviz (1st dose)','1 hour after Levotiron','tm',qalyviz_detail)}
       ${tliX(morningExtra.time,morningExtra.icon+' '+morningExtra.name,morningExtra.detail.split('·')[0].trim(),morningType==='coconut'?'tg':'ts',morning_detail)}
-      ${tliX('13:00','🥩 1st Meal',m1.n+' + '+ms.n,'td',meal1_detail)}
-      ${tliX('17:30','🥩 2nd Meal',m2.n,'td',meal2_detail)}
+      ${tliX('13:00','🥚 1. Öğün',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('17:30','🥩 2. Öğün',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail)}
       ${tliX('22:30','🌙 Evening Skincare',ea.e+' '+ea.l,'ts',skin_eve_detail)}
       ${tliX('23:00','💊 Collagen + Magnesium','Before bed','tm',supp_night_detail)}
     </div></div></div>`;
@@ -1159,73 +1189,70 @@ function getMorningType(date) {
 // ══════════════════════════════════════════
 // Her alternatif: {n: isim, i: emoji, p: protein, f: fat, k: kalori, note: not}
 const ALTS = {
-  // MAIN MEAT (~200-300g, ~38-48g protein)
-  et_ana: [
-    {n:'250g Beef Ribeye (with ghee)',i:'🥩',p:48,f:34,k:500,note:'Sear with ghee'},
-    {n:'300g Grilled Beef Tenderloin',i:'🥩',p:58,f:22,k:440,note:'Rock salt + black pepper'},
-    {n:'250g Lamb Chops (with butter)',i:'🍖',p:45,f:36,k:510,note:'Cook in butter'},
-    {n:'200g Slow-Roast Lamb',i:'🍖',p:42,f:28,k:420,note:'Slow cooked in own fat'},
-    {n:'250g Beef Ribs',i:'🥩',p:40,f:38,k:510,note:'Slow cooking is ideal'},
-    {n:'200g Beef Liver (with onions)',i:'🫀',p:46,f:18,k:380,note:'Rich in vitamin A'},
-    {n:'300g Rib Eye Steak',i:'🥩',p:54,f:40,k:580,note:'Marbled fat, delicious'},
-    {n:'200g Boiled Beef Tongue',i:'🥩',p:38,f:32,k:440,note:'Rock salt + lemon'},
-    {n:'200g Lamb Kidney (with butter)',i:'🫘',p:36,f:20,k:330,note:'Cooks quickly'},
-    {n:'250g T-Bone Steak',i:'🥩',p:52,f:32,k:500,note:'Bone-in, collagen-rich'},
-    {n:'200g Beef Heart (with ghee)',i:'🫀',p:40,f:22,k:370,note:'CoQ10 source'},
-    {n:'300g Oven Lamb Shoulder',i:'🍖',p:50,f:34,k:510,note:'Bone releases fat'},
+  // 1. ÖĞÜN ANA — yumurta / lor / hellim kombinasyonları
+  yumurta_lor: [
+    {n:'3 yumurta (tereyağında) + 80g lor',i:'🥚',p:29,f:27,k:360,note:'Klasik kombinasyon'},
+    {n:'4 yumurta (tereyağında) + 50g lor',i:'🍳',p:31,f:30,k:380,note:'Daha çok protein'},
+    {n:'2 yumurta + 100g hellim ızgara',i:'🧀',p:28,f:32,k:380,note:'Hellim ghee\'de kavrulur'},
+    {n:'3 yumurta + 100g hellim',i:'🍳',p:34,f:35,k:445,note:'Yağ ağırlıklı'},
+    {n:'4 yumurta sahanda (ghee)',i:'🍳',p:24,f:28,k:340,note:'Sade, klasik'},
+    {n:'3 haşlanmış yumurta + 80g lor',i:'🥚',p:29,f:22,k:330,note:'Hafif pişirim'},
+    {n:'2 yumurta + 80g lor + 1 yk tereyağı',i:'🥚',p:23,f:24,k:300,note:'Düşük kalori'},
+    {n:'100g hellim + 80g lor',i:'🧀',p:27,f:24,k:320,note:'Yumurtasız gün'},
+    {n:'3 omlet (ghee) + 50g lor',i:'🍳',p:25,f:25,k:330,note:'Çatal vurarak çırp'},
+    {n:'4 yumurta menemen tarzı (ghee)',i:'🍳',p:24,f:30,k:360,note:'Sade, baharatsız domatessiz'},
   ],
-  // POULTRY (~200-250g)
-  kumes: [
-    {n:'250g Chicken Thighs (skin-on, ghee)',i:'🍗',p:44,f:28,k:430,note:'Keep skin side up'},
-    {n:'200g Turkey Thigh (with butter)',i:'🦃',p:42,f:20,k:360,note:'Large portion feel'},
-    {n:'3 Whole Quail',i:'🐦',p:38,f:24,k:380,note:'Small but nutrient-dense'},
+  // 1. ÖĞÜN YAN — avokado + yeşillik
+  avokado_yesillik: [
+    {n:'½ avokado + roka',i:'🥑',p:3,f:15,k:180,note:'Limon damlat'},
+    {n:'½ avokado + ıspanak',i:'🥑',p:4,f:15,k:185,note:'Az zeytinyağ'},
+    {n:'½ avokado + karalahana',i:'🥑',p:4,f:15,k:185,note:'El ile yumuşat'},
+    {n:'½ avokado + semizotu',i:'🥑',p:4,f:15,k:185,note:'Omega-3'},
+    {n:'½ avokado + maydanoz-dereotu',i:'🥑',p:3,f:15,k:180,note:'Sumak serp'},
+    {n:'½ avokado + roka + tere',i:'🥑',p:3,f:15,k:185,note:'Acımsı miks'},
+    {n:'½ avokado + ıspanak + roka',i:'🥑',p:4,f:15,k:190,note:'Kaya tuzu'},
+    {n:'¼ avokado + bol yeşillik',i:'🥑',p:2,f:8,k:110,note:'Daha düşük yağ'},
+    {n:'Bol yeşillik + 1 yk zeytinyağ (avokadosuz)',i:'🥗',p:3,f:14,k:140,note:'Yağ ihtiyacı azsa'},
   ],
-  // BALIK (~200-250g)
-  balik: [
-    {n:'200g Salmon Fillet (with ghee)',i:'🐟',p:40,f:28,k:410,note:'Highest omega-3'},
-    {n:'250g Sea Bass (baked/grilled)',i:'🐟',p:42,f:14,k:300,note:'Good for lighter fat days'},
-    {n:'250g Sea Bream (salt crust)',i:'🐟',p:40,f:12,k:280,note:'Clean protein'},
-    {n:'200g Mackerel (with ghee)',i:'🐟',p:38,f:30,k:430,note:'Omega-3 + vitamin D'},
-    {n:'300g Fresh Anchovies (grilled)',i:'🐟',p:42,f:18,k:340,note:'Bones are edible'},
-    {n:'200g Fresh Tuna',i:'🐟',p:44,f:12,k:300,note:'Fresh not canned'},
-    {n:'200g Grilled Sardines',i:'🐟',p:36,f:20,k:340,note:'Calcium + omega-3'},
-  ],
-  // EGGS/DAIRY (side meal)
-  yumurta: [
-    {n:'4 Eggs (fried in butter)',i:'🍳',p:24,f:24,k:320,note:'Cook in butter'},
-    {n:'3 Eggs + 50g Pastirma',i:'🥚',p:28,f:22,k:320,note:'Protein boost'},
-    {n:'3 Eggs + 30g Butter',i:'🍳',p:18,f:30,k:350,note:'Keto-friendly'},
-    {n:'100g Grilled Halloumi',i:'🧀',p:16,f:20,k:240,note:'Fry in ghee'},
-    {n:'150g White Cheese + 2 Eggs',i:'🧀',p:26,f:28,k:370,note:'Watch sodium'},
-    {n:'100g Pastirma + 2 Eggs',i:'🥩',p:26,f:20,k:290,note:'Quick to prepare'},
-    {n:'100g Beef Sausage + 2 Eggs',i:'🌭',p:20,f:30,k:350,note:'Spiced option'},
-    {n:'150g Kashkaval + 2 Eggs',i:'🧀',p:28,f:30,k:390,note:'High protein+fat'},
-    {n:'4 Boiled Eggs + 20g Ghee',i:'🥚',p:24,f:30,k:380,note:'Easy to prepare'},
-    {n:'3 Eggs + 50g Kavurma (braised meat)',i:'🥩',p:30,f:26,k:370,note:'Braised in own fat'},
-  ],
-  // 2ND MEAL MAIN
+  // 2. ÖĞÜN ANA — et / tavuk / balık
   et_dinner: [
-    {n:'300g Beef Ribeye (with ghee)',i:'🥩',p:58,f:36,k:560,note:'Best choice for dinner'},
-    {n:'350g Grilled Lamb Leg',i:'🍖',p:62,f:38,k:590,note:'Large portion'},
-    {n:'250g Tenderloin (with butter)',i:'🥩',p:48,f:24,k:420,note:'Lean protein'},
-    {n:'300g Lamb Ribs',i:'🍖',p:50,f:44,k:600,note:'Collagen from bone'},
-    {n:'250g Beef Shank (slow boiled)',i:'🥩',p:46,f:30,k:460,note:'Collagen-rich'},
-    {n:'300g Chicken Thighs (skin-on, baked)',i:'🍗',p:54,f:30,k:490,note:'Large portion'},
-    {n:'250g Salmon (butter+dill)',i:'🐟',p:48,f:32,k:490,note:'Fish day'},
-    {n:'300g Turkey Roast (with ghee)',i:'🦃',p:56,f:26,k:470,note:'Lower fat option'},
-    {n:'200g Beef Liver (onion+ghee)',i:'🫀',p:44,f:20,k:370,note:'Iron-rich'},
-    {n:'350g Slow-Roast Lamb',i:'🍖',p:60,f:38,k:580,note:'Slow-cooked'},
-    {n:'250g Rib Eye (ghee+rosemary)',i:'🥩',p:50,f:42,k:580,note:'Most flavourful'},
-    {n:'300g Baked Anchovies',i:'🐟',p:52,f:22,k:410,note:'Omega-3 loading'},
+    {n:'300g Dana Antrikot (ghee)',i:'🥩',p:58,f:36,k:560,note:'Akşamın klasiği'},
+    {n:'350g Kuzu But (ızgara)',i:'🍖',p:62,f:38,k:590,note:'Büyük porsiyon'},
+    {n:'250g Bonfile (tereyağı)',i:'🥩',p:48,f:24,k:420,note:'Yağsız protein'},
+    {n:'300g Kuzu Pirzola',i:'🍖',p:50,f:44,k:600,note:'Yağı kemikten'},
+    {n:'250g Dana İncik (yavaş pişmiş)',i:'🥩',p:46,f:30,k:460,note:'Kollajen'},
+    {n:'300g Tavuk But (kabuklu, fırın)',i:'🍗',p:54,f:30,k:490,note:'Derisiyle pişir'},
+    {n:'250g Somon (tereyağı + dereotu)',i:'🐟',p:48,f:32,k:490,note:'Omega-3'},
+    {n:'300g Hindi Kavurma (ghee)',i:'🦃',p:56,f:26,k:470,note:'Düşük yağ seçenek'},
+    {n:'200g Dana Ciğer (soğan + ghee)',i:'🫀',p:44,f:20,k:370,note:'Demir kaynağı'},
+    {n:'350g Yavaş Kuzu',i:'🍖',p:60,f:38,k:580,note:'Slow-cooked'},
+    {n:'250g Levrek/Çipura (tuzlu fırın)',i:'🐟',p:42,f:14,k:300,note:'Hafif balık'},
+    {n:'300g Hamsi/Sardalya (ızgara)',i:'🐟',p:52,f:22,k:410,note:'Kılçığıyla'},
+    {n:'250g Antrikot + 50g kavurma',i:'🥩',p:55,f:40,k:560,note:'Karışık et'},
+    {n:'300g Köfte (ghee, baharatsız)',i:'🥩',p:48,f:35,k:520,note:'Soğan + maydanoz iç'},
+  ],
+  // 2. ÖĞÜN YAN — salata / yeşillik (mecburi)
+  salata_aksam: [
+    {n:'Roka + zeytinyağ + limon',i:'🥗',p:3,f:14,k:155,note:'1 yk zeytinyağ'},
+    {n:'Ispanak + zeytinyağ + sumak',i:'🥗',p:3,f:14,k:155,note:'Çiğ ya da hafif kavur'},
+    {n:'Karalahana + zeytinyağ',i:'🥗',p:4,f:14,k:160,note:'El ile yumuşat'},
+    {n:'Roka + tere',i:'🥗',p:3,f:14,k:155,note:'Acımsı yapraklar'},
+    {n:'Semizotu + zeytinyağ',i:'🥗',p:3,f:14,k:155,note:'Omega-3 yeşilliği'},
+    {n:'Maydanoz + soğan + zeytinyağ',i:'🥗',p:3,f:14,k:160,note:'Sumak serp'},
+    {n:'Ispanak + roka + zeytinyağ',i:'🥗',p:4,f:14,k:160,note:'Limon + kaya tuzu'},
+    {n:'Karışık yeşillik + sarımsak',i:'🥗',p:4,f:14,k:165,note:'Az sarımsak'},
+    {n:'Roka + dereotu + maydanoz',i:'🥗',p:3,f:14,k:155,note:'Üçlü yeşillik'},
+    {n:'Bol yeşillik + zeytinyağ (limonsuz)',i:'🥗',p:3,f:14,k:155,note:'Sade'},
   ],
 };
 
 // Hangi alternatif listesini kullan
 function getAltList(foodId, slot) {
-  if(slot==='m1_main') return ALTS.et_ana;
-  if(slot==='m1_side') return ALTS.yumurta;
+  if(slot==='m1_main') return ALTS.yumurta_lor;
+  if(slot==='m1_side') return ALTS.avokado_yesillik;
   if(slot==='m2_main') return ALTS.et_dinner;
-  return ALTS.et_ana;
+  if(slot==='m2_side') return ALTS.salata_aksam;
+  return ALTS.yumurta_lor;
 }
 
 // Selected meal tracking
@@ -1279,15 +1306,16 @@ function renderDietDay(){
   const fatAdj = morningType==='olive' ? 14 : 5;
 
   // Meals (selected or default)
-  const defM1 = M1[idx], defMs = M1S[idx], defM2 = M2[idx];
+  const defM1 = M1[idx], defMs = M1S[idx], defM2 = M2[idx], defM2s = M2S[idx];
   const m1 = SEL_MEALS[dayKey+'_m1_main'] || defM1;
   const ms = SEL_MEALS[dayKey+'_m1_side'] || defMs;
   const m2 = SEL_MEALS[dayKey+'_m2_main'] || defM2;
+  const m2s = SEL_MEALS[dayKey+'_m2_side'] || defM2s;
 
   // Daily total
-  const totalKcal = morningExtra.kcal + m1.k + ms.k + m2.k;
-  const totalP = m1.p + ms.p + m2.p;
-  const totalF = morningExtra.fat + m1.f + ms.f + m2.f;
+  const totalKcal = morningExtra.kcal + m1.k + ms.k + m2.k + m2s.k;
+  const totalP = m1.p + ms.p + m2.p + m2s.p;
+  const totalF = morningExtra.fat + m1.f + ms.f + m2.f + m2s.f;
 
   document.getElementById('m1b').innerHTML=
     fItemSwap(m1,'m1_main',dayKey)+
@@ -1302,13 +1330,15 @@ function renderDietDay(){
 
   document.getElementById('m2b').innerHTML=
     fItemSwap(m2,'m2_main',dayKey)+
+    fItemSwap(m2s,'m2_side',dayKey)+
     `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-size:13px;font-weight:600;">Meal Total</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k} kcal</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k} kcal</span>
       </div>
-      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Morning fat (${morningExtra.kcal} kcal) morning fat, reduce by ${fatAdj}g g fat in this meal</div>`:''}
-      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2nd) + Creatine with meal · Qalyviz after</div>
+      ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağı (${morningExtra.kcal} kcal) hesabıyla bu öğünde ${fatAdj}g yağı azalt</div>`:''}
+      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div>
+      <div style="font-size:11px;color:var(--sage);margin-top:4px;">🥗 Salata MUHAKKAK · yeşillik serbest, soğan-sarımsak ölçülü</div>
     </div>`;
 
   // Supplement timeline
@@ -1323,8 +1353,8 @@ function renderDietDay(){
         <div style="font-size:11px;margin-top:3px;color:${morningType==='coconut'?'var(--gold)':'var(--sage)'};">${morningExtra.note} · ${morningExtra.kcal} kcal · ${morningExtra.fat}g yağ</div>
       </div>
     </div>
-    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1st Meal</div><div class="tlde">Calciday + Omega-3 + Collagen with meal</div></div></div>
-    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2nd Meal</div><div class="tlde">Calciday (2nd) + Creatine with meal · Qalyviz after</div></div></div>
+    <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥚 1. Öğün</div><div class="tlde">Yumurta + lor/hellim + ½ avokado + yeşillik · Calciday + Omega-3 + Kolajen yemekle</div></div></div>
+    <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Et / tavuk / balık + salata MUHAKKAK · Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div></div></div>
     <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Kolajen + Magnezyum</div><div class="tlde">Before bed</div></div></div>`;
 
   // Günlük makro özeti
