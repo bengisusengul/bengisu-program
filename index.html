@@ -255,6 +255,16 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* CONFETTI — günlük hedef tamamlandığında kutlama */
+.confetti-burst{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+.confetti-particle{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:confetti-fall linear forwards;}
+.confetti-particle.round{border-radius:50%;width:8px;height:8px;}
+.confetti-particle.tall{width:6px;height:18px;}
+@keyframes confetti-fall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0;}
+}
+
 /* STREAK — günlük tamamlanma rozet */
 .streak-card{margin:0 16px 12px;border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--border);font-size:13px;font-weight:500;text-align:center;}
 .streak-card.done{background:linear-gradient(135deg,var(--sage-soft),#cee0c4);border-color:var(--sage);color:#4a6e47;}
@@ -1461,6 +1471,41 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── CONFETTI ───
+function triggerConfetti(particleCount){
+  const n=particleCount||45;
+  const container=document.createElement('div');
+  container.className='confetti-burst';
+  const colors=['#e8a598','#c9a96e','#a8bba5','#c4a5b8','#7eb5cc','#f2d4ce','#dce8da','#ede1e9'];
+  const shapes=['','round','tall'];
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');
+    p.className='confetti-particle '+shapes[Math.floor(Math.random()*shapes.length)];
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=(Math.random()*0.5)+'s';
+    p.style.animationDuration=(1.6+Math.random()*1.5)+'s';
+    container.appendChild(p);
+  }
+  document.body.appendChild(container);
+  setTimeout(()=>container.remove(),4500);
+}
+function checkDailyCompleteTrigger(){
+  const today=new Date();today.setHours(0,0,0,0);
+  // Sadece selected day bugünse ve bugün complete ise tetikle
+  const sel=new Date(S.dD);sel.setHours(0,0,0,0);
+  if(sel.getTime()!==today.getTime())return;
+  const todayY=ymd(today);
+  const lastFlash=localStorage.getItem('last_complete_flash');
+  const isNow=isDailyComplete(today);
+  if(isNow && lastFlash!==todayY){
+    localStorage.setItem('last_complete_flash',todayY);
+    triggerConfetti(50);
+  } else if(!isNow && lastFlash===todayY){
+    localStorage.removeItem('last_complete_flash');
+  }
+}
+
 // ─── STREAK / DAILY COMPLETE ───
 const MEAL_SLOTS_REQ=['morning','m1_main','m1_side','m2_main','m2_side'];
 function isDailyComplete(d){
@@ -1729,6 +1774,8 @@ function renderDietDay(){
   renderCycleDietCard(d);
   // Streak rozet (yemek + su tamamlanma)
   renderStreakBadge();
+  // Günlük hedef tamamlanmışsa confetti tetikle (yalnızca ilk geçişte)
+  checkDailyCompleteTrigger();
 
   // Cycle-aware macro target (luteal +100, regl +150)
   const mt=getMacroTarget(d);
