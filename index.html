@@ -210,7 +210,8 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .cc{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;font-size:13px;transition:all 0.15s;position:relative;color:var(--text);}
 .cc:active{background:var(--pink-pale);}
 .cc.today{background:var(--text);color:white;font-weight:600;}
-.cc.sel{background:var(--pink-deep);color:white;}
+.cc.sel{background:transparent;color:var(--text);outline:2.5px solid var(--pink-deep);outline-offset:-2px;font-weight:600;}
+.cc.sel.today{background:var(--text);color:white;outline-color:var(--text);}
 .cc.hper{background:var(--pink-pale);}
 .cc.hper::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pink-deep);}
 .cc.gym::before{content:'';position:absolute;top:3px;right:3px;width:4px;height:4px;border-radius:50%;background:var(--sage);}
