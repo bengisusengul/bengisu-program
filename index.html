@@ -539,7 +539,6 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
       <div class="fr"><label>Varsayılan Cycle Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
       <div class="fr"><label>Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
       <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Ayarları Kaydet</button>
-      <button class="btn bghost bfull" style="margin-top:8px;color:#a05050;" onclick="resetCycleData()">🗑 Tüm cycle verilerini sıfırla</button>
     </div>
   </div>
 
@@ -1515,6 +1514,68 @@ document.getElementById('swap-modal').addEventListener('click',function(e){if(e.
 // ══════════════════════════════════════════
 // CYCLE PAGE RENDER + HANDLERS
 // ══════════════════════════════════════════
+// ─── PDF SEED DATA — extracted from PC_Report (Takvimim) on 2026-04-27 ───
+// Format: ['YYYY-MM-DD', durationDays] · pregnancy gap 28 Dec 2024 - 13 Mar 2025 excluded
+const PDF_PERIODS=[
+  ['2026-04-03',8],['2026-03-03',5],['2026-02-06',6],['2026-01-08',5],
+  ['2025-12-08',5],['2025-11-10',5],['2025-10-13',5],['2025-09-16',5],
+  ['2025-08-19',5],['2025-07-23',5],['2025-06-27',5],['2025-06-01',5],
+  ['2025-05-05',5],['2025-04-08',5],
+  // pregnancy 2024-12-28 → 2025-03-13 (excluded)
+  ['2024-11-30',5],['2024-11-02',5],['2024-10-06',6],['2024-09-08',5],
+  ['2024-08-13',4],['2024-07-17',5],['2024-06-22',5],['2024-05-23',5],
+  ['2024-04-25',4],['2024-04-01',4],['2024-03-04',4],['2024-02-09',6],
+  ['2024-01-12',4],['2023-12-17',4],['2023-11-21',4],['2023-10-27',4],
+  ['2023-09-30',5],['2023-09-04',4],['2023-07-14',4],['2023-06-13',2],
+  ['2023-05-21',5],['2023-04-20',5],['2023-03-22',5],['2023-02-20',5],
+  ['2023-01-26',5],['2023-01-01',5],['2022-12-05',5],['2022-11-09',5],
+  ['2022-10-10',5],['2022-09-13',5],['2022-08-19',5],['2022-07-23',5],
+  ['2022-06-27',5],['2022-05-28',5],['2022-05-01',5],['2022-04-03',5],
+  ['2022-03-10',5],['2022-02-07',5],['2022-01-11',5],['2021-12-15',5],
+  ['2021-11-18',5],['2021-09-13',5],['2021-08-24',5],['2021-07-31',5],
+  ['2021-07-02',5],['2021-06-05',5],['2021-04-27',5],['2021-03-24',5],
+  ['2021-02-22',5],['2021-01-20',5],['2020-12-28',5],['2020-11-26',6],
+  ['2020-10-30',5],['2020-10-02',5],['2020-09-04',6],['2020-08-13',5],
+  ['2020-07-17',4],['2020-06-18',5],['2020-05-20',5],['2020-04-26',7],
+  ['2020-03-30',6],['2020-03-02',8],['2020-02-01',9],['2019-12-25',7],
+  ['2019-11-28',7],['2019-11-02',6],['2019-10-05',8],['2019-09-03',6],
+  ['2019-08-09',6],['2019-07-13',6],['2019-06-16',6],['2019-05-23',5],
+  ['2019-04-25',5],['2019-03-30',6],['2019-02-28',6],['2019-02-03',5],
+  ['2019-01-05',5],['2018-12-04',6],['2018-11-08',6],['2018-10-11',8],
+  ['2018-09-13',6],['2018-08-18',6],['2018-07-21',5],['2018-06-22',6],
+  ['2018-05-26',6],['2018-04-30',5],['2018-04-02',6],['2018-03-05',7],
+  ['2018-02-08',6],['2018-01-09',6],['2017-12-16',6],['2017-11-17',6],
+  ['2017-10-19',7],['2017-09-23',5],['2017-08-27',6],['2017-07-27',7],
+  ['2017-06-21',6],['2017-05-27',7],['2017-04-27',7],['2017-03-31',5],
+  ['2017-02-27',5],['2017-01-31',5],['2017-01-01',5],['2016-12-06',6],
+  ['2016-11-05',5],['2016-10-13',5],['2016-09-21',5],['2016-08-29',5],
+  ['2016-08-09',5],['2016-07-13',5],['2016-06-16',5],['2016-05-20',6],
+  ['2016-04-22',6],['2016-03-26',5],['2016-02-28',5],['2016-01-31',6],
+  ['2016-01-04',7],['2015-12-07',8],['2015-11-10',6],['2015-10-15',6],
+  ['2015-09-19',6],['2015-08-16',7],['2015-07-19',5],['2015-06-22',5],
+  ['2015-05-24',7],['2015-04-17',5],['2015-03-23',5],['2015-02-25',5],
+  ['2015-01-28',5],['2015-01-03',5],['2014-12-07',5],['2014-11-12',5],
+  ['2014-10-13',5],['2014-09-17',5],['2014-08-19',5],
+];
+
+function seedFromPDF(){
+  const existing=getPeriods();
+  if(existing.length){
+    if(!confirm(`Şu an ${existing.length} regl kaydın var. PDF verisi (${PDF_PERIODS.length} kayıt) ile değiştirilsin mi? Mevcut kayıtların silinecek.`))return;
+  }
+  const seeded=PDF_PERIODS.map(([start,days])=>{
+    const startD=fromYmd(start);
+    const endD=new Date(startD.getTime()+(days-1)*86400000);
+    return{id:pid(),start,end:ymd(endD),flow:null,note:'pdf-seed'};
+  });
+  savePeriods(seeded);
+  const settings=getCycleSettings();
+  settings.onboarded=true;
+  saveCycleSettingsObj(settings);
+  refreshAll();
+  setTimeout(()=>alert(`${seeded.length} regl kaydı PDF'inden yüklendi ✅\nSon regl: ${seeded[0].start}\nİlk regl: ${seeded[seeded.length-1].start}`),100);
+}
+
 const FLOW_OPTS=[{id:'spotting',l:'Lekelenme',i:'·'},{id:'light',l:'Hafif',i:'•'},{id:'medium',l:'Orta',i:'●'},{id:'heavy',l:'Yoğun',i:'⬤'}];
 const SYMP_OPTS=[
   {id:'cramps',l:'Kramp',i:'🤕'},{id:'headache',l:'Baş ağrısı',i:'🤯'},
@@ -1540,13 +1601,8 @@ function renderCycle(){
   const ps=getPeriods();
   const settings=getCycleSettings();
 
-  // ─── Onboarding banner / hero hide ───
-  const onbWrap=document.getElementById('cy-onboard-wrap');
-  if(!ps.length && !settings.onboarded){
-    onbWrap.innerHTML=`<div class="cy-onboard"><h4>Hoş geldin 🌸</h4><p>Senin gerçek cycle'ını öğrenmem için elindeki son birkaç regl tarihini girmen yeter. Tahmin yapmıyorum — verinden öğreniyorum, programın da buna göre güncelleniyor.</p><button class="btn bp bfull" onclick="openBulkImport()">📥 Geçmiş reglleri aktar</button></div>`;
-  } else {
-    onbWrap.innerHTML='';
-  }
+  // Onboarding banner kaldırıldı — auto-seed init()'te yapılıyor
+  document.getElementById('cy-onboard-wrap').innerHTML='';
 
   // ─── Hero card (current phase) ───
   renderCyHero();
@@ -1872,7 +1928,22 @@ function renderCycleStripTop(){
   const zen=getZen(c.phase);
   el.innerHTML=`<div class="cstrip" style="cursor:pointer;flex-direction:column;align-items:stretch;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div style="display:flex;align-items:center;gap:14px;"><div class="cicon">${c.emoji}</div><div class="cinfo" style="flex:1;"><div class="cphase">${c.phase}</div><div class="cdetail">Last period: ${lastStartLbl} · Cycle ~${cyc} days</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">day</div></div></div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--text-mid);margin-top:10px;padding-top:10px;border-top:1px dashed rgba(180,120,100,0.2);text-align:center;">${zen}</div></div>`;
 }
+// Auto-seed period history on first run — silent, no UI
+function autoSeedPeriodsIfEmpty(){
+  if(localStorage.getItem('periods')!==null)return;
+  const seeded=PDF_PERIODS.map(([start,days])=>{
+    const startD=fromYmd(start);
+    const endD=new Date(startD.getTime()+(days-1)*86400000);
+    return{id:pid(),start,end:ymd(endD),flow:null,note:'pdf-seed'};
+  });
+  savePeriods(seeded);
+  const settings=getCycleSettings();
+  settings.onboarded=true;
+  saveCycleSettingsObj(settings);
+}
+
 function init(){
+  autoSeedPeriodsIfEmpty();
   const today=new Date();
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
