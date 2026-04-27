@@ -22,7 +22,8 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);}
-.nb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:16px;cursor:pointer;border:none;background:transparent;min-width:58px;}
+.nb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 10px;border-radius:16px;cursor:pointer;border:none;background:transparent;min-width:48px;}
+@media (max-width:360px){.nb{padding:8px 6px;min-width:42px;}.nb .nl{font-size:9px;letter-spacing:0.3px;}}
 .nb .ni{font-size:22px;transition:transform 0.2s;}
 .nb .nl{font-size:10px;font-weight:500;color:var(--text-light);letter-spacing:0.5px;text-transform:uppercase;}
 .nb.active .nl{color:var(--pink-deep);font-weight:600;}
@@ -249,6 +250,87 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 .gif-how ol{padding-left:16px;}
 .gif-how li{margin-bottom:5px;}
 .gif-close{width:100%;padding:14px;background:var(--pink-deep);color:white;border:none;border-radius:50px;font-family:'Jost',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+
+/* CYCLE — predicted vs logged calendar marker */
+.cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
+
+/* CYCLE — phase hero card */
+.cy-hero{background:linear-gradient(135deg,var(--mauve-soft),var(--pink-pale));border-radius:var(--r);padding:22px 20px;margin:0 16px 16px;text-align:center;border:1px solid var(--border);}
+.cy-hero-emoji{font-size:48px;line-height:1;margin-bottom:8px;}
+.cy-hero-day{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--text);line-height:1.1;}
+.cy-hero-day em{font-style:normal;color:var(--pink-deep);font-weight:600;}
+.cy-hero-phase{font-size:13px;color:var(--text-mid);margin-top:4px;letter-spacing:0.5px;}
+.cy-hero-meta{display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap;}
+.cy-hero-pill{background:rgba(255,255,255,0.7);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text-mid);font-weight:500;}
+.cy-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text);margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);line-height:1.5;}
+
+/* CYCLE — quick actions */
+.cy-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 16px 16px;}
+.cy-action{padding:14px 12px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Jost',sans-serif;text-align:center;transition:all 0.15s;}
+.cy-action:active{transform:scale(0.97);background:var(--pink-pale);}
+.cy-action-i{font-size:22px;line-height:1;margin-bottom:6px;}
+.cy-action-l{font-size:12px;font-weight:500;color:var(--text);}
+.cy-action.full{grid-column:span 2;}
+.cy-action.start{background:var(--pink-pale);border-color:var(--pink-soft);color:var(--pink-deep);}
+.cy-action.end{background:var(--mauve-soft);border-color:var(--mauve);}
+
+/* CYCLE — section labels inside daily log */
+.cy-fld{margin-bottom:18px;}
+.cy-fld-l{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;}
+
+/* CYCLE — flow chips */
+.flow-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.flow-chip{padding:10px 6px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;font-size:11px;color:var(--text-mid);transition:all 0.15s;}
+.flow-chip-i{font-size:16px;line-height:1;margin-bottom:3px;}
+.flow-chip.active{background:var(--pink-pale);border-color:var(--pink-deep);color:var(--pink-deep);font-weight:600;}
+
+/* CYCLE — symptoms multi-chip */
+.symp-row{display:flex;flex-wrap:wrap;gap:6px;}
+.symp-chip{padding:7px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:12px;color:var(--text-mid);transition:all 0.15s;display:inline-flex;align-items:center;gap:5px;}
+.symp-chip.active{background:var(--pink-pale);border-color:var(--pink-deep);color:var(--pink-deep);font-weight:600;}
+
+/* CYCLE — mood emoji picker */
+.mood-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.mood-btn{padding:10px 4px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;font-size:24px;line-height:1;transition:all 0.15s;}
+.mood-btn-l{font-size:9px;color:var(--text-light);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.mood-btn.active{background:var(--pink-pale);border-color:var(--pink-deep);transform:scale(1.05);}
+
+/* CYCLE — 1-5 scale row */
+.scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.scale-btn{padding:12px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text-mid);transition:all 0.15s;}
+.scale-btn.active{background:var(--pink-deep);border-color:var(--pink-deep);color:white;}
+
+/* CYCLE — note textarea */
+.cy-note{width:100%;min-height:64px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--border);font-family:'Jost',sans-serif;font-size:14px;background:var(--surface);color:var(--text);resize:vertical;-webkit-appearance:none;}
+.cy-note:focus{outline:none;border-color:var(--pink);}
+
+/* CYCLE — history row */
+.cy-hist-i{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-soft);align-items:center;}
+.cy-hist-i:last-child{border-bottom:none;}
+.cy-hist-dot{width:10px;height:10px;border-radius:50%;background:var(--pink-deep);flex-shrink:0;}
+.cy-hist-c{flex:1;}
+.cy-hist-d{font-size:13px;font-weight:500;color:var(--text);}
+.cy-hist-m{font-size:11px;color:var(--text-light);margin-top:2px;}
+.cy-hist-x{background:transparent;border:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:6px 8px;}
+.cy-hist-x:active{color:var(--pink-deep);}
+
+/* CYCLE — predictions */
+.cy-pred-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cy-pred{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;}
+.cy-pred-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
+.cy-pred-v{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1.2;}
+.cy-pred-s{font-size:11px;color:var(--text-mid);margin-top:2px;}
+
+/* CYCLE — onboarding bulk row */
+.bulk-row{display:grid;grid-template-columns:1fr 1fr 80px 28px;gap:6px;margin-bottom:8px;align-items:center;}
+.bulk-row input,.bulk-row select{padding:8px 10px;font-size:12px;}
+.bulk-row .bulk-x{background:transparent;border:none;color:var(--text-light);cursor:pointer;font-size:18px;}
+@media (max-width:380px){.bulk-row{grid-template-columns:1fr 1fr;}.bulk-row select,.bulk-row .bulk-x{grid-column:span 1;}}
+
+/* CYCLE — onboarding overlay (full-screen) */
+.cy-onboard{margin:0 16px 16px;background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r);padding:20px;}
+.cy-onboard h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:6px;color:var(--text);}
+.cy-onboard p{font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;}
 </style>
 </head>
 <body>
@@ -381,6 +463,89 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div style="height:8px;"></div>
 </div>
 
+<!-- CYCLE -->
+<div id="page-cycle" class="page">
+  <div class="topbar">
+    <div class="tb-label">Period &amp; Cycle</div>
+    <h1><em>Cycle</em> 🌸</h1>
+    <div class="tb-sub" id="cy-topsub">Regl takibi · Tüm program buna göre güncellenir</div>
+  </div>
+
+  <!-- Onboarding banner (shown only when no periods logged) -->
+  <div id="cy-onboard-wrap"></div>
+
+  <!-- Phase hero card -->
+  <div id="cy-hero-wrap"></div>
+
+  <!-- Quick actions -->
+  <div class="cy-actions" id="cy-actions"></div>
+
+  <!-- Daily log -->
+  <div class="slbl" id="cy-log-lbl">Bugünün Günlüğü</div>
+  <div class="card" id="cy-log-card" style="display:none;">
+    <div class="cb">
+      <div class="cy-fld">
+        <div class="cy-fld-l">Akış Şiddeti</div>
+        <div class="flow-row" id="cy-flow"></div>
+      </div>
+      <div class="cy-fld">
+        <div class="cy-fld-l">Semptomlar</div>
+        <div class="symp-row" id="cy-symps"></div>
+      </div>
+      <div class="cy-fld">
+        <div class="cy-fld-l">Ruh Hali</div>
+        <div class="mood-row" id="cy-mood"></div>
+      </div>
+      <div class="cy-fld">
+        <div class="cy-fld-l">Enerji (1–5)</div>
+        <div class="scale-row" id="cy-energy"></div>
+      </div>
+      <div class="cy-fld">
+        <div class="cy-fld-l">Uyku Kalitesi (1–5)</div>
+        <div class="scale-row" id="cy-sleep"></div>
+      </div>
+      <div class="cy-fld" style="margin-bottom:0;">
+        <div class="cy-fld-l">Notlar</div>
+        <textarea class="cy-note" id="cy-note" placeholder="Bugün nasıl hissediyorsun?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Predictions -->
+  <div class="slbl" id="cy-pred-lbl" style="display:none;">Tahminler</div>
+  <div class="card" id="cy-pred-card" style="display:none;">
+    <div class="cb">
+      <div class="cy-pred-grid" id="cy-pred-grid"></div>
+      <div style="font-size:11px;color:var(--text-light);margin-top:10px;line-height:1.5;" id="cy-pred-disclaimer"></div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="slbl" id="cy-hist-lbl" style="display:none;">Cycle Geçmişi</div>
+  <div class="card" id="cy-hist-card" style="display:none;">
+    <div class="cb" id="cy-hist"></div>
+  </div>
+
+  <!-- Insights -->
+  <div class="slbl" id="cy-ins-lbl" style="display:none;">İçgörü</div>
+  <div class="card" id="cy-ins-card" style="display:none;">
+    <div class="cb" id="cy-ins"></div>
+  </div>
+
+  <!-- Settings -->
+  <div class="slbl">Ayarlar</div>
+  <div class="card">
+    <div class="cb">
+      <div class="fr"><label>Varsayılan Cycle Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
+      <div class="fr"><label>Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
+      <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Ayarları Kaydet</button>
+      <button class="btn bghost bfull" style="margin-top:8px;color:#a05050;" onclick="resetCycleData()">🗑 Tüm cycle verilerini sıfırla</button>
+    </div>
+  </div>
+
+  <div style="height:8px;"></div>
+</div>
+
 <!-- METRICS -->
 <div id="page-olcum" class="page">
   <div class="topbar">
@@ -452,6 +617,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="nb active" onclick="showP('takvim',this)"><span class="ni">📅</span><span class="nl">Calendar</span></button>
+  <button class="nb" onclick="showP('cycle',this)"><span class="ni">🌸</span><span class="nl">Cycle</span></button>
   <button class="nb" onclick="showP('diyet',this)"><span class="ni">🥩</span><span class="nl">Diet</span></button>
   <button class="nb" onclick="showP('egzersiz',this)"><span class="ni">💪</span><span class="nl">Workout</span></button>
   <button class="nb" onclick="showP('cilt',this)"><span class="ni">✨</span><span class="nl">Skin</span></button>
@@ -521,19 +687,157 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   </div>
 </div>
 
+<!-- BULK IMPORT MODAL (cycle onboarding) -->
+<div class="mo" id="bulk-import-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>Geçmiş Reglleri Aktar 🌸</h3>
+    <div class="msub">Hatırladığın kadar regl tarihi ekle. Sistem bu verilerle senin gerçek cycle'ını öğrenir, tahminleri buna göre yapar. En az 1 kayıt yeterli; ne kadar çok girersen tahminler o kadar isabetli olur.</div>
+    <div id="bulk-rows"></div>
+    <button class="btn bghost bfull" style="margin-top:8px;" onclick="addBulkRow()">+ Yeni satır</button>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('bulk-import-modal')">İptal</button>
+      <button class="btn bp" style="flex:2;" onclick="saveBulkImport()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOG PAST PERIOD MODAL -->
+<div class="mo" id="log-past-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>Geçmiş Regl Ekle 🗓</h3>
+    <div class="msub">Tarih aralığını gir. Akış şiddeti opsiyonel.</div>
+    <div class="fr"><label>Başlangıç</label><input type="date" id="lp-start"></div>
+    <div class="fr"><label>Bitiş (opsiyonel)</label><input type="date" id="lp-end"></div>
+    <div class="fr"><label>Akış Şiddeti</label>
+      <select id="lp-flow">
+        <option value="">— seçili değil —</option>
+        <option value="spotting">Lekelenme</option>
+        <option value="light">Hafif</option>
+        <option value="medium">Orta</option>
+        <option value="heavy">Yoğun</option>
+      </select>
+    </div>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('log-past-modal')">İptal</button>
+      <button class="btn bp" style="flex:2;" onclick="saveLogPast()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// REGL
-const PER={last:new Date('2026-03-03'),cyc:27,dur:5};
+// ══════════════════════════════════════════
+// CYCLE ENGINE — driven by logged data, not hardcoded dates
+// ══════════════════════════════════════════
+const ymd=d=>{const x=new Date(d);x.setHours(0,0,0,0);const y=x.getFullYear(),m=String(x.getMonth()+1).padStart(2,'0'),da=String(x.getDate()).padStart(2,'0');return `${y}-${m}-${da}`;};
+const fromYmd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
+const dayDiff=(a,b)=>Math.round((new Date(ymd(a))-new Date(ymd(b)))/86400000);
+const median=arr=>{if(!arr.length)return 0;const s=[...arr].sort((a,b)=>a-b);const n=s.length;return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;};
+
+function getPeriods(){
+  return JSON.parse(localStorage.getItem('periods')||'[]')
+    .sort((a,b)=>fromYmd(a.start)-fromYmd(b.start));
+}
+function getCycleSettings(){
+  return Object.assign(
+    {defaultCycleLength:28,defaultPeriodDuration:5,onboarded:false},
+    JSON.parse(localStorage.getItem('cycle_settings')||'{}')
+  );
+}
+function getCycleLogs(){return JSON.parse(localStorage.getItem('cycle_logs')||'{}');}
+function saveCycleLogs(o){localStorage.setItem('cycle_logs',JSON.stringify(o));}
+function savePeriods(arr){localStorage.setItem('periods',JSON.stringify(arr));}
+function saveCycleSettingsObj(o){localStorage.setItem('cycle_settings',JSON.stringify(o));}
+
+function getAvgCycleLen(){
+  const ps=getPeriods();
+  if(ps.length<2)return getCycleSettings().defaultCycleLength;
+  const lens=[];
+  for(let i=1;i<ps.length;i++)lens.push(dayDiff(fromYmd(ps[i].start),fromYmd(ps[i-1].start)));
+  return Math.round(median(lens.slice(-6)));
+}
+function getAvgPeriodDur(){
+  const ps=getPeriods().filter(p=>p.end);
+  if(!ps.length)return getCycleSettings().defaultPeriodDuration;
+  return Math.round(median(ps.map(p=>1+dayDiff(fromYmd(p.end),fromYmd(p.start)))));
+}
+
+// ci() — returns null if no period data logged yet
 function ci(d=new Date()){
-  const days=Math.floor((d-PER.last)/86400000);
-  const day=((days%PER.cyc)+PER.cyc)%PER.cyc+1;
-  if(day<=PER.dur)return{day,phase:'Menstruation',emoji:'🔴',cls:'np'};
+  const ps=getPeriods();
+  if(!ps.length)return null;
+  const lastStart=fromYmd(ps[ps.length-1].start);
+  const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
+  const days=dayDiff(d,lastStart);
+  const day=((days%cyc)+cyc)%cyc+1;
+  if(day<=dur)return{day,phase:'Menstruation',emoji:'🔴',cls:'np'};
   if(day<=13)return{day,phase:'Follicular Phase',emoji:'🌱',cls:'ns'};
   if(day<=16)return{day,phase:'Ovulation',emoji:'🌸',cls:'ng'};
   return{day,phase:'Luteal Phase',emoji:'🌙',cls:'nm'};
 }
-const inP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day<=PER.dur;};
-const preP=d=>{const day=((Math.floor((d-PER.last)/86400000)%PER.cyc)+PER.cyc)%PER.cyc+1;return day>=(PER.cyc-4);};
+
+// inP() — first checks logged period entries (ground truth), then falls back to prediction
+function inP(d){
+  const dy=ymd(d);
+  for(const p of getPeriods()){
+    const start=p.start;
+    const end=p.end||ymd(new Date(fromYmd(p.start).getTime()+(getAvgPeriodDur()-1)*86400000));
+    if(dy>=start && dy<=end)return true;
+  }
+  const c=ci(d);
+  return !!c && c.day<=getAvgPeriodDur();
+}
+function preP(d){
+  const c=ci(d);
+  return !!c && c.day>=getAvgCycleLen()-4;
+}
+function isLoggedPeriodDay(d){
+  const dy=ymd(d);
+  for(const p of getPeriods()){
+    const end=p.end||ymd(new Date(fromYmd(p.start).getTime()+(getAvgPeriodDur()-1)*86400000));
+    if(dy>=p.start && dy<=end)return true;
+  }
+  return false;
+}
+
+// ══════════════════════════════════════════
+// ZEN QUOTES — phase-specific motivation
+// ══════════════════════════════════════════
+const ZEN={
+  'Menstruation':[
+    'Vücudun dinleniyor, sen de izin ver.',
+    'Bu sadece bir döngü, geçecek.',
+    'Yumuşacık ol kendine.',
+    'Yavaşlamak güçsüzlük değil; akıştır.',
+    'İçeri çekil, kendini sar.',
+  ],
+  'Follicular Phase':[
+    'Enerji yükseliyor — yeni şeyler dene.',
+    'Yaratıcılık penceren açık.',
+    'Vücudun çiçekleniyor.',
+    'Bugün bir adım at, yarın iki olur.',
+  ],
+  'Ovulation':[
+    'En parlak halindesin.',
+    'Bağlantı kur, paylaş, gül.',
+    'Güç ve şefkat aynı anda.',
+    'Bugün dünyaya görün.',
+  ],
+  'Luteal Phase':[
+    'İçe dön, dinle.',
+    'Yavaşlamak da güçtür.',
+    'Sınırlarına saygı duy.',
+    'Tamamlanmamış olan bir gün tamamlanır.',
+    'Hisset, yargılama.',
+  ],
+};
+function getZen(phase,d=new Date()){
+  const list=ZEN[phase]||ZEN['Luteal Phase'];
+  const start=new Date(d.getFullYear(),0,0);
+  const dayOfYear=Math.floor((d-start)/86400000);
+  return list[dayOfYear%list.length];
+}
 
 // SPLITS
 const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Glutes · Legs · Core'},2:{n:'Push',e:'💪',f:'Chest · Shoulder · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Hamstrings · Glutes · Core'},4:{n:'Pull',e:'🏋️',f:'Back · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Full Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Shoulders · Arms · Core'}};
@@ -744,6 +1048,7 @@ function showP(n,b){
   if(n==='egzersiz')renderEx();
   if(n==='cilt')renderSkin();
   if(n==='olcum')renderMeas();
+  if(n==='cycle')renderCycle();
 }
 
 // CALENDAR
@@ -760,7 +1065,7 @@ function renderCal(){
     cell.className='cc';cell.textContent=d;
     if(date.toDateString()===today.toDateString())cell.classList.add('today');
     if(date.toDateString()===S.selD.toDateString())cell.classList.add('sel');
-    if(inP(date))cell.classList.add('hper');
+    if(inP(date)){cell.classList.add('hper');if(!isLoggedPeriodDay(date))cell.classList.add('hper-pred');}
     if(date.getDay()!==0)cell.classList.add('gym');
     cell.onclick=()=>{S.selD=date;renderCal();renderSelDay();};
     g.appendChild(cell);
@@ -797,7 +1102,7 @@ function renderSelDay(){
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
-      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Day ${c.day}</span>
+      ${c?`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Day ${c.day}</span>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--text-light);background:var(--surface2);" onclick="showP('cycle',document.querySelectorAll('.nb')[1])" role="button">🌸 Cycle takibini başlat</span>`}
     </div>
     ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Period / pre-period:</strong> Reduce retinol and AHA/BHA in skincare.</div></div></div>`:''}
     <div class="slbl">⏰ Daily Schedule</div>
@@ -964,7 +1269,7 @@ function renderDietDay(){
   document.getElementById('d-datelbl').textContent=d.getDate()+' '+MN[d.getMonth()];
 
   // Period warning
-  document.getElementById('d-notice').innerHTML=per?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> You can increase calorie target by 100-150 kcal. Prioritise extra protein.</div></div>`:'';
+  document.getElementById('d-notice').innerHTML=(per&&c)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> You can increase calorie target by 100-150 kcal. Prioritise extra protein.</div></div>`:'';
 
   // Morning cycle info
   const morningExtra = morningType==='coconut'
@@ -1146,7 +1451,7 @@ function renderSkin(){renderStrip('c-strip',S.cD,d=>{S.cD=d;renderSkinDay();});r
 function renderSkinDay(){
   const d=S.cD,sd=getSkinD(d),c=ci(d),per=inP(d),pre=preP(d);
   const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Period Protocol',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
-  document.getElementById('c-notice').innerHTML=(per||pre)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Reduce retinol to once a week, skip AHA/BHA toner.</div></div>`:`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.phase} · Day ${c.day}:</strong> Continue normal routine. Cycle day ${sd}.</div></div>`;
+  document.getElementById('c-notice').innerHTML=!c?`<div class="notice np"><div class="nicon">🌸</div><div><strong>Cycle takibi yok:</strong> Cycle sekmesinden regllerini ekle, retinol/AHA önerileri kişiselleşsin.</div></div>`:(per||pre)?`<div class="notice np"><div class="nicon">🔴</div><div><strong>${c.phase}:</strong> Reduce retinol to once a week, skip AHA/BHA toner.</div></div>`:`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.phase} · Day ${c.day}:</strong> Continue normal routine. Cycle day ${sd}.</div></div>`;
   document.getElementById('c-active-badge').innerHTML=`<span class="sabadge ${ea.b}">${ea.e} ${ea.l}</span>`;
   document.getElementById('c-morn').innerHTML=SM.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div>${i===1?'<div class="snote">💧 Apply on damp skin</div>':i===5?'<div class="snote">☀️ Last step — never skip, even indoors!</div>':''}</div></div>`).join('');
   let eh=SEB.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div></div></div>`).join('');
@@ -1177,7 +1482,7 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Analyse Renpho measurements.\nStarting weight: 76.9 kg (26 April 2026) · Target: 58 kg (September 2026, ~5 months, ~5 kg/month) · Regl: ${c.phase}, Day ${c.day} · Carnivore IF · Gym: 6 days/week (just started)\n${pr?`Previous: ${pr.weight}kg, %${pr.fat} fat`:''}\n\nAnalyse: 1) This week summary 2) Changes 3) Period effect? 4) What's going well? 5) Watch out for? 6) Can she reach the September target?\n\nWrite in English, honest and concise.`}]}]})});
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Analyse Renpho measurements.\nStarting weight: 76.9 kg (26 April 2026) · Target: 58 kg (September 2026, ~5 months, ~5 kg/month) · Regl: ${c?`${c.phase}, Day ${c.day}`:'no cycle data logged yet'} · Carnivore IF · Gym: 6 days/week (just started)\n${pr?`Previous: ${pr.weight}kg, %${pr.fat} fat`:''}\n\nAnalyse: 1) This week summary 2) Changes 3) Period effect? 4) What's going well? 5) Watch out for? 6) Can she reach the September target?\n\nWrite in English, honest and concise.`}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
   catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
   btn.innerHTML='🤖 Re-analyse';btn.disabled=false;
@@ -1207,12 +1512,371 @@ function renderStrip(id,activeD,cb){
 function closeM(id){document.getElementById(id).classList.remove('open');}
 document.getElementById('swap-modal').addEventListener('click',function(e){if(e.target===this)closeM('swap-modal');});
 
+// ══════════════════════════════════════════
+// CYCLE PAGE RENDER + HANDLERS
+// ══════════════════════════════════════════
+const FLOW_OPTS=[{id:'spotting',l:'Lekelenme',i:'·'},{id:'light',l:'Hafif',i:'•'},{id:'medium',l:'Orta',i:'●'},{id:'heavy',l:'Yoğun',i:'⬤'}];
+const SYMP_OPTS=[
+  {id:'cramps',l:'Kramp',i:'🤕'},{id:'headache',l:'Baş ağrısı',i:'🤯'},
+  {id:'bloating',l:'Şişkinlik',i:'💨'},{id:'acne',l:'Sivilce',i:'🔴'},
+  {id:'breast_tender',l:'Göğüs hassasiyeti',i:'🩷'},{id:'fatigue',l:'Yorgunluk',i:'😴'},
+];
+const MOOD_OPTS=[
+  {id:'happy',l:'Mutlu',i:'😊'},{id:'calm',l:'Sakin',i:'😌'},
+  {id:'irritable',l:'Sinirli',i:'😤'},{id:'sad',l:'Hüzünlü',i:'😢'},
+  {id:'anxious',l:'Kaygılı',i:'😰'},
+];
+
+function getDayLog(dy){
+  return Object.assign({flow:null,symptoms:[],mood:null,energy:null,sleep:null,note:''},(getCycleLogs()[dy]||{}));
+}
+function setDayLog(dy,patch){
+  const all=getCycleLogs();
+  all[dy]=Object.assign(getDayLog(dy),patch);
+  saveCycleLogs(all);
+}
+
+function renderCycle(){
+  const ps=getPeriods();
+  const settings=getCycleSettings();
+
+  // ─── Onboarding banner / hero hide ───
+  const onbWrap=document.getElementById('cy-onboard-wrap');
+  if(!ps.length && !settings.onboarded){
+    onbWrap.innerHTML=`<div class="cy-onboard"><h4>Hoş geldin 🌸</h4><p>Senin gerçek cycle'ını öğrenmem için elindeki son birkaç regl tarihini girmen yeter. Tahmin yapmıyorum — verinden öğreniyorum, programın da buna göre güncelleniyor.</p><button class="btn bp bfull" onclick="openBulkImport()">📥 Geçmiş reglleri aktar</button></div>`;
+  } else {
+    onbWrap.innerHTML='';
+  }
+
+  // ─── Hero card (current phase) ───
+  renderCyHero();
+  // ─── Quick actions ───
+  renderCyActions();
+  // ─── Daily log card ───
+  renderCyDailyLog();
+  // ─── Predictions ───
+  renderCyPredictions();
+  // ─── History ───
+  renderCyHistory();
+  // ─── Insights ───
+  renderCyInsights();
+  // ─── Settings inputs ───
+  document.getElementById('cy-set-len').value=settings.defaultCycleLength;
+  document.getElementById('cy-set-dur').value=settings.defaultPeriodDuration;
+}
+
+function renderCyHero(){
+  const wrap=document.getElementById('cy-hero-wrap');
+  const c=ci();
+  const ps=getPeriods();
+  if(!c){
+    wrap.innerHTML='';
+    document.getElementById('cy-topsub').textContent='Regl takibi başlatılmadı';
+    return;
+  }
+  const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
+  const lastStart=fromYmd(ps[ps.length-1].start);
+  const nextStart=new Date(lastStart.getTime()+cyc*86400000);
+  const daysToNext=Math.max(0,dayDiff(nextStart,new Date()));
+  const zen=getZen(c.phase);
+  document.getElementById('cy-topsub').textContent=`${c.phase} · Day ${c.day} of ~${cyc}`;
+  wrap.innerHTML=`<div class="cy-hero">
+    <div class="cy-hero-emoji">${c.emoji}</div>
+    <div class="cy-hero-day"><em>Day ${c.day}</em> of ~${cyc}</div>
+    <div class="cy-hero-phase">${c.phase}</div>
+    <div class="cy-hero-meta">
+      <span class="cy-hero-pill">⏳ Sıradaki regl: ${daysToNext} gün</span>
+      <span class="cy-hero-pill">📊 ${ps.length} cycle kaydı</span>
+    </div>
+    <div class="cy-quote">"${zen}"</div>
+  </div>`;
+}
+
+function renderCyActions(){
+  const wrap=document.getElementById('cy-actions');
+  const ps=getPeriods();
+  const todayY=ymd(new Date());
+  const lastOpen=ps.length && !ps[ps.length-1].end ? ps[ps.length-1] : null;
+  const startedToday=lastOpen && lastOpen.start===todayY;
+  const inOpenPeriod=lastOpen && !startedToday;
+  wrap.innerHTML=`
+    ${!lastOpen?`<button class="cy-action start" onclick="actPeriodStart()"><div class="cy-action-i">🔴</div><div class="cy-action-l">Bugün regl başladı</div></button>`:''}
+    ${inOpenPeriod?`<button class="cy-action end" onclick="actPeriodEnd()"><div class="cy-action-i">⚪</div><div class="cy-action-l">Bugün regl bitti</div></button>`:''}
+    ${startedToday?`<button class="cy-action" onclick="actUndoStart()"><div class="cy-action-i">↩️</div><div class="cy-action-l">Bugünün başlangıcını geri al</div></button>`:''}
+    <button class="cy-action ${!lastOpen?'':'full'}" onclick="openLogPast()"><div class="cy-action-i">🗓</div><div class="cy-action-l">Geçmiş regl ekle</div></button>
+  `;
+}
+
+function renderCyDailyLog(){
+  const card=document.getElementById('cy-log-card');
+  card.style.display='block';
+  const dy=ymd(new Date());
+  const log=getDayLog(dy);
+  // Flow
+  document.getElementById('cy-flow').innerHTML=FLOW_OPTS.map(o=>`
+    <div class="flow-chip ${log.flow===o.id?'active':''}" onclick="setFlow('${o.id}')">
+      <div class="flow-chip-i">${o.i}</div><div>${o.l}</div>
+    </div>`).join('');
+  // Symptoms
+  document.getElementById('cy-symps').innerHTML=SYMP_OPTS.map(o=>`
+    <div class="symp-chip ${log.symptoms.includes(o.id)?'active':''}" onclick="toggleSymp('${o.id}')">
+      <span>${o.i}</span><span>${o.l}</span>
+    </div>`).join('');
+  // Mood
+  document.getElementById('cy-mood').innerHTML=MOOD_OPTS.map(o=>`
+    <div class="mood-btn ${log.mood===o.id?'active':''}" onclick="setMood('${o.id}')">
+      <div>${o.i}</div><div class="mood-btn-l">${o.l}</div>
+    </div>`).join('');
+  // Energy
+  document.getElementById('cy-energy').innerHTML=[1,2,3,4,5].map(n=>`
+    <div class="scale-btn ${log.energy===n?'active':''}" onclick="setEnergy(${n})">${n}</div>`).join('');
+  // Sleep
+  document.getElementById('cy-sleep').innerHTML=[1,2,3,4,5].map(n=>`
+    <div class="scale-btn ${log.sleep===n?'active':''}" onclick="setSleep(${n})">${n}</div>`).join('');
+  // Note
+  const noteEl=document.getElementById('cy-note');
+  noteEl.value=log.note||'';
+  noteEl.oninput=()=>{setDayLog(dy,{note:noteEl.value});};
+}
+
+function setFlow(v){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{flow:cur.flow===v?null:v});renderCyDailyLog();}
+function toggleSymp(v){const dy=ymd(new Date());const cur=getDayLog(dy);const s=new Set(cur.symptoms);s.has(v)?s.delete(v):s.add(v);setDayLog(dy,{symptoms:[...s]});renderCyDailyLog();}
+function setMood(v){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{mood:cur.mood===v?null:v});renderCyDailyLog();}
+function setEnergy(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{energy:cur.energy===n?null:n});renderCyDailyLog();}
+function setSleep(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{sleep:cur.sleep===n?null:n});renderCyDailyLog();}
+
+function renderCyPredictions(){
+  const ps=getPeriods();
+  if(!ps.length){
+    document.getElementById('cy-pred-lbl').style.display='none';
+    document.getElementById('cy-pred-card').style.display='none';
+    return;
+  }
+  document.getElementById('cy-pred-lbl').style.display='block';
+  document.getElementById('cy-pred-card').style.display='block';
+  const cyc=getAvgCycleLen();
+  const lastStart=fromYmd(ps[ps.length-1].start);
+  const nextStart=new Date(lastStart.getTime()+cyc*86400000);
+  const ovulation=new Date(lastStart.getTime()+(cyc-14)*86400000);
+  const fertileStart=new Date(ovulation.getTime()-5*86400000);
+  const fertileEnd=new Date(ovulation.getTime()+1*86400000);
+  const pmsStart=new Date(nextStart.getTime()-5*86400000);
+  const pmsEnd=new Date(nextStart.getTime()-1*86400000);
+  const fmt=d=>d.getDate()+' '+MN[d.getMonth()];
+  const days=Math.max(0,dayDiff(nextStart,new Date()));
+  document.getElementById('cy-pred-grid').innerHTML=`
+    <div class="cy-pred"><div class="cy-pred-l">Sıradaki Regl</div><div class="cy-pred-v">${fmt(nextStart)}</div><div class="cy-pred-s">${days} gün sonra</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">Ovulasyon</div><div class="cy-pred-v">${fmt(ovulation)}</div><div class="cy-pred-s">tahmini</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">Fertil Pencere</div><div class="cy-pred-v">${fmt(fertileStart)} – ${fmt(fertileEnd)}</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">PMS Penceresi</div><div class="cy-pred-v">${fmt(pmsStart)} – ${fmt(pmsEnd)}</div></div>
+  `;
+  const conf=ps.length<2?'Tek kayıt — varsayılan döngü uzunluğu kullanılıyor.':ps.length<3?`${ps.length} kayda göre hesaplandı, daha çok regl girdikçe netleşir.`:`${Math.min(ps.length,6)} kayda göre median.`;
+  document.getElementById('cy-pred-disclaimer').textContent=conf;
+}
+
+function renderCyHistory(){
+  const ps=getPeriods();
+  if(!ps.length){
+    document.getElementById('cy-hist-lbl').style.display='none';
+    document.getElementById('cy-hist-card').style.display='none';
+    return;
+  }
+  document.getElementById('cy-hist-lbl').style.display='block';
+  document.getElementById('cy-hist-card').style.display='block';
+  const fmt=ds=>{const d=fromYmd(ds);return d.getDate()+' '+MN[d.getMonth()];};
+  const flowL={spotting:'Lekelenme',light:'Hafif',medium:'Orta',heavy:'Yoğun'};
+  const html=[...ps].reverse().map((p,revIdx)=>{
+    const idx=ps.length-1-revIdx;
+    const dur=p.end?1+dayDiff(fromYmd(p.end),fromYmd(p.start)):null;
+    let cycLen=null;
+    if(idx>0)cycLen=dayDiff(fromYmd(ps[idx].start),fromYmd(ps[idx-1].start));
+    const meta=[
+      dur?`${dur} gün`:`devam ediyor`,
+      cycLen?`cycle ${cycLen}d`:null,
+      p.flow?flowL[p.flow]:null,
+    ].filter(Boolean).join(' · ');
+    return `<div class="cy-hist-i">
+      <div class="cy-hist-dot"></div>
+      <div class="cy-hist-c">
+        <div class="cy-hist-d">${fmt(p.start)}${p.end?' — '+fmt(p.end):' (açık)'}</div>
+        <div class="cy-hist-m">${meta}</div>
+      </div>
+      <button class="cy-hist-x" onclick="deletePeriod('${p.id}')" title="Sil">✕</button>
+    </div>`;
+  }).join('');
+  document.getElementById('cy-hist').innerHTML=html;
+}
+
+function renderCyInsights(){
+  const ps=getPeriods();
+  const logs=getCycleLogs();
+  if(ps.length<2 && Object.keys(logs).length<3){
+    document.getElementById('cy-ins-lbl').style.display='none';
+    document.getElementById('cy-ins-card').style.display='none';
+    return;
+  }
+  document.getElementById('cy-ins-lbl').style.display='block';
+  document.getElementById('cy-ins-card').style.display='block';
+  const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
+  // Symptom frequency
+  const sympCount={};
+  Object.values(logs).forEach(l=>(l.symptoms||[]).forEach(s=>sympCount[s]=(sympCount[s]||0)+1));
+  const topSymps=Object.entries(sympCount).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const sympMap=Object.fromEntries(SYMP_OPTS.map(o=>[o.id,o]));
+  const html=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div class="cy-pred"><div class="cy-pred-l">Ortalama Cycle</div><div class="cy-pred-v">${cyc} gün</div></div>
+      <div class="cy-pred"><div class="cy-pred-l">Ortalama Regl</div><div class="cy-pred-v">${dur} gün</div></div>
+    </div>
+    ${topSymps.length?`<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">En sık semptomlar</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${topSymps.map(([id,n])=>{const o=sympMap[id]||{i:'•',l:id};return `<span class="symp-chip active">${o.i} ${o.l} <span style="opacity:0.7;">(${n}x)</span></span>`;}).join('')}</div>`:''}
+  `;
+  document.getElementById('cy-ins').innerHTML=html;
+}
+
+// ─── ACTIONS ───
+function pid(){return 'p_'+Math.random().toString(36).substr(2,9);}
+
+function actPeriodStart(){
+  const today=ymd(new Date());
+  const ps=getPeriods();
+  if(ps.some(p=>p.start===today)){alert('Bugün için zaten kayıt var.');return;}
+  ps.push({id:pid(),start:today,end:null,flow:null,note:''});
+  savePeriods(ps);
+  const settings=getCycleSettings();
+  if(!settings.onboarded){settings.onboarded=true;saveCycleSettingsObj(settings);}
+  refreshAll();
+}
+function actPeriodEnd(){
+  const today=ymd(new Date());
+  const ps=getPeriods();
+  const last=ps[ps.length-1];
+  if(!last||last.end){alert('Açık bir regl kaydı yok.');return;}
+  if(today<last.start){alert('Bitiş tarihi başlangıçtan önce olamaz.');return;}
+  last.end=today;
+  savePeriods(ps);
+  refreshAll();
+}
+function actUndoStart(){
+  const today=ymd(new Date());
+  const ps=getPeriods();
+  const idx=ps.findIndex(p=>p.start===today && !p.end);
+  if(idx===-1)return;
+  if(!confirm('Bugünün regl başlangıcını silmek istediğine emin misin?'))return;
+  ps.splice(idx,1);
+  savePeriods(ps);
+  refreshAll();
+}
+function deletePeriod(id){
+  if(!confirm('Bu regl kaydını silmek istediğine emin misin?'))return;
+  savePeriods(getPeriods().filter(p=>p.id!==id));
+  refreshAll();
+}
+
+function refreshAll(){
+  renderCycle();
+  renderCal();
+  renderSelDay();
+  renderCycleStripTop();
+}
+
+// ─── BULK IMPORT (onboarding) ───
+let _bulkRows=[];
+function openBulkImport(){
+  _bulkRows=[{start:'',end:'',flow:''},{start:'',end:'',flow:''},{start:'',end:'',flow:''}];
+  renderBulkRows();
+  document.getElementById('bulk-import-modal').classList.add('open');
+}
+function renderBulkRows(){
+  const wrap=document.getElementById('bulk-rows');
+  wrap.innerHTML=_bulkRows.map((r,i)=>`
+    <div class="bulk-row">
+      <input type="date" value="${r.start}" oninput="_bulkRows[${i}].start=this.value" placeholder="Başlangıç">
+      <input type="date" value="${r.end}" oninput="_bulkRows[${i}].end=this.value" placeholder="Bitiş">
+      <select onchange="_bulkRows[${i}].flow=this.value">
+        <option value="" ${!r.flow?'selected':''}>—</option>
+        <option value="spotting" ${r.flow==='spotting'?'selected':''}>Lekelenme</option>
+        <option value="light" ${r.flow==='light'?'selected':''}>Hafif</option>
+        <option value="medium" ${r.flow==='medium'?'selected':''}>Orta</option>
+        <option value="heavy" ${r.flow==='heavy'?'selected':''}>Yoğun</option>
+      </select>
+      <button class="bulk-x" onclick="_bulkRows.splice(${i},1);renderBulkRows();" title="Sil">✕</button>
+    </div>`).join('');
+}
+function addBulkRow(){_bulkRows.push({start:'',end:'',flow:''});renderBulkRows();}
+function saveBulkImport(){
+  const valid=_bulkRows.filter(r=>r.start);
+  if(!valid.length){alert('En az bir başlangıç tarihi gir.');return;}
+  // Check end >= start
+  for(const r of valid){if(r.end && r.end<r.start){alert('Bitiş tarihi başlangıçtan önce olamaz: '+r.start);return;}}
+  const ps=getPeriods();
+  valid.forEach(r=>ps.push({id:pid(),start:r.start,end:r.end||null,flow:r.flow||null,note:''}));
+  savePeriods(ps);
+  const settings=getCycleSettings();settings.onboarded=true;saveCycleSettingsObj(settings);
+  closeM('bulk-import-modal');
+  refreshAll();
+}
+
+// ─── LOG PAST PERIOD ───
+function openLogPast(){
+  document.getElementById('lp-start').value='';
+  document.getElementById('lp-end').value='';
+  document.getElementById('lp-flow').value='';
+  document.getElementById('log-past-modal').classList.add('open');
+}
+function saveLogPast(){
+  const start=document.getElementById('lp-start').value;
+  const end=document.getElementById('lp-end').value;
+  const flow=document.getElementById('lp-flow').value;
+  if(!start){alert('Başlangıç tarihi zorunlu.');return;}
+  if(end && end<start){alert('Bitiş tarihi başlangıçtan önce olamaz.');return;}
+  const ps=getPeriods();
+  ps.push({id:pid(),start,end:end||null,flow:flow||null,note:''});
+  savePeriods(ps);
+  const settings=getCycleSettings();if(!settings.onboarded){settings.onboarded=true;saveCycleSettingsObj(settings);}
+  closeM('log-past-modal');
+  refreshAll();
+}
+
+// ─── SETTINGS ───
+function saveCycleSettings(){
+  const len=parseInt(document.getElementById('cy-set-len').value)||28;
+  const dur=parseInt(document.getElementById('cy-set-dur').value)||5;
+  const settings=getCycleSettings();
+  settings.defaultCycleLength=Math.max(20,Math.min(40,len));
+  settings.defaultPeriodDuration=Math.max(2,Math.min(10,dur));
+  saveCycleSettingsObj(settings);
+  refreshAll();
+}
+function resetCycleData(){
+  if(!confirm('TÜM cycle verileri silinecek (regl kayıtları, semptom günlükleri, ayarlar). Geri alınamaz. Devam?'))return;
+  localStorage.removeItem('periods');
+  localStorage.removeItem('cycle_logs');
+  localStorage.removeItem('cycle_settings');
+  refreshAll();
+}
+
+// ══════════════════════════════════════════
 // INIT
+function renderCycleStripTop(){
+  const c=ci();
+  const ps=getPeriods();
+  const el=document.getElementById('cycle-strip-el');
+  if(!el)return;
+  if(!c){
+    el.innerHTML=`<div class="cstrip" style="cursor:pointer;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div class="cicon">🌸</div><div class="cinfo"><div class="cphase">Cycle takibi başlat</div><div class="cdetail">Reglini ekle, tüm öneriler kişiselleşsin</div></div><div class="cbadge"><div class="cn">→</div><div class="cl">tap</div></div></div>`;
+    return;
+  }
+  const lastStart=fromYmd(ps[ps.length-1].start);
+  const lastStartLbl=lastStart.getDate()+' '+MN[lastStart.getMonth()];
+  const cyc=getAvgCycleLen();
+  const zen=getZen(c.phase);
+  el.innerHTML=`<div class="cstrip" style="cursor:pointer;flex-direction:column;align-items:stretch;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div style="display:flex;align-items:center;gap:14px;"><div class="cicon">${c.emoji}</div><div class="cinfo" style="flex:1;"><div class="cphase">${c.phase}</div><div class="cdetail">Last period: ${lastStartLbl} · Cycle ~${cyc} days</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">day</div></div></div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--text-mid);margin-top:10px;padding-top:10px;border-top:1px dashed rgba(180,120,100,0.2);text-align:center;">${zen}</div></div>`;
+}
 function init(){
-  const today=new Date(),c=ci();
+  const today=new Date();
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
-  document.getElementById('cycle-strip-el').innerHTML=`<div class="cstrip"><div class="cicon">${c.emoji}</div><div class="cinfo"><div class="cphase">${c.phase}</div><div class="cdetail">Last period: 3 March · Cycle ~27 days</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">day</div></div></div>`;
+  renderCycleStripTop();
   if(!S.meas.length){S.meas.push({date:'26.04.2026',weight:76.9,fat:34.1,muscle:49.3,waist:84,hip:110,thigh:65});localStorage.setItem('meas',JSON.stringify(S.meas));}
   renderCal();renderSelDay();
 }
