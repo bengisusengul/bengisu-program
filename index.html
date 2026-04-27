@@ -1134,7 +1134,7 @@ function renderSelDay(){
       <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
       ${c?`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.phase} · Day ${c.day}</span>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--text-light);background:var(--surface2);" onclick="showP('cycle',document.querySelectorAll('.nb')[1])" role="button">🌸 Cycle takibini başlat</span>`}
     </div>
-    ${per?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Period / pre-period:</strong> Reduce retinol and AHA/BHA in skincare.</div></div></div>`:''}
+    ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Retinol ve AHA/BHA'yı bu hafta azalt — cilt hassas.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Day ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Retinol ve AHA/BHA'yı kademeli azaltmaya başla.</div></div></div>`:''}
     <div class="slbl">⏰ Daily Schedule</div>
     <div class="card"><div class="cb"><div class="tl">
       ${tliX('07:00','💊 Levotiron','Empty stomach · water only · wait 1 hour','tm',levotiron_detail)}
