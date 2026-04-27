@@ -255,6 +255,17 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* CUSTOM FOOD — AI ile listede olmayan yemek ekleme */
+.cfm-textarea{width:100%;min-height:64px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--border);font-family:'Jost',sans-serif;font-size:14px;background:var(--surface);color:var(--text);resize:vertical;-webkit-appearance:none;}
+.cfm-textarea:focus{outline:none;border-color:var(--pink);}
+.cf-add-btn{width:100%;padding:11px 14px;border:1.5px dashed var(--mauve);background:var(--mauve-soft);color:#7a5a70;border-radius:var(--r-sm);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px;transition:all 0.15s;}
+.cf-add-btn:active{transform:scale(0.98);background:var(--pink-pale);}
+.cm-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px dashed var(--border-soft);}
+.cm-row:first-of-type{border-top:1px solid var(--border-soft);margin-top:8px;padding-top:14px;}
+.ai-badge{display:inline-block;font-size:9px;background:var(--mauve-soft);color:#7a5a70;padding:2px 7px;border-radius:10px;font-weight:600;letter-spacing:0.3px;margin-left:6px;vertical-align:middle;}
+.cm-del{background:transparent;border:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:6px 8px;flex-shrink:0;}
+.cm-del:active{color:var(--pink-deep);}
+
 /* WATER — daily 8-glass tracker */
 .water-card{margin:0 16px 12px;background:linear-gradient(135deg,#e6f2f8,#f0f7fa);border:1px solid #c8dde6;border-radius:var(--r);padding:14px 16px;}
 .water-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
@@ -748,6 +759,32 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="macts">
       <button class="btn bghost" style="flex:1;" onclick="closeM('log-past-modal')">İptal</button>
       <button class="btn bp" style="flex:2;" onclick="saveLogPast()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM FOOD MODAL (AI tahminli) -->
+<div class="mo" id="custom-food-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3 id="cfm-title">Listede olmayan yemek 🍽</h3>
+    <div class="msub">Bugün ne yedin? Yaz, AI makroları tahmin etsin. Sonra makro toplamına dahil olur.</div>
+    <div class="fr">
+      <label>Ne yedin? (örn: 250g tavuk şiş + ezme + ayran · McDonald's BigMac menüsü · 200g humus + pide)</label>
+      <textarea class="cfm-textarea" id="cfm-text" placeholder="Yemek adını ve miktarını yaz..."></textarea>
+    </div>
+    <button class="btn bp bfull" style="margin-bottom:10px;" onclick="aiEstimateMacros()">🤖 AI ile makro tahmin et</button>
+    <div id="cfm-ai-result"></div>
+    <div class="fgrid" style="margin-top:14px;">
+      <div class="fr"><label>Kalori (kcal)</label><input type="number" id="cfm-k" step="1" placeholder="0"></div>
+      <div class="fr"><label>Protein (g)</label><input type="number" id="cfm-p" step="1" placeholder="0"></div>
+      <div class="fr"><label>Yağ (g)</label><input type="number" id="cfm-f" step="1" placeholder="0"></div>
+      <div class="fr"><label>Karb (g)</label><input type="number" id="cfm-c" step="1" placeholder="0"></div>
+    </div>
+    <div class="msub" style="font-size:11px;margin-top:6px;">İstersen AI değerlerini düzenle, sonra Kaydet.</div>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('custom-food-modal')">İptal</button>
+      <button class="btn bp" style="flex:2;" onclick="saveCustomFood()">💾 Kaydet</button>
     </div>
   </div>
 </div>
@@ -1302,6 +1339,99 @@ function getAltList(foodId, slot) {
 // Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
 
+// ─── CUSTOM FOOD (AI assisted) ───
+function getCustomMeals(d){
+  const all=JSON.parse(localStorage.getItem('custom_meals')||'{}');
+  return all[ymd(d)]||[];
+}
+function addCustomMeal(d,meal){
+  const all=JSON.parse(localStorage.getItem('custom_meals')||'{}');
+  const k=ymd(d);
+  all[k]=all[k]||[];
+  all[k].push({...meal,id:'cm_'+Math.random().toString(36).substr(2,9)});
+  localStorage.setItem('custom_meals',JSON.stringify(all));
+}
+function removeCustomMeal(d,id){
+  const all=JSON.parse(localStorage.getItem('custom_meals')||'{}');
+  const k=ymd(d);
+  if(all[k])all[k]=all[k].filter(m=>m.id!==id);
+  localStorage.setItem('custom_meals',JSON.stringify(all));
+  renderDietDay();
+}
+function openCustomFoodModal(slot){
+  S.cfmContext={slot,dayKey:S.dD.toDateString()};
+  document.getElementById('cfm-text').value='';
+  document.getElementById('cfm-k').value='';
+  document.getElementById('cfm-p').value='';
+  document.getElementById('cfm-f').value='';
+  document.getElementById('cfm-c').value='';
+  document.getElementById('cfm-ai-result').innerHTML='';
+  document.getElementById('cfm-title').textContent=slot==='m1'?'1. öğüne ekle 🍽':'2. öğüne ekle 🍽';
+  document.getElementById('custom-food-modal').classList.add('open');
+}
+async function aiEstimateMacros(){
+  const text=document.getElementById('cfm-text').value.trim();
+  if(!text){alert('Önce ne yediğini yaz.');return;}
+  let key=localStorage.getItem('anthropic_key');
+  if(!key){
+    key=prompt('Anthropic API key (kişisel kullanım için, localStorage\'a kaydedilir):');
+    if(!key)return;
+    localStorage.setItem('anthropic_key',key.trim());
+  }
+  const resultEl=document.getElementById('cfm-ai-result');
+  resultEl.innerHTML='<div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--surface2);border-radius:10px;text-align:center;">⏳ Claude düşünüyor…</div>';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':localStorage.getItem('anthropic_key'),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:300,
+        messages:[{
+          role:'user',
+          content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"\n\nYANIT FORMATI: Sadece JSON döndür, başka hiçbir metin yazma:\n{"name":"temizlenmiş yemek adı","kcal":N,"protein":N,"fat":N,"carbs":N,"confidence":"high|medium|low"}\n\nÖrnek girdi: "250g tavuk şiş + ezme + ayran"\nÖrnek çıktı: {"name":"250g Tavuk Şiş + Ezme + Ayran","kcal":520,"protein":48,"fat":22,"carbs":18,"confidence":"medium"}`
+        }]
+      })
+    });
+    if(!r.ok){
+      const errText=await r.text();
+      throw new Error('API '+r.status+': '+errText.substring(0,200));
+    }
+    const data=await r.json();
+    const content=data.content?.[0]?.text||'';
+    const match=content.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('JSON bulunamadı');
+    const parsed=JSON.parse(match[0]);
+    document.getElementById('cfm-k').value=parsed.kcal;
+    document.getElementById('cfm-p').value=parsed.protein;
+    document.getElementById('cfm-f').value=parsed.fat;
+    document.getElementById('cfm-c').value=parsed.carbs;
+    document.getElementById('cfm-text').value=parsed.name;
+    const confTr={high:'yüksek güven',medium:'orta güven',low:'düşük güven'};
+    resultEl.innerHTML=`<div class="notice ng" style="margin-top:8px;"><div class="nicon">💭</div><div><strong>AI tahmini hazır (${confTr[parsed.confidence]||parsed.confidence}):</strong> Aşağıdaki rakamları kontrol et, gerekirse düzelt, sonra Kaydet.</div></div>`;
+  }catch(e){
+    resultEl.innerHTML=`<div class="notice np" style="margin-top:8px;"><div class="nicon">⚠️</div><div>AI çağrısı başarısız: ${e.message}<br>Manuel olarak makroları girebilirsin.</div></div>`;
+  }
+}
+function saveCustomFood(){
+  const text=document.getElementById('cfm-text').value.trim();
+  const k=parseInt(document.getElementById('cfm-k').value)||0;
+  const p=parseInt(document.getElementById('cfm-p').value)||0;
+  const f=parseInt(document.getElementById('cfm-f').value)||0;
+  const c=parseInt(document.getElementById('cfm-c').value)||0;
+  if(!text){alert('Yemek adı boş olamaz');return;}
+  if(!k && !p && !f && !c){alert('En az bir makro değer gir');return;}
+  const ai=document.getElementById('cfm-ai-result').innerHTML.includes('AI tahmini hazır');
+  addCustomMeal(S.dD,{n:text,k,p,f,c,slot:S.cfmContext.slot,ai});
+  closeM('custom-food-modal');
+  renderDietDay();
+}
+
 // ─── WATER TRACKING ───
 function getWaterLog(){return JSON.parse(localStorage.getItem('water_log')||'{}');}
 function getWaterCount(d){return getWaterLog()[ymd(d)]||0;}
@@ -1338,7 +1468,7 @@ function toggleMealDone(slot,dayKey){
   localStorage.setItem('meals_done',JSON.stringify(all));
   renderDietDay();
 }
-// Get actual consumed macros for a date (only "eaten" meals)
+// Get actual consumed macros for a date (only "eaten" meals + custom meals always count)
 function getActualMacros(d,opts){
   opts=opts||{};
   const dayKey=d.toDateString();
@@ -1360,6 +1490,10 @@ function getActualMacros(d,opts){
     if(opts.all || isMealDone(s.key,dayKey)){
       p+=s.f.p||0;f+=s.f.f||0;c+=s.f.c||0;k+=s.f.k||0;
     }
+  }
+  // Custom meals — always counted (kullanıcı zaten yedikten sonra ekliyor)
+  for(const cm of getCustomMeals(d)){
+    p+=cm.p||0;f+=cm.f||0;c+=cm.c||0;k+=cm.k||0;
   }
   return{p,f,c,k};
 }
@@ -1437,24 +1571,41 @@ function renderDietDay(){
   const totalP = m1.p + ms.p + m2.p + m2s.p;
   const totalF = morningExtra.fat + m1.f + ms.f + m2.f + m2s.f;
 
+  // Custom meals helper
+  const cms=getCustomMeals(d);
+  const renderCustom=(slotPrefix)=>cms.filter(cm=>cm.slot===slotPrefix).map(cm=>`
+    <div class="cm-row">
+      <div style="font-size:18px;flex-shrink:0;">🍽</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:500;color:var(--text);">${cm.n}${cm.ai?'<span class="ai-badge">💭 AI</span>':''}</div>
+        <div style="font-size:11px;color:var(--text-light);margin-top:2px;">P: ${cm.p}g · Y: ${cm.f}g · K: ${cm.c}g</div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0;">${cm.k}</div>
+      <button class="cm-del" onclick="removeCustomMeal(S.dD,'${cm.id}')" title="Sil">✕</button>
+    </div>`).join('');
+
   document.getElementById('m1b').innerHTML=
     fItemSwap(m1,'m1_main',dayKey)+
     fItemSwap(ms,'m1_side',dayKey)+
-    `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
+    renderCustom('m1')+
+    `<button class="cf-add-btn" onclick="openCustomFoodModal('m1')">+ Listede yok mu? Yazarak ekle</button>
+    <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Meal Total</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k} kcal</span>
+        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k+cms.filter(cm=>cm.slot==='m1').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
-      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Calciday + Omega-3 + Collagen with meal</div>
+      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Calciday + Omega-3 + Kolajen yemekle</div>
     </div>`;
 
   document.getElementById('m2b').innerHTML=
     fItemSwap(m2,'m2_main',dayKey)+
     fItemSwap(m2s,'m2_side',dayKey)+
-    `<div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:4px;">
+    renderCustom('m2')+
+    `<button class="cf-add-btn" onclick="openCustomFoodModal('m2')">+ Listede yok mu? Yazarak ekle</button>
+    <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Meal Total</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k} kcal</span>
+        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k+cms.filter(cm=>cm.slot==='m2').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
       ${fatAdj>0?`<div style="font-size:11px;color:var(--sage);margin-top:4px;">⚖️ Sabah yağı (${morningExtra.kcal} kcal) hesabıyla bu öğünde ${fatAdj}g yağı azalt</div>`:''}
       <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Calciday (2nd) + Kreatin yemekle · Qalyviz sonrasında</div>
