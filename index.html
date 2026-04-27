@@ -255,6 +255,20 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* ACHIEVEMENTS — rozetler */
+.ach-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed var(--border-soft);align-items:center;}
+.ach-item:last-child{border-bottom:none;}
+.ach-icon{font-size:28px;line-height:1;flex-shrink:0;width:42px;text-align:center;opacity:0.35;filter:grayscale(0.7);}
+.ach-item.unlocked .ach-icon{opacity:1;filter:none;}
+.ach-meta{flex:1;min-width:0;}
+.ach-name{font-size:13px;font-weight:600;color:var(--text);}
+.ach-item.unlocked .ach-name{color:#4a6e47;}
+.ach-desc{font-size:11px;color:var(--text-light);margin-top:2px;}
+.ach-bar{height:6px;background:var(--surface2);border-radius:3px;margin-top:6px;overflow:hidden;}
+.ach-bar-fill{height:100%;background:linear-gradient(90deg,var(--pink-soft),var(--pink-deep));transition:width 0.6s ease;}
+.ach-item.unlocked .ach-bar-fill{background:linear-gradient(90deg,var(--sage),#7a9b6a);}
+.ach-progress{font-size:11px;color:var(--text-light);margin-top:3px;font-weight:500;}
+
 /* AI SUGGESTION — "Bana öner" sonucu */
 .ai-suggest-trigger{display:flex;justify-content:flex-end;margin-bottom:8px;}
 .ai-result-card{background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r-sm);padding:14px 16px;margin-top:8px;}
@@ -495,10 +509,13 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
 
   <!-- Daily macro summary -->
-  <div class="card" style="margin-bottom:24px;">
+  <div class="card" style="margin-bottom:16px;">
     <div class="ch"><h3>Daily Macro Summary</h3></div>
     <div class="cb" id="d-macro-summary"></div>
   </div>
+
+  <!-- Achievements -->
+  <div id="achievements-wrap"></div>
 
   <div style="height:8px;"></div>
 </div>
@@ -1688,6 +1705,75 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── ACHIEVEMENTS ───
+function calculateAchievements(){
+  const allDone=getMealsDone();
+  const water=getWaterLog();
+  const customs=JSON.parse(localStorage.getItem('custom_meals')||'{}');
+  const todayD=new Date();todayD.setHours(0,0,0,0);
+
+  // Yumurta sayısı: m1_main meals_done içinde "yumurta" geçen yemeklerin yumurta sayısı
+  let eggCount=0;
+  for(const k of Object.keys(allDone)){
+    if(!k.endsWith('_m1_main'))continue;
+    const dayKey=k.replace(/_m1_main$/,'');
+    const dt=new Date(dayKey);
+    if(isNaN(dt))continue;
+    const idx=dt.getDay()%7;
+    const m1=SEL_MEALS[dayKey+'_m1_main']||M1[idx];
+    if(m1 && /yumurta/i.test(m1.n)){
+      const m=m1.n.match(/(\d+)\s*yumurta/i);
+      eggCount+=m?parseInt(m[1]):3;
+    }
+  }
+  // Salata günleri (m2_side done)
+  const saladDays=Object.keys(allDone).filter(k=>k.endsWith('_m2_side')).length;
+  // Hidrasyon (8+ bardak günler)
+  const hydroDays=Object.values(water).filter(v=>v>=8).length;
+  // Streak
+  const{streak}=getStreakInfo();
+  // Luteal complete
+  let lutealComplete=0;
+  for(let i=0;i<60;i++){
+    const d=new Date(todayD.getTime()-i*86400000);
+    const c=ci(d);
+    if(c && c.phase==='Luteal Phase' && isDailyComplete(d))lutealComplete++;
+  }
+  // Custom food count
+  const customCount=Object.values(customs).reduce((s,arr)=>s+arr.length,0);
+  return [
+    {id:'egg',icon:'🥚',name:'Yumurta-vor',progress:eggCount,goal:30,desc:'30 yumurta tüket'},
+    {id:'salad',icon:'🌿',name:'Yeşillik Kraliçesi',progress:saladDays,goal:14,desc:'14 gün akşam salatası'},
+    {id:'hydro',icon:'💧',name:'Hidrasyon Ustası',progress:hydroDays,goal:7,desc:'7 gün 8 bardak su'},
+    {id:'streak',icon:'🔥',name:'Streak Şampiyonu',progress:streak,goal:7,desc:'7 gün üst üste tamam'},
+    {id:'luteal',icon:'🌸',name:'Cycle Dostu',progress:lutealComplete,goal:5,desc:'5 luteal günü tamamla'},
+    {id:'ai',icon:'🤖',name:'Akıllı Yiyici',progress:customCount,goal:10,desc:'10 custom yemek ekle'},
+  ];
+}
+function renderAchievements(){
+  const wrap=document.getElementById('achievements-wrap');
+  if(!wrap)return;
+  const ach=calculateAchievements();
+  const unlockedCount=ach.filter(a=>a.progress>=a.goal).length;
+  const items=ach.map(a=>{
+    const pct=Math.min(100,(a.progress/a.goal)*100);
+    const unlocked=a.progress>=a.goal;
+    return `<div class="ach-item ${unlocked?'unlocked':''}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-meta">
+        <div class="ach-name">${a.name}${unlocked?' ✓':''}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="ach-bar"><div class="ach-bar-fill" style="width:${pct}%;"></div></div>
+        <div class="ach-progress">${Math.min(a.progress,a.goal)} / ${a.goal}</div>
+      </div>
+    </div>`;
+  }).join('');
+  wrap.innerHTML=`<div class="card" style="margin-bottom:16px;">
+    <div class="ch"><h3>🏆 Başarılarım</h3><span style="font-size:12px;color:var(--text-light);">${unlockedCount}/${ach.length} açıldı</span></div>
+    <div class="cb">${items}</div>
+  </div>`;
+}
+
 // ─── CONFETTI ───
 function triggerConfetti(particleCount){
   const n=particleCount||45;
@@ -1991,6 +2077,8 @@ function renderDietDay(){
   renderCycleDietCard(d);
   // Streak rozet (yemek + su tamamlanma)
   renderStreakBadge();
+  // Achievement rozetleri
+  renderAchievements();
   // Günlük hedef tamamlanmışsa confetti tetikle (yalnızca ilk geçişte)
   checkDailyCompleteTrigger();
 
