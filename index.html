@@ -2516,7 +2516,19 @@ function renderStrip(id,activeD,cb){
   }
 }
 function closeM(id){document.getElementById(id).classList.remove('open');}
-document.getElementById('swap-modal').addEventListener('click',function(e){if(e.target===this)closeM('swap-modal');});
+// Tüm modal/pop-up'lara dismissible özelliği — dışına tıkla VEYA ESC tuşu
+function closeAllModals(){
+  document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+  document.querySelectorAll('.gif-overlay.open').forEach(m=>m.classList.remove('open'));
+}
+document.querySelectorAll('.mo, .gif-overlay').forEach(modal=>{
+  modal.addEventListener('click',function(e){
+    if(e.target===this)this.classList.remove('open');
+  });
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')closeAllModals();
+});
 
 // ══════════════════════════════════════════
 // CYCLE PAGE RENDER + HANDLERS
