@@ -255,6 +255,15 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* AI SUGGESTION — "Bana öner" sonucu */
+.ai-suggest-trigger{display:flex;justify-content:flex-end;margin-bottom:8px;}
+.ai-result-card{background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r-sm);padding:14px 16px;margin-top:8px;}
+.aim-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--text);line-height:1.2;}
+.aim-macros{font-size:13px;color:var(--gold);font-weight:600;margin-top:4px;}
+.aim-why{font-size:12px;color:var(--text-mid);margin-top:12px;background:rgba(255,255,255,0.5);padding:8px 12px;border-radius:8px;line-height:1.5;}
+.aim-recipe{font-size:13px;color:var(--text);margin-top:10px;line-height:1.6;background:rgba(255,255,255,0.6);padding:10px 12px;border-radius:8px;}
+.aim-recipe strong{color:var(--pink-deep);}
+
 /* CONFETTI — günlük hedef tamamlandığında kutlama */
 .confetti-burst{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
 .confetti-particle{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:confetti-fall linear forwards;}
@@ -797,6 +806,20 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="macts">
       <button class="btn bghost" style="flex:1;" onclick="closeM('log-past-modal')">İptal</button>
       <button class="btn bp" style="flex:2;" onclick="saveLogPast()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI ÖNERİ MODAL — "Bana öner" -->
+<div class="mo" id="ai-suggest-modal">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>Sana özel öneri 🤖</h3>
+    <div class="msub" id="aism-context">Cycle, makro hedefi ve alışkanlıklarına göre…</div>
+    <div id="aism-result"></div>
+    <div class="macts">
+      <button class="btn bghost" style="flex:1;" onclick="closeM('ai-suggest-modal')">Kapat</button>
+      <button class="btn bp" id="aism-accept" style="flex:2;display:none;" onclick="acceptAISuggestion()">✓ Bu öneriyi seç</button>
     </div>
   </div>
 </div>
@@ -1378,6 +1401,110 @@ function getAltList(foodId, slot) {
 // Selected meal tracking
 const SEL_MEALS = JSON.parse(localStorage.getItem('sel_meals')||'{}');
 
+// ─── AI MEAL SUGGESTION ───
+function openAISuggest(slot){
+  S.aism={slot,suggestion:null};
+  const c=ci(S.dD);
+  const t=getMacroTarget(S.dD);
+  const slotName=slot==='m1'?'1. öğün (yumurta + lor/hellim + avokado + yeşillik)':'2. öğün (et/tavuk/balık + salata)';
+  document.getElementById('aism-context').textContent=`${slotName} · ${c?c.phase+' Day '+c.day:'cycle yok'} · hedef ${t.kcal} kcal · ${t.p}g P`;
+  document.getElementById('aism-result').innerHTML='<button class="btn bp bfull" onclick="aiSuggestMeal()">🤖 Öneri al</button>';
+  document.getElementById('aism-accept').style.display='none';
+  document.getElementById('ai-suggest-modal').classList.add('open');
+}
+async function aiSuggestMeal(){
+  const slot=S.aism.slot;
+  let key=localStorage.getItem('anthropic_key');
+  if(!key){
+    key=prompt('Anthropic API key (kişisel kullanım için, localStorage\'a kaydedilir):');
+    if(!key)return;
+    localStorage.setItem('anthropic_key',key.trim());
+  }
+  const resultEl=document.getElementById('aism-result');
+  resultEl.innerHTML='<div style="font-size:13px;color:var(--text-mid);padding:14px;background:var(--surface2);border-radius:10px;text-align:center;">⏳ Claude düşünüyor…</div>';
+  const c=ci(S.dD);
+  const t=getMacroTarget(S.dD);
+  // Son 3 günde yenilenler özeti
+  const recent=[];
+  for(let i=1;i<=3;i++){
+    const d=new Date(S.dD);d.setDate(d.getDate()-i);
+    const dk=d.toDateString();
+    const idx=d.getDay()%7;
+    if(slot==='m1'){
+      if(isMealDone('m1_main',dk))recent.push((SEL_MEALS[dk+'_m1_main']||M1[idx]).n);
+    } else {
+      if(isMealDone('m2_main',dk))recent.push((SEL_MEALS[dk+'_m2_main']||M2[idx]).n);
+    }
+  }
+  const slotDesc=slot==='m1'
+    ? '1. öğün — yumurta + lor (max 80g) / hellim (max 100g) + ½ avokado + bol yeşillik. ET/TAVUK/BALIK YOK.'
+    : '2. öğün — et / tavuk / balık + MUHAKKAK salata (yeşillik). Pişirme ghee/tereyağı, üst için sızma zeytinyağ.';
+  const targetSlot=slot==='m1'?{kcal:600,p:45,f:45}:{kcal:700,p:90,f:45};
+  const promptText=`Bengisu için ${slot==='m1'?'1. öğün':'2. öğün'} önerisi.
+
+Kurallar:
+${slotDesc}
+YASAK: süt, yoğurt, peynir (lor + hellim hariç), tahıl, meyve, kuruyemiş, tatlandırıcı.
+
+Bağlam:
+- Cycle: ${c?c.phase+' Day '+c.day+' / ortalama döngü '+getAvgCycleLen()+'gün':'cycle takip yok'}
+- Bugünün toplam makro hedefi: ${t.kcal}kcal · ${t.p}g protein · ${t.f}g yağ · ${t.c}g karb
+- Bu öğünün hedef payı: ~${targetSlot.kcal}kcal · ~${targetSlot.p}g protein · ~${targetSlot.f}g yağ
+${recent.length?'- Son 3 günde bu öğünde yenilenler: '+recent.join(', ')+' (varyasyon yarat)':''}
+
+YANIT FORMATI: Sadece JSON, başka metin yazma:
+{"name":"yemek adı + miktar","kcal":N,"protein":N,"fat":N,"carbs":N,"why":"neden bu — cycle/makro/varyasyon mantığı (1-2 cümle)","recipe":"3 satır pişirme talimatı"}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':localStorage.getItem('anthropic_key'),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:600,
+        messages:[{role:'user',content:promptText}]
+      })
+    });
+    if(!r.ok)throw new Error('API '+r.status);
+    const data=await r.json();
+    const content=data.content?.[0]?.text||'';
+    const match=content.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('JSON bulunamadı');
+    const parsed=JSON.parse(match[0]);
+    S.aism.suggestion=parsed;
+    resultEl.innerHTML=`<div class="ai-result-card">
+      <div class="aim-name">${parsed.name}</div>
+      <div class="aim-macros">${parsed.kcal} kcal · P ${parsed.protein}g · Y ${parsed.fat}g · K ${parsed.carbs}g</div>
+      <div class="aim-why">💭 ${parsed.why}</div>
+      <div class="aim-recipe"><strong>Pişirme:</strong> ${parsed.recipe}</div>
+    </div>
+    <button class="btn bsoft bfull" style="margin-top:10px;" onclick="aiSuggestMeal()">🔄 Başka bir öneri</button>`;
+    document.getElementById('aism-accept').style.display='inline-flex';
+  }catch(e){
+    resultEl.innerHTML=`<div class="notice np"><div class="nicon">⚠️</div><div>AI çağrısı başarısız: ${e.message}</div></div>
+    <button class="btn bsoft bfull" style="margin-top:10px;" onclick="aiSuggestMeal()">↻ Tekrar dene</button>`;
+  }
+}
+function acceptAISuggestion(){
+  if(!S.aism||!S.aism.suggestion)return;
+  const{slot,suggestion}=S.aism;
+  // AI önerisini ana yemek slotuna seçim olarak işle
+  const selSlot=slot==='m1'?'m1_main':'m2_main';
+  const dayKey=S.dD.toDateString();
+  SEL_MEALS[dayKey+'_'+selSlot]={
+    n:suggestion.name,i:slot==='m1'?'🍳':'🥩',
+    p:suggestion.protein,f:suggestion.fat,c:suggestion.carbs,k:suggestion.kcal,
+    note:'AI önerisi',
+  };
+  localStorage.setItem('sel_meals',JSON.stringify(SEL_MEALS));
+  closeM('ai-suggest-modal');
+  renderDietDay();
+}
+
 // ─── CUSTOM FOOD (AI assisted) ───
 function getCustomMeals(d){
   const all=JSON.parse(localStorage.getItem('custom_meals')||'{}');
@@ -1825,6 +1952,7 @@ function renderDietDay(){
     </div>`).join('');
 
   document.getElementById('m1b').innerHTML=
+    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m1')">🤖 Bana öner</button></div>`+
     fItemSwap(m1,'m1_main',dayKey)+
     fItemSwap(ms,'m1_side',dayKey)+
     renderCustom('m1')+
@@ -1838,6 +1966,7 @@ function renderDietDay(){
     </div>`;
 
   document.getElementById('m2b').innerHTML=
+    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m2')">🤖 Bana öner</button></div>`+
     fItemSwap(m2,'m2_main',dayKey)+
     fItemSwap(m2s,'m2_side',dayKey)+
     renderCustom('m2')+
