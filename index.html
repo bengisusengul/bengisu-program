@@ -255,6 +255,14 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 /* CYCLE — predicted vs logged calendar marker */
 .cc.hper-pred::after{background:transparent !important;border:1.5px solid var(--pink-deep);width:5px;height:5px;}
 
+/* STREAK — günlük tamamlanma rozet */
+.streak-card{margin:0 16px 12px;border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--border);font-size:13px;font-weight:500;text-align:center;}
+.streak-card.done{background:linear-gradient(135deg,var(--sage-soft),#cee0c4);border-color:var(--sage);color:#4a6e47;}
+.streak-card.warm{background:linear-gradient(135deg,var(--gold-soft),#f0d8a0);border-color:var(--gold);color:#8a5a20;}
+.streak-card.cool{background:var(--surface2);border-color:var(--border);color:var(--text-mid);}
+.streak-flame{font-size:22px;line-height:1;}
+.streak-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;line-height:1;}
+
 /* MACRO RINGS — 4 svg ring (kcal/P/F/C) */
 .ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
 .ring-cell{text-align:center;}
@@ -427,6 +435,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
   <div class="wstrip" id="d-strip"></div>
   <div id="fasting-bar"></div>
   <div id="cycle-diet-wrap"></div>
+  <div id="streak-wrap"></div>
   <div id="water-wrap"></div>
   <div id="d-notice" style="margin:0 16px 12px;"></div>
   <div class="card">
@@ -1452,6 +1461,46 @@ function saveCustomFood(){
   renderDietDay();
 }
 
+// ─── STREAK / DAILY COMPLETE ───
+const MEAL_SLOTS_REQ=['morning','m1_main','m1_side','m2_main','m2_side'];
+function isDailyComplete(d){
+  const dayKey=d.toDateString();
+  for(const s of MEAL_SLOTS_REQ){if(!isMealDone(s,dayKey))return false;}
+  if(getWaterCount(d)<8)return false;
+  return true;
+}
+function getStreakInfo(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayDone=isDailyComplete(today);
+  let n=0;
+  // Bugün done ise bugünden başla, değilse dünden başla (bugün henüz bitmedi)
+  let startOffset=todayDone?0:1;
+  for(let i=startOffset;i<366;i++){
+    const d=new Date(today.getTime()-i*86400000);
+    if(isDailyComplete(d))n++;else break;
+  }
+  return{streak:n,todayDone};
+}
+function renderStreakBadge(){
+  const wrap=document.getElementById('streak-wrap');
+  if(!wrap)return;
+  const{streak,todayDone}=getStreakInfo();
+  // Sıfır + bugün de yapılmamışsa hiç gösterme (boş zaman görsel kirliliği yapmasın)
+  if(streak===0 && !todayDone){wrap.innerHTML='';return;}
+  let cls,msg;
+  if(todayDone){
+    cls='done';
+    msg=streak===1?'<span class="streak-num">1</span> gün · bugünü tamamladın 💪':`<span class="streak-num">${streak}</span> gün üst üste · bugün dahil 💪`;
+  } else if(streak>0){
+    cls='warm';
+    msg=`<span class="streak-num">${streak}</span> günlük seri · bugünü kaybetme!`;
+  } else {
+    cls='cool';
+    msg='Bugün ilk gününü tamamla — seri başlasın';
+  }
+  wrap.innerHTML=`<div class="streak-card ${cls}"><span class="streak-flame">🔥</span><div>${msg}</div></div>`;
+}
+
 // ─── MACRO PROGRESS RINGS ───
 function ringColor(pct){
   if(pct<0.8) return '#7eb5cc';      // mavi (düşük)
@@ -1678,6 +1727,8 @@ function renderDietDay(){
   renderWaterBar();
   // Cycle-aware diet card (faza göre dinamik mesaj)
   renderCycleDietCard(d);
+  // Streak rozet (yemek + su tamamlanma)
+  renderStreakBadge();
 
   // Cycle-aware macro target (luteal +100, regl +150)
   const mt=getMacroTarget(d);
