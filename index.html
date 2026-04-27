@@ -1845,15 +1845,16 @@ function actPeriodEnd(){
 function actUndoStart(){
   const today=ymd(new Date());
   const ps=getPeriods();
-  const idx=ps.findIndex(p=>p.start===today && !p.end);
-  if(idx===-1)return;
-  if(!confirm('Bugünün regl başlangıcını silmek istediğine emin misin?'))return;
+  // Bugünkü AÇIK kaydı sil (öncelikli)
+  let idx=ps.findIndex(p=>p.start===today && !p.end);
+  // Yoksa bugün başlamış kapalı/açık herhangi kaydı sil
+  if(idx===-1)idx=ps.findIndex(p=>p.start===today);
+  if(idx===-1){alert('Bugün için kayıt bulunamadı.');return;}
   ps.splice(idx,1);
   savePeriods(ps);
   refreshAll();
 }
 function deletePeriod(id){
-  if(!confirm('Bu regl kaydını silmek istediğine emin misin?'))return;
   savePeriods(getPeriods().filter(p=>p.id!==id));
   refreshAll();
 }
