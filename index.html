@@ -1385,6 +1385,49 @@ function renderSelDay(){
       ${tliX('22:30','🌙 Evening Skincare',ea.e+' '+ea.l,'ts',skin_eve_detail)}
       ${tliX('23:00','💊 Collagen + Magnesium','Before bed','tm',supp_night_detail)}
     </div></div></div>`;
+  // 🍏 Apple Health kartı (eğer o güne ait kayıt varsa)
+  renderHealthCardForSelDay();
+}
+
+function fmtMinHr(min){
+  if(!min)return '0';
+  const h=Math.floor(min/60), m=min%60;
+  return h?`${h}s ${m}dk`:`${m}dk`;
+}
+function renderHealthCardForSelDay(){
+  const sel=document.getElementById('sel-day');
+  if(!sel)return;
+  const data=getHealthForDay(S.selD);
+  if(!data){
+    // Bugünse "yapıştır" daveti
+    const today=new Date();today.setHours(0,0,0,0);
+    const selD=new Date(S.selD);selD.setHours(0,0,0,0);
+    if(selD.getTime()===today.getTime()){
+      sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
+        <div class="card"><div class="cb">
+          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>iOS Shortcut'ı çalıştır → üstteki <strong>📋 Health</strong> butonuna dokun.</div>
+        </div></div>`);
+    }
+    return;
+  }
+  const importedAt=new Date(data.imported_at);
+  const importStr=importedAt.toLocaleString('tr-TR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
+  sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
+    <div class="health-card">
+      <div class="health-card-h">
+        <h4>Bugünkü Aktivite</h4>
+        <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="pasteHealthData()">↻ Güncelle</button>
+      </div>
+      <div class="health-card-grid">
+        <div class="health-stat"><div class="health-stat-v">${data.steps.toLocaleString('tr-TR').replace(/,/g,'.')}</div><div class="health-stat-l">👟 Adım</div></div>
+        <div class="health-stat"><div class="health-stat-v">${data.active_kcal}</div><div class="health-stat-l">🔥 Kcal</div></div>
+        <div class="health-stat"><div class="health-stat-v">${data.exercise_min}</div><div class="health-stat-l">💪 dk Egz</div></div>
+        <div class="health-stat"><div class="health-stat-v">${data.stand_hr}</div><div class="health-stat-l">🪨 Stand</div></div>
+        <div class="health-stat"><div class="health-stat-v">${fmtMinHr(data.sleep_min)}</div><div class="health-stat-l">😴 Uyku</div></div>
+        <div class="health-stat"><div class="health-stat-v">${data.hr_avg||'-'}</div><div class="health-stat-l">❤️ HR Ort</div></div>
+      </div>
+      <div class="health-card-meta">İçe aktarıldı: ${importStr}${data.hr_rest?` · Dinlenme HR: ${data.hr_rest} bpm`:''}</div>
+    </div>`);
 }
 
 function tliX(t,ti,d,tag,detail){
