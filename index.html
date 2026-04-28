@@ -497,7 +497,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="tb-label">Personal Program</div>
     <h1>Hey, <em>Bengisu</em> ✨</h1>
     <div class="tb-sub" id="today-str"></div>
-    <button class="health-paste-btn" onclick="openHealthInputModal()" title="Apple Health verisini gir">🍏 Health</button>
+    <button class="health-paste-btn" onclick="pasteHealthData()" title="Apple Health verisini yapıştır">📋 Health</button>
   </div>
   <div id="health-paste-msg"></div>
   <div id="cycle-strip-el"></div>
@@ -896,27 +896,6 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
 </div>
 
 <!-- RECIPE MODAL — yemek tarifi (AI cache'li) -->
-<!-- HEALTH INPUT MODAL — Apple Health verisini manuel gir -->
-<div class="mo" id="health-input-modal">
-  <div class="modal">
-    <div class="mhandle"></div>
-    <h3>🍏 Apple Health verisi</h3>
-    <div class="msub">Apple Health uygulamasını aç → Browse / Activity → bugünün özetini gir. Boş bıraktıkların 0 sayılır.</div>
-    <div class="fgrid">
-      <div class="fr"><label>👟 Adım</label><input type="number" id="hi-steps" placeholder="0" inputmode="numeric"></div>
-      <div class="fr"><label>🔥 Aktif kalori (kcal)</label><input type="number" id="hi-kcal" placeholder="0" inputmode="numeric"></div>
-      <div class="fr"><label>💪 Egzersiz (dk)</label><input type="number" id="hi-exercise" placeholder="0" inputmode="numeric"></div>
-      <div class="fr"><label>😴 Uyku (dk)</label><input type="number" id="hi-sleep" placeholder="0" inputmode="numeric"></div>
-    </div>
-    <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.5;">💡 Uyku dakikası: saatleri 60'la çarp. Örn. 7s 5dk = 425 dakika</div>
-    <button class="btn bghost bfull" style="margin-top:12px;font-size:12px;color:var(--text-light);" onclick="pasteHealthData()">📋 Veya iOS Shortcut clipboard'dan yapıştır</button>
-    <div class="macts">
-      <button class="btn bghost" style="flex:1;" onclick="closeM('health-input-modal')">İptal</button>
-      <button class="btn bp" style="flex:2;" onclick="saveHealthInput()">💾 Kaydet</button>
-    </div>
-  </div>
-</div>
-
 <div class="mo" id="recipe-modal">
   <div class="modal">
     <div class="mhandle"></div>
@@ -1428,8 +1407,7 @@ function renderHealthCardForSelDay(){
     if(selD.getTime()===today.getTime()){
       sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
         <div class="card"><div class="cb">
-          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>Apple Health uygulamasını aç, sayıları al, üstteki <strong>🍏 Health</strong> butonuna dokun.</div>
-          <button class="btn bp bfull" style="margin-top:10px;" onclick="openHealthInputModal()">🍏 Bugünün verilerini gir</button>
+          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>iOS Shortcut'ı çalıştır → üstteki <strong>📋 Health</strong> butonuna dokun.</div>
         </div></div>`);
     }
     return;
@@ -1440,7 +1418,7 @@ function renderHealthCardForSelDay(){
     <div class="health-card">
       <div class="health-card-h">
         <h4>Bugünkü Aktivite</h4>
-        <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openHealthInputModal()">↻ Güncelle</button>
+        <button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="pasteHealthData()">↻ Güncelle</button>
       </div>
       <div class="health-card-grid">
         <div class="health-stat"><div class="health-stat-v">${data.steps.toLocaleString('tr-TR').replace(/,/g,'.')}</div><div class="health-stat-l">👟 Adım</div></div>
@@ -2078,39 +2056,6 @@ function showHealthMsg(html, cls){
   // Otomatik kaybol 8 saniye sonra
   setTimeout(()=>{if(el.innerHTML.includes(html))el.innerHTML='';},8000);
 }
-function openHealthInputModal(){
-  // Bugünkü datayı varsa form'a doldur
-  const today=new Date();
-  const data=getHealthForDay(today);
-  document.getElementById('hi-steps').value=data?.steps||'';
-  document.getElementById('hi-kcal').value=data?.active_kcal||'';
-  document.getElementById('hi-exercise').value=data?.exercise_min||'';
-  document.getElementById('hi-sleep').value=data?.sleep_min||'';
-  document.getElementById('health-input-modal').classList.add('open');
-}
-function saveHealthInput(){
-  const num=v=>{const n=parseFloat(v);return isNaN(n)?0:Math.round(n);};
-  const data={
-    steps:num(document.getElementById('hi-steps').value),
-    active_kcal:num(document.getElementById('hi-kcal').value),
-    exercise_min:num(document.getElementById('hi-exercise').value),
-    stand_hr:0,
-    sleep_min:num(document.getElementById('hi-sleep').value),
-    hr_avg:0,
-    hr_rest:0,
-  };
-  if(!data.steps && !data.active_kcal && !data.exercise_min && !data.sleep_min){
-    alert('En az bir alan dolu olmalı.');return;
-  }
-  const todayY=ymd(new Date());
-  saveHealthDay(todayY,data);
-  closeM('health-input-modal');
-  showHealthMsg(`<strong>${todayY}</strong> Apple Health verisi kaydedildi 🍏 — ${data.steps} adım · ${data.active_kcal} kcal`,'ns');
-  if(typeof renderSelDay==='function')renderSelDay();
-  if(typeof renderCyDailyLog==='function' && document.getElementById('page-cycle').classList.contains('active'))renderCyDailyLog();
-  if(typeof renderExDay==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderExDay();
-}
-
 async function pasteHealthData(){
   if(!navigator.clipboard || !navigator.clipboard.readText){
     showHealthMsg('Tarayıcın clipboard erişimine izin vermiyor (HTTPS gerek). Mobil Safari\'de site\'yi tekrar aç.','np');
