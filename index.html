@@ -594,6 +594,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
     <div class="tb-sub" id="ex-sub"></div>
   </div>
   <div class="wstrip" id="e-strip"></div>
+  <div id="e-health-info"></div>
   <div id="e-rest" style="margin:0 16px 12px;display:none;">
     <div class="notice nm"><div class="nicon">🛌</div><div><strong>Rest Day</strong><br>You can do a light walk or stretching.</div></div>
   </div>
@@ -2583,6 +2584,23 @@ function renderExDay(){
   document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Rest'}</em>`;
   document.getElementById('ex-sub').textContent=sp?sp.f:'Rest day · Light walk recommended';
   document.getElementById('e-rest').style.display=sp?'none':'block';
+  // Apple Health bilgisi (varsa)
+  const healthInfoEl=document.getElementById('e-health-info');
+  if(healthInfoEl){
+    const hd=getHealthForDay(d);
+    if(hd && (hd.active_kcal||hd.exercise_min||hd.steps)){
+      healthInfoEl.innerHTML=`<div style="margin:0 16px 12px;background:linear-gradient(135deg,#e8f4ed,#f0f8f1);border:1px solid #c8dcc4;border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:14px;font-size:12px;color:#3a6052;flex-wrap:wrap;">
+        <span style="font-size:18px;">🍏</span>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;flex:1;">
+          ${hd.active_kcal?`<span><strong>${hd.active_kcal}</strong> kcal yakım</span>`:''}
+          ${hd.exercise_min?`<span><strong>${hd.exercise_min}</strong> dk egzersiz</span>`:''}
+          ${hd.steps?`<span><strong>${hd.steps.toLocaleString('tr-TR').replace(/,/g,'.')}</strong> adım</span>`:''}
+        </div>
+      </div>`;
+    } else {
+      healthInfoEl.innerHTML='';
+    }
+  }
   const list=document.getElementById('e-list');list.innerHTML='';
   if(!sp||!exs){document.getElementById('e-cool').innerHTML='';return;}
   const curEx=exs.map((ex,i)=>(S.swaps[dk]&&S.swaps[dk][i])||ex);
