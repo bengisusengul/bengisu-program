@@ -671,6 +671,7 @@ label{font-size:12px;color:var(--text-mid);display:block;margin-bottom:6px;font-
       <div class="cy-fld">
         <div class="cy-fld-l">Uyku Kalitesi (1–5)</div>
         <div class="scale-row" id="cy-sleep"></div>
+        <div id="cy-sleep-note" style="font-size:11px;color:var(--text-light);margin-top:6px;"></div>
       </div>
       <div class="cy-fld" style="margin-bottom:0;">
         <div class="cy-fld-l">Notlar</div>
@@ -2903,6 +2904,10 @@ function renderCyDailyLog(){
   card.style.display='block';
   const dy=ymd(new Date());
   const log=getDayLog(dy);
+  // Apple Health'ten uyku önerisi (manuel girilmemişse otomatik)
+  const health=getHealthForDay(new Date());
+  const sleepAuto=health?sleepMinToScale(health.sleep_min):null;
+  const sleepShown = log.sleep ?? sleepAuto;
   // Flow
   document.getElementById('cy-flow').innerHTML=FLOW_OPTS.map(o=>`
     <div class="flow-chip ${log.flow===o.id?'active':''}" onclick="setFlow('${o.id}')">
@@ -2921,9 +2926,22 @@ function renderCyDailyLog(){
   // Energy
   document.getElementById('cy-energy').innerHTML=[1,2,3,4,5].map(n=>`
     <div class="scale-btn ${log.energy===n?'active':''}" onclick="setEnergy(${n})">${n}</div>`).join('');
-  // Sleep
-  document.getElementById('cy-sleep').innerHTML=[1,2,3,4,5].map(n=>`
-    <div class="scale-btn ${log.sleep===n?'active':''}" onclick="setSleep(${n})">${n}</div>`).join('');
+  // Sleep — Apple Health varsa otomatik öner, kullanıcı override edebilir
+  document.getElementById('cy-sleep').innerHTML=[1,2,3,4,5].map(n=>{
+    const isManual=log.sleep===n;
+    const isAutoOnly=!log.sleep && sleepAuto===n;
+    return `<div class="scale-btn ${isManual||isAutoOnly?'active':''}" onclick="setSleep(${n})" ${isAutoOnly?'title="Apple Health\'ten otomatik · değiştirmek için tıkla"':''}>${n}${isAutoOnly?'<span style="font-size:8px;display:block;margin-top:-2px;opacity:0.7;">🍏</span>':''}</div>`;
+  }).join('');
+  // Apple Health uyku notu
+  const sleepNoteEl=document.getElementById('cy-sleep-note');
+  if(sleepNoteEl){
+    if(health && health.sleep_min){
+      const h=Math.floor(health.sleep_min/60), m=health.sleep_min%60;
+      sleepNoteEl.innerHTML=`🍏 Apple Health: <strong>${h}s ${m}dk</strong> uyku → otomatik <strong>${sleepAuto}</strong>${log.sleep&&log.sleep!==sleepAuto?` (sen <strong>${log.sleep}</strong> dedin)`:''}`;
+    } else {
+      sleepNoteEl.innerHTML='';
+    }
+  }
   // Note
   const noteEl=document.getElementById('cy-note');
   noteEl.value=log.note||'';
