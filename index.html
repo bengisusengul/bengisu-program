@@ -1986,6 +1986,85 @@ function renderAchievements(){
   </div>`;
 }
 
+// ─── APPLE HEALTH (iOS Shortcut + Clipboard) ───
+function getHealthLog(){return JSON.parse(localStorage.getItem('health_log')||'{}');}
+function getHealthForDay(d){return getHealthLog()[ymd(d)]||null;}
+function saveHealthDay(dateStr,data){
+  const all=getHealthLog();
+  all[dateStr]={...data,imported_at:new Date().toISOString()};
+  localStorage.setItem('health_log',JSON.stringify(all));
+}
+// Helper: Apple Health uyku dakikası → 1-5 scale
+function sleepMinToScale(min){
+  if(!min || min<=0) return null;
+  if(min<300) return 1;          // <5 saat
+  if(min<360) return 2;          // 5-6 saat
+  if(min<420) return 3;          // 6-7 saat
+  if(min<480) return 4;          // 7-8 saat
+  return 5;                      // 8+ saat
+}
+function showHealthMsg(html, cls){
+  cls = cls || 'np';
+  const el=document.getElementById('health-paste-msg');
+  if(!el)return;
+  el.innerHTML=`<div class="notice ${cls}" style="margin:0 16px 12px;"><div class="nicon">${cls==='ns'?'✅':cls==='np'?'⚠️':'ℹ️'}</div><div>${html}</div></div>`;
+  // Otomatik kaybol 8 saniye sonra
+  setTimeout(()=>{if(el.innerHTML.includes(html))el.innerHTML='';},8000);
+}
+async function pasteHealthData(){
+  if(!navigator.clipboard || !navigator.clipboard.readText){
+    showHealthMsg('Tarayıcın clipboard erişimine izin vermiyor (HTTPS gerek). Mobil Safari\'de site\'yi tekrar aç.','np');
+    return;
+  }
+  let text;
+  try{
+    text=await navigator.clipboard.readText();
+  }catch(e){
+    showHealthMsg('Clipboard okuma izni reddedildi. Yeniden dene ve "İzin Ver"e dokun.','np');
+    return;
+  }
+  if(!text || !text.trim()){
+    showHealthMsg('Clipboard boş. Önce iOS Shortcut\'ı çalıştır, sonra bu butona dokun.','np');
+    return;
+  }
+  let data;
+  try{
+    data=JSON.parse(text.trim());
+  }catch(e){
+    showHealthMsg('Clipboard\'da geçerli JSON yok. Doğru Shortcut\'ı kullandığından emin ol.','np');
+    return;
+  }
+  // Validate minimum şema
+  const dateStr=data.date||ymd(new Date());
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
+    showHealthMsg('Tarih formatı hatalı (YYYY-MM-DD bekleniyor).','np');
+    return;
+  }
+  // Number coercion (bazen Apple Shortcuts string verir)
+  const num=v=>{
+    if(v===null||v===undefined||v==='')return 0;
+    const n=parseFloat(v);
+    return isNaN(n)?0:Math.round(n);
+  };
+  const cleaned={
+    steps:num(data.steps),
+    active_kcal:num(data.active_kcal),
+    exercise_min:num(data.exercise_min),
+    stand_hr:num(data.stand_hr),
+    sleep_min:num(data.sleep_min),
+    hr_avg:num(data.hr_avg),
+    hr_rest:num(data.hr_rest),
+  };
+  saveHealthDay(dateStr,cleaned);
+  showHealthMsg(`<strong>${dateStr}</strong> Apple Health verisi kaydedildi 🍏 — ${cleaned.steps} adım · ${cleaned.active_kcal} kcal · ${cleaned.exercise_min} dk egzersiz`,'ns');
+  // Calendar günlük detayını yenile (selected gün gösteriliyorsa)
+  if(typeof renderSelDay==='function')renderSelDay();
+  // Cycle sayfası açıksa sleep auto-fill yenile
+  if(typeof renderCyDailyLog==='function' && document.getElementById('page-cycle').classList.contains('active'))renderCyDailyLog();
+  // Workout sayfası açıksa yakım bilgisini yenile
+  if(typeof renderExDay==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderExDay();
+}
+
 // ─── CONFETTI ───
 function triggerConfetti(particleCount){
   const n=particleCount||45;
