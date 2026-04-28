@@ -33,7 +33,7 @@ iPhone'da yüklü olan **Shortcuts** uygulamasını aç (mavi arka plan, 2 daire
 
 ### Adım 3 — Adımları sırayla ekle
 
-> **Add Action** butonuna dokunup, arama kutusuna belirtilen kelimeyi yaz, çıkan eylemi seç.
+> **🔍 Action nasıl eklenir?** iOS 17+'da ayrı bir "Add Action" butonu YOKTUR. Boş Shortcut açıkken **ekranın EN ALTINDA** "Apps and actions" / "Uygulama ve eylemleri ara" yazılı bir **arama çubuğu** vardır. Ona dokun, action adını yaz (ör. `Format Date`), çıkan sonucu seç → eylem otomatik eklenir. Her yeni action için aynı arama çubuğunu kullan.
 
 #### 3.1. Tarih → metin formatına çevir
 - Action: **Format Date**
