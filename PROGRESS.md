@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 27-28 Nisan 2026 (gece kapanış)
+**Son güncelleme:** 28 Nisan 2026 (gece kapanış · Apple Health denemesi)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -164,9 +164,20 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-04-27 22:22 | `7ced90c` | **Step 15**: yemek kartı renk kodu + animasyonlar |
 | 2026-04-27 22:35 | `3a9a50e` | Tüm modallar dismissible (backdrop click + ESC) |
 | 2026-04-27 22:42 | `9cb6a10` | AI analizler kalan makro context'iyle çalışıyor |
-| 2026-04-27 23:xx | `be9a516` | **PROGRESS.md** oluşturuldu (bu dosya) |
+| 2026-04-27 23:xx | `be9a516` | **PROGRESS.md** oluşturuldu |
+| 2026-04-27 23:55 | `47841e9` | PROGRESS.md kapanış güncellemesi |
+| 2026-04-28 — Apple Health turu (yeni sohbet) | | |
+| 2026-04-28 15:xx | `e5d12ca` | **Step 1**: HEALTH_SHORTCUT.md — iOS Shortcut kurulum rehberi |
+| 2026-04-28 15:xx | `9580b1c` | **Step 2**: Health paste butonu + card CSS |
+| 2026-04-28 15:xx | `7354a5b` | **Step 3**: clipboard parser + health_log storage |
+| 2026-04-28 15:xx | `b988dcc` | **Step 4**: Calendar günlük detayda 🍏 Apple Health kartı |
+| 2026-04-28 15:xx | `f4ae389` | **Step 5**: Cycle sleep auto-fill (sleepMinToScale) |
+| 2026-04-28 15:xx | `6856b5a` | **Step 6**: Workout topbar'da Apple Health aktivitesi |
+| 2026-04-28 17:xx | `979daca` | HEALTH_SHORTCUT.md modern iOS UI açıklama düzeltmesi |
+| 2026-04-28 21:xx | `8901ed3` | **Plan D**: manuel Health input modal eklendi |
+| 2026-04-28 21:30 | `21d2cca` | Plan D revert (kullanıcı manuel istemedi) |
 
-**Toplam:** 27 commit bu sohbette.
+**Toplam:** 36 commit (27 önceki + 9 bu turda).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -339,22 +350,49 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (27-28 Nisan 2026, gece kapanış)
+## 📍 Şu Anki Durum (28 Nisan 2026, gece kapanış)
 
 ✅ **Diet sekmesi 100% yenilendi.** AI custom food + AI öneri + recipe + ringler + heatmap + achievement + streak + cycle-aware = tam paket.
 
 ✅ **PROGRESS.md + Memory rutini kuruldu.** Yeni sohbette Claude bu dosyayı otomatik okuyup bağlama girecek.
 
-⏳ **Bekliyor (kullanıcının seçim yapması lazım):**
-1. **Workout sekmesi** iyileştirmesi — 30 fikir sundum, tema bazlı; en güçlü 3'ü Pratiklik (set-rep tracking + PR + süre) / Cycle entegrasyonu (faza özel intensity + period-friendly mode) / Motivasyon (streak + achievement + heatmap)
-2. **Apple Health entegrasyonu** — 4 yol sundum (🟢 iOS Shortcut + clipboard önerildi · 🟡 Health Auto Export $5 · 🟠 Backend Vercel+Supabase · 🔴 manuel)
+⚠️ **Apple Health entegrasyonu yarım — Apple iOS 17+ engeline takıldı.**
 
-🎯 **Sıradaki muhtemel adımlar:**
-- Kullanıcı workout için tema seçer → Diet'e benzer atomik commit'ler (10-15 commit)
-- Apple Health için yöntem seçer → Shortcut + UI ekleme (en pratik) veya backend kurma
-- Cycle log günlük kullanım (semptom/mood/energy giriş) test edilirse UX feedback gelebilir
-- Hook ekleme isteği gelirse `/update-config` ile PROGRESS.md auto-read tam otomatikleştirilebilir
+### Bugün ne oldu (Apple Health turu özeti)
+- 🟢 iOS Shortcut + Clipboard yolu seçildi
+- HEALTH_SHORTCUT.md kurulum rehberi yazıldı (iOS Shortcuts adım adım)
+- Site tarafında tüm altyapı kuruldu: paste button (Calendar topbar 🍏 / 📋), `health_log` localStorage, Calendar günlük detay 🍏 Apple Health kartı, Cycle sleep auto-fill (sleepMinToScale: <5h=1, 5-6h=2, ..., 8+h=5), Workout topbar mini-info
+- Kullanıcı 30+ dk uğraşıp iOS Shortcut'ı kurdu (Format Date + 4× Find Health Samples + 4× Calculate Sum + Text JSON + Copy to Clipboard)
+- Apple Health izinleri verildi (Steps, Active Energy, Exercise, Sleep)
+- ▶ Play butonu **"This action is trying to share 2431 Health items, which is not allowed"** hatası verdi
+- Sleep çıkartılarak yeniden denendi → aynı hata, 2437 items
+- Apple iOS 17+'da yeni güvenlik koruması: Calculate Statistics çıktısı bir Number döndürse de **kaynağındaki Health Samples'ları takip ediyor** ve clipboard gibi external paylaşımda block ediyor
+- **Plan D (manuel input modal)** denendi (`8901ed3`) ama kullanıcı manuel girmek istemedi → revert (`21d2cca`)
+
+### Şu anki teknik durum
+- Site Apple Health altyapısı **kurulu ama kullanılamaz**:
+  - Calendar topbar'da `📋 Health` butonu var, `pasteHealthData()` çağırıyor — clipboard'da JSON yok ki çalışsın
+  - Calendar günlük detayda 🍏 Apple Health kartı placeholder'ı görünür
+  - Cycle sleep auto-fill kodu hazır
+  - Workout topbar mini-info kodu hazır
+  - Hepsi **dolu data bekliyor**
+- localStorage anahtarı `health_log` rezerv ama boş
+
+⏳ **Karar bekleyen — Apple Health (3 seçenek):**
+1. **Tüm Apple Health altyapısını sil** — site'den 📋 Health butonu, health-card, Cycle sleep auto-fill, Workout activity info hepsi kalksın. HEALTH_SHORTCUT.md de silinsin
+2. **Olduğu gibi bırak** — Apple ileride paylaşım iznini fixlerse hazır olur. Ama şu an gözükür ama çalışmaz buton var
+3. **Plan B Set Variable workaround** — Shortcut'a 4 ek `Set Variable` action eklemek. Health kontextinden number'ı koparır, Apple korumasını kandırabilir. Çok iş ama çalışırsa otomatik
+
+⏳ **Karar bekleyen — Workout sekmesi:**
+30 fikir hâlâ açık. Önerilen ilk hamle: Pratiklik (set-rep tracking + PR + süre) + Cycle entegrasyonu (faza özel intensity + period-friendly mode) + Motivasyon (streak + achievement + heatmap).
+
+🎯 **Yarın muhtemel adımlar:**
+- Apple Health 3 seçeneğinden birini seç (en olası: **sil**, çünkü Shortcut çıldırtmış)
+- Veya Workout sekmesine geç
+- Diet sekmesinin gerçek kullanımından feedback gelirse iteration
 
 ---
 
 **Yeni sohbete başlıyorsan:** Önce bu dosyayı oku → mevcut özellikleri ve kullanıcı tercihlerini anla → bekleyen kararlara odaklan. Memory rutini sayesinde bu otomatik olmalı. Site'yi tarayıcıda aç, gerçek davranışı kontrol et.
+
+**Önemli kullanıcı feedback'i (28 Nisan):** Manuel data girişi sevmiyor (sağlık baskısı yapıyor). Ama Shortcut da çok iş ve çalışmıyor. Bu kullanıcı için en pragmatic Health çözümü: **şimdilik kaldır, ileride Apple bunu fixlerse veya farklı bir mimari (backend) seçilirse geri ekle.**
