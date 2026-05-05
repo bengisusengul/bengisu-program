@@ -1,167 +1,87 @@
-# 🍏 Apple Health → Bengisu Program — Kurulum Rehberi
+# 🍏 Apple Health → Bengisu Program
 
-Bu rehber **iOS Shortcuts** uygulaması ile Apple Health verilerini siteye taşıyacak Shortcut'ı kurmak içindir. Bir kez kurarsın, her sabah 1 saniye → tüm veri sitede.
+Apple Health verilerini siteye taşımanın yolu: **screenshot al, AI okusun.**
 
----
-
-## 🎯 Ne yapacak bu Shortcut?
-
-Apple Health'ten şu verileri çeker, JSON olarak clipboard'a kopyalar:
-
-- 👟 Adım sayısı (steps)
-- 🔥 Aktif kalori (active_kcal)
-- 💪 Egzersiz dakikası (exercise_min)
-- 🪨 Hareketli saat (stand_hr)
-- 😴 Uyku süresi (dakika cinsinden)
-- ❤️ Ortalama kalp atışı
-- 💗 Dinlenme kalp atışı
-
-Sonra siteye gelip **📋 Health** butonuna basarsın → otomatik o güne işlenir.
+iOS Shortcut, clipboard, JSON kopyalama yok. Sadece bir ekran görüntüsü.
 
 ---
 
-## 📲 Kurulum (5 dakika, bir kerelik)
+## ☀️ Günlük ritüel (10 saniye)
 
-### Adım 1 — Shortcuts uygulamasını aç
+1. iPhone'da **Health** uygulamasını aç → **Summary** sekmesi
+2. **Screenshot al:** yan tuş + ses açma tuşu (aynı anda, kısa basış)
+3. Bengisu Program sitesine gel → **Calendar** sekmesi
+4. Üst sağda **📷 Health** butonuna dokun
+5. Açılan galeri'den az önce aldığın screenshot'u seç
+6. ~2 saniye sonra modal açılır: **AI okudu**, sayılar dolu gelir
+7. Yanlış okuduğu varsa düzelt (her alan elle yazılabilir)
+8. **💾 Kaydet** butonuna bas → bitti ✅
 
-iPhone'da yüklü olan **Shortcuts** uygulamasını aç (mavi arka plan, 2 daire içinde + işareti).
-
-### Adım 2 — Yeni Shortcut oluştur
-
-1. Sağ üstte **+** butonuna dokun
-2. "New Shortcut" başlığına dokun → adı değiştir: **"Health'imi Bengisu Program'a Yolla"**
-
-### Adım 3 — Adımları sırayla ekle
-
-> **🔍 Action nasıl eklenir?** iOS 17+'da ayrı bir "Add Action" butonu YOKTUR. Boş Shortcut açıkken **ekranın EN ALTINDA** "Apps and actions" / "Uygulama ve eylemleri ara" yazılı bir **arama çubuğu** vardır. Ona dokun, action adını yaz (ör. `Format Date`), çıkan sonucu seç → eylem otomatik eklenir. Her yeni action için aynı arama çubuğunu kullan.
-
-#### 3.1. Tarih → metin formatına çevir
-- Action: **Format Date**
-- Date: `Current Date`
-- Format: `Custom`
-- Custom Format: `yyyy-MM-dd`
-- Sonuç değişkenini "Magic Variable" olarak adlandır: **`Today`**
-
-#### 3.2. Apple Health verilerini al (7 ayrı action)
-
-**Steps:**
-- Action: **Find Health Samples Where**
-- Filter: `Steps` · Date is `Today`
-- Action: **Calculate Statistics** üzerine ekle: `Sum`
-- Magic Variable: `StepsTotal`
-
-**Active Energy:**
-- Action: **Find Health Samples Where**
-- Filter: `Active Energy` · Date is `Today`
-- Action: **Calculate Statistics**: `Sum`
-- Magic Variable: `KcalTotal`
-
-**Exercise Time:**
-- Action: **Find Health Samples Where**
-- Filter: `Exercise Time` (veya `Apple Exercise Time`) · Date is `Today`
-- Action: **Calculate Statistics**: `Sum`
-- Magic Variable: `ExerciseTotal`
-
-**Stand Hours:**
-- Action: **Find Health Samples Where**
-- Filter: `Stand Hours` · Date is `Today`
-- Action: **Calculate Statistics**: `Sum`
-- Magic Variable: `StandTotal`
-
-**Sleep (önceki gece):**
-- Action: **Find Health Samples Where**
-- Filter: `Sleep Analysis` · Value is `Asleep`
-- Date Range: Last Night (veya: Date is yesterday/today, "All Day" — Apple Watch'a göre değişir)
-- Action: **Calculate Statistics**: `Sum (Duration in Minutes)`
-- Magic Variable: `SleepTotal`
-
-**Heart Rate (ortalama):**
-- Action: **Find Health Samples Where**
-- Filter: `Heart Rate` · Date is `Today`
-- Action: **Calculate Statistics**: `Average`
-- Magic Variable: `HRAvg`
-
-**Resting Heart Rate:**
-- Action: **Find Health Samples Where**
-- Filter: `Resting Heart Rate` · Date is `Today`
-- Action: **Calculate Statistics**: `Average` (veya `Latest`)
-- Magic Variable: `HRRest`
-
-#### 3.3. JSON olarak birleştir
-
-- Action: **Text**
-- İçerik (her köşeli parantez içine yukarıdaki Magic Variable'ı ekle, manuel yazma):
-
-```
-{"date":"[Today]","steps":[StepsTotal],"active_kcal":[KcalTotal],"exercise_min":[ExerciseTotal],"stand_hr":[StandTotal],"sleep_min":[SleepTotal],"hr_avg":[HRAvg],"hr_rest":[HRRest]}
-```
-
-> **Önemli:** Köşeli parantezler düz metin değil, **Magic Variable**. Yazıya tıklayıp Magic Variable seçici çıkacak — ilgili variable'ı seç.
-
-#### 3.4. Clipboard'a kopyala
-
-- Action: **Copy to Clipboard**
-- Input: yukarıdaki Text variable'ı
-
-### Adım 4 — Test et
-
-1. Shortcut'ın altındaki ▶ play butonuna dokun
-2. Apple Health permission isterse → izin ver
-3. iOS notification: **"Copied"**
-4. Notes app aç → yapıştır → JSON görmeli, şuna benzer:
-
-```json
-{"date":"2026-04-28","steps":7842,"active_kcal":420,"exercise_min":35,"stand_hr":11,"sleep_min":423,"hr_avg":68,"hr_rest":58}
-```
-
-5. Sayılar 0 ise: Apple Health'te o veri yoktur (örn. henüz adım atmadın), sorun değil.
-
-### Adım 5 — Lock screen widget'a ekle (opsiyonel ama tavsiye)
-
-1. Lock screen'i uzun bas → "Customize"
-2. Lock screen widget alanına **+** ile widget ekle
-3. **Shortcuts** seç → "Health'imi Bengisu Program'a Yolla" Shortcut'ını seç
-4. Done
-
-Artık lock screen'de tek dokunuşla çalıştırırsın.
-
-### Adım 6 — Siri kısayolu (alternatif)
-
-Hey Siri ile çalıştırmak için: Shortcut'ın detayında **Settings** → **Add to Siri** → "Health'imi yolla" gibi kısa bir ifade kaydet.
+Site otomatik:
+- Calendar günlük detayında 🍏 Apple Health kartı dolar
+- Cycle log'unda **uyku skalası** (1-5) otomatik gelir
+- Workout sekmesi üstünde **adım + kcal + egzersiz dakikası** görünür
 
 ---
 
-## ☀️ Sabah ritüeli (her gün 5 saniye)
+## 📸 Hangi screenshot'lar en iyi okunur?
 
-1. Lock screen widget'a dokun (veya Siri'ye söyle)
-2. ✅ "Copied" bildirimi
-3. Bengisu Program sitesine gel
-4. **📋 Health** butonuna dokun (Calendar üst kısmında)
-5. Site otomatik veriyi okur, o güne işler
+AI vizyon modeli (Claude Haiku 4.5) Apple Health'in farklı ekranlarını okur. En temiz sonuç için:
 
-Bitti.
+### ✅ İyi: Summary ekranı (önerilen)
+Health → Summary → "Today" bölümünde aktif halkalar:
+- Move/Active Energy (kalori)
+- Exercise (egzersiz dakikası)
+- Stand (hareketli saat)
+- Steps (adım, biraz aşağı kaydırırsan)
+
+Tek screenshot, en çok veriyi tek seferde verir.
+
+### ✅ İyi: Activity uygulaması (Apple Watch'lı isen)
+Activity app'in Today görünümü → halkalar + alttaki sayılar.
+
+### ✅ İyi: Sleep özet ekranı
+Health → Browse → Sleep → bugün/dün gece detayı.
+
+Uyku verisini ayrı bir gün için yüklemek istersen ayrı screenshot kullan.
+
+### ⚠️ Daha az iyi: Workout listesi, kalp atış grafiği
+Sayılar var ama UI yoğun, AI okumayı şaşırabilir. Olur ama önce Summary'i dene.
 
 ---
 
-## ❓ Hatalar
+## ❓ Sorun giderme
 
 | Sorun | Çözüm |
 |---|---|
-| "Copied" bildirimi yok | Shortcut'ta **Copy to Clipboard** action'ı eksik veya yanlış sırada. Adım 3.4'ü tekrar et. |
-| Notes'a yapıştırınca boş geliyor | Magic Variable bağlantısı kopuk. Text action'da köşeli parantezler düz metin yazılmış olabilir — Magic Variable seçici ile bağla. |
-| Sayılar hep 0 | Apple Health'te bu veri yok. Apple Watch takıyor musun? Bazı veriler (Stand, Exercise) sadece Watch'tan gelir. |
-| Site "Geçersiz format" hatası | JSON yapısı bozuk. Notes'a yapıştır, JSON'ın `{...}` içinde olduğundan emin ol, virgüller doğru mu? |
-| Site "Clipboard boş" diyor | Shortcut çalışmadı veya başka bir uygulama clipboard'ı temizledi. Shortcut'ı tekrar çalıştır. |
-| Shortcut'ta "Find Health Samples" eyleminde "Sleep" göremiyorum | iOS sürümüne göre adı "Sleep Analysis" veya altında "Sleep Samples" altında olabilir. iOS 17+ tavsiye. |
+| **📷 Health** butonuna basınca galeri açılmıyor | Safari'ye fotoğraflara erişim izni vermemiş olabilirsin. iPhone Ayarlar → Safari → "Tüm fotoğraflar" izni ver. |
+| Modal "AI okuyamadı" diyor | Anthropic API key'in eksik veya yanlış. Diet sekmesinde "AI ile makro tahmin et" çalışıyorsa key doğrudur — bu hatada en altta gösterilen mesaja bak. |
+| AI sayıları yanlış okudu | Kaydet'e basmadan **doğrudan inputta** düzelt. Her alan elle yazılabilir. Boş bırakırsan o veri kaydedilmez. |
+| "AI X alan okudu" diyor ama bazıları boş | Apple Health o veriyi gösteriyor olmayabilir (ör. Stand sadece Apple Watch'tan gelir). Doğru, o günkü ekrandan ne varsa okur. |
+| Tarih yanlış | Modal'daki tarih input'undan değiştir. Geriye dönük screenshot yüklerken bu işine yarar. |
+| Sayılar binlik formatla geldi (ör. "8.123") | AI bunu 8123 olarak çevirir. Aksi olursa düzelt. |
+
+---
+
+## 🤖 Maliyet
+
+Claude Haiku 4.5 vision: ~$0.001 fotoğraf başına. Günde 1 screenshot yüklersen aylık **~3 sent**. Anthropic key'in zaten Diet/Recipe için kullandığın key.
 
 ---
 
 ## 🔒 Gizlilik
 
-Bu veri **localStorage'da** kalır, sadece senin tarayıcında. Sunucuya gönderilmiyor. Site'nin tamamı backend'siz, statik bir GitHub Pages uygulaması.
+- Screenshot ve okunan sayılar **sadece localStorage'da** kalır (cihazında).
+- Anthropic API'ye sadece o screenshot ve prompt gider, response (sayılar) anında localStorage'a yazılır, kaydedilmez Anthropic tarafında.
+- Site backend'siz, statik GitHub Pages.
 
 ---
 
-## 🛟 Yardım
+## 📚 Teknik not (geliştirici için)
 
-iOS Shortcut'lar bazen iOS sürümleri arasında farklı action'lara sahip olabiliyor. Yukarıdakiler iOS 17+ için. Sıkışırsan ekran görüntüsü atarsan adımı düzeltirim.
+Eski sürümde **iOS Shortcut + clipboard** yolu denenmişti. iOS 17+ "Health Samples'tan türetilmiş veri external paylaşılamaz" güvenlik kuralı buna izin vermedi. Photo + AI yolu bu kuralı **bypass** eder çünkü:
+
+1. Screenshot iOS'un standart sistem eylemi (Health verisi değil)
+2. Site Apple Health API'ye dokunmaz, sadece kullanıcının resmini okur
+
+Ayrıntı: `index.html` → `openHealthPhotoPicker()` / `analyzeHealthPhoto()` fonksiyonları (Claude Haiku 4.5 vision).

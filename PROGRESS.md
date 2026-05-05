@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 28 Nisan 2026 (gece kapanış · Apple Health denemesi)
+**Son güncelleme:** 5 Mayıs 2026 (Akşam Bahçesi tema + Dashboard / Bugün sayfası + 9-lens audit implementation)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -12,13 +12,13 @@
 
 Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) bir PWA, GitHub Pages'de yayında. Backend yok — tüm veri **localStorage**'da. AI özellikleri için kullanıcının kendi Anthropic API key'i kullanılıyor (browser'dan direkt çağrı).
 
-**6 ana sekme** (alt menüde):
-1. 📅 **Calendar** — aylık takvim, günlük detay, cycle çakıştırması
-2. 🌸 **Cycle** — period log + günlük semptom takibi (Mart 2026'dan beri)
-3. 🥩 **Diet** — IF + Carnivore-yumurta bazlı + AI macro tracker
-4. 💪 **Workout** — 6 günlük split, GIF/YouTube'lu egzersizler, swap
-5. ✨ **Skincare** — 7-gün rotasyonu (retinol/AHA cycle-aware)
-6. 📊 **Metrics** — kilo/yağ/kas takibi, Renpho fotoğraf AI analizi
+**6 ana sekme** (alt menüde · 5 Mayıs sonrası Türkçeleştirildi):
+1. 🏠 **Bugün** (Dashboard) — saat-bazlı selam + ZEN + 4 zaman bloğu accordion (sabah/öğle/antrenman/akşam) + quick stats + Aylık Takvim mini accordion
+2. 🌸 **Döngü** — period log + günlük semptom + somatik/rüya alanları + arketip katmanı (Bilge Kadın/Genç Kız/Anne/Cadı)
+3. 🥩 **Diyet** — 10:00–19:00 IF + Karnivor + post-workout karb pencere + AI macro tracker + RED-S guardrail
+4. 💪 **Egzersiz** — 6 günlük PPL split, cycle-aware deload, GIF/YouTube
+5. ✨ **Cilt** — 7-gün rotasyon (retinol/AHA cycle-aware) + retinol-after 4-adım + UK shop linkleri
+6. 📊 **Ölçüm** — kilo/yağ/kas takibi, Renpho fotoğraf AI analizi (Türkçe + cycle context), milestone celebrations
 
 ---
 
@@ -26,8 +26,8 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 
 | Bileşen | Detay |
 |---|---|
-| **Dosya** | Tek `index.html` (~3000 satır, ~175k karakter) |
-| **CSS** | Inline `<style>`, ~260 rule. Renk paleti `--pink/mauve/sage/gold` warm wedding theme |
+| **Dosya** | Tek `index.html` (~4300 satır, ~206k karakter) |
+| **CSS** | Inline `<style>`, ~320 rule. Renk paleti **Akşam Bahçesi** (5 May): petrol/coral/mustard/sage/mauve/cream. Glass morphism cards + per-page tab renkleri (Tema B) + arka plan görseli (`bg.jpg`) sadece Bugün sayfasında. |
 | **JS** | Inline `<script>`, vanilla, ES modül yok, framework yok |
 | **Veri** | `localStorage` (anahtarlar aşağıda) |
 | **AI** | Anthropic API direct from browser (`anthropic-dangerous-direct-browser-access: true`), kullanıcı kendi key'i girer |
@@ -52,6 +52,9 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | `recipes_cache` | AI tarif cache `{recipeKey: {ingredients,steps,time_min}}` | Diet |
 | `anthropic_key` | Kullanıcının Anthropic API key'i | AI çağrıları (custom food, suggest, recipe) |
 | `fasting_hidden` | `'1'` ise IF countdown gizli | Diet |
+| `protected_days` | Streak korumalı günler `{dateKey: '🤒 Hasta'/'✈️ Seyahat'/'🩸 Yoğun regl'}` | Streak system (5 May) |
+| `onboarded_seen` | First-run onboarding wizard gösterildi mi (`'1'`) | Onboarding (4 May) |
+| `fix_period_20260504` | Tek seferlik regl düzeltme migration flag (`'1'`) | Cycle data fix (4 May) |
 
 ---
 
@@ -176,8 +179,21 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-04-28 17:xx | `979daca` | HEALTH_SHORTCUT.md modern iOS UI açıklama düzeltmesi |
 | 2026-04-28 21:xx | `8901ed3` | **Plan D**: manuel Health input modal eklendi |
 | 2026-04-28 21:30 | `21d2cca` | Plan D revert (kullanıcı manuel istemedi) |
+| 2026-05-01 — Apple Health Photo + AI yolu (yeni sohbet) | | |
+| 2026-05-01 | (commit edilecek) | **Photo + AI input path:** 📷 Health buton → galeri picker → Claude Haiku 4.5 vision → preview/edit modal → save. iOS 17+ engelini bypass eder (screenshot system-level, Health API'ye dokunulmaz). HEALTH_SHORTCUT.md photo rehberine yenilendi. |
+| 2026-05-04/05 — BÜYÜK SOHBET (Diet/cilt overhaul + 9-lens audit + Akşam Bahçesi tema + Dashboard) | | |
+| 2026-05-04 | (commit edilecek) | **Diyet sistemi yenilendi:** 13:00–18:00 IF → **10:00–19:00**, hellim/lor çıktı, **karnivor + post-workout karb pencere** modeli, baseline 1.350 → 1.750 kcal. Yeni supplementler: ViDrate elektrolit (07:00) + Bulk Creapure 5g kreatin (17:00). |
+| 2026-05-04 | (commit edilecek) | **Cilt sıralaması düzeltildi:** Eski 07:15 tam rutin (yürüyüş öncesi) yanlıştı (ürünler duşta yıkanıyordu). Yeni: 07:10 mini SPF (3 dk) → 07:30 yürüyüş → ~09:00 duş → 09:15 tam 6 adım rutin. Retinol gecesi sonrası 4 adıma düşer. |
+| 2026-05-04 | (commit edilecek) | **16-noktalık cycle-awareness genişletmesi:** Tüm render fonksiyonları `inP/preP/ci()` üzerinden phase'e reaktif. Magnezyum dozu (regl 350-400mg), pre-workout karb (regl 90 kcal), su hedefi (regl 10 bardak), PPL deload uyarısı (regl Day 1-2 -20%), getMacroTarget'a Ovulation + Erken Luteal branch eklendi. |
+| 2026-05-04 | (commit edilecek) | **Period log fix migration:** Sistemde 2 Mayıs tarihli yanlış kayıt vardı, `fixPeriodData20260504()` ile [20 Nis–5 May] aralığı temizlendi, doğru kayıt yerleştirildi (28 Nis → 3 May, 6 gün). |
+| 2026-05-04 | (commit edilecek) | **9-lens design audit (paralel agents):** A=Aesthetic+Color, B=ED Safety, C=Endocrinology, D=Personalization, E=UX+a11y, F=Sacred Feminine, G=Anti-Fragility, H=Türkçe Tone, I=Sports Science. ~115 finding → P0/P1/P2 sentez. |
+| 2026-05-04 | (commit edilecek) | **Audit P0 implementasyonu:** RED-S guardrail (3 gün <1500 kcal alert), Calciday 09:30 → 10:30 (Levotiron'dan 4 saat), macro ring tolerans bandı + terracotta, WCAG kontrast düzeltmesi (np/ng/nm), focus state'ler + reduced-motion, **streak grace period (3 gün) + comeback + burnout detection + protected days** (🤒 Hasta / ✈️ Seyahat / 🩸 Yoğun regl), "Bugünü kaybetme!" → "seri büyüyor". |
+| 2026-05-04 | (commit edilecek) | **P1 cluster'lar:** Tam Türkçeleştirme (nav buttons, form fields, page headers, phase isimleri + mevsim metaforu + arketip "Bilge Kadın/Genç Kız/Anne/Cadı"), touch target ≥44px, hero "Bugünün 3 minimum eylemi" card, AI custom food **reverse flow** (önce sen tahmin et), heatmap+consistency %, sacred feminine PHASE_DIET ton, Onboarding wizard, transparent period seed, Renpho AI prompt bilingual, **medikal:** Bakır 1.5mg, B6/B9/B12 form belirt (P5P + Methylfolate + Methyl-B12), Qalyviz form not, daily core 6→4 gün, regl deload esnek. |
+| 2026-05-04 | (commit edilecek) | **P2 batch:** UK shop linkleri (Boots/Superdrug/Amazon UK · ~£X) skincare ürünlerinde, milestone celebrations (-5/-10/-15 kg), Renpho carnivor uyarı (±%5-8 hata payı), period log chip Türkçeleştirildi (Damlayan/Akan/Bol Akan), daily log somatik+rüya textarea, ZEN array Maisie Hill referanslarıyla zenginleştirildi, ritüel transition moments (sabah ViDrate niyet + akşam Mg 4-7-8 nefes), Iron+C vit pairing, wedding event countdown opsiyonel (Cycle Settings → Önemli Tarih). |
+| 2026-05-05 | (commit edilecek) | **Akşam Bahçesi görsel tema:** App adı "Bengisu ✨" → **"Bengisu ☀️"**. `bg.jpg` (surrealist akşam bahçesi resmi) sadece Bugün sayfasında görünür. Diğer 5 sayfa **solid net renkler** (Tema B): Bugün=görsel · Döngü=mauve · Diyet=hardal · Egzersiz=sage · Cilt=krem peach · Ölçüm=su mavisi. **Glass morphism cards** (rgba 15,30,38,0.55 + blur 28px + border 0.18). Her sekme kendi accent'i ile (slbl, h1 em, navbar active, ch h3). |
+| 2026-05-05 | (commit edilecek) | **🏠 Dashboard / Bugün sayfası:** Takvim sekmesi refactor edilerek dashboard yapıldı. İçerik: saat-bazlı selam (Günaydın/İyi öğleden/akşam) + ZEN quote + cycle phase + arketip + sıradaki regl gün sayısı + 3 quick stats (su/kcal/streak) + 3 minimum eylem checklist + **4 collapsible accordion blok** (🌅 Sabah / ☀️ Öğle / 🏋️ Antrenman / 🌙 Akşam) + Apple Health card + 📆 Aylık Takvim mini accordion. Bottom nav "📅 Takvim" → **"🏠 Bugün"**. |
 
-**Toplam:** 36 commit (27 önceki + 9 bu turda).
+**Toplam:** 36 commit (önceki) + bu sohbette devam eden değişiklikler.
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -249,22 +265,22 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 
 ---
 
-### 2. Apple Health Entegrasyonu
+### 2. Apple Health Entegrasyonu — ✅ ÇÖZÜLDÜ (1 Mayıs 2026)
 
-**Sorun:** GitHub Pages statik site → Apple HealthKit'e direkt erişim yok.
+**Sorun (28 Nisan):** GitHub Pages statik site → Apple HealthKit'e direkt erişim yok. iOS Shortcut + Clipboard yolu denendi → iOS 17+ "Health Samples external paylaşımı" güvenlik kuralıyla bloklandı.
 
-**4 yol önerildi** (kullanıcı henüz seçim yapmadı):
+**Çözüm:** **Photo + AI** yolu — kullanıcı Health app'in screenshot'ını alır, site'de 📷 Health butonuna basar, galeriden seçer, Claude Haiku 4.5 vision sayıları okur, preview/edit modal'da düzeltilebilir, kaydet → bitti. Apple iOS 17+ engelini bypass eder çünkü screenshot iOS sistem eylemi (Health API'ye dokunulmaz).
 
-| Yol | Sürtünme | Maliyet | Otomatiklik |
-|---|---|---|---|
-| 🟢 **iOS Shortcut + Clipboard** (önerilen) | Günde 1 sn ritüel | Ücretsiz | Yarı-otomatik |
-| 🟡 **Health Auto Export + Dropbox** | Sıfır | $5 (one-time) | Tam otomatik |
-| 🟠 **Backend (Vercel + Supabase)** | Sıfır | Ücretsiz | Tam otomatik |
-| 🔴 **Manuel sayı girişi** | Yüksek | Ücretsiz | Sıfır |
+**Avantajlar:**
+- iOS 17+ engelini bypass eder
+- Manuel sayı yazımı yok (kullanıcı tercihi)
+- Renpho akışıyla aynı UX pattern (kullanıcı zaten biliyor)
+- ~$0.001/foto maliyet (Haiku 4.5 vision)
+- 30+ dakikalık Shortcut kurulumu yok
 
-**Hedef veriler:** Adım, aktif kalori, egzersiz dakikası, uyku, kalp atış, hareketli dakika.
+**Hedef veriler:** Adım, aktif kalori, egzersiz dakikası, uyku (dakika), kalp atış (ortalama + dinlenme), hareketli saat.
 
-**Cycle log'la entegrasyon:** Apple Watch uyku verisi → Cycle "Enerji + uyku skalası" otomatik dolar.
+**Cycle log'la entegrasyon:** Apple Watch uyku verisi → Cycle "uyku skalası 1-5" otomatik dolar (mevcut `sleepMinToScale` fonksiyonu kullanılıyor).
 
 ---
 
@@ -293,20 +309,35 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 
 ## 🚀 Site Detayları
 
-### Bottom navigation (6 tab)
+### Bottom navigation (6 tab · 5 May Türkçeleştirildi)
 ```
-📅 Calendar  🌸 Cycle  🥩 Diet  💪 Workout  ✨ Skin  📊 Metrics
+🏠 Bugün  🌸 Döngü  🥩 Diyet  💪 Egzersiz  ✨ Cilt  📊 Ölçüm
 ```
-6 buton iPhone SE'de (375px) sığar — `min-width:48px`, `padding:8px 10px`. Daha dar ekranlar (<360px) için media query var.
+6 buton iPhone SE'de (375px) sığar — `min-width:48px`, `padding:8px 10px`. Daha dar ekranlar (<360px) için media query var. Aktif tab kendi rengiyle parlar (Tema B per-page).
 
-### Renk paleti
+### Renk paleti — Akşam Bahçesi (5 May)
 ```css
---pink: #E8A598      /* primary */
---pink-deep: #C97B6E /* accent / regl rengi */
---mauve: #C4A5B8     /* luteal */
---sage: #A8BBA5      /* hedef ok */
---gold: #C9A96E      /* hafif aşım / kcal vurgu */
---text: #3D2E2A      /* warm dark brown */
+/* Görsel: bg.jpg surrealist akşam bahçesi resmi (sadece Bugün sayfasında tam görünür) */
+--bg-deep: #0F4147       /* gökyüzü petrol */
+--cream: #E8DDC4         /* patika/ay tonu, ana metin */
+--cream-soft: #F0E6D0    /* ay ışığı vurgu */
+--coral: #D9591E         /* turuncu ağaç tepesi · regl/CTA */
+--mustard: #E8B23F       /* sarı ağaç · ovulasyon/güneş */
+--sage-leaf: #5A7A4F     /* açık yeşillik · folliküler */
+--sage-deep: #3E5A3A     /* servi koyu · ölçüm */
+--mauve-evening: #B47990 /* alacakaranlık · luteal */
+--glass-bg: rgba(15,30,38,0.55)        /* universal cam kart bg */
+--glass-border: rgba(255,255,255,0.18) /* glass kart kenar */
+```
+
+### Tema B — Per-page sekme renkleri (5 May)
+```
+Bugün     → bg.jpg görseli (image only here)
+Döngü     → mauve gradient (#B47990 → #4A2837)
+Diyet     → hardal gradient (#8C6520 → #E8B23F → #3C2A0A)
+Egzersiz  → sage gradient (#5A7A4F → #1E3220)
+Cilt      → krem peach gradient (#6B3E2F → #D4A48D → #3C1F14)
+Ölçüm     → su mavisi gradient (#7BA8B0 → #0F4147)
 ```
 
 ### Yemek slot anahtarları
@@ -350,49 +381,81 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (28 Nisan 2026, gece kapanış)
+## 📍 Şu Anki Durum (5 Mayıs 2026)
 
-✅ **Diet sekmesi 100% yenilendi.** AI custom food + AI öneri + recipe + ringler + heatmap + achievement + streak + cycle-aware = tam paket.
+✅ **Diyet sistemi karnivor + post-workout karb pencere modeline yenilendi.** 10:00–19:00 IF, baseline 1.750 kcal, ViDrate + Bulk Creatine eklendi.
+
+✅ **Cilt sıralaması düzeltildi.** Yürüyüş öncesi mini SPF, duş sonrası tam rutin. Retinol-after 4-adım otomatik düşer.
+
+✅ **9-lens design audit yapıldı + tüm P0/P1/P2 implement edildi.** ED safety, endocrinology, personalization, UX+a11y, sacred feminine, anti-fragility, sports science — 9 paralel agent + sentez + ~95/115 finding uygulandı.
+
+✅ **Cycle-awareness 16 noktada genişletildi.** Magnezyum dozu, pre-workout karb, su hedefi, PPL deload, macro target (Ovulation + Erken/Geç Luteal) — hepsi phase'e reaktif.
+
+✅ **Streak revamp:** Grace period (3 gün), comeback narrative, burnout detection, protected days (🤒/✈️/🩸), 28-gün consistency % metric.
+
+✅ **Türkçeleştirme tamamlandı.** Nav, form, headers, phase isimleri (mevsim + arketip), error messages, AI prompts.
+
+✅ **Onboarding wizard eklendi.** İlk açılışta 3 kart karşılama (regl seed + ölçüm + medikal context).
+
+✅ **Akşam Bahçesi görsel tema (5 May).** App adı "Bengisu ☀️", `bg.jpg` Bugün sayfasında, diğer 5 sayfa Tema B solid renkler (mauve/hardal/sage/krem peach/su mavisi). Glass morphism cards (blur 28px + cream border).
+
+✅ **🏠 Dashboard / Bugün sayfası eklendi (5 May).** Saat-bazlı selam + ZEN + 4 zaman bloğu accordion (sabah/öğle/antrenman/akşam) + quick stats + Aylık Takvim mini accordion.
+
+✅ **Apple Health entegrasyonu çözüldü (Photo + AI yolu, 1 May).** iOS 17+ engelini bypass eder.
 
 ✅ **PROGRESS.md + Memory rutini kuruldu.** Yeni sohbette Claude bu dosyayı otomatik okuyup bağlama girecek.
 
-⚠️ **Apple Health entegrasyonu yarım — Apple iOS 17+ engeline takıldı.**
+### 4-5 Mayıs ne oldu (BÜYÜK SOHBET — Diyet/Cilt overhaul + Audit + Akşam Bahçesi + Dashboard)
+- Plan A (Diyet/Cilt): IF 10–19, karnivor + post-workout karb pencere, mini SPF + tam rutin ayrımı, ViDrate + kreatin
+- Period log otomatik düzeltme migration (yanlış 2 Mayıs kaydı → doğru 28 Nis–3 May)
+- 16-noktalık cycle-awareness expansion (her render fonksiyonu phase-reaktif)
+- 9-lens design audit (paralel Explore agentlar) → ~115 finding → P0/P1/P2 sentez
+- P0+P1+P2 implementasyonu: RED-S guardrail, Calciday 4 saat, macro tolerans bandı, WCAG kontrast, focus state, streak grace + comeback + burnout, Türkçeleştirme, sacred feminine ton, Bakır + B vitaminleri detay, milestone celebrations, UK shop linkleri, ZEN Maisie Hill, ritüel transition, wedding countdown
+- Akşam Bahçesi görsel tema: App "Bengisu ☀️", `bg.jpg` arka plan, glass cards, Tema B per-page renkler
+- 🏠 Dashboard / Bugün sayfası: greeting + 4 accordion blok + mini takvim
 
-### Bugün ne oldu (Apple Health turu özeti)
-- 🟢 iOS Shortcut + Clipboard yolu seçildi
-- HEALTH_SHORTCUT.md kurulum rehberi yazıldı (iOS Shortcuts adım adım)
-- Site tarafında tüm altyapı kuruldu: paste button (Calendar topbar 🍏 / 📋), `health_log` localStorage, Calendar günlük detay 🍏 Apple Health kartı, Cycle sleep auto-fill (sleepMinToScale: <5h=1, 5-6h=2, ..., 8+h=5), Workout topbar mini-info
-- Kullanıcı 30+ dk uğraşıp iOS Shortcut'ı kurdu (Format Date + 4× Find Health Samples + 4× Calculate Sum + Text JSON + Copy to Clipboard)
-- Apple Health izinleri verildi (Steps, Active Energy, Exercise, Sleep)
-- ▶ Play butonu **"This action is trying to share 2431 Health items, which is not allowed"** hatası verdi
-- Sleep çıkartılarak yeniden denendi → aynı hata, 2437 items
-- Apple iOS 17+'da yeni güvenlik koruması: Calculate Statistics çıktısı bir Number döndürse de **kaynağındaki Health Samples'ları takip ediyor** ve clipboard gibi external paylaşımda block ediyor
-- **Plan D (manuel input modal)** denendi (`8901ed3`) ama kullanıcı manuel girmek istemedi → revert (`21d2cca`)
+### 1 Mayıs ne oldu (Apple Health Photo + AI)
+- Eski input path (clipboard) iOS 17+ engelinden kullanılamıyordu, kullanıcı yeni bir kolay yol istedi
+- **Photo + AI yaklaşımı seçildi:** screenshot al → galerinden seç → Claude Haiku 4.5 vision sayıları okur → preview modal'da düzelt → kaydet
+- Yapılan değişiklikler (`index.html`):
+  - Calendar topbar butonu `📋 Health` (clipboard) → `📷 Health` (photo picker)
+  - Hidden `<input type="file" accept="image/*">` eklendi
+  - Yeni preview/edit modal (`#health-photo-modal`) — 7 alan editable + tarih datepicker + Türkçe etiketler
+  - Yeni fonksiyonlar: `openHealthPhotoPicker()`, `handleHealthPhoto()`, `analyzeHealthPhoto()`, `fillHealthPhotoModal()`, `saveHealthPhotoData()`
+  - `pasteHealthData()` silindi (53 satır), Calendar daily-detail "Güncelle" butonu da yeni fonksiyona bağlandı
+- `getHealthLog`, `saveHealthDay`, `sleepMinToScale`, `renderHealthCardForSelDay`, Cycle sleep auto-fill, Workout topbar mini-info — **hepsi aynen kaldı**, sadece input path değişti
+- `HEALTH_SHORTCUT.md` photo rehberine baştan yazıldı (eski Shortcut adımları silindi)
+- JS smoke test (`new Function`) PASS — 3335 satır, 194k karakter
 
 ### Şu anki teknik durum
-- Site Apple Health altyapısı **kurulu ama kullanılamaz**:
-  - Calendar topbar'da `📋 Health` butonu var, `pasteHealthData()` çağırıyor — clipboard'da JSON yok ki çalışsın
-  - Calendar günlük detayda 🍏 Apple Health kartı placeholder'ı görünür
-  - Cycle sleep auto-fill kodu hazır
-  - Workout topbar mini-info kodu hazır
-  - Hepsi **dolu data bekliyor**
-- localStorage anahtarı `health_log` rezerv ama boş
+- Photo + AI input path **kurulu ve test edilmeyi bekliyor** (iPhone'da gerçek screenshot ile)
+- localStorage anahtarı `health_log` artık dolu data alabilir
+- Anthropic key zaten var (Diet/Recipe/Renpho için kullanıldı) — ek setup yok
+- Maliyet: ~$0.001/screenshot (Haiku 4.5 vision)
 
-⏳ **Karar bekleyen — Apple Health (3 seçenek):**
-1. **Tüm Apple Health altyapısını sil** — site'den 📋 Health butonu, health-card, Cycle sleep auto-fill, Workout activity info hepsi kalksın. HEALTH_SHORTCUT.md de silinsin
-2. **Olduğu gibi bırak** — Apple ileride paylaşım iznini fixlerse hazır olur. Ama şu an gözükür ama çalışmaz buton var
-3. **Plan B Set Variable workaround** — Shortcut'a 4 ek `Set Variable` action eklemek. Health kontextinden number'ı koparır, Apple korumasını kandırabilir. Çok iş ama çalışırsa otomatik
+⏳ **Test bekliyor:**
+- iPhone'da Health app screenshot al → site'de 📷 Health → modal preview → save → Calendar/Cycle/Workout kartlarında veriyi gör
+- AI'ın okuduğu sayıların doğruluğu (Türkçe binlik ayraç vb.)
+- Modal düzenlenebilir alanlarda input UX
 
 ⏳ **Karar bekleyen — Workout sekmesi:**
 30 fikir hâlâ açık. Önerilen ilk hamle: Pratiklik (set-rep tracking + PR + süre) + Cycle entegrasyonu (faza özel intensity + period-friendly mode) + Motivasyon (streak + achievement + heatmap).
 
-🎯 **Yarın muhtemel adımlar:**
-- Apple Health 3 seçeneğinden birini seç (en olası: **sil**, çünkü Shortcut çıldırtmış)
-- Veya Workout sekmesine geç
-- Diet sekmesinin gerçek kullanımından feedback gelirse iteration
+🎯 **Sonraki adımlar:**
+- Photo + AI flow'unu iPhone'da gerçek screenshot ile test et
+- Sonuca göre prompt tweaking veya UX rötuş
+- Workout sekmesine geç (30 fikir)
+- Diet'in gerçek kullanımından feedback varsa iteration
 
 ---
 
 **Yeni sohbete başlıyorsan:** Önce bu dosyayı oku → mevcut özellikleri ve kullanıcı tercihlerini anla → bekleyen kararlara odaklan. Memory rutini sayesinde bu otomatik olmalı. Site'yi tarayıcıda aç, gerçek davranışı kontrol et.
 
-**Önemli kullanıcı feedback'i (28 Nisan):** Manuel data girişi sevmiyor (sağlık baskısı yapıyor). Ama Shortcut da çok iş ve çalışmıyor. Bu kullanıcı için en pragmatic Health çözümü: **şimdilik kaldır, ileride Apple bunu fixlerse veya farklı bir mimari (backend) seçilirse geri ekle.**
+**Önemli kullanıcı feedback'i:**
+- (28 Nisan) Manuel data girişi sevmiyor — sağlık baskısı yapıyor.
+- (28 Nisan) iOS Shortcut çok iş ve iOS 17+'da kırık, vakit kaybı.
+- (1 Mayıs) Photo + AI yolu hem kolay hem mevcut Renpho UX pattern'i ile aynı — kabul edildi.
+- (4 Mayıs) "Tüm sekmeler petrol mavisi görünüyor" → her sekme **gerçekten farklı renk** olsun istendi. Tema A (hardal/coral/sage/mavi/mauve/servi) → Tema B (sıcak ağırlıklı: coral/mauve/hardal/sage/krem/su mavisi).
+- (4-5 Mayıs) "Renkler boz görünüyor" → image+scrim mix yerine **solid net renkler**. Image sadece Bugün sayfasında, diğer 5 sayfa solid color gradients.
+- (5 Mayıs) "App ilk açılınca dashboard açılsın" → Takvim sekmesi Bugün dashboard olarak refactor edildi. Step-by-step yapılacaklar **collapsible accordion** olmalı (4 zaman bloğu).
+- **Doktor kontrolü:** Selenyum supplementasyonu önerisi (Agent C audit) doktor kontrolünde değişecek — uygulamadan **çıkarıldı** (kullanıcı kararı, 4 May). Diğer P0 supplementler (Bakır, B6/B9/B12) eklendi.
