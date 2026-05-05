@@ -681,19 +681,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="tb-label" id="dash-greeting-label">KİŞİSEL PROGRAM</div>
     <h1 style="font-size:42px;letter-spacing:1.5px;"><em>Bengisu</em> <span style="font-style:normal;display:inline-block;filter:drop-shadow(0 0 16px rgba(232,178,63,0.65));">☀️</span></h1>
     <div class="tb-sub" id="today-str" style="margin-top:8px;"></div>
-    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
-    <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
   </div>
-  <div id="health-paste-msg"></div>
 
-  <!-- Dashboard sections -->
-  <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase + day badge -->
-  <div id="home-event"></div>          <!-- Wedding/event countdown -->
-  <div id="dash-stats"></div>          <!-- Quick stats: water · kcal · streak -->
-  <div id="dash-hero"></div>           <!-- 3 minimum eylem -->
-  <div id="dash-blocks"></div>         <!-- 4 accordion blocks -->
-  <div id="dash-health"></div>         <!-- Apple Health card if data available -->
-  <div id="dash-cal-mini"></div>       <!-- Aylık Takvim — collapsed accordion -->
+  <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
 
   <!-- Hidden carrier element for legacy cycle strip render (used internally) -->
   <div id="cycle-strip-el" style="display:none;"></div>
@@ -927,7 +917,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="tb-label">Vücut Takibi</div>
     <h1><em>Ölçüm</em> 📊</h1>
     <div class="tb-sub">Eylül 2026 hedefi: 58 kg</div>
+    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
+    <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
   </div>
+  <div id="health-paste-msg"></div>
   <div id="milestone-celebration"></div>
   <div class="card">
     <div class="ch"><h3>Eylül Hedefi</h3><span style="font-size:12px;color:var(--text-light);">~5 ay · ~5 kg/ay</span></div>
@@ -1820,159 +1813,24 @@ function buildDailyBlocks(d){
   };
 }
 
-// Dashboard (Bugün) ana render
+// Dashboard (Bugün) ana render — minimal: only topbar + greeting card so bg.jpg dominates
 function renderDashboard(){
   const today=new Date();
   const c=ci(today);
   const cyc=getAvgCycleLen();
-
-  // Topbar today-str + label
   const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
   document.getElementById('dash-greeting-label').textContent='BUGÜN · '+getGreeting().toUpperCase();
 
-  // 1. GREETING HERO CARD
   const greetEl=document.getElementById('dash-greeting');
   if(greetEl){
     const phaseLine=c?`${c.emoji} ${c.label} · Gün ${c.day} / ~${cyc} · ${c.archetype}`:'🌸 Döngü takibi yok';
     const zen=c?getZen(c.phase,today):'Bugün senin günün.';
-    const ps=getPeriods();
-    const lastStart=ps.length?fromYmd(ps[ps.length-1].start):null;
-    const nextStart=lastStart?new Date(lastStart.getTime()+cyc*86400000):null;
-    const daysToNext=nextStart?Math.max(0,dayDiff(nextStart,today)):null;
     greetEl.innerHTML=`<div class="dash-greeting-card">
       <div class="dash-greet-hi">${getGreeting()}, <em>Bengisu</em> ✨</div>
       <div class="dash-greet-meta">${phaseLine}</div>
       <div class="dash-greet-zen">"${zen}"</div>
-      <div class="dash-greet-pills">
-        ${c?`<span class="dash-greet-pill">⏳ Sıradaki regl: ${daysToNext} gün</span>`:''}
-        <span class="dash-greet-pill">📅 ${today.toLocaleDateString('tr-TR',{weekday:'long'})}</span>
-      </div>
     </div>`;
-  }
-
-  // 2. QUICK STATS
-  const statsEl=document.getElementById('dash-stats');
-  if(statsEl){
-    const water=getWaterCount(today);
-    const wTarget=inP(today)?10:(c&&c.phase==='Ovulation')?9:(c&&c.phase==='Luteal Phase'&&c.day>=cyc-6)?9:8;
-    const safeTarget=Math.max(wTarget,9); // kreatin nedeniyle min 9
-    const macros=getActualMacros(today);
-    const mTarget=getMacroTarget(today);
-    const{streak}=getStreakInfo();
-    statsEl.innerHTML=`<div class="dash-stats-row">
-      <div class="dash-stat" onclick="showP('diyet',document.querySelectorAll('.nb')[2])"><div class="dash-stat-i">💧</div><div class="dash-stat-v">${water}/${safeTarget}</div><div class="dash-stat-l">Su</div></div>
-      <div class="dash-stat" onclick="showP('diyet',document.querySelectorAll('.nb')[2])"><div class="dash-stat-i">🍽</div><div class="dash-stat-v">${macros.k}<span style="font-size:13px;color:var(--cream-mute);">/${mTarget.kcal}</span></div><div class="dash-stat-l">Kcal</div></div>
-      <div class="dash-stat" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div class="dash-stat-i">🔥</div><div class="dash-stat-v">${streak}</div><div class="dash-stat-l">Gün serisi</div></div>
-    </div>`;
-  }
-
-  // 3. HERO 3 MİNİMUM EYLEM (mevcut d-hero-action mantığını dash-hero'ya getir)
-  const heroEl=document.getElementById('dash-hero');
-  if(heroEl){
-    const dayKey=today.toDateString();
-    const m1Done=isMealDone('m1_main',dayKey)&&isMealDone('m1_side',dayKey);
-    const m2Done=isMealDone('m2_main',dayKey)&&isMealDone('m2_side',dayKey);
-    const wTarget=inP(today)?10:(c&&c.phase==='Ovulation')?9:8;
-    const wDone=getWaterCount(today)>=wTarget;
-    const protectedReason=getProtectedDays()[dayKey];
-    heroEl.innerHTML=`<div style="margin:0 16px 14px;padding:16px 18px;border-radius:18px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);">
-      <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:10px;font-weight:700;">3 minimum eylem${protectedReason?' · '+protectedReason:''}</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--cream);">
-        <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;':''}">1. öğün (10:00) — et + yumurta + yağ</span></div>
-        <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;':''}">2. öğün (17:00) — post-workout + opsiyonel karb</span></div>
-        <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;':''}">${wTarget} bardak su</span></div>
-      </div>
-      <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="btn bsm bghost" onclick="toggleProtectDay('🤒 Hasta')" style="${protectedReason==='🤒 Hasta'?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">🤒 Hasta</button>
-        <button class="btn bsm bghost" onclick="toggleProtectDay('✈️ Seyahat')" style="${protectedReason==='✈️ Seyahat'?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">✈️ Seyahat</button>
-        <button class="btn bsm bghost" onclick="toggleProtectDay('🩸 Yoğun regl')" style="${protectedReason==='🩸 Yoğun regl'?'background:rgba(217,89,30,0.22);border-color:var(--coral);color:var(--coral-soft);':''}">🩸 Yoğun regl</button>
-      </div>
-    </div>`;
-  }
-
-  // 4. ACCORDION BLOCKS (4 zaman bloğu)
-  const blocksEl=document.getElementById('dash-blocks');
-  if(blocksEl){
-    const blocks=buildDailyBlocks(today);
-    const meta=[
-      {id:'morning',emoji:'🌅',title:'Sabah',time:'06:30 – 09:30',rows:blocks.morning},
-      {id:'noon',emoji:'☀️',title:'Öğle',time:'10:00 – 14:30',rows:blocks.noon},
-      {id:'afternoon',emoji:'🏋️',title:'Antrenman + Akşam yemeği',time:'15:00 – 17:30',rows:blocks.afternoon},
-      {id:'evening',emoji:'🌙',title:'Akşam + Gece',time:'18:30 – 23:00',rows:blocks.evening},
-    ];
-    blocksEl.innerHTML=meta.map(b=>`
-      <div class="accordion">
-        <div class="accordion-h" onclick="toggleAccordion('acc-${b.id}')" role="button" tabindex="0">
-          <div class="accordion-title">
-            <span class="accordion-title-emoji">${b.emoji}</span>
-            <div><div>${b.title}</div><div class="accordion-title-time">${b.time}</div></div>
-          </div>
-          <div class="accordion-meta">
-            <span class="accordion-count">${b.rows.length} adım</span>
-            <span class="accordion-arrow" id="acc-${b.id}_arr">›</span>
-          </div>
-        </div>
-        <div class="accordion-c" id="acc-${b.id}">
-          <div class="tl">${b.rows.join('')}</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // 5. APPLE HEALTH (mevcut card mantığı buraya alınıyor)
-  const healthEl=document.getElementById('dash-health');
-  if(healthEl){
-    const data=getHealthForDay(today);
-    if(data){
-      const importedAt=new Date(data.imported_at);
-      const importStr=importedAt.toLocaleString('tr-TR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
-      healthEl.innerHTML=`<div class="slbl">🍏 Apple Health</div>
-        <div class="health-card">
-          <div class="health-card-h"><h4>Bugünkü Aktivite</h4><button class="btn bghost" style="padding:3px 10px;font-size:11px;border-radius:20px;" onclick="openHealthPhotoPicker()">📷 Güncelle</button></div>
-          <div class="health-card-grid">
-            <div class="health-stat"><div class="health-stat-v">${data.steps.toLocaleString('tr-TR').replace(/,/g,'.')}</div><div class="health-stat-l">👟 Adım</div></div>
-            <div class="health-stat"><div class="health-stat-v">${data.active_kcal}</div><div class="health-stat-l">🔥 Kcal</div></div>
-            <div class="health-stat"><div class="health-stat-v">${data.exercise_min}</div><div class="health-stat-l">💪 dk</div></div>
-            <div class="health-stat"><div class="health-stat-v">${data.stand_hr}</div><div class="health-stat-l">🪨 Stand</div></div>
-            <div class="health-stat"><div class="health-stat-v">${fmtMinHr(data.sleep_min)}</div><div class="health-stat-l">😴 Uyku</div></div>
-            <div class="health-stat"><div class="health-stat-v">${data.hr_avg||'-'}</div><div class="health-stat-l">❤️ HR</div></div>
-          </div>
-          <div class="health-card-meta">İçe aktarıldı: ${importStr}${data.hr_rest?` · Dinlenme HR: ${data.hr_rest} bpm`:''}</div>
-        </div>`;
-    } else {
-      healthEl.innerHTML=`<div style="margin:0 16px 12px;padding:12px 14px;background:rgba(15,30,38,0.40);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px dashed rgba(255,255,255,0.18);border-radius:14px;font-size:12px;color:var(--cream-mute);text-align:center;">🍏 Bugün için Apple Health verisi yok · iOS Shortcut çalıştır → 📷 Health</div>`;
-    }
-  }
-
-  // 6. CALENDAR MINI ACCORDION
-  const calMiniEl=document.getElementById('dash-cal-mini');
-  if(calMiniEl){
-    calMiniEl.innerHTML=`<div class="accordion" style="margin-top:8px;">
-      <div class="accordion-h" onclick="toggleAccordion('acc-cal')" role="button" tabindex="0">
-        <div class="accordion-title">
-          <span class="accordion-title-emoji">📆</span>
-          <div><div>Aylık Takvim</div><div class="accordion-title-time">Geçmiş + tahmini regl + gym günleri</div></div>
-        </div>
-        <div class="accordion-meta">
-          <span class="accordion-arrow" id="acc-cal_arr">›</span>
-        </div>
-      </div>
-      <div class="accordion-c" id="acc-cal">
-        <div class="cnav" style="margin-top:8px;">
-          <button class="cnbtn" onclick="cPrev()">‹</button>
-          <h4 id="cal-title"></h4>
-          <button class="cnbtn" onclick="cNext()">›</button>
-        </div>
-        <div class="cgrid" id="cal-grid"></div>
-        <div style="display:flex;gap:14px;margin-top:12px;font-size:10px;color:var(--cream-mute);flex-wrap:wrap;">
-          <span style="color:var(--sage-leaf);">● Gym</span><span style="color:var(--coral);">● Regl</span>
-          <span style="background:var(--mustard);color:var(--ink);padding:1px 7px;border-radius:5px;font-weight:700;">Bugün</span>
-        </div>
-        <div id="sel-day"></div>
-      </div>
-    </div>`;
-    renderCal();
   }
 }
 
