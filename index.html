@@ -738,12 +738,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="card"><div class="cb" id="m1b"></div></div>
   <div class="slbl">2. Öğün — 17:30 · Et / Tavuk / Balık + Salata</div>
   <div class="card"><div class="cb" id="m2b"></div></div>
-  <div class="slbl">Supplement Schedule</div>
+  <div class="slbl">Takviye Programı</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
 
   <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:16px;">
-    <div class="ch"><h3>Daily Macro Summary</h3></div>
+    <div class="ch"><h3>Günlük Makro Özeti</h3></div>
     <div class="cb" id="d-macro-summary"></div>
   </div>
 
@@ -775,7 +775,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="e-list"></div>
   <div id="e-cool"></div>
   <div class="card" style="margin-top:0;">
-    <div class="ch"><h3>This Week's Summary</h3></div>
+    <div class="ch"><h3>Bu Haftanın Özeti</h3></div>
     <div class="cb" id="e-week"></div>
   </div>
   <div style="height:8px;"></div>
@@ -997,11 +997,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div class="mo" id="food-alts-modal">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3 id="food-alts-title">Pick Alternative 🥩</h3>
-    <div class="msub">Carnivore alternatives matched to your macros. Saved for that day.</div>
+    <h3 id="food-alts-title">Alternatif Seç 🥩</h3>
+    <div class="msub">Karnivor alternatifler · senin makrolarına eşleştirildi. O güne kaydedilir.</div>
     <div id="food-alts-list"></div>
     <div class="macts">
-      <button class="btn bghost" style="flex:1;" onclick="closeM('food-alts-modal')">Cancel</button>
+      <button class="btn bghost" style="flex:1;" onclick="closeM('food-alts-modal')">İptal</button>
     </div>
   </div>
 </div>
@@ -1013,14 +1013,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="gif-title" id="gif-title"></div>
     <div class="gif-muscles" id="gif-muscles"></div>
     <div class="gif-img-wrap">
-      <div class="gif-loading" id="gif-loading">⏳ Loading...</div>
+      <div class="gif-loading" id="gif-loading">⏳ Yükleniyor...</div>
       <img id="gif-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;display:none;border-radius:8px;cursor:pointer;" onclick="openYoutube(currentExId)" >
       <div id="gif-yt-btn" style="display:none;margin-top:8px;text-align:center;">
-        <button class="btn bsoft bsm" onclick="openYoutube(currentExId)">▶ Watch on YouTube</button>
+        <button class="btn bsoft bsm" onclick="openYoutube(currentExId)">▶ YouTube'da İzle</button>
       </div>
     </div>
     <div class="gif-how" id="gif-how"></div>
-    <button class="gif-close" onclick="closeGif()">Close</button>
+    <button class="gif-close" onclick="closeGif()">Kapat</button>
   </div>
 </div>
 
@@ -1028,15 +1028,15 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div class="mo" id="swap-modal">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3>Swap Exercise 🔄</h3>
+    <h3>Egzersiz Değiştir 🔄</h3>
     <div class="msub" id="swap-sub"></div>
 
     <!-- GIF -->
     <div id="swap-gif-wrap" style="width:100%;background:var(--surface2);border-radius:var(--r);overflow:hidden;min-height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;">
-      <div id="swap-gif-loading" style="font-size:13px;color:var(--text-light);">⏳ Loading animation...</div>
+      <div id="swap-gif-loading" style="font-size:13px;color:var(--text-light);">⏳ Animasyon yükleniyor...</div>
       <img id="swap-gif-img" src="" alt="" style="width:100%;max-height:200px;object-fit:contain;display:none;"
         onload="document.getElementById('swap-gif-loading').style.display='none';this.style.display='block';"
-        onerror="document.getElementById('swap-gif-loading').textContent='🎬 Animation not found';">
+        onerror="document.getElementById('swap-gif-loading').textContent='🎬 Animasyon bulunamadı';">
     </div>
 
     <!-- Öneri kartı -->
@@ -1044,14 +1044,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
     <!-- Navigasyon -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <button class="btn bghost bsm" onclick="prevAlt()">‹ Prev</button>
+      <button class="btn bghost bsm" onclick="prevAlt()">‹ Önceki</button>
       <span id="swap-counter" style="font-size:12px;color:var(--text-light);"></span>
-      <button class="btn bghost bsm" onclick="nextAlt()">Next ›</button>
+      <button class="btn bghost bsm" onclick="nextAlt()">Sonraki ›</button>
     </div>
 
     <div class="macts">
-      <button class="btn bghost" style="flex:1;" onclick="closeM('swap-modal')">Cancel</button>
-      <button class="btn bp" style="flex:2;" onclick="confirmSwap()">✓ Select This</button>
+      <button class="btn bghost" style="flex:1;" onclick="closeM('swap-modal')">İptal</button>
+      <button class="btn bp" style="flex:2;" onclick="confirmSwap()">✓ Bunu Seç</button>
     </div>
   </div>
 </div>
@@ -1113,7 +1113,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="modal">
     <div class="mhandle"></div>
     <h3>🍏 Apple Health</h3>
-    <div class="msub" id="hpm-status">Screenshot'u oku ve kontrol et</div>
+    <div class="msub" id="hpm-status">Ekran görüntüsünü oku ve kontrol et</div>
     <div id="hpm-preview-img" style="margin:10px 0;text-align:center;"></div>
     <div id="hpm-loading" style="display:none;text-align:center;padding:20px;color:var(--text-mid);font-size:13px;">⏳ Claude okuyor…</div>
     <div id="hpm-fields" style="display:none;">
@@ -1350,7 +1350,7 @@ function getLowIntakeAlert(){
 }
 
 // SPLITS
-const SP={0:null,1:{n:'Legs & Glute',e:'🦵',f:'Glutes · Legs · Core'},2:{n:'Push',e:'💪',f:'Chest · Shoulder · Triceps · Core'},3:{n:'Legs & Hamstring',e:'🦵',f:'Hamstrings · Glutes · Core'},4:{n:'Pull',e:'🏋️',f:'Back · Biceps · Core'},5:{n:'Glute & Core',e:'🍑',f:'Hip Thrust · Full Core'},6:{n:'Shoulders & Arms',e:'🙆',f:'Shoulders · Arms · Core'}};
+const SP={0:null,1:{n:'Bacak & Kalça',e:'🦵',f:'Kalça · Bacak · Core'},2:{n:'İtme (Push)',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},3:{n:'Bacak & Hamstring',e:'🦵',f:'Hamstring · Kalça · Core'},4:{n:'Çekme (Pull)',e:'🏋️',f:'Sırt · Biceps · Core'},5:{n:'Kalça & Core',e:'🍑',f:'Hip Thrust · Tam Core'},6:{n:'Omuz & Kol',e:'🙆',f:'Omuz · Kol · Core'}};
 
 // GIF URLs — public animations from ExerciseDB and Wger
 const GIFS={
@@ -1487,50 +1487,50 @@ function openYoutube(exId) {
 
 const EX={
 1:[
-{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Quads','Hip'],h:'Place bar on shoulders. Feet shoulder-width. Push hips back. Lower until thighs are parallel.',y:'smith machine squat form'},
-{id:'lp',n:'Leg Press',s:'4×15',m:['Quads','Hip'],h:'Back flat on pad. Lower to 90 degrees, push through heels. Do not lock knees.',y:'leg press proper form'},
-{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Outer glutes','Glute medius'],h:'Push pads outward. Controlled return. Hold 1 sec at top.',y:'hip abductor machine form'},
-{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Hip','Hamstrings'],h:'Lie on back, band around hips. Drive through heels. Squeeze glutes 2 sec at top.',y:'glute bridge band form'},
-{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Quads','Hip'],h:'Dumbbells in each hand. Big step back. Both knees 90 degrees. Push from front heel.',y:'reverse lunge dumbbell'},
-{id:'cc',n:'Cable Crunch',s:'4×15',m:['Abs','Core'],c:1,h:'Kneel at cable. Hold rope by head. Crunch core down. Hips stay still.ch through core. Hips stay still.',y:'cable crunch abs form'},
+{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Quadriceps','Kalça'],h:'Bar omuzlarda. Ayaklar omuz genişliğinde. Kalçayı geri it. Uyluk yere paralel olana kadar in.',y:'smith machine squat form'},
+{id:'lp',n:'Leg Press',s:'4×15',m:['Quadriceps','Kalça'],h:'Sırt pede yapışık. 90 dereceye in, topuktan it. Dizleri kilitleme.',y:'leg press proper form'},
+{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Dış kalça','Glute medius'],h:'Pedleri dışa it. Kontrollü geri dön. Tepede 1 sn tut.',y:'hip abductor machine form'},
+{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü uzan, bant kalçaların üstünde. Topuktan it. Tepede kalçayı 2 sn sıkıştır.',y:'glute bridge band form'},
+{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Quadriceps','Kalça'],h:'İki elinde dumbbell. Geriye büyük bir adım. İki diz de 90 derece. Ön topuktan kalk.',y:'reverse lunge dumbbell'},
+{id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Kabloda diz çök. Halatı başın yanında tut. Core ile aşağı bük. Kalça sabit.',y:'cable crunch abs form'},
 ],2:[
-{id:'dbp',n:'Incline Dumbbell Press',s:'4×12',m:['Upper chest','Shoulders'],h:'45 degree bench. Elbows at 45. Squeeze at top.',y:'incline dumbbell press'},
-{id:'lr',n:'Lateral Raise',s:'4×15',m:['Mid deltoid'],h:'Raise arms to T. Work the deltoid. 2 sec at top.',y:'lateral raise proper form'},
-{id:'fr',n:'Front Raise',s:'3×12',m:['Front deltoid'],h:'Raise to shoulder height. Controlled descent.',y:'dumbbell front raise'},
-{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Shoulders','Triceps'],h:'Press overhead. Brace core, keep back flat.',y:'dumbbell shoulder press'},
-{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Elbows locked. Push down, squeeze at bottom.',y:'tricep cable pushdown'},
-{id:'hkr',n:'Hanging Knee Raise (opsiyonel)',s:'3×10',m:['Lower abs','Core'],c:1,h:'Hang from bar. Pull knees to chest. No swinging. Bu hafta yorgunsan atla — core overuse riski var (6 gün/hafta core fazla).',y:'hanging knee raise abs'},
+{id:'dbp',n:'Incline Dumbbell Press',s:'4×12',m:['Üst göğüs','Omuz'],h:'Bench 45 derece. Dirsekler 45 derecede. Tepede sıkıştır.',y:'incline dumbbell press'},
+{id:'lr',n:'Lateral Raise',s:'4×15',m:['Orta deltoid'],h:'Kolları T şekline kaldır. Deltoid çalışsın. Tepede 2 sn.',y:'lateral raise proper form'},
+{id:'fr',n:'Front Raise',s:'3×12',m:['Ön deltoid'],h:'Omuz hizasına kaldır. Kontrollü indir.',y:'dumbbell front raise'},
+{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Omuz','Triceps'],h:'Baş üstüne it. Core sıkı, sırt düz.',y:'dumbbell shoulder press'},
+{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit. Aşağı it, dipte sıkıştır.',y:'tricep cable pushdown'},
+{id:'hkr',n:'Hanging Knee Raise (opsiyonel)',s:'3×10',m:['Alt karın','Core'],c:1,h:'Bardan asıl. Dizleri göğse çek. Sallanma. Bu hafta yorgunsan atla — core overuse riski var (6 gün/hafta core fazla).',y:'hanging knee raise abs'},
 ],3:[
-{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstrings','Hip'],h:'Slight knee bend. Push hips back. Dumbbells slide down legs. BACK STRAIGHT.',y:'romanian deadlift dumbbell'},
-{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstrings'],h:'Curl heels to glutes. Controlled release.',y:'lying leg curl machine'},
-{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['Inner thigh','Hip'],h:'Wide stance, toes out. Dumbbell in center. Stay upright.',y:'sumo squat dumbbell'},
-{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Hip','Glute'],h:'Attach to ankle. Kick leg back and up. Squeeze glute.',y:'cable kickback glutes'},
-{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Calves'],h:'Only toes on platform. Hold 2 sec at top.',y:'leg press calf raise'},
-{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Oblique'],c:1,h:'Stand beside cable. Press straight out at chest height. No rotation.',y:'pallof press core'},
+{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Hafif diz bükümü. Kalçayı geri it. Dumbbell bacaklardan aşağı kayar. SIRT DÜZ.',y:'romanian deadlift dumbbell'},
+{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstring'],h:'Topukları kalçaya bük. Kontrollü bırak.',y:'lying leg curl machine'},
+{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['İç bacak','Kalça'],h:'Geniş duruş, ayak parmakları dışa. Dumbbell ortada. Dik dur.',y:'sumo squat dumbbell'},
+{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Kalça','Glute'],h:'Bileğe bağla. Bacağı arkaya ve yukarı tekmele. Kalçayı sıkıştır.',y:'cable kickback glutes'},
+{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Baldır'],h:'Platformda sadece ayak parmakları. Tepede 2 sn tut.',y:'leg press calf raise'},
+{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Yan karın'],c:1,h:'Kablonun yanında ayakta dur. Göğüs hizasında düz dışarı it. Dönme.',y:'pallof press core'},
 ],4:[
-{id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×12',m:['Back','Lat','Biceps'],h:'Pull to chest. Squeeze shoulder blades. Slow release.',y:'lat pulldown wide grip'},
-{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Mid back','Biceps'],h:'Pull to navel. Spine straight. Squeeze shoulder blades.',y:'seated cable row form'},
-{id:'fp',n:'Face Pull',s:'3×15',m:['Rear deltoid'],h:'Cable at face height. Pull to ears. Elbows high.',y:'face pull cable form'},
-{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Back','Biceps'],h:'Support on bench. Pull toward hip. Feel your back muscle.',y:'single arm dumbbell row'},
-{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Elbows locked. Squeeze 1 sec at top.',y:'dumbbell bicep curl form'},
-{id:'abw',n:'Ab Wheel Rollout (opsiyonel)',s:'2×8',m:['Core','Abs'],c:1,h:'On knees. Roll forward without dropping hips. Pull back with core. Bu hareket çok zorlu — Tue\'de yapıldıysa Thu\'da hafifle veya atla (core 6 gün üst üste form bozar).',y:'ab wheel rollout beginner'},
+{id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×12',m:['Sırt','Lat','Biceps'],h:'Göğse çek. Kürek kemiklerini sıkıştır. Yavaş bırak.',y:'lat pulldown wide grip'},
+{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Orta sırt','Biceps'],h:'Göbeğe çek. Omurga düz. Kürek kemiklerini sıkıştır.',y:'seated cable row form'},
+{id:'fp',n:'Face Pull',s:'3×15',m:['Arka deltoid'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda.',y:'face pull cable form'},
+{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Sırt','Biceps'],h:'Bench\'e dayan. Kalçaya doğru çek. Sırt kasını hisset.',y:'single arm dumbbell row'},
+{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Dirsekler sabit. Tepede 1 sn sıkıştır.',y:'dumbbell bicep curl form'},
+{id:'abw',n:'Ab Wheel Rollout (opsiyonel)',s:'2×8',m:['Core','Karın'],c:1,h:'Dizler üstünde. Kalçayı düşürmeden öne yuvarlan. Core ile geri çek. Bu hareket çok zorlu — Salı yapıldıysa Perşembe hafifle veya atla (core 6 gün üst üste form bozar).',y:'ab wheel rollout beginner'},
 ],5:[
-{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Hip','Glute max','Hamstrings'],h:'Upper back on bench. Barbell in hip crease (use pad!). Drive through heels. Hold 2s at top.',y:'hip thrust barbell form'},
-{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Hip','Core'],h:'One leg raised. Single-leg hip thrust.',y:'single leg hip thrust'},
-{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Rear deltoid','Upper back'],h:'Hold band in front. Open to T shape. Squeeze shoulder blades.',y:'band pull apart form'},
-{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Deep core (TVA)'],c:1,h:'Exhale, pull belly in and up toward spine. Hold 30 sec. Best for shrinking waist!',y:'stomach vacuum exercise'},
-{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstrings','Hip'],h:'Push hips back. BACK STRAIGHT. Squeeze glutes to stand tall.',y:'dumbbell deadlift form'},
-{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Shoulders'],c:1,h:'1) Standard plank 2) Side plank 3) Shoulder tap. Different each set.',y:'plank variations core'},
+{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Kalça','Glute max','Hamstring'],h:'Üst sırt bench\'te. Barbell kalça çukurunda (ped kullan!). Topuktan it. Tepede 2 sn tut.',y:'hip thrust barbell form'},
+{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Kalça','Core'],h:'Bir bacak havada. Tek bacakla hip thrust.',y:'single leg hip thrust'},
+{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Arka deltoid','Üst sırt'],h:'Bantı önünde tut. T şekline aç. Kürek kemiklerini sıkıştır.',y:'band pull apart form'},
+{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Derin core (TVA)'],c:1,h:'Nefes ver, karnı içeri ve yukarı omurgaya doğru çek. 30 sn tut. Beli inceltmek için en etkili!',y:'stomach vacuum exercise'},
+{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Kalçayı geri it. SIRT DÜZ. Doğrulurken kalçayı sıkıştır.',y:'dumbbell deadlift form'},
+{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Yan plank 3) Omuz dokunuşu. Her set farklı.',y:'plank variations core'},
 ],6:[
-{id:'arn',n:'Arnold Press',s:'4×12',m:['Full shoulder'],h:'Palms facing you at chin. Rotate as you press up, palms forward at top.',y:'arnold press dumbbell'},
-{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Upper traps','Front deltoid'],h:'Narrow grip, pull to chin. Elbows out and up.',y:'upright row cable form'},
-{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Neutral grip. Elbow locked. Slow descent.',y:'hammer curl form'},
-{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Lie on bench. Lower bar toward forehead. Elbows fixed overhead.',y:'skull crusher ez bar'},
-{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Mid deltoid'],h:'15 reps at full weight, immediately drop to half weight for 15 more.',y:'lateral raise drop set'},
-{id:'rt',n:'Russian Twist (Weighted)',s:'4×20',m:['Oblique','Core'],c:1,h:'Knees bent, lean back slightly. Rotate side to side.',y:'russian twist weighted'},
+{id:'arn',n:'Arnold Press',s:'4×12',m:['Tam omuz'],h:'Avuç içleri çenede sana dönük. İterken çevir, tepede avuçlar öne baksın.',y:'arnold press dumbbell'},
+{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Üst trapez','Ön deltoid'],h:'Dar tutuş, çeneye çek. Dirsekler dışa ve yukarı.',y:'upright row cable form'},
+{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Nötr tutuş. Dirsek sabit. Yavaş indir.',y:'hammer curl form'},
+{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Bench\'te uzan. Bar\'ı alna doğru indir. Dirsekler baş üstünde sabit.',y:'skull crusher ez bar'},
+{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Orta deltoid'],h:'15 tekrar tam ağırlıkta, hemen yarıya düşür ve 15 daha yap.',y:'lateral raise drop set'},
+{id:'rt',n:'Russian Twist (Weighted)',s:'4×20',m:['Yan karın','Core'],c:1,h:'Dizler bükük, hafif geriye yaslan. Yana doğru dönüş.',y:'russian twist weighted'},
 ]};
 
-const CD={1:{n:'Glutes & Legs Cooldown',d:'Butterfly stretch · Pigeon pose · Quad stretch',y:'hip glute cooldown stretch'},2:{n:'Chest & Shoulder Cooldown',d:'Chest opener · Shoulder stretch · Tricep stretch',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Hip Cooldown',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Back & Arms Cooldown',d:'Lat stretch · Child pose · Bicep wall stretch',y:'back bicep cooldown stretch'},5:{n:'Glute & Core Cooldown',d:'Pigeon pose · Supine twist · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Shoulder & Arms Cooldown',d:'Overhead tricep · Cross-body shoulder · Wrist stretch',y:'shoulder arm cooldown stretch'}};
+const CD={1:{n:'Kalça & Bacak Soğuma',d:'Kelebek esnetme · Güvercin pozu · Quadriceps esnetme',y:'hip glute cooldown stretch'},2:{n:'Göğüs & Omuz Soğuma',d:'Göğüs açıcı · Omuz esnetme · Triceps esnetme',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Kalça Soğuma',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Sırt & Kol Soğuma',d:'Lat esnetme · Çocuk pozu · Duvarda biceps esnetme',y:'back bicep cooldown stretch'},5:{n:'Kalça & Core Soğuma',d:'Güvercin pozu · Sırtüstü dönüş · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Omuz & Kol Soğuma',d:'Baş üstü triceps · Çapraz omuz · Bilek esnetme',y:'shoulder arm cooldown stretch'}};
 
 // DIET
 // 1. ÖĞÜN ANA (10:00) — KARNİVOR: et + yumurta + yağ (süt/peynir/lor/hellim YOK)
@@ -1581,8 +1581,8 @@ const SA={1:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 i
 
 // STATE
 const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[]};
-const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
 // NAV
 function showP(n,b){
@@ -1670,7 +1670,7 @@ function renderSelDay(){
       ${c?`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.label} · Gün ${c.day}</span>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--text-light);background:var(--surface2);" onclick="showP('cycle',document.querySelectorAll('.nb')[1])" role="button">🌸 Döngü takibini başlat</span>`}
     </div>
     ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Retinol ve AHA/BHA'yı bu hafta azalt — cilt hassas.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Retinol ve AHA/BHA'yı kademeli azaltmaya başla.</div></div></div>`:''}
-    <div class="slbl">⏰ Daily Schedule</div>
+    <div class="slbl">⏰ Günlük Program</div>
     <div class="card"><div class="cb"><div class="tl">
       ${tliX('06:30','💊 Levotiron','Boş mide · su · 30 dk bekle','tm',levotiron_detail)}
       ${tliX('06:45','🫁 Stomach Vacuum','3 × 30 sn · fasted · her sabah','te',vacuum_detail)}
@@ -1709,7 +1709,7 @@ function renderHealthCardForSelDay(){
     if(selD.getTime()===today.getTime()){
       sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
         <div class="card"><div class="cb">
-          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>iOS Shortcut'ı çalıştır → üstteki <strong>📋 Health</strong> butonuna dokun.</div>
+          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>Ölçüm sekmesindeki <strong>📷 Health</strong> butonuna dokun.</div>
         </div></div>`);
     }
     return;
@@ -1741,7 +1741,7 @@ function getGreeting(){
   const h=new Date().getHours();
   if(h<6)return 'İyi geceler';
   if(h<12)return 'Günaydın';
-  if(h<17)return 'İyi öğleden';
+  if(h<17)return 'Tünaydın';
   if(h<22)return 'İyi akşamlar';
   return 'İyi geceler';
 }
@@ -3001,7 +3001,7 @@ function getRemainingMacros(d){
 function openFoodAlts(foodId, slot, dayKey) {
   const list = getAltList(foodId, slot);
   const current = SEL_MEALS[dayKey+'_'+slot];
-  document.getElementById('food-alts-title').textContent = slot==='m1_side' ? 'Swap side meal' : slot==='m2_main' ? 'Swap 2nd meal' : 'Swap 1st meal';
+  document.getElementById('food-alts-title').textContent = slot==='m1_side' ? 'Yan öğünü değiştir' : slot==='m2_main' ? '2. öğünü değiştir' : '1. öğünü değiştir';
   document.getElementById('food-alts-list').innerHTML = list.map((f,i)=>`
     <div class="alt ${current&&current.n===f.n?'sel':''}" onclick="selectFoodAlt('${foodId}','${slot}','${dayKey}',${i})">
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -3345,13 +3345,13 @@ function showSwapAlt(idx){
   const gifLoad=document.getElementById('swap-gif-loading');
   gifImg.style.display='none';
   gifLoad.style.display='flex';
-  gifLoad.textContent='⏳ Loading animation...';
+  gifLoad.textContent='⏳ Animasyon yükleniyor...';
   const gifUrl = GIF_MAP[a.id];
   if(gifUrl){
     gifImg.src=gifUrl;
     gifImg.onclick = ()=>{ const ytId=YT_MAP[a.id]; if(ytId) window.open('https://www.youtube.com/watch?v='+ytId,'_blank'); };
   } else {
-    gifLoad.textContent='🎬 No preview available';
+    gifLoad.textContent='🎬 Önizleme yok';
   }
 }
 
