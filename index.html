@@ -1307,7 +1307,7 @@ function getZen(phase,d=new Date()){
 // ══════════════════════════════════════════
 // MACRO TARGETS — cycle-aware
 // Baseline 1850 kcal · 160g protein (Sims 2.0g/kg lean) · karb 40g (post-tiroidektomi T3 dönüşümü için minimum)
-// Cycle bonus: regl +50 / ovulasyon +50 (protein vurgu) / erken luteal +50 / geç luteal +100 +karb
+// Cycle bonus: regl +50 / ovulasyon +50 (protein vurgu) / erken luteal +50 / geç luteal +150 +karb (Ajan 4 sentez: +100 yetersiz, BMR +%8-12)
 // ══════════════════════════════════════════
 const MACRO_BASE={kcal:1850,p:160,f:120,c:40};
 function getMacroTarget(d=new Date()){
@@ -1322,9 +1322,9 @@ function getMacroTarget(d=new Date()){
     return{kcal:1900,p:170,f:120,c:40,bonus:'+50 kcal',note:'🌸 Ovulasyon: östrojen yüksek · protein vurgu · omega-3 + yağlı balık öne çık'};
   }
   if(c.phase==='Luteal Phase'){
-    // Geç luteal son 6 gün: +100 kcal + karb artışı (progesteron peak)
+    // Geç luteal son 6 gün: +150 kcal + karb artışı (progesteron peak, BMR +%8-12, RED-S koruma)
     if(c.day>=getAvgCycleLen()-6){
-      return{kcal:1950,p:165,f:125,c:50,bonus:'+100 kcal · +10g karb',note:'🌙 Geç luteal: magnezyum + tuz vurgusu · ekstra karb hak ettin · progesteron peak'};
+      return{kcal:2000,p:165,f:125,c:60,bonus:'+150 kcal · +20g karb',note:'🌙 Geç luteal: BMR +%8-12 · magnezyum + tuz vurgusu · ekstra karb hak ettin · progesteron peak'};
     }
     // Erken luteal: progesteron yükseliyor, Mg/B6 başlangıcı
     return{kcal:1900,p:165,f:122,c:45,bonus:'+50 kcal',note:'🌙 Erken luteal: progesteron yükseliyor · magnezyum + B6 başlat · fat oxidation ↑'};
@@ -1333,19 +1333,69 @@ function getMacroTarget(d=new Date()){
 }
 
 // ══════════════════════════════════════════
-// CALORIE SAFETY GUARDRAIL — son 3 gün <1500 kcal alarm (RED-S koruma)
-// Post-tiroidektomi'de T3 sentezi için minimum eşiği koruyalım
+// ENERGY AVAILABILITY (EA) + RED-S KORUMA
+// EA = (kcal_intake − kcal_exercise_burn) / LBM_kg
+// IOC RED-S 2023 (Mountjoy, PMID 37752123): <30 clinical risk · 30-45 subclinical · ≥45 optimal
+// Post-tiroidektomi'de T3 sentezi enerji yeterliliğine duyarlı
 // ══════════════════════════════════════════
+function getEstimatedLBM(){
+  // Son Renpho ölçümünden hesapla; yoksa konservatif default 55 kg (Ajan 4 tahmini)
+  if(S.meas && S.meas.length){
+    const last=S.meas[S.meas.length-1];
+    if(last.weight && last.fat){
+      return last.weight*(1-last.fat/100);
+    }
+  }
+  return 55;
+}
+function getDailyExerciseKcal(d){
+  // Apple Health log varsa kullan, yoksa konservatif default
+  const dayKey=d.toDateString();
+  const health=(typeof getHealthLog==='function')?getHealthLog()[dayKey]:null;
+  if(health && health.active_kcal){
+    return health.active_kcal;
+  }
+  // Bengisu fallback: 5/7 yürüyüş (~400) + 4-5/7 güç (~150) ortalama
+  return 500;
+}
+function getEA(d){
+  const intake=getActualMacros(d).k;
+  if(intake<=0)return null;
+  const exercise=getDailyExerciseKcal(d);
+  const lbm=getEstimatedLBM();
+  return (intake-exercise)/lbm;
+}
 function getLowIntakeAlert(){
   const today=new Date();
-  const lows=[];
+  const lows=[];     // <1500 kcal mutlak
+  const clinEA=[];   // EA <30 — klinik RED-S
+  const subEA=[];    // EA 30-45 — subklinik
   for(let i=1;i<=3;i++){
     const d=new Date(today);d.setDate(today.getDate()-i);
     const k=getActualMacros(d).k;
-    if(k>0 && k<1500)lows.push({date:d,kcal:k});
+    if(k>0){
+      if(k<1500)lows.push({date:d,kcal:k});
+      const ea=getEA(d);
+      if(ea!==null){
+        if(ea<30)clinEA.push({date:d,ea:Math.round(ea*10)/10});
+        else if(ea<45)subEA.push({date:d,ea:Math.round(ea*10)/10});
+      }
+    }
   }
-  if(lows.length>=3)return{type:'critical',msg:`Son 3 gün ortalama ${Math.round(lows.reduce((s,l)=>s+l.kcal,0)/3)} kcal — 1500 altı. Post-tiroidektomide T3 sentezini etkileyebilir, +200-250 kcal eklemeyi düşün veya doktorla konuş.`,lows};
-  if(lows.length===2)return{type:'warning',msg:`Son 2 gün 1500 kcal altında. Bugün hedefe yaklaşmak iyi olur (kendine yumuşak olarak).`,lows};
+  // Kritik: 2+ gün klinik EA VEYA 3+ gün <1500 kcal
+  if(clinEA.length>=2 || lows.length>=3){
+    const avgEA=clinEA.length?(clinEA.reduce((s,l)=>s+l.ea,0)/clinEA.length).toFixed(1):null;
+    const avgKcal=lows.length?Math.round(lows.reduce((s,l)=>s+l.kcal,0)/lows.length):null;
+    let msg='Enerji yetersizliği uyarısı — son 3 gün';
+    if(avgEA)msg+=` ortalama EA ${avgEA} kcal/kg LBM (hedef ≥45)`;
+    if(avgKcal)msg+=`${avgEA?' · ':' '}ortalama ${avgKcal} kcal`;
+    msg+='. Post-tiroidektomide T3 sentezini etkileyebilir. +250-300 kcal düşün veya endokrinoloğa danış (RED-S risk).';
+    return{type:'critical',msg,lows,clinEA};
+  }
+  // Uyarı: 2+ gün subklinik EA VEYA 2 gün <1500 kcal
+  if(subEA.length>=2 || lows.length===2){
+    return{type:'warning',msg:'Son 2 gün enerji bandında dikkat. Bugün hedefe yaklaşmak iyi olur (kendine yumuşak olarak).',lows,subEA};
+  }
   return null;
 }
 
@@ -1642,7 +1692,7 @@ function renderSelDay(){
   const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Önemli:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• Çay, kahve, süt YOK — sadece su<br>• Kalsiyum ile aynı anda alma (Calciday 09:30'da)</div>`;
   const vidrate_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini<br>• Stevia ile tatlandırılmış · sucralose YOK<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek bir niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak"). Yürüyüş bu niyetle başlasın.</div></div>`;
   const mini_spf_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Neden minimal?</b> Tam rutin yaparsan duşta yıkanır gider — £100+ ürün boşa.<br><b>SPF gerekli mi?</b> Evet — "cilt nefes alsın" efsanedir, cilt oksijenini kandan alır.<br><br><b>Mineral SPF önerileri</b> (ter + duş dirençli):<br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+<br>${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
-  const walk_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (hipoparatiroidi)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli. Enerji varsa 7-8 km tamam. +500ml ekstra su, ısıtıcı çay sonra.</div>':''}</div>`;
+  const walk_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli. Enerji varsa 7-8 km tamam. +500ml ekstra su, ısıtıcı çay sonra.</div>':''}</div>`;
   const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${yestRetinol?'<div style="margin-bottom:8px;padding:8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);font-weight:600;">🔴 Retinol gecesi sonrası: Vitamin C ve Koreaco ampulü atla → 4 adıma in (1, 2, 5, 6).</div>':''}${SM.map((p,i)=>{const skip=yestRetinol&&(i===2||i===3);return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;${skip?'opacity:0.35;text-decoration:line-through;':''}"><span style="background:${skip?'var(--surface2)':'var(--pink-pale)'};border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${skip?'var(--text-light)':'var(--pink-deep)'};flex-shrink:0;">${i+1}</span><span>${p}${skip?' <em style="font-size:10px;color:var(--text-light);">(atla)</em>':''}</span></div>`;}).join('')}<div style="margin-top:8px;font-size:11px;color:var(--text-mid);">Duş sonrası · 09:15 · SPF en son · "cilt nefes alsın" efsanedir.</div></div>`;
   const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Toplam ${exs.length} hareket · Cooldown'u atlama!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Dinlenme günü. Hafif yürüyüş veya 15 dk stretch yeterli.</div>`;
   // Pre-workout carb — phase-adjusted (regl/ovulation/late luteal extra glikojen)
@@ -1653,8 +1703,8 @@ function renderSelDay(){
   const preworkout_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Glikojen yükleme:</b> ${preCarb.detail} (~${preCarb.kcal} kcal).<br>• PPL'den 30 dk önce<br>• Tuzlu su = sodyum + intra-workout enerji<br>• Hipoparatiroidi: tuzu atlamayalım<div style="margin-top:6px;font-size:11px;color:var(--text-mid);">${c?c.phase==='Menstruation'?'🔴':c.phase==='Ovulation'?'🌸':c.phase==='Luteal Phase'?'🌙':'🌱':'·'} ${preCarb.note}</div></div>`;
   const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle · Calciday 1. doz 10:30'da ayrı</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--pink-deep);">🔴 Regl: ciğer/kırmızı et + B12 yüksek günü · 🍋 yanına C vit kaynağı (limon sıkma, biber dilimi, maydanoz) → demir emilimi 3-4x artar (karnivor demirin önemli takviyesi)</div>':'<div style="margin-top:4px;font-size:11px;color:var(--text-mid);">🍋 Limon/biber/maydanoz yanında demir emilimini destekler</div>'}${(c&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Luteal: B6 (P5P) magnezyum ile birlikte progesteron desteği</div>':''}</div>`;
   const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Kreatin 5g + Çinko 15mg + <strong>Bakır 1.5mg</strong> (Zn:Cu 10:1 dengesi) + Calciday (2. doz) · Qalyviz 18:30 ayrı</div><div style="margin-top:4px;font-size:11px;color:var(--sage);">🥗 Karb pencere AÇIK (post-workout)</div>${(c&&c.day>=getAvgCycleLen()-6&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Geç luteal: 50g karbı buradan al</div>':''}${(c&&c.phase==='Ovulation')?'<div style="margin-top:4px;font-size:11px;color:#7a5a20;">🌸 Ovulasyon: somon/levrek + omega-3 + bol yeşillik mükemmel uyum</div>':''}</div>`;
-  const creatine_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Bulk Creatine Monohydrate Creapure</b> Unflavoured 500g (~£20)<br>• <b>Doz: 5g/gün sabit</b> — yükleme YAPMA (kadın fizyolojisinde gereksiz, su tutmayı artırır)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart (hipoparatiroidi)<br>• Kan testi öncesi 5 gün önce kes (kreatinini yanlış yükseltir)</div>`;
-  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Qalyviz</b> 18:30 · yağlı öğünle (D vit emilimi).<br>2. öğün (17:00) sonrası, 30 dk içinde almak ideal.<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Qalyviz hangi formu içeriyor (Calcitriol/aktif D mi, yoksa D3/cholecalciferol mi)? Hipoparatiroidi'de Calcitriol 0.25-0.5μg 2-3x/gün standart — doz net mi? Serum Ca + 1,25(OH)2D3 4-6 haftada 1 kontrol.</span></div>`;
+  const creatine_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Bulk Creatine Monohydrate Creapure</b> Unflavoured 500g (~£20)<br>• <b>Doz: 5g/gün sabit</b> — yükleme YAPMA (kadın fizyolojisinde gereksiz, su tutmayı artırır)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart (kreatin + tiroidektomi sonrası elektrolit denge)<br>• <b>Kan testi öncesi 14 gün önce kes</b> — kreatinin/eGFR yanlış yüksek çıkar (kanıt: PMID 30986825)</div>`;
+  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Qalyviz</b> 18:30 · yağlı öğünle (D vit emilimi).<br>2. öğün (17:00) sonrası, 30 dk içinde almak ideal.<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Qalyviz hangi formu içeriyor (D3/cholecalciferol mi, K2 MK-7 var mı)? Tiroidektomi sonrası kemik koruma için D3 1000-2000 IU/gün + K2 100µg standart. Serum 25(OH)D 6-12 ayda 1 kontrol (hedef 30-50 ng/mL).</span></div>`;
   const window_close_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">19:00 sonrası sadece su + bitki çayı (kafeinsiz). 14-15 saat gece açlığı = sabah hormon dengesi + kan şekerinin daha iyi yönetilmesi (insulin sensitivity).</div>`;
   const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Son adım: COSRX Snail Peptide Eye Cream</div></div>`;
   // Magnesium dose phase-adjusted: regl 350-400mg (kramp), late luteal 350mg, base 300mg
@@ -1662,7 +1712,7 @@ function renderSelDay(){
   const mgNote = inP(d) ? '🔴 Regl: kramp + serotonin desteği için doz arttırıldı' : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? '🌙 Geç luteal: magnezyum kritik' : (c && c.phase==='Luteal Phase') ? '🌙 Erken luteal: progesteron yükseliyor, Mg + B6 başlat' : '';
   const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Magnezyum bisglycinate ${mgDose}mg</b> — uyku + kas gevşemesi${inP(d)?' + kramp giderici':''}</div><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt + eklem</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce.${mgNote?' '+mgNote+'.':''}</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver). Bedeninin günü kapatmasına izin ver.</div></div>`;
   const vacuum_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>İstisna yok — her sabah.</b><br><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · setler arası 30 sn dinlen<br><br><span style="color:var(--pink-deep);">⭐ Fasted = derin core (TVA) için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Şiddetli kramp varsa atla:</b> Vacuum karın fleksiyonunu artırır. Yerine 2 dk derin nefes (4-7-8 tekniği) yap.</div>':''}</div>`;
-  const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan <b>en az 4 saat</b> sonra (literatür önerisi · emilim insoluble kompleks oluşturmasın).<br>1. öğün sonrasında almak ideal.<br>2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br>🔴 Regl günü: hipoparatiroidi + period birlikte → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
+  const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan <b>en az 4 saat</b> sonra (literatür önerisi · emilim insoluble kompleks oluşturmasın).<br>1. öğün sonrasında almak ideal.<br>2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br>🔴 Regl günü: elektrolit kaybı + period → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
 
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -1769,9 +1819,9 @@ function buildDailyBlocks(d){
   const levotiron_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>⚠️ Önemli:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• Çay, kahve, süt YOK — sadece su<br>• Kalsiyum ile aynı anda alma (Calciday 10:30'da)</div>`;
   const vidrate_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini · stevia ile tatlandırılmış<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak").</div></div>`;
   const mini_spf_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Mineral SPF önerileri:</b><br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
-  const walk_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (hipoparatiroidi)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli.</div>':''}</div>`;
+  const walk_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli.</div>':''}</div>`;
   const skin_morning_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${yestRetinol?'<div style="margin-bottom:8px;padding:8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);font-weight:600;">🔴 Retinol gecesi sonrası: Vitamin C ve Koreaco ampulü atla → 4 adıma in.</div>':''}${SM.map((p,i)=>{const skip=yestRetinol&&(i===2||i===3);return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;${skip?'opacity:0.45;text-decoration:line-through;':''}"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`;}).join('')}<div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">Duş sonrası · 09:15 · SPF en son.</div></div>`;
-  const calciday_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan en az 4 saat sonra.<br>1. öğün sonrasında. 2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br><span style="color:var(--coral-soft);">🔴 Regl: hipoparatiroidi + period birlikte → kramp riski yüksek, atlamayalım.</span>':''}</div>`;
+  const calciday_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan en az 4 saat sonra.<br>1. öğün sonrasında. 2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br><span style="color:var(--coral-soft);">🔴 Regl: elektrolit kaybı + period → kramp riski yüksek, atlamayalım.</span>':''}</div>`;
   const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ciğer/kırmızı et + 🍋 limon yanına</div>':''}</div>`;
   const preCarb = inP(d) ? {kcal:90,detail:'1.5 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Ovulation') ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : {kcal:60,detail:'1 yk bal VEYA 1 kivi + tuzlu su'};
   const preworkout_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Glikojen yükleme:</b> ${preCarb.detail} (~${preCarb.kcal} kcal).<br>• PPL'den 30 dk önce<br>• Tuzlu su = sodyum + intra-workout enerji</div>`;
@@ -3115,7 +3165,7 @@ function renderDietDay(){
   document.getElementById('d-notice').innerHTML=(per&&c)
     ? (inP(d)
         ? `<div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> +50 kcal · kırmızı et + ciğer vurgusu · demir + B12 · tuz 8-10g.<br><span style="font-size:11px;">⚖️ Tartı 1-2 kg yüksek görünür — su tutuyorsun, yağ değil.</span></div></div>`
-        : `<div class="notice nm"><div class="nicon">🌙</div><div><strong>Geç luteal:</strong> +100 kcal · karbı 35g'a çıkar · magnezyum + tuz vurgusu · gündüz tatlı krizi normal.</div></div>`
+        : `<div class="notice nm"><div class="nicon">🌙</div><div><strong>Geç luteal:</strong> +150 kcal · karbı 60g'a çıkar · magnezyum + tuz vurgusu · gündüz tatlı krizi normal (BMR +%8-12).</div></div>`
       )
     : '';
 
@@ -3496,7 +3546,7 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) · Hedef: 58 kg (Eylül 2026, ~5 ay, ~5 kg/ay) · Bağlam: post-tiroidektomi (Levotiron bağımlı), hipoparatiroidi · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Karnivor + 10:00-19:00 IF · 6 gün PPL antrenman (yeni başladı) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Yorumlarken bunu hatırlat.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül hedefine yolda mı?\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) · Hedef: 58 kg (Eylül 2026, ~5 ay, ~5 kg/ay) · Bağlam: post-tiroidektomi (Levotiron + Calciday profilaktik) · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Karnivor + 10:00-19:00 IF · 6 gün PPL antrenman (yeni başladı) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Yorumlarken bunu hatırlat.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül hedefine yolda mı?\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
   catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
   btn.innerHTML='🤖 Re-analyse';btn.disabled=false;
@@ -4112,7 +4162,7 @@ function showOnboarding(){
 
     <div style="background:linear-gradient(135deg,var(--pink-pale),#fbe0db);border-radius:12px;padding:14px;margin-bottom:18px;">
       <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--pink-deep);margin-bottom:6px;">3️⃣ Sana Özel Hatırlatma</div>
-      <div style="font-size:13px;color:var(--text);line-height:1.6;">Bu app:<br>• Post-tiroidektomi (Levotiron) + hipoparatiroidi'ne göre supplement timing yapar<br>• Döngünün 4 fazına göre makro/egzersiz/cilt önerir<br>• "Kaybetme!" değil "kendine yumuşak ol" tonu kullanır<br>• Hasta/seyahat/yoğun regl günlerini koruyabilirsin (streak kırılmaz)</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.6;">Bu app:<br>• Post-tiroidektomi (Levotiron + Calciday) için supplement timing yapar<br>• Döngünün 4 fazına göre makro/egzersiz/cilt önerir<br>• "Kaybetme!" değil "kendine yumuşak ol" tonu kullanır<br>• Hasta/seyahat/yoğun regl günlerini koruyabilirsin (streak kırılmaz)</div>
     </div>
 
     <button class="btn bp bfull" onclick="dismissOnboarding()">Hazırım, başlayalım 💪</button>
