@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 5 Mayıs 2026 (Akşam Bahçesi tema + Dashboard / Bugün sayfası + 9-lens audit implementation)
+**Son güncelleme:** 6 Mayıs 2026 (Egzersiz "Ultimate" 12-ajan sıralı analizi + Phase 2 Quick Wins commit'i)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -192,8 +192,12 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-04 | (commit edilecek) | **P2 batch:** UK shop linkleri (Boots/Superdrug/Amazon UK · ~£X) skincare ürünlerinde, milestone celebrations (-5/-10/-15 kg), Renpho carnivor uyarı (±%5-8 hata payı), period log chip Türkçeleştirildi (Damlayan/Akan/Bol Akan), daily log somatik+rüya textarea, ZEN array Maisie Hill referanslarıyla zenginleştirildi, ritüel transition moments (sabah ViDrate niyet + akşam Mg 4-7-8 nefes), Iron+C vit pairing, wedding event countdown opsiyonel (Cycle Settings → Önemli Tarih). |
 | 2026-05-05 | (commit edilecek) | **Akşam Bahçesi görsel tema:** App adı "Bengisu ✨" → **"Bengisu ☀️"**. `bg.jpg` (surrealist akşam bahçesi resmi) sadece Bugün sayfasında görünür. Diğer 5 sayfa **solid net renkler** (Tema B): Bugün=görsel · Döngü=mauve · Diyet=hardal · Egzersiz=sage · Cilt=krem peach · Ölçüm=su mavisi. **Glass morphism cards** (rgba 15,30,38,0.55 + blur 28px + border 0.18). Her sekme kendi accent'i ile (slbl, h1 em, navbar active, ch h3). |
 | 2026-05-05 | (commit edilecek) | **🏠 Dashboard / Bugün sayfası:** Takvim sekmesi refactor edilerek dashboard yapıldı. İçerik: saat-bazlı selam (Günaydın/İyi öğleden/akşam) + ZEN quote + cycle phase + arketip + sıradaki regl gün sayısı + 3 quick stats (su/kcal/streak) + 3 minimum eylem checklist + **4 collapsible accordion blok** (🌅 Sabah / ☀️ Öğle / 🏋️ Antrenman / 🌙 Akşam) + Apple Health card + 📆 Aylık Takvim mini accordion. Bottom nav "📅 Takvim" → **"🏠 Bugün"**. |
+| 2026-05-06 | `5afbb91` | **Bugün sekmesi minimale strip:** bg.jpg arka plan resmini öne çıkarmak için 6 dashboard bölümünden 5'i kaldırıldı (quick stats, 3 eylem, 4 accordion, Apple Health card, mini takvim, pill butonlar). Sadece selam kartı (greeting + cycle phase + ZEN) kaldı. 📷 Health butonu Bugün topbar'dan **Ölçüm** sekmesine taşındı (Renpho ile aynı UX pattern). 142 net satır eksildi. |
+| 2026-05-06 | `d530b64` | **Türkçeleştirme:** "İyi öğleden" → "Tünaydın" (12-17), modal butonları (Cancel/Close/Loading/Pick/Swap/Prev/Next), bölüm başlıkları, MN+DN sabitleri, SP/CD split+cooldown isimleri, **33 egzersizin h: talimatları** İngilizce → Türkçe. Cable Crunch'taki bozuk metin + Ab Wheel "Tue/Thu" → "Salı/Perşembe" düzeltildi. |
+| 2026-05-06 | (repo dışı) | **🧬 Egzersiz "Ultimate" — 12-ajan sıralı analiz:** workout-ultimate/ klasörü (~580KB markdown). 11 uzman ajan + ben sentezci, sıralı çalıştı (her biri öncekinin raporunu okudu). Tıp Literatürü → Cycle-Aware → Spor Bilimi → Beslenme → Yaralanma → Kadın Psikolojisi → Bilim Pedagojisi → Davranış Tasarımı → Veri Görselleştirme → Mobil UX → Pazar Araştırması → BEN sentezci. Çıktı: `SYNTHESIS.md` master roadmap (P0/P1/P2 + 5 orijinal fikir: Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror). |
+| 2026-05-06 | `ffb2619` | **Phase 2 Quick Wins (medikal düzeltme + RED-S EA guardrail):** (1) Hipoparatiroidi referansları 7 yerde temizlendi (Bengisu'da hipopara YOK, Calciday profilaktik) — walk_detail x2, creatine, qalyviz, calciday x2, AI prompt (Renpho), onboarding. (2) Kreatin kan testi öncesi 5 → **14 gün** kesim (PMID 30986825). (3) Qalyviz doktor sorusu güncellendi (Calcitriol referansı kaldırıldı, D3+K2+25(OH)D kontrolü). (4) Geç luteal cycle bonus +100 → **+150 kcal**, karb 50→60g (BMR +%8-12, RED-S koruma). (5) `getLowIntakeAlert()` Energy Availability hesabıyla genişletildi: `getEstimatedLBM()` + `getDailyExerciseKcal(d)` + `getEA(d)` helper'ları, IOC RED-S 2023 thresholds (<30 klinik, 30-45 subklinik, ≥45 hedef). 68 satır eklendi, 18 silindi. |
 
-**Toplam:** 36 commit (önceki) + bu sohbette devam eden değişiklikler.
+**Toplam:** 40 commit + workout-ultimate/ raporları (repo dışı, 12 dosya).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -381,7 +385,17 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (5 Mayıs 2026)
+## 📍 Şu Anki Durum (6 Mayıs 2026)
+
+✅ **Bugün sekmesi bare-image + greeting'e indirgendi (6 May).** Bg.jpg artık ana hero, sade selam kartı (cycle phase + ZEN) hariç hiçbir şey yok. 📷 Health Ölçüm sekmesinde.
+
+✅ **Türkçeleştirme bittirildi (6 May).** "İyi öğleden" → "Tünaydın", 33 egzersiz talimatı tam Türkçe, modal butonları, takvim sabitleri, split/cooldown isimleri.
+
+✅ **🧬 Egzersiz "Ultimate" 12-ajan sentez analizi tamamlandı (6 May).** workout-ultimate/ klasörü, 11 uzman + ben sentezci, sıralı çalışma. SYNTHESIS.md master roadmap hazır: 30 madde (P0:10 / P1:12 / P2:8) + 5 orijinal fikir + 4 haftalık Phase 2 implementation roadmap. **Şu an Phase 2 Hafta 1 — Quick Wins commit edildi, geri kalan büyük altyapı (set log, kas haritası, Bugün antrenman kartı) bekliyor.**
+
+✅ **Phase 2 Quick Wins commit edildi (6 May).** Hipoparatiroidi temizliği (7 yer), kreatin 5→14 gün, geç luteal +100→+150 kcal, RED-S guardrail Energy Availability hesabıyla genişletildi (`getEstimatedLBM`, `getDailyExerciseKcal`, `getEA` + IOC 2023 thresholds).
+
+
 
 ✅ **Diyet sistemi karnivor + post-workout karb pencere modeline yenilendi.** 10:00–19:00 IF, baseline 1.750 kcal, ViDrate + Bulk Creatine eklendi.
 
@@ -404,6 +418,12 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 ✅ **Apple Health entegrasyonu çözüldü (Photo + AI yolu, 1 May).** iOS 17+ engelini bypass eder.
 
 ✅ **PROGRESS.md + Memory rutini kuruldu.** Yeni sohbette Claude bu dosyayı otomatik okuyup bağlama girecek.
+
+### 6 Mayıs ne oldu (BÜYÜK SOHBET — Bugün strip + Türkçe + 12-ajan Egzersiz analizi + Phase 2 Quick Wins)
+- **Bugün sekmesi minimale strip** (commit `5afbb91`): bg.jpg arka plan resmini öne çıkarmak için 5 dashboard bölümü kaldırıldı, sadece selam kartı + topbar kaldı. 📷 Health Ölçüm sekmesine taşındı.
+- **Türkçeleştirme** (commit `d530b64`): "İyi öğleden" → "Tünaydın", 33 egzersiz İngilizce talimatları Türkçeleştirildi, modal butonları + takvim sabitleri + split/cooldown isimleri çevrildi.
+- **🧬 Egzersiz Ultimate 12-ajan sıralı sentez** (workout-ultimate/ klasörü, repo dışı): kullanıcı "10+ uzman ajan getir" istedi, beraber kadro brainstorm'u yapıldı, kadro = 11 uzman + ben sentezci. Sıralı çalıştı (her biri öncekinin çıktısını okuyarak). Üretilen: 12 markdown rapor (~580KB total). Master sentez `SYNTHESIS.md`: 30 madde (P0/P1/P2) + 5 orijinal sentezci fikri (Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror) + 4-haftalık Phase 2 implementation roadmap.
+- **Phase 2 Quick Wins** (commit `ffb2619`): SYNTHESIS.md P0 listesinden ilk 4 madde — medikal/data correctness odaklı. Hipoparatiroidi yanlışlığı temizlendi (Bengisu'nun TANISI YOK, Calciday profilaktik), kreatin kan testi kesim 5→14 gün (PMID 30986825), geç luteal +100→+150 kcal (BMR +%8-12, EA hesabıyla doğrulandı), `getLowIntakeAlert()` IOC RED-S 2023 thresholds ile EA-based guardrail'a genişletildi.
 
 ### 4-5 Mayıs ne oldu (BÜYÜK SOHBET — Diyet/Cilt overhaul + Audit + Akşam Bahçesi + Dashboard)
 - Plan A (Diyet/Cilt): IF 10–19, karnivor + post-workout karb pencere, mini SPF + tam rutin ayrımı, ViDrate + kreatin
@@ -438,14 +458,26 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 - AI'ın okuduğu sayıların doğruluğu (Türkçe binlik ayraç vb.)
 - Modal düzenlenebilir alanlarda input UX
 
-⏳ **Karar bekleyen — Workout sekmesi:**
-30 fikir hâlâ açık. Önerilen ilk hamle: Pratiklik (set-rep tracking + PR + süre) + Cycle entegrasyonu (faza özel intensity + period-friendly mode) + Motivasyon (streak + achievement + heatmap).
+⏳ **Phase 2 — Egzersiz "Ultimate" devam ediyor:**
+- Hafta 1 Quick Wins ✅ tamam (commit `ffb2619`)
+- **Hafta 2:** Set log altyapısı (set/rep/ağırlık/RPE girişi, PR detection) — SYNTHESIS.md P0 #2 ana iş
+- **Hafta 3:** 5-gün split (Alt-Squat / Üst-Push / Glute-Posterior / Üst-Pull / Total Hibrit) + cycle-aware antrenman matrisi (ovulasyon Goblet substitution vb.)
+- **Hafta 4:** UX tamamlama — Bilim modu toggle + ⓘ mikro-açıklama, kas haritası heatmap, "Bugün antrenmanın" kart akışı
+- **P1 (4 hafta sonrası):** 5 orijinal fikirden seçilenler (Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror)
+
+⏳ **Bengisu'nun cevaplaması gereken açık sorular** (SYNTHESIS.md Bölüm 7):
+- kg/lbs tercih?
+- RPE girişi şart mı yoksa opsiyonel mi?
+- Wake Lock (ekran açık tutma) istiyor mu?
+- Push notification izni vermek ister mi?
+- "Süreklilik" mi "Akış" mı kelime tercihi?
+- Wedding Mirror modu istiyor mu?
+- Hangi rakip app denedi? Beğendiği özellik var mı?
 
 🎯 **Sonraki adımlar:**
-- Photo + AI flow'unu iPhone'da gerçek screenshot ile test et
-- Sonuca göre prompt tweaking veya UX rötuş
-- Workout sekmesine geç (30 fikir)
-- Diet'in gerçek kullanımından feedback varsa iteration
+- Bengisu SYNTHESIS.md'yi oku, açık soruları cevapla
+- Phase 2 Hafta 2 plan dosyası aç (set log altyapısı detayı)
+- Photo + AI flow iPhone test (1 May'dan beri bekliyor)
 
 ---
 
