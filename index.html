@@ -671,6 +671,57 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .cy-onboard{margin:0 16px 16px;background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r);padding:20px;}
 .cy-onboard h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:6px;color:var(--text);}
 .cy-onboard p{font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;}
+
+/* ════════════════════════════════════════════ */
+/* SET LOG COMPONENT (Phase 2 Hafta 2A) */
+/* ════════════════════════════════════════════ */
+.set-log{margin-top:12px;padding:12px;background:rgba(15,30,38,0.32);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.10);border-radius:14px;}
+.set-log-prev{font-size:11px;color:var(--cream-mute);margin-bottom:10px;letter-spacing:0.4px;display:flex;align-items:center;gap:6px;}
+.set-log-prev .pill{padding:2px 8px;border-radius:10px;background:rgba(232,221,196,0.10);font-weight:600;color:var(--cream-soft);}
+.set-row{display:grid;grid-template-columns:32px 1fr 1fr auto auto;gap:8px;align-items:center;padding:8px 4px;border-radius:10px;transition:background 0.15s;}
+.set-row + .set-row{margin-top:4px;}
+.set-row.active{background:rgba(232,178,63,0.10);box-shadow:inset 0 0 0 1px rgba(232,178,63,0.25);}
+.set-row.done{opacity:0.55;background:rgba(90,122,79,0.08);}
+.set-row.modified{background:rgba(180,121,144,0.10);}
+.set-row.skipped{opacity:0.45;background:rgba(160,160,160,0.06);}
+.set-num{font-size:11px;font-weight:700;color:var(--cream-mute);text-align:center;letter-spacing:0.6px;}
+.set-row.done .set-num{color:#A8C0A0;}
+.set-row.modified .set-num{color:#D4A4B5;}
+.set-input{background:rgba(15,30,38,0.55);border:1px solid rgba(255,255,255,0.16);color:var(--cream-soft);font-size:14px;font-weight:600;padding:8px 6px;border-radius:8px;text-align:center;font-family:inherit;width:100%;min-width:0;-webkit-appearance:none;appearance:none;}
+.set-input:focus{outline:none;border-color:var(--mustard-soft);background:rgba(15,30,38,0.75);}
+.set-input::-webkit-inner-spin-button,.set-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+.set-input[type=number]{-moz-appearance:textfield;}
+.set-input-wrap{display:flex;flex-direction:column;gap:2px;}
+.set-input-lbl{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.6px;text-align:center;}
+.rpe-chips{display:flex;gap:3px;flex-shrink:0;}
+.rpe-chip{width:24px;height:28px;border:1px solid rgba(255,255,255,0.16);background:rgba(15,30,38,0.45);color:var(--cream-mute);font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
+.rpe-chip:active{transform:scale(0.92);}
+.rpe-chip.selected{background:var(--mustard);color:var(--ink);border-color:var(--mustard);box-shadow:0 2px 8px rgba(232,178,63,0.4);}
+.rpe-chip.high{background:var(--coral);color:var(--cream-soft);border-color:var(--coral);}
+.set-confirm{background:linear-gradient(135deg,var(--sage-leaf),var(--sage-deep));color:var(--cream-soft);border:none;width:36px;height:36px;border-radius:50%;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(90,122,79,0.32);transition:all 0.15s;}
+.set-confirm:active{transform:scale(0.92);}
+.set-confirm:disabled{opacity:0.35;cursor:not-allowed;box-shadow:none;}
+.set-state-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--sage-leaf);}
+.set-state-icon.done{color:#A8C0A0;}
+.set-state-icon.modified{color:#D4A4B5;}
+.set-state-icon.skipped{color:rgba(232,221,196,0.4);}
+.set-quick-states{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.set-quick-states button{flex:1;min-width:0;padding:6px 10px;font-size:11px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:rgba(15,30,38,0.45);color:var(--cream-soft);cursor:pointer;font-family:inherit;}
+.set-quick-states button:active{transform:scale(0.96);}
+.set-quick-states button.modify{border-color:rgba(180,121,144,0.40);}
+.set-quick-states button.skip{border-color:rgba(160,160,160,0.40);}
+.set-summary{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,0.10);font-size:11px;color:var(--cream-mute);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.set-summary .pr-badge{padding:2px 10px;border-radius:12px;background:linear-gradient(135deg,var(--mustard),var(--coral));color:var(--ink);font-weight:800;font-size:10px;letter-spacing:0.5px;}
+.set-bottom-sheet{position:fixed;left:0;right:0;bottom:0;background:rgba(15,30,38,0.96);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,0.18);border-radius:18px 18px 0 0;padding:16px 20px 28px;z-index:9000;transform:translateY(100%);transition:transform 0.22s ease-out;color:var(--cream);}
+.set-bottom-sheet.open{transform:translateY(0);}
+.set-bottom-sheet h4{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--cream-soft);}
+.set-bottom-sheet .reasons{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.set-bottom-sheet .reasons button{padding:12px 10px;font-size:13px;border:1px solid rgba(255,255,255,0.16);background:rgba(232,221,196,0.06);color:var(--cream-soft);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;}
+.set-bottom-sheet .reasons button:active{transform:scale(0.97);}
+.set-bottom-sheet .close-row{margin-top:10px;text-align:center;}
+.set-bottom-sheet .close-row button{padding:8px 16px;font-size:12px;background:transparent;border:none;color:var(--cream-mute);cursor:pointer;}
+.set-log-empty{text-align:center;padding:14px;font-size:12px;color:var(--cream-mute);}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
 </style>
 </head>
 <body>
@@ -1181,6 +1232,28 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 </div>
 
+<!-- SET LOG ⚡/🛌 BOTTOM SHEET (Phase 2 Hafta 2A) -->
+<div class="set-bottom-sheet" id="set-modify-sheet">
+  <h4>Neyi değiştirdin?</h4>
+  <div class="reasons">
+    <button onclick="applySheetReason('weight_down')">⬇️ Ağırlık düşürdüm</button>
+    <button onclick="applySheetReason('reps_down')">⬇️ Rep azalttım</button>
+    <button onclick="applySheetReason('movement_changed')">🔄 Hareket değiştirdim</button>
+    <button onclick="applySheetReason('time_short')">⏱ Sürem dardı</button>
+  </div>
+  <div class="close-row"><button onclick="closeSetSheet()">İptal</button></div>
+</div>
+<div class="set-bottom-sheet" id="set-skip-sheet">
+  <h4>Bu hareketi atladın — neden?</h4>
+  <div class="reasons">
+    <button onclick="applySheetReason('tired')">🥱 Yorgunum</button>
+    <button onclick="applySheetReason('period')">🩸 Reglim</button>
+    <button onclick="applySheetReason('no_time')">⏰ Zamanım dar</button>
+    <button onclick="applySheetReason('no_motivation')">🌫 Canım istemedi</button>
+  </div>
+  <div class="close-row"><button onclick="closeSetSheet()">İptal</button></div>
+</div>
+
 <script>
 // ══════════════════════════════════════════
 // CYCLE ENGINE — driven by logged data, not hardcoded dates
@@ -1630,7 +1703,7 @@ const SEB=['Garnier BHA Purifying Cleanser','COSRX 6 Peptide Skin Booster'];
 const SA={1:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},2:{l:'Dinlenme Gecesi',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},3:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},4:{l:'AHA/BHA Toner',b:'baha',e:'🟣',p:'COSRX AHA/BHA Clarifying Toner',no:'10 dk bırak, ardından Medicube'},5:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},6:{l:'Dinlenme Gecesi',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},7:{l:'Yaprak Maske',b:'bmask',e:'🎭',p:'Yaprak Maske (seçimin)',no:'Maske + bitirişe Medicube'}};
 
 // STATE
-const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[]};
+const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[],workoutLog:JSON.parse(localStorage.getItem('workout_log')||'{}'),activeTimer:null};
 const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
@@ -3296,6 +3369,292 @@ function fItemSwap(f, slot, dayKey){
   </div>`;
 }
 
+// ══════════════════════════════════════════
+// WORKOUT LOG ALTYAPISI (Phase 2 Hafta 2A)
+// Set/rep/ağırlık/RPE girişi · pre-fill · 1RM tahmini · cycle-aware kayıt
+// Veri modeli: workout_log[dateKey][exerciseId] = { sets:[{actual:{weight,reps,rpe},state,...}], oneRMEstimate, isPR, cyclePhase, cycleDay }
+// ══════════════════════════════════════════
+
+// Brzycki + Epley 1RM tahmini (RPE-aware)
+function calc1RM(weight,reps,rpe){
+  if(!weight||!reps)return 0;
+  // RPE → RIR → effective reps (Helms 2014)
+  const rir=rpe?Math.max(0,10-rpe):0;
+  const effReps=reps+rir;
+  if(effReps<=1)return Math.round(weight*10)/10;
+  if(effReps<=10)return Math.round(weight*(36/(37-effReps))*10)/10; // Brzycki
+  return Math.round(weight*(1+effReps/30)*10)/10; // Epley
+}
+
+// "4×8" / "3×12/taraf" / "3×30sn" / "3×(15+15)" parse
+function parseSetScheme(s){
+  const m=String(s||'').match(/^(\d+)×(.+)$/);
+  if(!m)return{sets:3,reps:10,perSide:false,isTime:false,isDropSet:false};
+  const sets=parseInt(m[1]),repsStr=m[2];
+  if(repsStr.includes('sn'))return{sets,reps:parseInt(repsStr)||30,perSide:false,isTime:true,isDropSet:false};
+  if(repsStr.startsWith('('))return{sets,reps:15,perSide:false,isTime:false,isDropSet:true};
+  const perSide=repsStr.includes('/taraf');
+  return{sets,reps:parseInt(repsStr)||10,perSide,isTime:false,isDropSet:false};
+}
+
+// Dinlenme süresi (Ajan 3): compound 150s, izolasyon 75s, core 45s
+function getRestDuration(ex){
+  if(ex.c)return 45; // core flag (mevcut EX objesinde)
+  // Compound = multi-joint (squat, deadlift, hip thrust, press, row, pulldown)
+  const compoundIds=['sq','lp','rl','rdl','sumo','ddb','ht','slht','dbp','dsp','arn','lat','cr','dbrow'];
+  if(compoundIds.includes(ex.id))return 150;
+  return 75; // izolasyon default
+}
+
+// Workout log persist
+function getWorkoutLog(){return S.workoutLog;}
+function saveWorkoutLog(){localStorage.setItem('workout_log',JSON.stringify(S.workoutLog));}
+
+// Bir egzersiz için entry getir/oluştur (planlanmış set sayısıyla)
+function getOrCreateLogEntry(dk,ex){
+  if(!S.workoutLog[dk])S.workoutLog[dk]={};
+  if(!S.workoutLog[dk][ex.id]){
+    const scheme=parseSetScheme(ex.s);
+    const d=new Date(dk);
+    const c=ci(d);
+    S.workoutLog[dk][ex.id]={
+      exerciseId:ex.id,
+      startedAt:Date.now(),
+      completedAt:null,
+      sets:Array.from({length:scheme.sets},(_,i)=>({
+        idx:i,
+        planned:{reps:scheme.reps,weight:null,rpe:null},
+        actual:{reps:null,weight:null,rpe:null},
+        state:'pending', // pending | done | modified | skipped
+        modifyReason:null,
+        skipReason:null,
+        restAfterSec:null,
+        completedAt:null
+      })),
+      cycleDay:c?c.day:null,
+      cyclePhase:c?c.phase:null,
+      oneRMEstimate:0,
+      isPR:false,
+      notes:''
+    };
+  }
+  return S.workoutLog[dk][ex.id];
+}
+
+// Pre-fill: önceki seansın son DONE setini bul
+function getLastSessionSet(exId,beforeDk){
+  const log=S.workoutLog;
+  const dates=Object.keys(log).filter(d=>{
+    if(!beforeDk)return true;
+    return new Date(d).getTime()<new Date(beforeDk).getTime();
+  }).sort((a,b)=>new Date(b)-new Date(a));
+  for(const d of dates){
+    if(log[d][exId]?.sets?.length){
+      const doneSets=log[d][exId].sets.filter(s=>s.state==='done'&&s.actual.weight!=null);
+      if(doneSets.length)return{set:doneSets[doneSets.length-1],dateKey:d};
+    }
+  }
+  return null;
+}
+
+// Progressive overload önerisi (Hafta 2A basit; ileride cycle-aware)
+function suggestNextWeight(prevSet,plannedReps){
+  if(!prevSet)return{weight:null,reps:plannedReps,rpe:null};
+  const rpe=prevSet.actual.rpe;
+  let delta=0;
+  if(rpe&&rpe<=7)delta=2.5;       // RPE düşük → +2.5kg
+  else if(rpe===10)delta=-2.5;    // RPE max → -2.5kg
+  return{weight:Math.max(0,(prevSet.actual.weight||0)+delta),reps:plannedReps,rpe:null};
+}
+
+// PR detection — yeni en yüksek 1RM tahmini mi?
+function isNewPR(exId,candidate1RM,beforeDk){
+  if(!candidate1RM||candidate1RM<=0)return false;
+  const log=S.workoutLog;
+  let max=0;
+  for(const d in log){
+    if(beforeDk&&new Date(d).getTime()>=new Date(beforeDk).getTime())continue;
+    const e=log[d][exId];
+    if(e?.oneRMEstimate>max)max=e.oneRMEstimate;
+  }
+  return candidate1RM>max;
+}
+
+// Migration: eski S.done boolean → workout_log entry (sadece bir kez)
+function migrateDoneToWorkoutLog(){
+  if(localStorage.getItem('workout_log_migrated')==='1')return;
+  let migrated=0;
+  for(const key in S.done){
+    if(!S.done[key])continue;
+    const lastUnderscoreIdx=key.lastIndexOf('_');
+    if(lastUnderscoreIdx<0)continue;
+    const dk=key.substring(0,lastUnderscoreIdx);
+    const idx=parseInt(key.substring(lastUnderscoreIdx+1));
+    if(isNaN(idx))continue;
+    const d=new Date(dk);
+    if(isNaN(d.getTime()))continue;
+    const dow=d.getDay();
+    const exs=EX[dow];
+    if(!exs||!exs[idx])continue;
+    const ex=(S.swaps[dk]&&S.swaps[dk][idx])||exs[idx];
+    if(!S.workoutLog[dk])S.workoutLog[dk]={};
+    if(!S.workoutLog[dk][ex.id]){
+      const entry=getOrCreateLogEntry(dk,ex);
+      // Tüm setleri 'done' işaretle ama actual değerler null kalır
+      entry.sets.forEach(s=>{s.state='done';});
+      entry.completedAt=d.getTime();
+      entry.notes='Migrated from legacy done boolean (set/RPE/ağırlık verisi yok)';
+      migrated++;
+    }
+  }
+  if(migrated>0){saveWorkoutLog();console.log(`Migrated ${migrated} legacy workout entries to workout_log`);}
+  localStorage.setItem('workout_log_migrated','1');
+}
+
+// Set güncelleme (input handler)
+function logSetField(dk,exId,setIdx,field,value){
+  const entry=S.workoutLog[dk]?.[exId];
+  if(!entry||!entry.sets[setIdx])return;
+  const set=entry.sets[setIdx];
+  if(field==='weight')set.actual.weight=value===''||value==null?null:parseFloat(value);
+  else if(field==='reps')set.actual.reps=value===''||value==null?null:parseInt(value);
+  else if(field==='rpe')set.actual.rpe=value===''||value==null?null:parseInt(value);
+  saveWorkoutLog();
+}
+
+// Eski S.done boolean'ını workout_log durumuna göre senkronize et (backwards compat: renderWeekSum vb.)
+function syncLegacyDone(dk,exId){
+  const d=new Date(dk);
+  const dow=d.getDay();
+  const exs=EX[dow]||[];
+  for(let i=0;i<exs.length;i++){
+    const exHere=(S.swaps[dk]&&S.swaps[dk][i])||exs[i];
+    if(exHere.id===exId){
+      const entry=S.workoutLog[dk]?.[exId];
+      const allHandled=entry&&entry.sets.every(s=>s.state!=='pending');
+      const anyDone=entry&&entry.sets.some(s=>s.state==='done');
+      // Legacy "done" = en az bir set işlendi (done/modified) — skip-only ise false
+      const legacyDone=allHandled&&anyDone;
+      const key=dk+'_'+i;
+      if(legacyDone)S.done[key]=true;
+      else delete S.done[key];
+      localStorage.setItem('done',JSON.stringify(S.done));
+      break;
+    }
+  }
+}
+
+// Seti tamamla — done işaretle, sonraki sete pre-fill (önceki set ile aynı), 1RM hesapla
+function confirmSet(dk,exId,setIdx){
+  const entry=S.workoutLog[dk]?.[exId];
+  if(!entry||!entry.sets[setIdx])return;
+  const set=entry.sets[setIdx];
+  if(set.actual.weight==null||set.actual.reps==null||set.actual.rpe==null){
+    showToast('Ağırlık + rep + RPE eksik','warn');
+    return;
+  }
+  set.state='done';
+  set.completedAt=Date.now();
+  // 1RM tahmini güncelle
+  const oneRM=calc1RM(set.actual.weight,set.actual.reps,set.actual.rpe);
+  if(oneRM>entry.oneRMEstimate){
+    // PR check (önceki seansların max'ı ile karşılaştır)
+    if(isNewPR(exId,oneRM,dk)){
+      entry.isPR=true;
+      // PR celebration → Hafta 2C'de tam render; şimdilik toast
+      setTimeout(()=>showToast(`🏆 PR! ${exId.toUpperCase()} 1RM tahmini: ${oneRM} kg`,'pr'),300);
+    }
+    entry.oneRMEstimate=oneRM;
+  }
+  // Sonraki sete pre-fill (aynı ağırlık/rep, RPE temiz)
+  const nextSet=entry.sets[setIdx+1];
+  if(nextSet&&nextSet.state==='pending'){
+    if(nextSet.actual.weight==null)nextSet.actual.weight=set.actual.weight;
+    if(nextSet.actual.reps==null)nextSet.actual.reps=set.actual.reps;
+    // RPE temiz kalsın — kullanıcı her sette ayarlasın
+  }
+  // Tüm setler done ise antrenmanı tamamla
+  if(entry.sets.every(s=>s.state!=='pending')){
+    entry.completedAt=Date.now();
+  }
+  saveWorkoutLog();
+  syncLegacyDone(dk,exId);
+  renderExDay();
+  if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// Modify (⚡): set'i değiştirildi olarak işaretle
+function modifySet(dk,exId,setIdx,reason){
+  const entry=S.workoutLog[dk]?.[exId];
+  if(!entry||!entry.sets[setIdx])return;
+  entry.sets[setIdx].state='modified';
+  entry.sets[setIdx].modifyReason=reason;
+  entry.sets[setIdx].completedAt=Date.now();
+  saveWorkoutLog();
+  renderExDay();
+  if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// Skip (🛌): set'i atlandı olarak işaretle
+function skipSet(dk,exId,setIdx,reason){
+  const entry=S.workoutLog[dk]?.[exId];
+  if(!entry||!entry.sets[setIdx])return;
+  entry.sets[setIdx].state='skipped';
+  entry.sets[setIdx].skipReason=reason;
+  entry.sets[setIdx].completedAt=Date.now();
+  saveWorkoutLog();
+  renderExDay();
+  if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// Bottom sheet (modify / skip reason picker)
+function openSetSheet(kind,dk,exId){
+  S.activeSheet={kind,dk,exId};
+  const id=kind==='modify'?'set-modify-sheet':'set-skip-sheet';
+  document.getElementById(id).classList.add('open');
+}
+function closeSetSheet(){
+  document.querySelectorAll('.set-bottom-sheet').forEach(s=>s.classList.remove('open'));
+  S.activeSheet=null;
+}
+function applySheetReason(reason){
+  if(!S.activeSheet)return;
+  const{kind,dk,exId}=S.activeSheet;
+  const entry=S.workoutLog[dk]?.[exId];
+  if(!entry){closeSetSheet();return;}
+  const newState=kind==='modify'?'modified':'skipped';
+  let touched=0;
+  entry.sets.forEach(s=>{
+    if(s.state==='pending'){
+      s.state=newState;
+      if(kind==='modify')s.modifyReason=reason;else s.skipReason=reason;
+      s.completedAt=Date.now();
+      touched++;
+    }
+  });
+  if(touched===0){
+    showToast('Tüm setler zaten işaretli','warn');
+    closeSetSheet();return;
+  }
+  if(entry.sets.every(s=>s.state!=='pending'))entry.completedAt=Date.now();
+  saveWorkoutLog();
+  syncLegacyDone(dk,exId);
+  closeSetSheet();
+  renderExDay();
+  if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// Toast helper (basit)
+function showToast(msg,kind){
+  let t=document.getElementById('toast-host');
+  if(!t){t=document.createElement('div');t.id='toast-host';t.style.cssText='position:fixed;bottom:96px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;';document.body.appendChild(t);}
+  const el=document.createElement('div');
+  el.style.cssText=`background:${kind==='pr'?'linear-gradient(135deg,var(--mustard),var(--coral))':kind==='warn'?'rgba(217,89,30,0.92)':'rgba(15,30,38,0.92)'};color:var(--cream-soft);padding:10px 16px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);max-width:320px;text-align:center;animation:toastIn 0.2s ease-out;`;
+  el.textContent=msg;
+  t.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity 0.3s, transform 0.3s';setTimeout(()=>el.remove(),300);},kind==='pr'?3500:2200);
+}
+
 // WORKOUT
 function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();}
 function renderExDay(){
@@ -3346,10 +3705,71 @@ function renderExDay(){
   if(!sp||!exs){document.getElementById('e-cool').innerHTML='';return;}
   const curEx=exs.map((ex,i)=>(S.swaps[dk]&&S.swaps[dk][i])||ex);
   curEx.forEach((ex,i)=>{
-    const dk2=dk+'_'+i,done=S.done[dk2];
+    const entry=getOrCreateLogEntry(dk,ex);
+    const totalSets=entry.sets.length;
+    const doneSets=entry.sets.filter(s=>s.state==='done').length;
+    const modSets=entry.sets.filter(s=>s.state==='modified').length;
+    const skipSets=entry.sets.filter(s=>s.state==='skipped').length;
+    const allHandled=doneSets+modSets+skipSets===totalSets;
+    const headerState=allHandled?(doneSets===totalSets?'✓':modSets>0?'⚡':'🛌'):`${doneSets}/${totalSets}`;
+    const headerCls=allHandled?(doneSets===totalSets?'done':modSets>0?'modified':'skipped'):'';
+    const prev=getLastSessionSet(ex.id,dk);
+    const plannedReps=entry.sets[0]?.planned.reps||10;
+    const suggestion=suggestNextWeight(prev?.set,plannedReps);
+    const prevHint=prev?`<div class="set-log-prev">Önceki seans · <span class="pill">${prev.set.actual.weight}kg × ${prev.set.actual.reps} · RPE ${prev.set.actual.rpe}</span></div>`:`<div class="set-log-prev">İlk seans · önerilen başlangıç: ${suggestion.weight||'—'}kg × ${plannedReps} rep</div>`;
+    const setRows=entry.sets.map((set,sIdx)=>{
+      const stateCls=set.state==='pending'?'':set.state;
+      const isLocked=set.state==='done'||set.state==='skipped';
+      const placeholderW=suggestion.weight||'';
+      const placeholderR=plannedReps;
+      const wVal=set.actual.weight??'';
+      const rVal=set.actual.reps??'';
+      const rpeVal=set.actual.rpe??'';
+      // Aktif (yapılacak ilk pending set): vurgu rengi
+      const isActive=set.state==='pending'&&entry.sets.slice(0,sIdx).every(s=>s.state!=='pending');
+      const activeCls=isActive?'active':'';
+      const stateIcon=set.state==='done'?'✓':set.state==='modified'?'⚡':set.state==='skipped'?'🛌':'';
+      const confirmBtn=set.state==='pending'
+        ?`<button class="set-confirm" onclick="confirmSet('${dk}','${ex.id}',${sIdx})" title="Seti tamamla">✓</button>`
+        :`<div class="set-state-icon ${set.state}">${stateIcon}</div>`;
+      return `<div class="set-row ${stateCls} ${activeCls}">
+        <div class="set-num">${sIdx+1}</div>
+        <div class="set-input-wrap">
+          <input class="set-input" type="number" inputmode="decimal" step="0.5" min="0" max="500"
+                 value="${wVal}" placeholder="${placeholderW}"
+                 ${isLocked?'disabled':''}
+                 onchange="logSetField('${dk}','${ex.id}',${sIdx},'weight',this.value)">
+          <div class="set-input-lbl">kg</div>
+        </div>
+        <div class="set-input-wrap">
+          <input class="set-input" type="number" inputmode="numeric" min="0" max="100"
+                 value="${rVal}" placeholder="${placeholderR}"
+                 ${isLocked?'disabled':''}
+                 onchange="logSetField('${dk}','${ex.id}',${sIdx},'reps',this.value)">
+          <div class="set-input-lbl">rep</div>
+        </div>
+        <div class="set-input-wrap">
+          <select class="set-input" ${isLocked?'disabled':''}
+                  onchange="logSetField('${dk}','${ex.id}',${sIdx},'rpe',this.value)">
+            <option value="">—</option>
+            <option value="5" ${rpeVal===5?'selected':''}>5</option>
+            <option value="6" ${rpeVal===6?'selected':''}>6</option>
+            <option value="7" ${rpeVal===7?'selected':''}>7</option>
+            <option value="8" ${rpeVal===8?'selected':''}>8</option>
+            <option value="9" ${rpeVal===9?'selected':''}>9</option>
+            <option value="10" ${rpeVal===10?'selected':''}>10</option>
+          </select>
+          <div class="set-input-lbl">rpe</div>
+        </div>
+        ${confirmBtn}
+      </div>`;
+    }).join('');
+    const summary=entry.oneRMEstimate>0
+      ?`<div class="set-summary"><span>Tahmini 1RM: <strong>${entry.oneRMEstimate} kg</strong></span>${entry.isPR?'<span class="pr-badge">🏆 PR</span>':''}</div>`
+      :'';
     const div=document.createElement('div');div.className='exi';
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${done?'done':''}" onclick="toggleDone(event,'${dk2}',this)"></div><div class="exn ${done?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 How To</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Swap</button></div></div>`;
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div><div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
@@ -4196,6 +4616,8 @@ function init(){
   renderCycleStripTop();
   renderHomeEventCountdown();
   if(!S.meas.length){S.meas.push({date:'26.04.2026',weight:76.9,fat:34.1,muscle:49.3,waist:84,hip:110,thigh:65});localStorage.setItem('meas',JSON.stringify(S.meas));}
+  // Phase 2 Hafta 2A: eski done boolean → workout_log migration (tek seferlik)
+  if(typeof migrateDoneToWorkoutLog==='function')migrateDoneToWorkoutLog();
   // Dashboard ilk açılışta gösterilir; renderCal renderDashboard içinde Aylık Takvim accordion'u render edildiğinde çağrılır
   renderDashboard();
   // First-run onboarding modal — kullanıcıya transparent karşılama (200ms gecikme ile DOM hazır)
