@@ -788,6 +788,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* ════════════════════════════════════════════ */
 .ex-sparkline-wrap{display:inline-flex;align-items:center;}
 .ex-sparkline{display:block;}
+
+/* ════════════════════════════════════════════ */
+/* CYCLE-SAFE SUBSTITUSYON CHIP (Phase 2 Hafta 3C) */
+/* ════════════════════════════════════════════ */
+.cycle-safe-chip{background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(217,89,30,0.12)) !important;border:1px solid rgba(232,178,63,0.55) !important;color:var(--mustard) !important;font-weight:600 !important;}
+.cycle-safe-chip:active{transform:scale(0.95);}
 </style>
 </head>
 <body>
@@ -1540,7 +1546,19 @@ function getLowIntakeAlert(){
 }
 
 // SPLITS
-const SP={0:null,1:{n:'Bacak & Kalça',e:'🦵',f:'Kalça · Bacak · Core'},2:{n:'İtme (Push)',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},3:{n:'Bacak & Hamstring',e:'🦵',f:'Hamstring · Kalça · Core'},4:{n:'Çekme (Pull)',e:'🏋️',f:'Sırt · Biceps · Core'},5:{n:'Kalça & Core',e:'🍑',f:'Hip Thrust · Tam Core'},6:{n:'Omuz & Kol',e:'🙆',f:'Omuz · Kol · Core'}};
+// 5-Gün Dengeli Split (Phase 2 Hafta 3A — Ajan 3 spor bilimi sentezi)
+// Pzt Alt-Squat / Sal Üst-İtme / Çar Glute-Posterior / Per Üst-Çekme / Cum Total-Hibrid
+// Cmt-Paz dinlenme. Yürüyüş 5/7 daily schedule'da bağımsız (07:30).
+// 4 güne düştüğünde Cum atlanır (en esnek gün). Geç luteal'de tipik skip.
+const SP={
+  0:null, // Paz · dinlenme
+  1:{n:'Alt Vücut · Squat',e:'🦵',f:'Quadriceps · Glute · Core'},
+  2:{n:'Üst Vücut · İtme',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},
+  3:{n:'Glute & Posterior',e:'🍑',f:'Glute · Hamstring · Baldır · Derin Core'},
+  4:{n:'Üst Vücut · Çekme',e:'🏋️',f:'Sırt · Biceps · Arka Deltoid'},
+  5:{n:'Total Body · Hibrid',e:'⚡',f:'Tam vücut · Pull-up · Carry · Core'},
+  6:null  // Cmt · dinlenme
+};
 
 // GIF URLs — public animations from ExerciseDB and Wger
 const GIFS={
@@ -1675,52 +1693,62 @@ function openYoutube(exId) {
   if (ytId) window.open('https://www.youtube.com/watch?v=' + ytId, '_blank');
 }
 
+// 33 mevcut hareket → 27 koru + 12 yeni = 30 atama (5 gün × 6 hareket)
+// Eski hareketler workout_log entry'lerinde kalır (sparkline + history korunur).
+// Yeni eklenenler: bss · gobl · step · ccf · bsht · cpt · db · apu · kbs · fc (10 yeni id)
 const EX={
-1:[
-{id:'sq',n:'Smith Machine Squat',s:'4×12',m:['Quadriceps','Kalça'],h:'Bar omuzlarda. Ayaklar omuz genişliğinde. Kalçayı geri it. Uyluk yere paralel olana kadar in.',y:'smith machine squat form'},
-{id:'lp',n:'Leg Press',s:'4×15',m:['Quadriceps','Kalça'],h:'Sırt pede yapışık. 90 dereceye in, topuktan it. Dizleri kilitleme.',y:'leg press proper form'},
-{id:'ab',n:'Abductor Makinesi',s:'3×20',m:['Dış kalça','Glute medius'],h:'Pedleri dışa it. Kontrollü geri dön. Tepede 1 sn tut.',y:'hip abductor machine form'},
-{id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü uzan, bant kalçaların üstünde. Topuktan it. Tepede kalçayı 2 sn sıkıştır.',y:'glute bridge band form'},
-{id:'rl',n:'Reverse Lunge (Dumbbell)',s:'3×12/taraf',m:['Quadriceps','Kalça'],h:'İki elinde dumbbell. Geriye büyük bir adım. İki diz de 90 derece. Ön topuktan kalk.',y:'reverse lunge dumbbell'},
-{id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Kabloda diz çök. Halatı başın yanında tut. Core ile aşağı bük. Kalça sabit.',y:'cable crunch abs form'},
-],2:[
-{id:'dbp',n:'Incline Dumbbell Press',s:'4×12',m:['Üst göğüs','Omuz'],h:'Bench 45 derece. Dirsekler 45 derecede. Tepede sıkıştır.',y:'incline dumbbell press'},
-{id:'lr',n:'Lateral Raise',s:'4×15',m:['Orta deltoid'],h:'Kolları T şekline kaldır. Deltoid çalışsın. Tepede 2 sn.',y:'lateral raise proper form'},
-{id:'fr',n:'Front Raise',s:'3×12',m:['Ön deltoid'],h:'Omuz hizasına kaldır. Kontrollü indir.',y:'dumbbell front raise'},
-{id:'dsp',n:'Dumbbell Shoulder Press',s:'4×12',m:['Omuz','Triceps'],h:'Baş üstüne it. Core sıkı, sırt düz.',y:'dumbbell shoulder press'},
-{id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit. Aşağı it, dipte sıkıştır.',y:'tricep cable pushdown'},
-{id:'hkr',n:'Hanging Knee Raise (opsiyonel)',s:'3×10',m:['Alt karın','Core'],c:1,h:'Bardan asıl. Dizleri göğse çek. Sallanma. Bu hafta yorgunsan atla — core overuse riski var (6 gün/hafta core fazla).',y:'hanging knee raise abs'},
-],3:[
-{id:'rdl',n:'Romanian Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Hafif diz bükümü. Kalçayı geri it. Dumbbell bacaklardan aşağı kayar. SIRT DÜZ.',y:'romanian deadlift dumbbell'},
-{id:'lc',n:'Leg Curl Makinesi',s:'4×15',m:['Hamstring'],h:'Topukları kalçaya bük. Kontrollü bırak.',y:'lying leg curl machine'},
-{id:'sumo',n:'Sumo Squat (Dumbbell)',s:'3×15',m:['İç bacak','Kalça'],h:'Geniş duruş, ayak parmakları dışa. Dumbbell ortada. Dik dur.',y:'sumo squat dumbbell'},
-{id:'kk',n:'Cable Kickback',s:'3×15/taraf',m:['Kalça','Glute'],h:'Bileğe bağla. Bacağı arkaya ve yukarı tekmele. Kalçayı sıkıştır.',y:'cable kickback glutes'},
-{id:'cal',n:'Calf Raise (Leg Press)',s:'3×20',m:['Baldır'],h:'Platformda sadece ayak parmakları. Tepede 2 sn tut.',y:'leg press calf raise'},
-{id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Yan karın'],c:1,h:'Kablonun yanında ayakta dur. Göğüs hizasında düz dışarı it. Dönme.',y:'pallof press core'},
-],4:[
-{id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×12',m:['Sırt','Lat','Biceps'],h:'Göğse çek. Kürek kemiklerini sıkıştır. Yavaş bırak.',y:'lat pulldown wide grip'},
-{id:'cr',n:'Seated Cable Row',s:'4×12',m:['Orta sırt','Biceps'],h:'Göbeğe çek. Omurga düz. Kürek kemiklerini sıkıştır.',y:'seated cable row form'},
-{id:'fp',n:'Face Pull',s:'3×15',m:['Arka deltoid'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda.',y:'face pull cable form'},
-{id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×12/taraf',m:['Sırt','Biceps'],h:'Bench\'e dayan. Kalçaya doğru çek. Sırt kasını hisset.',y:'single arm dumbbell row'},
-{id:'curl',n:'Dumbbell Bicep Curl',s:'3×15',m:['Biceps'],h:'Dirsekler sabit. Tepede 1 sn sıkıştır.',y:'dumbbell bicep curl form'},
-{id:'abw',n:'Ab Wheel Rollout (opsiyonel)',s:'2×8',m:['Core','Karın'],c:1,h:'Dizler üstünde. Kalçayı düşürmeden öne yuvarlan. Core ile geri çek. Bu hareket çok zorlu — Salı yapıldıysa Perşembe hafifle veya atla (core 6 gün üst üste form bozar).',y:'ab wheel rollout beginner'},
-],5:[
-{id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×12',m:['Kalça','Glute max','Hamstring'],h:'Üst sırt bench\'te. Barbell kalça çukurunda (ped kullan!). Topuktan it. Tepede 2 sn tut.',y:'hip thrust barbell form'},
-{id:'slht',n:'Single Leg Hip Thrust',s:'3×12/taraf',m:['Kalça','Core'],h:'Bir bacak havada. Tek bacakla hip thrust.',y:'single leg hip thrust'},
-{id:'bpa',n:'Band Pull-Apart',s:'3×20',m:['Arka deltoid','Üst sırt'],h:'Bantı önünde tut. T şekline aç. Kürek kemiklerini sıkıştır.',y:'band pull apart form'},
-{id:'vac',n:'Stomach Vacuum',s:'3×30sn',m:['Derin core (TVA)'],c:1,h:'Nefes ver, karnı içeri ve yukarı omurgaya doğru çek. 30 sn tut. Beli inceltmek için en etkili!',y:'stomach vacuum exercise'},
-{id:'ddb',n:'Dumbbell Deadlift',s:'4×12',m:['Hamstring','Kalça'],h:'Kalçayı geri it. SIRT DÜZ. Doğrulurken kalçayı sıkıştır.',y:'dumbbell deadlift form'},
-{id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Yan plank 3) Omuz dokunuşu. Her set farklı.',y:'plank variations core'},
-],6:[
-{id:'arn',n:'Arnold Press',s:'4×12',m:['Tam omuz'],h:'Avuç içleri çenede sana dönük. İterken çevir, tepede avuçlar öne baksın.',y:'arnold press dumbbell'},
-{id:'upr',n:'Upright Row (Kablo)',s:'3×15',m:['Üst trapez','Ön deltoid'],h:'Dar tutuş, çeneye çek. Dirsekler dışa ve yukarı.',y:'upright row cable form'},
-{id:'ham',n:'Hammer Curl',s:'3×15',m:['Biceps'],h:'Nötr tutuş. Dirsek sabit. Yavaş indir.',y:'hammer curl form'},
-{id:'skull',n:'Skull Crusher',s:'3×12',m:['Triceps'],h:'Bench\'te uzan. Bar\'ı alna doğru indir. Dirsekler baş üstünde sabit.',y:'skull crusher ez bar'},
-{id:'ldrop',n:'Lateral Raise Drop Set',s:'3×(15+15)',m:['Orta deltoid'],h:'15 tekrar tam ağırlıkta, hemen yarıya düşür ve 15 daha yap.',y:'lateral raise drop set'},
-{id:'rt',n:'Russian Twist (Weighted)',s:'4×20',m:['Yan karın','Core'],c:1,h:'Dizler bükük, hafif geriye yaslan. Yana doğru dönüş.',y:'russian twist weighted'},
-]};
+1:[ // Pzt — Alt Vücut · Squat
+  {id:'sq',n:'Smith Machine Squat',s:'4×8',m:['Quadriceps','Kalça'],h:'Bar omuzlarda. Ayaklar omuz genişliğinde. Kalçayı geri it. Uyluk yere paralel olana kadar in. Sırt nötr, dizler ayak parmağıyla aynı yön.',y:'smith machine squat form'},
+  {id:'bss',n:'Bulgarian Split Squat (Dumbbell)',s:'3×10/taraf',m:['Quadriceps','Glute','Tek-bacak stab'],h:'Arka ayak bench üstünde. Ön ayak 60-80 cm önde. Ön topuktan kalk. Diz ayak parmağıyla aynı yöne. Tek-bacak stability + glute aktivasyonu.',y:'bulgarian split squat form'},
+  {id:'gobl',n:'Goblet Squat (Dumbbell)',s:'3×12',m:['Quadriceps','Kalça','Core'],h:'Tek dumbbell göğüs hizasında dik tut. Geniş duruş. Dirseklerle dizleri it. Dik üstgövde. Ovulasyon haftasında Smith Squat alternatifi (lumbar tork ↓).',y:'goblet squat dumbbell form'},
+  {id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü uzan, bant kalçaların üstünde. Topuktan it. Tepede kalçayı 2 sn sıkıştır.',y:'glute bridge band form'},
+  {id:'step',n:'Step-Up (Dumbbell)',s:'3×12/taraf',m:['Quadriceps','Glute'],h:'Kutu/bench önünde. Bir bacakla bas, yukarı çık. Diğer bacak hafifçe değer. Aşağı kontrollü. Tek-bacak güç + balance.',y:'dumbbell step up form'},
+  {id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Kabloda diz çök. Halatı başın yanında tut. Core ile aşağı bük. Kalça sabit.',y:'cable crunch abs form'},
+],
+2:[ // Sal — Üst Vücut · İtme (Push)
+  {id:'dbp',n:'Incline Dumbbell Press',s:'4×10',m:['Üst göğüs','Omuz'],h:'Bench 45 derece. Dirsekler 45 derecede. Tepede sıkıştır. Bel pede yapışık.',y:'incline dumbbell press'},
+  {id:'dsp',n:'Dumbbell Shoulder Press',s:'4×10',m:['Omuz','Triceps'],h:'Baş üstüne it. Core sıkı, sırt düz. Tepede dirsekler hafif yumuşak.',y:'dumbbell shoulder press'},
+  {id:'ccf',n:'Cable Chest Fly',s:'3×12',m:['Üst göğüs','Ön deltoid'],h:'Kablolar üst pozisyonda. Hafif öne eğil, kollar geniş. Yumuşak dirsekle orta hatta birleştir. Tepede 1 sn sıkıştır. Press hareketleri tamamlayıcı.',y:'cable chest fly form'},
+  {id:'lr',n:'Lateral Raise',s:'4×12',m:['Orta deltoid'],h:'Kolları T şekline kaldır. Deltoid çalışsın. Tepede 2 sn. Yükü vücutla değil deltoidle taşı.',y:'lateral raise proper form'},
+  {id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit ve gövdeye yakın. Aşağı it, dipte sıkıştır.',y:'tricep cable pushdown'},
+  {id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Yan karın'],c:1,h:'Kablonun yanında ayakta dur. Göğüs hizasında düz dışarı it. Dönme — anti-rotation.',y:'pallof press core'},
+],
+3:[ // Çar — Glute & Posterior Chain
+  {id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×8',m:['Kalça','Glute max','Hamstring'],h:'Üst sırt bench\'te. Barbell kalça çukurunda (ped kullan!). Topuktan it. Tepede 2 sn tut. Boyun nötr, bakış öne.',y:'hip thrust barbell form'},
+  {id:'rdl',n:'Romanian Deadlift',s:'4×10',m:['Hamstring','Kalça'],h:'Hafif diz bükümü. Kalçayı geri it. Dumbbell bacaklardan aşağı kayar. SIRT DÜZ. Hamstringde gerilme hisset.',y:'romanian deadlift dumbbell'},
+  {id:'bsht',n:'B-Stance Hip Thrust',s:'3×12/taraf',m:['Glute max','Hamstring'],h:'Sırt bench\'te. Ana bacak %80 yük, yardımcı bacak %20 destek (parmak ucu). Single-leg HT geçişi. Ovulasyon haftasında Single Leg HT alternatifi.',y:'b-stance hip thrust form'},
+  {id:'cpt',n:'Cable Pull-Through',s:'3×12',m:['Glute','Hamstring'],h:'Kabloya sırt dön, ayak omuz genişliğinde. Eller arasında kablo. Kalçayı geri it (RDL hareketi), kalçayla öne it. RDL alternatifi (lumbar yükü ↓).',y:'cable pull through form'},
+  {id:'cal',n:'Calf Raise (Leg Press)',s:'4×15',m:['Baldır'],h:'Platformda sadece ayak parmakları. Tepede 2 sn tut. Kontrollü indir, baldır gerilsin.',y:'leg press calf raise'},
+  {id:'db',n:'Dead Bug',s:'3×10/taraf',m:['Derin core (TVA)','Alt karın'],c:1,h:'Sırtüstü, kollar yukarı, dizler 90°. Karşı kol+bacak yavaşça yere uzat. Bel zemine bastırılmış kalsın. Diğer taraf. Anti-extension.',y:'dead bug form'},
+],
+4:[ // Per — Üst Vücut · Çekme (Pull)
+  {id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×10',m:['Sırt','Lat','Biceps'],h:'Göğse çek. Kürek kemiklerini sıkıştır. Yavaş bırak. Lat\'tan başla, kollardan değil.',y:'lat pulldown wide grip'},
+  {id:'cr',n:'Seated Cable Row',s:'4×10',m:['Orta sırt','Biceps'],h:'Göbeğe çek. Omurga düz. Kürek kemiklerini sıkıştır. 1 sn duraksat.',y:'seated cable row form'},
+  {id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×10/taraf',m:['Sırt','Biceps'],h:'Bench\'e dayan. Kalçaya doğru çek. Sırt kasını hisset, kürek kemiğini geri sıkıştır.',y:'single arm dumbbell row'},
+  {id:'fp',n:'Face Pull',s:'3×15',m:['Arka deltoid','Üst sırt'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda. External rotation kazandırır.',y:'face pull cable form'},
+  {id:'curl',n:'Dumbbell Bicep Curl',s:'3×12',m:['Biceps'],h:'Dirsekler sabit ve gövdeye yakın. Tepede 1 sn sıkıştır. Aşağıda tam uzat.',y:'dumbbell bicep curl form'},
+  {id:'ham',n:'Hammer Curl',s:'3×12',m:['Biceps','Önkol'],h:'Nötr tutuş (avuç içleri yan tarafa bakar). Dirsek sabit. Yavaş indir. Brachialis vurgu.',y:'hammer curl form'},
+],
+5:[ // Cum — Total Body · Hibrid (4 güne düştüğünde es geçilebilir)
+  {id:'gobl',n:'Goblet Squat (Light)',s:'3×8',m:['Quadriceps','Kalça'],h:'Hafif yük, full ROM. Tam vücut günü için ısınma + form refresher. Set arası kısa.',y:'goblet squat dumbbell form'},
+  {id:'apu',n:'Assisted Pull-Up (Bant)',s:'3×6',m:['Sırt','Lat','Biceps'],h:'Bar üstünde, bant ayakların altında veya diz arkasında. Tam asılış → çene bara. Lat\'tan çek. Pull-up\'a köprü. Bantı küçülterek progres.',y:'assisted pull up band form'},
+  {id:'kbs',n:'Kettlebell Swing',s:'3×15',m:['Glute','Hamstring','Tam Core'],h:'KB iki elde, omuzlar arası. Hip-hinge — kalçayı geri it, dizleri hafif bük. Kalça patlamasıyla göğüs hizasına swing. Glute powermove.',y:'kettlebell swing two hand form'},
+  {id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Yan plank 3) Omuz dokunuşu. Her set farklı varyasyon.',y:'plank variations core'},
+  {id:'fc',n:'Farmer\'s Carry',s:'3×30sn',m:['Tam Core','Trapez','Önkol','Kalça'],h:'İki dumbbell yanlarda. Düz duruş, omuzlar geri. Adım adım yürü. Core sıkı, nefes alıştır. Carrier — günlük yaşam gücü.',y:'farmers carry form'},
+  {id:'rt',n:'Russian Twist (Weighted)',s:'3×20',m:['Yan karın','Core'],c:1,h:'Dizler bükük, hafif geriye yaslan. Yana doğru dönüş. Ovulasyon haftasında Pallof\'a geç (omurga rotasyonu ligament dikkat).',y:'russian twist weighted'},
+],
+6:null // Cmt · dinlenme
+};
 
-const CD={1:{n:'Kalça & Bacak Soğuma',d:'Kelebek esnetme · Güvercin pozu · Quadriceps esnetme',y:'hip glute cooldown stretch'},2:{n:'Göğüs & Omuz Soğuma',d:'Göğüs açıcı · Omuz esnetme · Triceps esnetme',y:'chest shoulder cooldown stretch'},3:{n:'Hamstring & Kalça Soğuma',d:'Hamstring · Hip flexor · IT band',y:'hamstring hip cooldown stretch'},4:{n:'Sırt & Kol Soğuma',d:'Lat esnetme · Çocuk pozu · Duvarda biceps esnetme',y:'back bicep cooldown stretch'},5:{n:'Kalça & Core Soğuma',d:'Güvercin pozu · Sırtüstü dönüş · Hip flexor',y:'glute core cooldown yoga'},6:{n:'Omuz & Kol Soğuma',d:'Baş üstü triceps · Çapraz omuz · Bilek esnetme',y:'shoulder arm cooldown stretch'}};
+// Soğuma rutinleri 5-gün split'le hizalandı (Phase 2 Hafta 3A)
+const CD={
+  1:{n:'Alt Vücut Soğuma',d:'Quadriceps esnetme · Hip flexor · Kelebek pozu · Foam roll IT band',y:'lower body cooldown stretch'},
+  2:{n:'Üst İtme Soğuma',d:'Göğüs açıcı (kapı duvarı) · Omuz çapraz · Triceps esnetme · Foam roll t-spine',y:'chest shoulder cooldown stretch'},
+  3:{n:'Glute & Posterior Soğuma',d:'Güvercin pozu · Hamstring esnetme · Hip flexor · Foam roll glutes',y:'glute hamstring cooldown stretch'},
+  4:{n:'Üst Çekme Soğuma',d:'Lat esnetme · Çocuk pozu · Duvarda biceps · Boyun rotasyon',y:'back bicep cooldown stretch'},
+  5:{n:'Total Body Soğuma',d:'Sun salutation · Cat-cow · Forward fold · Box breath 4-7-8',y:'full body cooldown yoga flow'},
+  6:null
+};
 
 // DIET
 // 1. ÖĞÜN ANA (10:00) — KARNİVOR: et + yumurta + yağ (süt/peynir/lor/hellim YOK)
@@ -3471,9 +3499,18 @@ function parseSetScheme(s){
 
 // Dinlenme süresi (Ajan 3): compound 150s, izolasyon 75s, core 45s
 function getRestDuration(ex){
-  if(ex.c)return 45; // core flag (mevcut EX objesinde)
-  // Compound = multi-joint (squat, deadlift, hip thrust, press, row, pulldown)
-  const compoundIds=['sq','lp','rl','rdl','sumo','ddb','ht','slht','dbp','dsp','arn','lat','cr','dbrow'];
+  if(ex.c)return 45; // core flag (EX objesinde işaretli)
+  // Compound = multi-joint (squat, deadlift, hip thrust, press, row, pulldown, carry)
+  const compoundIds=[
+    // Hafta 3A — yeni 5-gün split compoundları
+    'sq','bss','gobl','step',         // Day 1 alt
+    'dbp','dsp',                       // Day 2 push compound
+    'ht','rdl','bsht','cpt',           // Day 3 glute-posterior
+    'lat','cr','dbrow',                // Day 4 pull
+    'apu','kbs','fc',                  // Day 5 hibrid
+    // Eski compoundlar (legacy entries için)
+    'lp','rl','sumo','ddb','slht','arn'
+  ];
   if(compoundIds.includes(ex.id))return 150;
   return 75; // izolasyon default
 }
@@ -3870,6 +3907,123 @@ function applySheetReason(reason){
   if(typeof renderWeekSum==='function')renderWeekSum();
 }
 
+// ── Cycle-aware antrenman matrisi (Phase 2 Hafta 3B — Ajan 2 endokrin + Ajan 5 yaralanma)
+// Faz × Day → intensity/volume faktörü + substitusyon flag + bilim notu
+function getCycleAwareWorkoutAdjustment(d){
+  const c=ci(d);
+  if(!c)return null;
+  const inPeriod=inP(d);
+  const cycleLen=getAvgCycleLen();
+  if(inPeriod && c.day<=2){
+    return{
+      type:'rest_or_light',label:'Regl Gün '+c.day+' · Kendine Yumuşak',icon:'🔴',cls:'np',
+      message:'Bedenine yumuşak ol — bugün 3 seçenek var: tam rest, yoga akışı veya hafif üst-vücut (lat pulldown / face pull / bicep curl 2×12 RPE 6).',
+      intensityFactor:0.85,volumeFactor:0.80,
+      substitution:false,
+      phaseTip:'Hemoglobin Day 3-5\'te en düşük (Sims). Form + hareket kalitesi hipertrofiden öncelikli.'
+    };
+  }
+  if(inPeriod){
+    return{
+      type:'menstruation_active',label:'Regl Gün '+c.day+' · Aktif Demir Döngüsü',icon:'🔴',cls:'np',
+      message:'Demir aktif kullanılıyor. Set sayısı koru, ağırlığı %5-10 düşür. Compound hareketler iyi — son set rahat tut.',
+      intensityFactor:0.92,volumeFactor:0.95,
+      substitution:false,
+      phaseTip:'Yeterli yediğin sürece glikoliz çalışır. Demir + B12 vurgusu (kırmızı et + ciğer).'
+    };
+  }
+  if(c.phase==='Follicular Phase' && c.day>=6 && c.day<=12){
+    return{
+      type:'follicular_pr',label:'Folliküler PR Penceresi (Gün '+c.day+')',icon:'🌱',cls:'ns',
+      message:'Östrojen yükseliyor, kas sentezi optimal. Volume + intensity arttırma penceresi. Rep PR denemesi için iyi hafta — RPE 8.5\'i geçme, form önce.',
+      intensityFactor:1.05,volumeFactor:1.10,
+      substitution:false,
+      phaseTip:'Glikojen depoları dolu, insülin duyarlılığı yüksek. Karb hedefe ulaş, protein +5-10g.'
+    };
+  }
+  if(c.phase==='Follicular Phase'){
+    return{
+      type:'follicular_build',label:'Folliküler · Yeni Döngü (Gün '+c.day+')',icon:'🌱',cls:'ns',
+      message:'Östrojen yükselişe geçti. Volume ve intensity için yeşil ışık. Yeni döngü, yeni güç.',
+      intensityFactor:1.02,volumeFactor:1.05,
+      substitution:false,
+      phaseTip:'Folliküler haftada toparlanma hızlı. Bu hafta yeni hareket öğrenmek için ideal.'
+    };
+  }
+  if(c.phase==='Ovulation' && c.day>=11 && c.day<=15){
+    return{
+      type:'ovulation_ligament',label:'Ovulasyon · Ligament Dikkat (Gün '+c.day+')',icon:'🌸',cls:'ng',
+      message:'LH zirvesi + relaxin → ligament gevşekliği +30-50% (ACL non-contact riski 2-3×). Bazı hareketler için **substitusyon önerisi** aşağıdaki kartlarda.',
+      intensityFactor:1.05,volumeFactor:1.00,
+      substitution:true,
+      phaseTip:'Compound hareketler iyi, PR baskısı yok. Form öncelikli, eksantrik tempo 3-1-1. Plyometric/sprint bu hafta kontrindike.'
+    };
+  }
+  if(c.phase==='Ovulation'){
+    return{
+      type:'ovulation_peak',label:'Ovulasyon · Modest Peak (Gün '+c.day+')',icon:'🌸',cls:'ng',
+      message:'Östrojen + testosteron yüksek (3-5% bireysel varyasyon). Yeni 1RM denemek istersen form öncelikli.',
+      intensityFactor:1.03,volumeFactor:1.00,
+      substitution:false,
+      phaseTip:'Bedenin söyler — PR\'a zorlamak gerekmez.'
+    };
+  }
+  if(c.phase==='Luteal Phase' && c.day>=cycleLen-6){
+    return{
+      type:'late_luteal_deload',label:'Geç Luteal · Mood-Protective (Gün '+c.day+')',icon:'🌙',cls:'nm',
+      message:'Progesteron peak. BMR +%8-12, vücut ısısı +0.3°C, kortizol +%15-20. Set sayısı koru, ağırlığı %5-10 düşür. Cum (Total Hibrid) opsiyonel skip.',
+      intensityFactor:0.92,volumeFactor:0.85,
+      substitution:false,
+      phaseTip:'Hidrasyon kritik · su tutma normal (ödem değil). Deload haftası burada başlat (NSCA periodization).'
+    };
+  }
+  if(c.phase==='Luteal Phase'){
+    return{
+      type:'early_luteal',label:'Erken Luteal · Volume Penceresi (Gün '+c.day+')',icon:'🌙',cls:'nm',
+      message:'Progesteron başlıyor ama henüz pik değil. Fat oxidation ↑ — volume-heavy işler için iyi gün.',
+      intensityFactor:1.00,volumeFactor:1.05,
+      substitution:false,
+      phaseTip:'Magnezyum + B6 başlat (kramp + mood koruma).'
+    };
+  }
+  return null;
+}
+
+// Ovulasyon haftasında riskli hareketler için cycle-safe alternatifler (Ajan 5 yaralanma önleme §3)
+const OVULATION_SUB={
+  'sq':{altId:'gobl',reason:'Smith Squat → Goblet — lumbar tork ↓, knee shear ↓ (relaxin ile diz stabilizasyonu)'},
+  'bss':{altId:'step',reason:'Bulgarian → Step-Up — tek-bacak stab korunur, lateral knee yükü ↓'},
+  'rdl':{altId:'cpt',reason:'RDL → Cable Pull-Through — lumbar yükü ↓, eccentric kontrol kalır'},
+  'ht':{altId:'gbr',reason:'Hip Thrust → Glute Bridge (Bant) — kalça eccentric loading ↓ (relaxin sakroiliac)'},
+  'bsht':{altId:'gbr',reason:'B-Stance HT → Glute Bridge — tek-bacak stab gerekmez, sakral yük ↓'},
+  'rt':{altId:'pall',reason:'Russian Twist → Pallof Press — omurga rotasyonu yerine anti-rotation, daha güvenli'}
+};
+function getOvulationSubstitution(exId){return OVULATION_SUB[exId]||null;}
+
+// Ovulasyon haftasında bir egzersizi cycle-safe alternatife otomatik swap (Phase 2 Hafta 3C)
+function applyOvulationSub(idx,dow,dk){
+  const ex=EX[dow]?.[idx];
+  if(!ex)return;
+  const sub=getOvulationSubstitution(ex.id);
+  if(!sub)return;
+  // Alternatifi tüm EX listelerinde bul
+  let altEx=null;
+  for(const day in EX){
+    const list=EX[day];
+    if(Array.isArray(list)){
+      altEx=list.find(e=>e.id===sub.altId);
+      if(altEx)break;
+    }
+  }
+  if(!altEx){showToast('Alternatif hareket bulunamadı','warn');return;}
+  if(!S.swaps[dk])S.swaps[dk]={};
+  S.swaps[dk][idx]=altEx;
+  localStorage.setItem('swaps',JSON.stringify(S.swaps));
+  showToast(`✓ Cycle-safe geçiş: ${ex.n} → ${altEx.n}`,'pr');
+  // Yeni hareketin entry'si oluşturulacak (mevcutsa korunur), eski entry kalır
+  renderExDay();
+}
+
 // ── Wake Lock API (Phase 2 Hafta 2B) — antrenmanda ekran kapanmasın
 async function acquireWakeLock(){
   if(!('wakeLock' in navigator))return;
@@ -3992,24 +4146,31 @@ function renderExDay(){
   document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</em>`;
   document.getElementById('ex-sub').textContent=sp?sp.f:'Dinlenme günü · hafif yürüyüş önerilir';
   document.getElementById('e-rest').style.display=sp?'none':'block';
-  // Phase-aware exercise notice (regl deload, ovulation peak, late luteal moderate)
+  // Cycle-aware adjustment hesabı — banner + egzersiz kartı substitusyon chip için
+  const cycleAdj=sp?getCycleAwareWorkoutAdjustment(d):null;
+  // Phase-aware antrenman banner (Phase 2 Hafta 3B — Ajan 2 cycle-aware matrix)
   const exPhaseEl=document.getElementById('e-phase-notice');
   if(exPhaseEl){
-    if(sp && inP(d) && c){
-      // Esnek deload: kohort generalizasyonu yerine "kendi enerjini değerlendir"
-      const intensity = c.day<=2
-        ? 'Bu hafta öneri: %85-90 yük · ek 10sn dinlenme · AMRAP atla. <strong>Ama önce bedenini dinle</strong> — güçlü hissediyorsan koru, drained ise -%15-20 düşür.'
-        : 'Bu hafta öneri: %90-95 yük · son set rahat tut. Hemoglobin Day 3-5\'te en düşük (Sims literatürü) — kendine yumuşaklıkla planla.';
-      exPhaseEl.innerHTML=`<div class="notice np" style="margin:0 16px 12px;"><div class="nicon">🔴</div><div><strong>Regl Gün ${c.day} — kendine yumuşak:</strong> ${intensity}<br><span style="font-size:11px;">Demir döngüde, glikojen değişken → form + hareket kalitesi bu hafta hipertrofiden öncelikli.</span></div></div>`;
-    } else if(sp && c && c.phase==='Ovulation'){
-      exPhaseEl.innerHTML=`<div class="notice ng" style="margin:0 16px 12px;"><div class="nicon">🌸</div><div><strong>Ovulasyon Gün ${c.day} — modest peak penceresi:</strong> Östrojen + testosteron yüksek, ama bireysel varyasyon büyük (3-5%, bazılarında fark yok). Yeni 1RM denemek istersen <strong>form öncelikli</strong> — relaxin tendon esnekliğini de artırıyor, %3-5 yük artışı denemek hipertrofi için yeterli.<br><span style="font-size:11px;">Compound hareketler iyi (squat, deadlift, hip thrust) ama PR baskısı yapmak gerekmez — bedenin kendisi söyler.</span></div></div>`;
-    } else if(sp && c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6){
-      exPhaseEl.innerHTML=`<div class="notice nm" style="margin:0 16px 12px;"><div class="nicon">🌙</div><div><strong>Geç luteal Gün ${c.day} — orta yoğunluk:</strong> Progesteron yüksek, vücut ısısı +0.3°C, kalp atışı +5 bpm. Set sayısı koru, ağırlığı %5-10 düşür.<br><span style="font-size:11px;">Hidrasyon kritik · su tutma ödem değil, normal. <strong>Ayda 1 deload haftası</strong> burada başlatmak ideal (NSCA periodization).</span></div></div>`;
-    } else if(sp && c && c.phase==='Luteal Phase'){
-      exPhaseEl.innerHTML=`<div class="notice nm" style="margin:0 16px 12px;"><div class="nicon">🌙</div><div><strong>Erken luteal Gün ${c.day} — volume penceresi:</strong> Progesteron başlıyor ama henüz pik değil. Fat oxidation ↑ — volume-heavy işler için iyi gün. Magnezyum + B6 başlat.</div></div>`;
-    } else if(sp && c && c.phase==='Follicular Phase'){
-      exPhaseEl.innerHTML=`<div class="notice ns" style="margin:0 16px 12px;"><div class="nicon">🌱</div><div><strong>Folliküler Gün ${c.day} — yeni döngü başladı:</strong> Östrojen yükseliyor, kas yapımı için optimal. Volume ve intensity arttırma penceresi açık.</div></div>`;
-    } else {
+    const adj=cycleAdj;
+    if(adj){
+      // Substitusyon listesi (sadece ovulasyon Day 11-15)
+      let subList='';
+      if(adj.substitution && exs){
+        const subs=[];
+        const curEx=exs.map((ex,i)=>(S.swaps[dk]&&S.swaps[dk][i])||ex);
+        curEx.forEach(ex=>{
+          const sub=getOvulationSubstitution(ex.id);
+          if(sub){
+            const altName=findExerciseName(sub.altId);
+            subs.push(`<div style="font-size:11px;line-height:1.55;margin-top:4px;color:var(--cream-soft);"><strong>${ex.n}</strong> → <strong>${altName}</strong> · <span style="color:var(--cream-mute);">${sub.reason}</span></div>`);
+          }
+        });
+        if(subs.length)subList=`<div style="margin-top:8px;padding:8px 10px;background:rgba(232,178,63,0.10);border-left:2px solid var(--mustard);border-radius:0 8px 8px 0;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--mustard-soft);font-weight:600;margin-bottom:4px;">Bugün için cycle-safe öneriler:</div>${subs.join('')}</div>`;
+      }
+      // Volume / intensity factor görsel
+      const factorBadge=`<span style="display:inline-block;margin-top:6px;padding:2px 8px;border-radius:10px;background:rgba(232,221,196,0.10);font-size:10px;letter-spacing:0.4px;color:var(--cream-soft);font-weight:600;">Yoğunluk ×${adj.intensityFactor.toFixed(2)} · Hacim ×${adj.volumeFactor.toFixed(2)}</span>`;
+      exPhaseEl.innerHTML=`<div class="notice ${adj.cls}" style="margin:0 16px 12px;"><div class="nicon">${adj.icon}</div><div><strong>${adj.label}</strong><br>${adj.message}${factorBadge}<br><span style="font-size:11px;color:var(--cream-mute);font-style:italic;">${adj.phaseTip}</span>${subList}</div></div>`;
+    }else{
       exPhaseEl.innerHTML='';
     }
   }
@@ -4101,7 +4262,18 @@ function renderExDay(){
       :(sparkline?`<div class="set-summary"><span style="color:var(--cream-mute);font-size:11px;">Trend</span><span class="ex-sparkline-wrap">${sparkline}</span></div>`:'');
     const div=document.createElement('div');div.className='exi';
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div><div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
+    // Ovulasyon haftası substitusyon chip (Phase 2 Hafta 3C)
+    let cycleSubChip='';
+    if(cycleAdj && cycleAdj.substitution){
+      const sub=getOvulationSubstitution(ex.id);
+      // Sadece henüz swap edilmemişse öner
+      const alreadySwapped=S.swaps[dk]&&S.swaps[dk][i];
+      if(sub && !alreadySwapped){
+        const altName=findExerciseName(sub.altId);
+        cycleSubChip=`<button class="btn bsm cycle-safe-chip" onclick="applyOvulationSub(${i},${dow},'${dk}')" title="${sub.reason}">🌸 ${altName}\'a geç</button>`;
+      }
+    }
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${cycleSubChip}</div><div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
