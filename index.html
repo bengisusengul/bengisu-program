@@ -722,6 +722,29 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .set-bottom-sheet .close-row button{padding:8px 16px;font-size:12px;background:transparent;border:none;color:var(--cream-mute);cursor:pointer;}
 .set-log-empty{text-align:center;padding:14px;font-size:12px;color:var(--cream-mute);}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ════════════════════════════════════════════ */
+/* AUTO REST TIMER (Phase 2 Hafta 2B) */
+/* ════════════════════════════════════════════ */
+.rest-timer{position:fixed;bottom:96px;left:16px;right:16px;background:rgba(15,30,38,0.94);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(232,178,63,0.32);border-radius:18px;padding:14px 16px;z-index:998;box-shadow:0 12px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.10);overflow:hidden;color:var(--cream);animation:timerSlideUp 0.22s ease-out;}
+.rest-timer-progress{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(90,122,79,0.20),rgba(232,178,63,0.30));transition:width 1s linear;border-radius:18px;}
+.rest-timer-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.rest-timer-text{display:flex;align-items:baseline;gap:6px;flex:1;min-width:0;}
+.rest-timer-time{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream-soft);line-height:1;letter-spacing:-0.5px;}
+.rest-timer-time.low{color:var(--coral);animation:pulseLow 1s ease-in-out infinite;}
+.rest-timer-time.done-msg{font-size:22px;color:var(--mustard);}
+.rest-timer-label{font-size:12px;color:var(--cream-mute);font-weight:500;}
+.rest-timer-actions{display:flex;gap:6px;flex-shrink:0;}
+.rest-timer-actions button{padding:8px 12px;font-size:11px;border-radius:10px;border:1px solid rgba(255,255,255,0.16);background:rgba(232,221,196,0.08);color:var(--cream-soft);cursor:pointer;font-family:inherit;font-weight:600;letter-spacing:0.4px;-webkit-tap-highlight-color:transparent;}
+.rest-timer-actions button:active{transform:scale(0.92);background:rgba(232,221,196,0.18);}
+.rest-timer.done{border-color:var(--mustard);background:rgba(232,178,63,0.18);box-shadow:0 12px 40px rgba(232,178,63,0.4),inset 0 1px 0 rgba(255,255,255,0.18);}
+.rest-timer.done .rest-timer-progress{background:linear-gradient(90deg,var(--mustard),var(--coral));width:100% !important;}
+@keyframes pulseLow{0%,100%{opacity:1;}50%{opacity:0.55;}}
+@keyframes timerSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion: reduce){
+  .rest-timer{animation:none;}
+  .rest-timer-time.low{animation:none;}
+}
 </style>
 </head>
 <body>
@@ -1717,6 +1740,11 @@ function showP(n,b){
   document.body.dataset.page=n;
   window.scrollTo(0,0);
   if(n!=='diyet' && typeof stopFastingTimer==='function')stopFastingTimer();
+  // Wake Lock: sadece Egzersiz sekmesinde aktif (Phase 2 Hafta 2B)
+  if(n==='egzersiz' && typeof acquireWakeLock==='function')acquireWakeLock();
+  else if(typeof releaseWakeLock==='function')releaseWakeLock();
+  // Egzersiz dışına çıkınca aktif rest timer'ı durdur
+  if(n!=='egzersiz' && typeof stopSetTimer==='function')stopSetTimer();
   if(n==='takvim')renderDashboard();
   if(n==='diyet')renderDiet();
   if(n==='egzersiz')renderEx();
@@ -3579,6 +3607,21 @@ function confirmSet(dk,exId,setIdx){
   }
   saveWorkoutLog();
   syncLegacyDone(dk,exId);
+  // Sıradaki pending set varsa otomatik dinlenme timer'ı başlat (Hafta 2B)
+  const d=new Date(dk);
+  const dow=d.getDay();
+  const exs=EX[dow]||[];
+  let exObj=null;
+  for(let i=0;i<exs.length;i++){
+    const e=(S.swaps[dk]&&S.swaps[dk][i])||exs[i];
+    if(e.id===exId){exObj=e;break;}
+  }
+  const nextPending=entry.sets.findIndex(s=>s.state==='pending');
+  if(exObj && nextPending>=0 && typeof startSetTimer==='function'){
+    startSetTimer(exId,nextPending,getRestDuration(exObj));
+  }else if(typeof stopSetTimer==='function'){
+    stopSetTimer(); // tüm setler bitti
+  }
   renderExDay();
   if(typeof renderWeekSum==='function')renderWeekSum();
 }
@@ -3642,6 +3685,109 @@ function applySheetReason(reason){
   closeSetSheet();
   renderExDay();
   if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// ── Wake Lock API (Phase 2 Hafta 2B) — antrenmanda ekran kapanmasın
+async function acquireWakeLock(){
+  if(!('wakeLock' in navigator))return;
+  try{
+    if(S.wakeLockSentinel)return; // zaten alındı
+    S.wakeLockSentinel=await navigator.wakeLock.request('screen');
+    S.wakeLockSentinel.addEventListener('release',()=>{S.wakeLockSentinel=null;});
+  }catch(e){console.warn('Wake Lock alınamadı:',e.message||e);}
+}
+function releaseWakeLock(){
+  if(S.wakeLockSentinel){
+    S.wakeLockSentinel.release().catch(()=>{});
+    S.wakeLockSentinel=null;
+  }
+}
+// Sayfa görünür olduğunda re-acquire (browser auto-release on tab hide)
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && document.body.dataset.page==='egzersiz'){
+    acquireWakeLock();
+  }
+});
+
+// ── Auto rest timer (Phase 2 Hafta 2B)
+function startSetTimer(exId,nextSetIdx,durationSec){
+  stopSetTimer();
+  S.activeTimer={
+    exId,nextSetIdx,
+    durationSec,
+    remainingSec:durationSec,
+    startedAt:Date.now(),
+    intervalId:null,
+    completed:false
+  };
+  renderRestTimer();
+  S.activeTimer.intervalId=setInterval(()=>{
+    if(!S.activeTimer)return;
+    S.activeTimer.remainingSec--;
+    if(S.activeTimer.remainingSec<=0 && !S.activeTimer.completed){
+      timerComplete();
+    }else{
+      renderRestTimer();
+    }
+  },1000);
+}
+function stopSetTimer(){
+  if(S.activeTimer && S.activeTimer.intervalId)clearInterval(S.activeTimer.intervalId);
+  S.activeTimer=null;
+  hideRestTimer();
+}
+function adjustTimer(delta){
+  if(!S.activeTimer)return;
+  S.activeTimer.remainingSec=Math.max(0,S.activeTimer.remainingSec+delta);
+  if(S.activeTimer.completed && S.activeTimer.remainingSec>0){
+    S.activeTimer.completed=false; // unmark, restart
+  }
+  renderRestTimer();
+}
+function timerComplete(){
+  if(!S.activeTimer)return;
+  S.activeTimer.completed=true;
+  S.activeTimer.remainingSec=0;
+  // Vibration (Android destekli, iOS sessizce fail eder)
+  if(navigator.vibrate)try{navigator.vibrate([180,80,180,80,260]);}catch(e){}
+  // Visual flash
+  const el=document.getElementById('rest-timer');
+  if(el){el.classList.add('done');setTimeout(()=>el?.classList.remove('done'),1500);}
+  showToast('🎯 Dinlenme bitti — sıradaki set hazır','pr');
+  renderRestTimer();
+  // 4 saniye sonra otomatik kaybol
+  setTimeout(()=>{
+    if(S.activeTimer && S.activeTimer.completed)stopSetTimer();
+  },4000);
+}
+function renderRestTimer(){
+  let el=document.getElementById('rest-timer');
+  if(!S.activeTimer){
+    if(el)el.style.display='none';
+    return;
+  }
+  if(!el){
+    el=document.createElement('div');
+    el.id='rest-timer';
+    el.className='rest-timer';
+    document.body.appendChild(el);
+  }
+  el.style.display='block';
+  const t=S.activeTimer;
+  const mins=Math.floor(Math.max(0,t.remainingSec)/60);
+  const secs=Math.max(0,t.remainingSec)%60;
+  const totalMins=Math.floor(t.durationSec/60);
+  const totalSecs=t.durationSec%60;
+  const pct=Math.min(100,((t.durationSec-t.remainingSec)/t.durationSec)*100);
+  const isLow=t.remainingSec<=10 && !t.completed;
+  const display=t.completed
+    ?`<span class="rest-timer-time done-msg">🎯 Hazır</span>`
+    :`<span class="rest-timer-time ${isLow?'low':''}">${mins}:${secs.toString().padStart(2,'0')}</span><span class="rest-timer-label">/ ${totalMins}:${totalSecs.toString().padStart(2,'0')}</span>`;
+  el.innerHTML=`<div class="rest-timer-progress" style="width:${pct}%;"></div><div class="rest-timer-content"><div class="rest-timer-text">${display}</div><div class="rest-timer-actions"><button onclick="adjustTimer(-10)" aria-label="10 saniye azalt">−10</button><button onclick="stopSetTimer()" aria-label="Atla">Atla</button><button onclick="adjustTimer(10)" aria-label="10 saniye ekle">+10</button></div></div>`;
+}
+function hideRestTimer(){
+  const el=document.getElementById('rest-timer');
+  if(el)el.style.display='none';
 }
 
 // Toast helper (basit)
