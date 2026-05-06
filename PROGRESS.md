@@ -196,8 +196,15 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-06 | `d530b64` | **Türkçeleştirme:** "İyi öğleden" → "Tünaydın" (12-17), modal butonları (Cancel/Close/Loading/Pick/Swap/Prev/Next), bölüm başlıkları, MN+DN sabitleri, SP/CD split+cooldown isimleri, **33 egzersizin h: talimatları** İngilizce → Türkçe. Cable Crunch'taki bozuk metin + Ab Wheel "Tue/Thu" → "Salı/Perşembe" düzeltildi. |
 | 2026-05-06 | (repo dışı) | **🧬 Egzersiz "Ultimate" — 12-ajan sıralı analiz:** workout-ultimate/ klasörü (~580KB markdown). 11 uzman ajan + ben sentezci, sıralı çalıştı (her biri öncekinin raporunu okudu). Tıp Literatürü → Cycle-Aware → Spor Bilimi → Beslenme → Yaralanma → Kadın Psikolojisi → Bilim Pedagojisi → Davranış Tasarımı → Veri Görselleştirme → Mobil UX → Pazar Araştırması → BEN sentezci. Çıktı: `SYNTHESIS.md` master roadmap (P0/P1/P2 + 5 orijinal fikir: Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror). |
 | 2026-05-06 | `ffb2619` | **Phase 2 Quick Wins (medikal düzeltme + RED-S EA guardrail):** (1) Hipoparatiroidi referansları 7 yerde temizlendi (Bengisu'da hipopara YOK, Calciday profilaktik) — walk_detail x2, creatine, qalyviz, calciday x2, AI prompt (Renpho), onboarding. (2) Kreatin kan testi öncesi 5 → **14 gün** kesim (PMID 30986825). (3) Qalyviz doktor sorusu güncellendi (Calcitriol referansı kaldırıldı, D3+K2+25(OH)D kontrolü). (4) Geç luteal cycle bonus +100 → **+150 kcal**, karb 50→60g (BMR +%8-12, RED-S koruma). (5) `getLowIntakeAlert()` Energy Availability hesabıyla genişletildi: `getEstimatedLBM()` + `getDailyExerciseKcal(d)` + `getEA(d)` helper'ları, IOC RED-S 2023 thresholds (<30 klinik, 30-45 subklinik, ≥45 hedef). 68 satır eklendi, 18 silindi. |
+| 2026-05-06 | `4cdab88` | **workout-ultimate/ klasörü repo'ya eklendi** (12 markdown dosyası, 9335 satır). 5 ajan raporuna Phase 2 Quick Wins banner/inline güncelleme. SYNTHESIS.md P0 #1 + #10 ✅ TAMAMLANDI işareti + "Bonus tamamlananlar" bölümü. |
+| 2026-05-06 | `8a890e3` | `.gitignore` eklendi — macOS `.DS_Store` + editor + env cruft. |
+| 2026-05-06 | `72c3bd6` | **Phase 2 Hafta 2 plan dosyası** (`workout-ultimate/PHASE-2-HAFTA-2-PLAN.md`) + Bengisu kararları (kg / RPE şart / Wake Lock / pre-fill / auto-timer / 5 orijinal fikir hepsi). |
+| 2026-05-06 | `6caa368` | **Phase 2 Hafta 2A — Set log altyapısı:** `workout_log` data structure + 14 helper fonksiyon (calc1RM Brzycki+Epley+RPE, parseSetScheme, getRestDuration, getOrCreateLogEntry, getLastSessionSet, suggestNextWeight, isNewPR, logSetField, confirmSet, modifySet, skipSet, openSetSheet, applySheetReason, syncLegacyDone, showToast). UI: per-set kg+rep+RPE input + ✓ confirm, pre-fill placeholder, ⚡/🛌 bottom sheet. Migration: eski S.done boolean → workout_log entry. 425 satır net ekleme. |
+| 2026-05-06 | `f3694c4` | **Phase 2 Hafta 2B — Wake Lock + auto rest timer:** `acquireWakeLock`, `releaseWakeLock`, visibilitychange listener, `startSetTimer`, `stopSetTimer`, `adjustTimer`, `timerComplete`, `renderRestTimer`. Set ✓ sonrası otomatik timer (compound 150s, izolasyon 75s, core 45s). Vibration [180,80,180,80,260] (Android), iOS visual flash fallback. 159 satır ekleme. PROGRESS güncellendi: Selenyum 200mcg + Çinko ⚠ doz doğrulama bekleyen supplement entegrasyonu. |
+| 2026-05-06 | `cee41ca` | **Phase 2 Hafta 2C — PR celebration + antrenman özeti + sparkline:** `celebratePR`, `getPRZenQuote` (cycle-aware ZEN havuzları: Folliküler/Ovulasyon/Luteal/Regl), `findExerciseName`, `renderPRCelebration`, `closePR`. Trophy 🏆 entrance animasyon, "Önceki → Yeni" karşılaştırma, +delta, arketip rozeti. `renderSessionSummary` (üstte "✨ Antrenman Tamam" / "📊 Şu ana kadar" — kg·rep volume, ort RPE, PR count, atlanan, değişen). `renderExSparkline` her hareket için son 4 seans 1RM SVG inline trendi. 190 satır ekleme. **Hafta 2 (set log altyapısı) TAMAMLANDI.** |
+| 2026-05-06 | `588b6ef` | **Phase 2 Hafta 3 — 5-gün split + cycle-aware antrenman matrisi:** SP yenilendi (Pzt Alt-Squat / Sal Üst-Push / Çar Glute-Posterior / Per Üst-Pull / Cum Total-Hibrid / Cmt-Paz dinlenme). EX güncellendi: 27 eski + 10 yeni hareket (bss, gobl, step, ccf, bsht, cpt, db, apu, kbs, fc). CD soğumaları yeni split'e hizalandı. `getCycleAwareWorkoutAdjustment(d)` 7 faz × öneri tablosu (intensity/volume çarpanları + bilim notu + substitusyon flag). `OVULATION_SUB` tablosu + `applyOvulationSub()` (Day 11-15 cycle-safe alternatif chip per egzersiz: Smith→Goblet, Bulgarian→Step-Up, RDL→Cable Pull-Through, HT→Glute Bridge, B-Stance HT→Glute Bridge, Russian Twist→Pallof). Banner zenginleştirildi (yoğunluk×N · hacim×M rozet + faz tip italik). 238 satır ekleme. |
 
-**Toplam:** 40 commit + workout-ultimate/ raporları (repo dışı, 12 dosya).
+**Toplam:** 47 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -385,15 +392,27 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (6 Mayıs 2026)
+## 📍 Şu Anki Durum (6 Mayıs 2026 — gün sonu)
 
 ✅ **Bugün sekmesi bare-image + greeting'e indirgendi (6 May).** Bg.jpg artık ana hero, sade selam kartı (cycle phase + ZEN) hariç hiçbir şey yok. 📷 Health Ölçüm sekmesinde.
 
 ✅ **Türkçeleştirme bittirildi (6 May).** "İyi öğleden" → "Tünaydın", 33 egzersiz talimatı tam Türkçe, modal butonları, takvim sabitleri, split/cooldown isimleri.
 
-✅ **🧬 Egzersiz "Ultimate" 12-ajan sentez analizi tamamlandı (6 May).** workout-ultimate/ klasörü, 11 uzman + ben sentezci, sıralı çalışma. SYNTHESIS.md master roadmap hazır: 30 madde (P0:10 / P1:12 / P2:8) + 5 orijinal fikir + 4 haftalık Phase 2 implementation roadmap. **Şu an Phase 2 Hafta 1 — Quick Wins commit edildi, geri kalan büyük altyapı (set log, kas haritası, Bugün antrenman kartı) bekliyor.**
+✅ **🧬 Egzersiz "Ultimate" 12-ajan sentez analizi tamamlandı (6 May).** workout-ultimate/ klasörü repo'da, 11 uzman + ben sentezci, sıralı çalışma. SYNTHESIS.md master roadmap: 30 madde (P0:10 / P1:12 / P2:8) + 5 orijinal fikir + 4 haftalık Phase 2 implementation roadmap.
 
-✅ **Phase 2 Quick Wins commit edildi (6 May).** Hipoparatiroidi temizliği (7 yer), kreatin 5→14 gün, geç luteal +100→+150 kcal, RED-S guardrail Energy Availability hesabıyla genişletildi (`getEstimatedLBM`, `getDailyExerciseKcal`, `getEA` + IOC 2023 thresholds).
+✅ **Phase 2 Quick Wins (6 May).** Hipoparatiroidi temizliği (7 yer), kreatin 5→14 gün, geç luteal +100→+150 kcal, RED-S guardrail Energy Availability hesabıyla genişletildi.
+
+✅ **Phase 2 Hafta 2 — Set log altyapısı TAMAMLANDI (6 May).** Üç alt-hafta tek günde tamamlandı:
+   - **2A (`6caa368`):** WorkoutLogEntry data model + 14 helper + UI (per-set kg/rep/RPE input + ✓ confirm + pre-fill + bottom sheet ⚡/🛌). Migration eski done boolean → workout_log.
+   - **2B (`f3694c4`):** Wake Lock API (antrenmanda ekran açık), auto rest timer (compound 150s, izolasyon 75s, core 45s), vibration + visual flash, manuel −10/skip/+10 kontrolleri.
+   - **2C (`cee41ca`):** PR celebration modal (cycle-aware ZEN, Trophy animasyon, "önceki → yeni" + delta), antrenman özeti üstte (✨ Tamam / 📊 Şu ana kadar — volume, ort RPE, PR, atlanan), her hareket için son 4 seans 1RM sparkline.
+
+✅ **Phase 2 Hafta 3 — 5-gün split + cycle-aware matrisi TAMAMLANDI (6 May, `588b6ef`).** Pzt Alt-Squat / Sal Üst-Push / Çar Glute-Posterior / Per Üst-Pull / Cum Total-Hibrid / Cmt-Paz dinlenme. 10 yeni hareket (Bulgarian Split, Goblet, Step-Up, Cable Chest Fly, B-Stance HT, Cable Pull-Through, Dead Bug, Assisted Pull-Up, KB Swing, Farmer's Carry). `getCycleAwareWorkoutAdjustment` 7 faz × intensity/volume çarpanı + bilim notu + substitusyon flag. Ovulasyon Day 11-15'te her riskli hareket kartında "🌸 [Alternatif]'a geç" CTA chip — tek tap S.swaps üzerinden cycle-safe geçiş.
+
+### 6 Mayıs ne oldu (BÜYÜK GÜN — 14 commit)
+1. Bugün strip · 2. Türkçeleştirme · 3-14. workout-ultimate (1 plan + 12 ajan + sentez + 4 quick win) → Hafta 2A/B/C → Hafta 3
+2. **Phase 2 Hafta 1 (Quick Wins) ✅ + Hafta 2 (Set log) ✅ + Hafta 3 (Split + cycle-aware) ✅**
+3. SYNTHESIS roadmap'te P0 listesinin **6/10'u tamam** (P0 #6 ⓘ bilim modu, #7 haftalık özet, #8 body neutrality dil, #9 anti-kompulsif kaldı — Hafta 4)
 
 
 
@@ -459,11 +478,21 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 - Modal düzenlenebilir alanlarda input UX
 
 ⏳ **Phase 2 — Egzersiz "Ultimate" devam ediyor:**
-- Hafta 1 Quick Wins ✅ tamam (commit `ffb2619`)
-- **Hafta 2:** Set log altyapısı (set/rep/ağırlık/RPE girişi, PR detection) — SYNTHESIS.md P0 #2 ana iş
-- **Hafta 3:** 5-gün split (Alt-Squat / Üst-Push / Glute-Posterior / Üst-Pull / Total Hibrit) + cycle-aware antrenman matrisi (ovulasyon Goblet substitution vb.)
-- **Hafta 4:** UX tamamlama — Bilim modu toggle + ⓘ mikro-açıklama, kas haritası heatmap, "Bugün antrenmanın" kart akışı
-- **P1 (4 hafta sonrası):** 5 orijinal fikirden seçilenler (Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror)
+- Hafta 1 Quick Wins ✅ (`ffb2619`)
+- Hafta 2 Set log altyapısı ✅ (`6caa368` + `f3694c4` + `cee41ca`)
+- Hafta 3 5-gün split + cycle-aware matrisi ✅ (`588b6ef`)
+- **Hafta 4 (sıradaki):** SYNTHESIS P0 kalan 4 madde:
+  - **#6 ⓘ inline expand bilim modu** — Bilim Modu toggle + L2/L3 mikro-açıklama (Ajan 7 pedagoji)
+  - **#7 Plan vs gerçek haftalık özet** — Pazar gece kart, multiple streak (Ajan 8 + 9)
+  - **#8 Body neutrality dil revizyonu** — 5 satır Eylül hedefi (kg/ölçü/kuvvet/dayanıklılık/ruh hali), aralık hedefler (Ajan 6)
+  - **#9 Anti-kompulsif tasarım** — haftalık compulsive screening, "daha az ye" hiçbir yerde, confetti haftalık milestone'a kaydır
+  - **+ Akşam 30 sn check-in** (P0 #5 yarı tamam — ✓/⚡/🛌 var, akşam check-in eksik)
+- **P1 (Hafta 5+, 4-8 hafta süreceği tahmin):** 5 orijinal fikir
+  - 🧪 Hacettepe Lab — bilim modu özel sekme (PMID kütüphanesi, hipotez defteri)
+  - 💬 Body Conversation — sabah niyet → akşam karşılaştırma somatic diyalog
+  - 📊 Cycle Pattern Emergence — 3 cycle sonra "Bengisu'nun Cycle Atlası"
+  - 💊 Levotiron Diary — ilaç × performance × mood pattern, doktor PDF export
+  - 💍 Wedding Mirror — düğüne 60 gün kala özel mod, 14 gün önce kg suspension
 
 ⏳ **Bengisu'nun cevaplaması gereken açık sorular** (SYNTHESIS.md Bölüm 7):
 
