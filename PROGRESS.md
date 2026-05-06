@@ -466,12 +466,20 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 - **P1 (4 hafta sonrası):** 5 orijinal fikirden seçilenler (Hacettepe Lab / Body Conversation / Cycle Pattern Emergence / Levotiron Diary / Wedding Mirror)
 
 ⏳ **Bengisu'nun cevaplaması gereken açık sorular** (SYNTHESIS.md Bölüm 7):
-- kg/lbs tercih?
-- RPE girişi şart mı yoksa opsiyonel mi?
-- Wake Lock (ekran açık tutma) istiyor mu?
-- Push notification izni vermek ister mi?
+
+**Cevaplananlar (6 May):**
+- ✅ kg/lbs tercih? → **kg**
+- ✅ RPE girişi şart mı yoksa opsiyonel mi? → **şart** (her sette zorunlu, otoregülasyon + cycle × performance pattern için)
+- ✅ 5 orijinal fikirden hangileri Phase 2'ye girsin? → **HEPSİ** (Hacettepe Lab + Body Conversation + Cycle Pattern Emergence + Levotiron Diary + Wedding Mirror). Bu Phase 2'yi ~8-12 haftaya uzatır, sıralama Hafta 2 sonrası netleşir.
+
+**Hafta 2 design kararları (6 May):**
+- ✅ Wake Lock: **antrenmanda hep açık** (Egzersiz sekmesi açıkken Wake Lock API aktif)
+- ✅ Pre-fill: **otomatik gelsin** — Strong/Hevy pattern, önceki seans ağırlık + rep + RPE placeholder olarak
+- ✅ Timer auto: **set bitince otomatik başlasın** — compound 150s, izolasyon 75s, core 45s
+
+**Açık (Hafta 2 implementasyonu sırasında veya sonra cevaplanır):**
+- Push notification izni vermek ister mi (akşam check-in için)?
 - "Süreklilik" mi "Akış" mı kelime tercihi?
-- Wedding Mirror modu istiyor mu?
 - Hangi rakip app denedi? Beğendiği özellik var mı?
 
 🎯 **Sonraki adımlar:**
