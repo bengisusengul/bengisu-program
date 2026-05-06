@@ -745,6 +745,49 @@ select option{background:var(--bg-deep);color:var(--cream);}
   .rest-timer{animation:none;}
   .rest-timer-time.low{animation:none;}
 }
+
+/* ════════════════════════════════════════════ */
+/* PR CELEBRATION MODAL (Phase 2 Hafta 2C) */
+/* ════════════════════════════════════════════ */
+.pr-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;padding:20px;}
+.pr-modal.open{display:flex;animation:prFadeIn 0.32s ease-out;}
+.pr-modal-backdrop{position:absolute;inset:0;background:rgba(15,30,38,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.pr-modal-content{position:relative;z-index:1;background:linear-gradient(160deg,rgba(15,30,38,0.96),rgba(60,42,10,0.92));border:1px solid rgba(232,178,63,0.45);border-radius:24px;padding:32px 28px 24px;max-width:340px;width:100%;text-align:center;color:var(--cream);box-shadow:0 24px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.18),0 0 0 1px rgba(232,178,63,0.12);}
+.pr-trophy{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 4px 16px rgba(232,178,63,0.6));animation:prTrophy 0.6s ease-out;}
+.pr-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--mustard);letter-spacing:0.5px;margin-bottom:6px;}
+.pr-exercise{font-size:14px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1.4px;font-weight:600;margin-bottom:18px;}
+.pr-numbers{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+.pr-prev{font-size:16px;color:var(--cream-mute);text-decoration:line-through;text-decoration-color:rgba(232,221,196,0.5);}
+.pr-arrow{font-size:18px;color:var(--mustard-soft);}
+.pr-new{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--mustard);letter-spacing:-0.5px;line-height:1;}
+.pr-delta{font-size:12px;color:var(--mustard-soft);margin-bottom:14px;letter-spacing:0.4px;}
+.pr-arch{font-size:11px;color:var(--coral-soft);text-transform:uppercase;letter-spacing:1.6px;margin-bottom:14px;font-weight:600;}
+.pr-zen{font-style:italic;font-size:14px;color:var(--cream-soft);line-height:1.55;margin:8px 8px 24px;padding:12px 14px;background:rgba(232,178,63,0.08);border-left:2px solid var(--mustard);border-radius:0 12px 12px 0;text-align:left;}
+.pr-close-btn{padding:12px 32px;font-size:14px;font-weight:600;background:linear-gradient(135deg,var(--mustard),var(--coral));color:var(--ink);border:none;border-radius:50px;cursor:pointer;font-family:inherit;}
+.pr-close-btn:active{transform:scale(0.96);}
+@keyframes prFadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes prTrophy{0%{transform:scale(0) rotate(-180deg);opacity:0;}60%{transform:scale(1.15) rotate(10deg);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
+
+/* ════════════════════════════════════════════ */
+/* SESSION SUMMARY KARTI (Phase 2 Hafta 2C) */
+/* ════════════════════════════════════════════ */
+.session-summary{margin:0 16px 14px;padding:14px 16px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(255,255,255,0.14);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,0.28);color:var(--cream);}
+.session-summary.complete{border-color:rgba(232,178,63,0.42);background:linear-gradient(135deg,rgba(15,30,38,0.55),rgba(232,178,63,0.10));box-shadow:0 8px 24px rgba(232,178,63,0.18);}
+.session-summary-h{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.session-summary-icon{font-size:24px;}
+.session-summary-titles{flex:1;}
+.session-summary-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream-soft);letter-spacing:0.3px;}
+.session-summary-sub{font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;}
+.session-summary-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;}
+.ss-stat{padding:8px 6px;background:rgba(232,221,196,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;text-align:center;display:flex;flex-direction:column;gap:3px;}
+.ss-stat-v{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream-soft);line-height:1;}
+.ss-stat-l{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
+
+/* ════════════════════════════════════════════ */
+/* EXERCISE SPARKLINE (Phase 2 Hafta 2C) */
+/* ════════════════════════════════════════════ */
+.ex-sparkline-wrap{display:inline-flex;align-items:center;}
+.ex-sparkline{display:block;}
 </style>
 </head>
 <body>
@@ -843,6 +886,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="wstrip" id="e-strip"></div>
   <div id="e-phase-notice"></div>
   <div id="e-health-info"></div>
+  <div id="e-session-summary"></div>
   <div id="e-rest" style="margin:0 16px 12px;display:none;">
     <div class="notice nm"><div class="nicon">🛌</div><div><strong>Dinlenme Günü</strong><br>Hafif yürüyüş veya esneme yapabilirsin.</div></div>
   </div>
@@ -3589,8 +3633,14 @@ function confirmSet(dk,exId,setIdx){
     // PR check (önceki seansların max'ı ile karşılaştır)
     if(isNewPR(exId,oneRM,dk)){
       entry.isPR=true;
-      // PR celebration → Hafta 2C'de tam render; şimdilik toast
-      setTimeout(()=>showToast(`🏆 PR! ${exId.toUpperCase()} 1RM tahmini: ${oneRM} kg`,'pr'),300);
+      // Önceki maxı bul (celebration için)
+      let prevMax=0;
+      for(const dKey in S.workoutLog){
+        if(new Date(dKey).getTime()>=new Date(dk).getTime())continue;
+        const e=S.workoutLog[dKey][exId];
+        if(e?.oneRMEstimate>prevMax)prevMax=e.oneRMEstimate;
+      }
+      setTimeout(()=>celebratePR(exId,oneRM,prevMax,dk),350);
     }
     entry.oneRMEstimate=oneRM;
   }
@@ -3648,6 +3698,139 @@ function skipSet(dk,exId,setIdx,reason){
   saveWorkoutLog();
   renderExDay();
   if(typeof renderWeekSum==='function')renderWeekSum();
+}
+
+// ── PR celebration (Phase 2 Hafta 2C) — cycle-aware ZEN
+const PR_ZEN={
+  'Menstruation':[
+    'Regl PR\'ı: sezginin ne kadar derin olduğunun kanıtı.',
+    'Bu hafta dinlemen + güçlenmen aynı anda — nadir bir armağan.',
+    'Bedenin akışta, sen de akışınla birlikte güçleniyorsun.'
+  ],
+  'Follicular Phase':[
+    'Östrojen yükseliyor, sen de — bu sezon başlangıcı.',
+    'Yeni döngü, yeni güç. Bedenin kapasitesini kanıtladı.',
+    'İlkbaharda büyürsün. Hücreler senin çağrını duyuyor.'
+  ],
+  'Ovulation':[
+    'Zirvedeki hâlin bu. Vücut + zihin tam senkron.',
+    'Bugün güçlü hissetmen tesadüf değil — biyolojin seni destekliyor.',
+    'Anne arketibin kendi gücünü tanıdığında doğar.'
+  ],
+  'Luteal Phase':[
+    'Cadı\'nın bilgeliği güçle birleşince → bu rekor doğdu.',
+    'Geç luteal\'de PR? Bu vücut bilinci, hormon değil.',
+    'Sınır koymayı bildiğin gibi kasını da bilirsin.'
+  ]
+};
+function getPRZenQuote(phase){
+  const list=PR_ZEN[phase]||PR_ZEN['Follicular Phase'];
+  return list[Math.floor(Math.random()*list.length)];
+}
+function findExerciseName(exId){
+  for(const dow in EX){
+    const arr=EX[dow]||[];
+    for(const ex of arr)if(ex.id===exId)return ex.n;
+  }
+  return exId.toUpperCase();
+}
+function celebratePR(exId,candidate1RM,prevMax,dk){
+  S.activePR={exId,candidate1RM,prevMax,dk,ts:Date.now()};
+  if(navigator.vibrate)try{navigator.vibrate([100,60,100,60,260]);}catch(e){}
+  renderPRCelebration();
+}
+function renderPRCelebration(){
+  let el=document.getElementById('pr-celebration');
+  if(!S.activePR){
+    if(el)el.classList.remove('open');
+    return;
+  }
+  if(!el){
+    el=document.createElement('div');
+    el.id='pr-celebration';
+    el.className='pr-modal';
+    document.body.appendChild(el);
+  }
+  el.classList.add('open');
+  const{exId,candidate1RM,prevMax,dk}=S.activePR;
+  const c=ci(new Date(dk));
+  const phase=c?c.phase:'Follicular Phase';
+  const archetype=c?c.archetype:'';
+  const exName=findExerciseName(exId);
+  const delta=prevMax>0?(candidate1RM-prevMax).toFixed(1):candidate1RM.toFixed(1);
+  const zen=getPRZenQuote(phase);
+  el.innerHTML=`<div class="pr-modal-backdrop" onclick="closePR()"></div><div class="pr-modal-content"><div class="pr-trophy">🏆</div><div class="pr-title">Yeni Rekor</div><div class="pr-exercise">${exName}</div><div class="pr-numbers">${prevMax>0?`<span class="pr-prev">${prevMax} kg</span><span class="pr-arrow">→</span>`:''}<span class="pr-new">${candidate1RM} kg</span></div><div class="pr-delta">${prevMax>0?'+'+delta+' kg':candidate1RM+' kg'} · 1RM tahmini</div>${archetype?`<div class="pr-arch">${archetype} enerjisi</div>`:''}<div class="pr-zen">"${zen}"</div><button class="btn bp pr-close-btn" onclick="closePR()">Devam et</button></div>`;
+}
+function closePR(){
+  S.activePR=null;
+  const el=document.getElementById('pr-celebration');
+  if(el)el.classList.remove('open');
+}
+
+// ── Son N seans 1RM sparkline (Phase 2 Hafta 2C)
+function renderExSparkline(exId,beforeDk,n=4){
+  const log=S.workoutLog;
+  const dates=Object.keys(log)
+    .filter(d=>{
+      const e=log[d][exId];
+      return e?.oneRMEstimate>0 && new Date(d).getTime()<=new Date(beforeDk).getTime();
+    })
+    .sort((a,b)=>new Date(b)-new Date(a))
+    .slice(0,n)
+    .reverse();
+  if(dates.length<2)return '';
+  const values=dates.map(d=>log[d][exId].oneRMEstimate);
+  const min=Math.min(...values),max=Math.max(...values);
+  const range=max-min||1;
+  const w=72,h=22,pad=3;
+  const points=values.map((v,i)=>{
+    const x=pad+(i/(values.length-1))*(w-2*pad);
+    const y=h-pad-((v-min)/range)*(h-2*pad);
+    return[x,y];
+  });
+  const polyline=points.map(p=>`${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const circles=points.map((p,i)=>{
+    const isLast=i===points.length-1;
+    return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${isLast?2.5:1.5}" fill="${isLast?'var(--mustard)':'rgba(232,178,63,0.55)'}"/>`;
+  }).join('');
+  return `<svg class="ex-sparkline" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-label="Son ${dates.length} seans 1RM trendi"><polyline points="${polyline}" fill="none" stroke="rgba(232,178,63,0.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>${circles}</svg>`;
+}
+
+// ── Antrenman özet kartı (Phase 2 Hafta 2C)
+function renderSessionSummary(d,dk){
+  const el=document.getElementById('e-session-summary');
+  if(!el)return;
+  const dow=d.getDay();
+  const exs=EX[dow]||[];
+  if(!exs.length){el.innerHTML='';return;}
+  let totalSets=0,doneSets=0,modSets=0,skipSets=0;
+  let totalVolume=0;
+  let rpeSum=0,rpeCount=0;
+  let prCount=0;
+  let exHandled=0;
+  exs.forEach((rawEx,i)=>{
+    const ex=(S.swaps[dk]&&S.swaps[dk][i])||rawEx;
+    const entry=S.workoutLog[dk]?.[ex.id];
+    if(!entry)return;
+    let exAllNonPending=entry.sets.every(s=>s.state!=='pending');
+    entry.sets.forEach(s=>{
+      totalSets++;
+      if(s.state==='done'){
+        doneSets++;
+        if(s.actual.weight&&s.actual.reps)totalVolume+=s.actual.weight*s.actual.reps;
+        if(s.actual.rpe){rpeSum+=s.actual.rpe;rpeCount++;}
+      }else if(s.state==='modified')modSets++;
+      else if(s.state==='skipped')skipSets++;
+    });
+    if(exAllNonPending)exHandled++;
+    if(entry.isPR)prCount++;
+  });
+  if(doneSets+modSets+skipSets===0){el.innerHTML='';return;}
+  const avgRPE=rpeCount>0?(rpeSum/rpeCount).toFixed(1):'—';
+  const allHandled=exHandled===exs.length;
+  const headerIcon=allHandled?'✨':'📊';
+  const headerTitle=allHandled?'Antrenman Tamam':'Şu ana kadar';
+  el.innerHTML=`<div class="session-summary ${allHandled?'complete':''}"><div class="session-summary-h"><span class="session-summary-icon">${headerIcon}</span><div class="session-summary-titles"><div class="session-summary-title">${headerTitle}</div><div class="session-summary-sub">${exHandled}/${exs.length} hareket · ${doneSets}/${totalSets} set</div></div></div><div class="session-summary-stats"><div class="ss-stat"><span class="ss-stat-v">${Math.round(totalVolume).toLocaleString('tr-TR').replace(/,/g,'.')}</span><span class="ss-stat-l">kg·rep volume</span></div><div class="ss-stat"><span class="ss-stat-v">${avgRPE}</span><span class="ss-stat-l">ort RPE</span></div>${prCount>0?`<div class="ss-stat"><span class="ss-stat-v">${prCount}</span><span class="ss-stat-l">🏆 PR</span></div>`:''}${skipSets>0?`<div class="ss-stat"><span class="ss-stat-v">${skipSets}</span><span class="ss-stat-l">atlandı</span></div>`:''}${modSets>0?`<div class="ss-stat"><span class="ss-stat-v">${modSets}</span><span class="ss-stat-l">değişti</span></div>`:''}</div></div>`;
 }
 
 // Bottom sheet (modify / skip reason picker)
@@ -3847,6 +4030,8 @@ function renderExDay(){
       healthInfoEl.innerHTML='';
     }
   }
+  // Antrenman özet kartı (Phase 2 Hafta 2C)
+  if(typeof renderSessionSummary==='function')renderSessionSummary(d,dk);
   const list=document.getElementById('e-list');list.innerHTML='';
   if(!sp||!exs){document.getElementById('e-cool').innerHTML='';return;}
   const curEx=exs.map((ex,i)=>(S.swaps[dk]&&S.swaps[dk][i])||ex);
@@ -3910,9 +4095,10 @@ function renderExDay(){
         ${confirmBtn}
       </div>`;
     }).join('');
+    const sparkline=renderExSparkline(ex.id,dk,4);
     const summary=entry.oneRMEstimate>0
-      ?`<div class="set-summary"><span>Tahmini 1RM: <strong>${entry.oneRMEstimate} kg</strong></span>${entry.isPR?'<span class="pr-badge">🏆 PR</span>':''}</div>`
-      :'';
+      ?`<div class="set-summary"><span>Tahmini 1RM: <strong>${entry.oneRMEstimate} kg</strong></span>${sparkline?`<span class="ex-sparkline-wrap" title="Son seanslar 1RM trendi">${sparkline}</span>`:''}${entry.isPR?'<span class="pr-badge">🏆 PR</span>':''}</div>`
+      :(sparkline?`<div class="set-summary"><span style="color:var(--cream-mute);font-size:11px;">Trend</span><span class="ex-sparkline-wrap">${sparkline}</span></div>`:'');
     const div=document.createElement('div');div.className='exi';
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
     div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button></div><div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
