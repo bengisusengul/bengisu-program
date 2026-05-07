@@ -1252,6 +1252,37 @@ select option{background:var(--bg-deep);color:var(--cream);}
 @media (prefers-reduced-motion: reduce){.voice-btn.recording{animation:none;}}
 
 /* ════════════════════════════════════════════ */
+/* ADAPTIVE LOAD · HRV-driven yük önerisi (Phase 2 P2.8 — Ajan 11) */
+/* ════════════════════════════════════════════ */
+.al-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.al-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.al-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.al-readiness{padding:14px 16px;border-radius:14px;margin-bottom:12px;text-align:center;}
+.al-readiness.green{background:rgba(90,122,79,0.18);border:1px solid rgba(90,122,79,0.50);}
+.al-readiness.yellow{background:rgba(232,178,63,0.15);border:1px solid rgba(232,178,63,0.45);}
+.al-readiness.red{background:rgba(217,89,30,0.15);border:1px solid rgba(217,89,30,0.45);}
+.al-readiness-emoji{font-size:32px;line-height:1;margin-bottom:4px;}
+.al-readiness-status{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:0.3px;}
+.al-readiness.green .al-readiness-status{color:var(--sage-leaf);}
+.al-readiness.yellow .al-readiness-status{color:var(--mustard);}
+.al-readiness.red .al-readiness-status{color:var(--coral);}
+.al-readiness-meta{font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.6px;margin-top:4px;font-weight:600;}
+.al-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;}
+.al-stat{padding:8px 6px;border-radius:10px;background:rgba(232,221,196,0.04);text-align:center;}
+.al-stat-label{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;margin-bottom:2px;}
+.al-stat-val{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
+.al-stat-delta{font-size:10px;font-weight:600;margin-top:2px;}
+.al-stat-delta.up{color:var(--sage-leaf);}
+.al-stat-delta.down{color:var(--coral);}
+.al-recommendation{padding:12px 14px;border-radius:12px;background:rgba(232,221,196,0.04);border-left:3px solid var(--sage-leaf);font-size:13px;color:var(--cream-soft);line-height:1.55;}
+.al-rec-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--sage-leaf);font-weight:700;margin-bottom:6px;}
+.al-ai-btn{display:block;width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(123,168,176,0.42),rgba(123,168,176,0.20));border:1px solid rgba(123,168,176,0.55);color:var(--cream);font-weight:700;font-size:12px;cursor:pointer;margin-top:10px;}
+.al-ai-btn:disabled{opacity:0.6;cursor:wait;}
+.al-ai-result{margin-top:10px;padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:12.5px;color:var(--cream-soft);line-height:1.6;display:none;}
+.al-ai-result.open{display:block;animation:eveSlideIn 0.3s ease-out;}
+.al-empty{text-align:center;padding:18px 14px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1405,6 +1436,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="wstrip" id="e-strip"></div>
   <div id="e-phase-notice"></div>
   <div id="e-health-info"></div>
+  <!-- Adaptive Yük · HRV-driven readiness (Phase 2 P2.8) -->
+  <div id="e-adaptive-load"></div>
   <div id="e-session-summary"></div>
   <div id="e-rest" style="margin:0 16px 12px;display:none;">
     <div class="notice nm"><div class="nicon">🛌</div><div><strong>Dinlenme Günü</strong><br>Hafif yürüyüş veya esneme yapabilirsin.</div></div>
@@ -1784,6 +1817,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
         <div class="fr"><label>😴 Uyku dk</label><input type="number" id="hpm-sleep" placeholder="—"></div>
         <div class="fr"><label>❤️ Ortalama bpm</label><input type="number" id="hpm-hr" placeholder="—"></div>
         <div class="fr"><label>💗 Dinlenme bpm</label><input type="number" id="hpm-hrrest" placeholder="—"></div>
+        <div class="fr"><label>📊 HRV (ms) <small style="font-size:10px;color:var(--text-mid);">opsiyonel</small></label><input type="number" id="hpm-hrv" placeholder="—" step="0.1"></div>
       </div>
       <div class="msub" style="font-size:11px;margin-top:8px;">Yanlış okumuşsa düzelt. Boş = veri yok.</div>
     </div>
@@ -4754,7 +4788,8 @@ function fillHealthPhotoModal(parsed){
   setF('hpm-sleep',parsed.sleep_min);
   setF('hpm-hr',parsed.hr_avg);
   setF('hpm-hrrest',parsed.hr_rest);
-  const filled=['steps','active_kcal','exercise_min','stand_hr','sleep_min','hr_avg','hr_rest'].filter(k=>parsed[k]!==null&&parsed[k]!==undefined&&parsed[k]!=='').length;
+  setF('hpm-hrv',parsed.hrv);
+  const filled=['steps','active_kcal','exercise_min','stand_hr','sleep_min','hr_avg','hr_rest','hrv'].filter(k=>parsed[k]!==null&&parsed[k]!==undefined&&parsed[k]!=='').length;
   if(filled){
     document.getElementById('hpm-status').textContent=`AI ${filled} alan okudu — kontrol et, eksik varsa düzelt`;
   }
@@ -4771,6 +4806,13 @@ function saveHealthPhotoData(){
     const n=parseFloat(v);
     return isNaN(n)?0:Math.round(n);
   };
+  // HRV decimal'i koru (özellikle iOS HRV genellikle 30-90 ms float)
+  const numFloat=id=>{
+    const v=document.getElementById(id).value;
+    if(v===''||v===null||v===undefined)return 0;
+    const n=parseFloat(v);
+    return isNaN(n)?0:Math.round(n*10)/10;
+  };
   const cleaned={
     steps:num('hpm-steps'),
     active_kcal:num('hpm-kcal'),
@@ -4779,6 +4821,7 @@ function saveHealthPhotoData(){
     sleep_min:num('hpm-sleep'),
     hr_avg:num('hpm-hr'),
     hr_rest:num('hpm-hrrest'),
+    hrv:numFloat('hpm-hrv'),
   };
   if(!Object.values(cleaned).some(v=>v>0)){
     alert('En az bir alan dolu olmalı');
@@ -6974,7 +7017,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();renderHacettepeLab();renderCyclePatternEmergence();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();renderHacettepeLab();renderCyclePatternEmergence();renderAdaptiveLoad();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -8106,6 +8149,186 @@ function renderCyclePatternEmergence(){
       ${insight}
     </div>
   </div>`;
+}
+
+// ── Adaptive Load · HRV-driven readiness + Claude AI yük önerisi (Phase 2 P2.8 — Ajan 11)
+// Whoop pattern: HRV baseline (son 7 gün ortalama) vs bugün → readiness score → adaptive öneri.
+// Claude API ile derinleşmiş öneri (cycle phase + HRV + uyku + RHR kombine).
+
+function getRecentHealthData(daysBack){
+  daysBack=daysBack||7;
+  const log=getHealthLog();
+  const out=[];
+  const now=new Date();
+  for(let i=0;i<daysBack;i++){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const dk=ymd(d);
+    const e=log[dk];
+    if(e)out.push({dk,date:new Date(d),...e});
+  }
+  return out;
+}
+
+function getReadinessScore(){
+  const today=getHealthLog()[ymd(new Date())];
+  const last7=getRecentHealthData(7).filter(d=>d.hrv>0);
+  if(!today){
+    return{state:'no_today',msg:'Bugün için Apple Health verisi yok'};
+  }
+  // Baseline: son 7 günde HRV >0 olanların ortalaması (bugün hariç)
+  const baseline=last7.filter(d=>d.dk!==ymd(new Date()));
+  const avgHRV=baseline.length?baseline.reduce((a,d)=>a+d.hrv,0)/baseline.length:0;
+  const avgRHR=baseline.length?baseline.reduce((a,d)=>a+(d.hr_rest||0),0)/baseline.filter(d=>d.hr_rest>0).length:0;
+  const avgSleep=baseline.length?baseline.reduce((a,d)=>a+(d.sleep_min||0),0)/Math.max(1,baseline.filter(d=>d.sleep_min>0).length):0;
+  const todayHRV=today.hrv||0;
+  const todayRHR=today.hr_rest||0;
+  const todaySleep=today.sleep_min||0;
+  // Readiness score (0-100): %50 HRV + %25 RHR + %25 uyku
+  let score=50; // baseline
+  let factors=[];
+  if(avgHRV>0&&todayHRV>0){
+    const hrvDelta=(todayHRV-avgHRV)/avgHRV;
+    score+=hrvDelta*40; // ±%10 HRV → ±4 puan
+    factors.push({name:'HRV',today:todayHRV.toFixed(1),baseline:avgHRV.toFixed(1),delta:hrvDelta*100});
+  }
+  if(avgRHR>0&&todayRHR>0){
+    const rhrDelta=(avgRHR-todayRHR)/avgRHR; // düşük RHR iyi
+    score+=rhrDelta*30;
+    factors.push({name:'RHR',today:todayRHR,baseline:Math.round(avgRHR),delta:rhrDelta*100});
+  }
+  if(avgSleep>0&&todaySleep>0){
+    const sleepDelta=(todaySleep-avgSleep)/avgSleep;
+    score+=sleepDelta*20;
+    factors.push({name:'Uyku (dk)',today:todaySleep,baseline:Math.round(avgSleep),delta:sleepDelta*100});
+  }
+  if(factors.length===0){
+    return{state:'no_baseline',msg:'Baseline hesabı için son 7 günde HRV verisi gerekli'};
+  }
+  score=Math.max(0,Math.min(100,score));
+  let level='yellow',label='Orta',emoji='🌊';
+  if(score>=70){level='green';label='Hazır';emoji='💪';}
+  else if(score<45){level='red';label='Yumuşak Gün';emoji='🌙';}
+  return{state:'ok',score,level,label,emoji,factors,today,avgHRV,avgRHR,avgSleep};
+}
+
+function generateAdaptiveRecommendation(readiness){
+  if(!readiness||readiness.state!=='ok')return '';
+  const c=ci(new Date());
+  const cycleNote=c?` Cycle: ${c.label} · Gün ${c.day}.`:'';
+  if(readiness.level==='green'){
+    return `<strong>${readiness.emoji} Yeşil ışık.</strong> Plan dahilinde devam — eccentric tempo 3-1-1 deneyebilirsin. RPE 8-9 hedef.${cycleNote}`;
+  }
+  if(readiness.level==='red'){
+    return `<strong>${readiness.emoji} Bedenin yumuşak gün istedi.</strong> Volume %15-25 ↓, intensity %5-10 ↓. RPE 6-7 ile sınırlı tut. Tam dinlenme veya yoga akışı opsiyonel.${cycleNote}`;
+  }
+  return `<strong>${readiness.emoji} Orta hazırlık.</strong> Set sayısı koru, ağırlık aynı, son set rahat tut (RPE 7-8). Form öncelik.${cycleNote}`;
+}
+
+function renderAdaptiveLoad(){
+  const el=document.getElementById('e-adaptive-load');
+  if(!el)return;
+  // Sadece Egzersiz sekmesinde aktif (renderEx zaten oradan çağrıyor)
+  const r=getReadinessScore();
+  if(r.state==='no_today'||r.state==='no_baseline'){
+    el.innerHTML=`<div class="al-card">
+      <div class="al-title">🦋 Adaptive Yük</div>
+      <div class="al-subtitle">HRV-driven readiness · ${r.state==='no_today'?'bugünkü veri':'baseline'} eksik</div>
+      <div class="al-empty">${r.msg}.<br>Ölçüm sekmesinde 📷 Apple Health screenshot'ından HRV + RHR + uyku verilerini günlük ekle. 7 gün baseline sonrası adaptive yük önerisi otomatik aktive olur.</div>
+    </div>`;
+    return;
+  }
+  const stats=r.factors.map(f=>{
+    const deltaStr=f.delta>0.5?`+${f.delta.toFixed(0)}%`:f.delta<-0.5?`${f.delta.toFixed(0)}%`:'~';
+    const deltaCls=f.name==='RHR'?(f.delta>0.5?'up':f.delta<-0.5?'down':''):(f.delta>0.5?'up':f.delta<-0.5?'down':'');
+    return `<div class="al-stat">
+      <div class="al-stat-label">${f.name}</div>
+      <div class="al-stat-val">${f.today}</div>
+      <div class="al-stat-delta ${deltaCls}">vs ${f.baseline}</div>
+    </div>`;
+  }).join('');
+  const rec=generateAdaptiveRecommendation(r);
+  el.innerHTML=`<div class="al-card">
+    <div class="al-title">🦋 Adaptive Yük</div>
+    <div class="al-subtitle">HRV-driven readiness · son 7 gün baseline</div>
+    <div class="al-readiness ${r.level}">
+      <div class="al-readiness-emoji">${r.emoji}</div>
+      <div class="al-readiness-status">${r.label}</div>
+      <div class="al-readiness-meta">Readiness ${Math.round(r.score)}/100</div>
+    </div>
+    <div class="al-stats">${stats}</div>
+    <div class="al-recommendation">
+      <div class="al-rec-title">📋 Bugünün önerisi</div>
+      ${rec}
+    </div>
+    <button class="al-ai-btn" onclick="askClaudeAdaptive()">🤖 Claude'tan derin öneri al (cycle + HRV + uyku)</button>
+    <div class="al-ai-result" id="al-ai-result"></div>
+  </div>`;
+}
+
+async function askClaudeAdaptive(){
+  const btn=document.querySelector('.al-ai-btn');
+  const out=document.getElementById('al-ai-result');
+  if(!btn||!out)return;
+  const apiKey=localStorage.getItem('anthropic_key');
+  if(!apiKey){
+    out.classList.add('open');
+    out.innerHTML='<strong>🔑 API anahtarı gerekli.</strong> Ölçüm sekmesindeki Renpho AI veya Diet Custom Food modal\'ından kullandığın Anthropic API key gerekli — localStorage\'da yok.';
+    return;
+  }
+  const r=getReadinessScore();
+  if(r.state!=='ok'){
+    out.classList.add('open');
+    out.innerHTML='Veri yetersiz — önce Apple Health screenshot ile baseline doldur.';
+    return;
+  }
+  btn.disabled=true;
+  btn.textContent='⏳ Claude düşünüyor...';
+  const c=ci(new Date());
+  const phase=c?`${c.phase} (Day ${c.day})`:'cycle takibi yok';
+  const today=r.today;
+  const today_dk=ymd(new Date());
+  const dow=new Date().getDay();
+  const sp=SP[dow];
+  const splitName=sp?sp.n:'dinlenme';
+  const factsTxt=r.factors.map(f=>`${f.name}: bugün ${f.today} vs baseline ${f.baseline} (${f.delta>0?'+':''}${f.delta.toFixed(1)}%)`).join('; ');
+  const prompt=`Sen Bengisu için kişisel adaptive antrenman koçusun. Bugünkü durumu:
+- Cycle phase: ${phase}
+- Bugünkü split: ${splitName}
+- Readiness score: ${Math.round(r.score)}/100 (${r.label})
+- Verim faktörleri: ${factsTxt}
+- HRV ${today.hrv||'?'} ms · RHR ${today.hr_rest||'?'} bpm · Uyku ${today.sleep_min||'?'} dk · Adım ${today.steps||'?'}
+
+Bedeninle uyumlu, anti-kompulsif tonla 4-6 cümlelik öneri yaz. Türkçe, kız arketiplerine saygılı (Bilge Kadın/Genç Kız/Anne/Cadı). Set sayısı/intensity için somut sayı ver. RED-S koruma ve mood-protective ton kritik. Bilim referansı (1 PMID veya yazar) ekleyebilirsin. Kısa tut, sayısal somut.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:400,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok){
+      const errText=await res.text();
+      throw new Error('API '+res.status+': '+errText.substring(0,160));
+    }
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'(yanıt boş)';
+    out.classList.add('open');
+    out.innerHTML='<strong>🤖 Claude derin öneri:</strong><br><br>'+text.replace(/\n/g,'<br>');
+  }catch(e){
+    out.classList.add('open');
+    out.innerHTML='<strong>⚠️ Hata:</strong> '+(e.message||e);
+  }finally{
+    btn.disabled=false;
+    btn.textContent='🤖 Claude\'tan derin öneri al (cycle + HRV + uyku)';
+  }
 }
 
 // SKIN
