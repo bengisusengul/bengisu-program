@@ -1177,6 +1177,19 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .plate-warn{font-size:11px;color:var(--coral);background:rgba(217,89,30,0.10);padding:6px 10px;border-radius:8px;text-align:center;margin-top:8px;}
 
 /* ════════════════════════════════════════════ */
+/* MUSCLE ANATOMY MODAL · TR + Latince + L2 mekanizma (Phase 2 P2.4 — Ajan 7) */
+/* ════════════════════════════════════════════ */
+.ma-row{padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);margin-bottom:8px;}
+.ma-row-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);font-weight:700;margin-bottom:3px;}
+.ma-row-value{font-size:13px;color:var(--cream-soft);line-height:1.6;}
+.ma-row-value em{color:var(--mustard);font-style:italic;font-weight:600;}
+.ma-latin{font-style:italic;color:var(--cream);font-weight:500;}
+.ma-exercise-chip{display:inline-block;padding:3px 9px;border-radius:8px;background:rgba(90,122,79,0.18);color:var(--sage-leaf);font-size:11px;font-weight:600;margin:2px 4px 2px 0;}
+.ma-fn-chip{display:inline-block;padding:3px 9px;border-radius:8px;background:rgba(232,178,63,0.18);color:var(--mustard);font-size:11px;font-weight:600;margin:2px 4px 2px 0;}
+.mh-anatomy-btn{padding:6px 12px;border-radius:10px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-soft);font-size:11px;font-weight:600;cursor:pointer;margin-top:8px;}
+.mh-anatomy-btn:active{transform:scale(0.96);background:rgba(232,178,63,0.20);}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1804,6 +1817,37 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="macts" style="margin-top:18px;">
       <button class="btn bsoft" style="flex:1;" onclick="closeM('glossary-modal')">Kapat</button>
       <button class="btn bghost" style="flex:1;" onclick="toggleEduLevel();updateGlossModalLevel();">🔬 Bilim Modu Değiştir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MUSCLE ANATOMY MODAL (Phase 2 P2.4) — TR + Latince + fonksiyon + L2 mekanizma -->
+<div class="mo" id="muscle-anatomy-modal">
+  <div class="modal" style="max-width:460px;">
+    <div class="mhandle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <h3 id="ma-title" style="margin:0;">Kas</h3>
+      <span id="ma-emoji" style="font-size:22px;"></span>
+    </div>
+    <div class="msub" id="ma-latin" style="margin-bottom:14px;"></div>
+    <div class="ma-row">
+      <div class="ma-row-label">🎯 Ana fonksiyonlar</div>
+      <div class="ma-row-value" id="ma-functions"></div>
+    </div>
+    <div class="ma-row">
+      <div class="ma-row-label">⚙️ L2 mekanizma</div>
+      <div class="ma-row-value" id="ma-l2"></div>
+    </div>
+    <div class="ma-row">
+      <div class="ma-row-label">💪 Bu kası en çok aktive eden hareketler</div>
+      <div class="ma-row-value" id="ma-exercises"></div>
+    </div>
+    <div class="ma-row">
+      <div class="ma-row-label">🌸 Cycle bağlantısı</div>
+      <div class="ma-row-value" id="ma-cycle"></div>
+    </div>
+    <div class="macts" style="margin-top:14px;">
+      <button class="btn bsoft" style="flex:1;" onclick="closeM('muscle-anatomy-modal')">Kapat</button>
     </div>
   </div>
 </div>
@@ -6044,6 +6088,100 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 // ── Auto rest timer (Phase 2 Hafta 2B)
+// ── Muscle Anatomy modal · TR + Latince + L2 mekanizma (Phase 2 P2.4 — Ajan 7)
+// Heatmap detay card'ında "📚 Anatomi" tap → modal: latin + fonksiyon + L2 + ana hareket + cycle
+const MUSCLE_ANATOMY={
+  chest:{
+    emoji:'💪',label:'Göğüs',
+    latin:'Pectoralis major (sternal + clavicular bölüm)',
+    functions:['Horizontal adduction (kolu içe çekme)','Internal rotation','Shoulder flexion (clavicular bölüm)'],
+    l2:'Pectoral major iki ana bölüm: sternal (alt-orta) ve clavicular (üst). Incline 30-45° clavicular fiber %85 EMG (Trebs 2010), düz bench sternal baskın. Region-specific hipertrofi için iki açı gerekli (Schoenfeld 2017).',
+    keyExercises:['dbp','ccf'],
+    cycle:'Östrojen kollajen sentezini destekler — folliküler/ovulasyon haftası göğüs antrenmanı için kollajen-tendon adaptasyonu hızlı (Hansen 2017).'
+  },
+  shoulder:{
+    emoji:'🏔️',label:'Omuz',
+    latin:'Deltoid (anterior + medial + posterior bölüm)',
+    functions:['Abduction (medial)','Flexion (anterior)','Extension/external rotation (posterior)'],
+    l2:'Üç bölüm farklı işlev. Anterior delt push (bench, OHP) ile aktive — kolayca dominansa girer. Posterior delt en çok ihmal edilen → impingement riski. Medial delt 0-90° abduction %75 MVIC, sonra trap baskın.',
+    keyExercises:['dsp','lr','fp'],
+    cycle:'Ovulasyon Day 11-15 relaxin → gleno-humeral laksite → behind-the-neck press kontrindike. Folliküler güç penceresinde optimal.'
+  },
+  back:{
+    emoji:'🪶',label:'Sırt',
+    latin:'Latissimus dorsi + Trapezius (mid+lower) + Rhomboid + Erector spinae',
+    functions:['Adduction/extension (lat)','Scapular retraction (rhomboid + trap mid)','Spine extension (erector)'],
+    l2:'Modern oturma kültürü en çok ihmal eder — kifoz + öne yatkın postür kompansasyonu. Push:pull oranı 1:1 hedef. Lat lifleri mültifibriler — geniş tutuş üst, dar tutuş alt. Erector spinae anti-flexion (RDL eccentric) ile gelişir.',
+    keyExercises:['lat','cr','dbrow','fp','apu'],
+    cycle:'Folliküler haftada yeni hareket öğrenme + volume artışı için ideal. Posterior chain yaralanma riskinde regl Day 1-2 hafif tut.'
+  },
+  biceps:{
+    emoji:'💪',label:'Biceps',
+    latin:'Biceps brachii (long + short head) + Brachialis + Brachioradialis',
+    functions:['Elbow flexion','Forearm supination (biceps)','Forearm pronation (brachioradialis)'],
+    l2:'Biceps brachii 2 başlı; long head incline curl\'de stretch (omuz extension). Brachialis derin kas — kol sleeve doluluğu. Multi-angle stratejisi (curl + hammer + reverse) comprehensive hipertrofi (Wakahara 2012).',
+    keyExercises:['curl','ham','lat','cr','dbrow'],
+    cycle:'Compound çekme (lat/row) sırasında secondary aktivasyon. İzolasyon volumesi haftalık 8-14 set MEV-MAV bandında.'
+  },
+  triceps:{
+    emoji:'🦴',label:'Triceps',
+    latin:'Triceps brachii (long + lateral + medial head)',
+    functions:['Elbow extension','Shoulder extension (long head)','Shoulder adduction (long head)'],
+    l2:'Üç başı: lateral + medial pushdown\'da baskın, long head overhead extension gerektirir (omuz adduction). Triceps kol kütlesinin 2/3\'ü — biceps\'ten büyük. Pushdown + overhead + close-grip bench multi-angle (Wakahara 2013).',
+    keyExercises:['tc','dbp','dsp'],
+    cycle:'Push compound\'larında secondary. Folliküler PR penceresi close-grip bench için iyi (compound max).'
+  },
+  quad:{
+    emoji:'🦵',label:'Quadriceps',
+    latin:'Vastus medialis + lateralis + intermedius + Rectus femoris',
+    functions:['Knee extension (4 baş)','Hip flexion (rectus femoris — biarticular)'],
+    l2:'4 baş; rectus femoris omuzdan başlar (biarticular, hip flexion). Vastus medialis (VMO) son 15° ekstansiyon — patellar tracking için kritik. Step-up VMO baskın aktivasyon. Anterior load (Goblet) anterior chain dengesi.',
+    keyExercises:['sq','bss','gobl','step'],
+    cycle:'Folliküler PR penceresi (Day 11-13) squat 1RM %3-5 yüksek olabilir. Ovulasyon Day 11-15 relaxin → diz valgus eğilimi (Goblet alternatifi).'
+  },
+  hamstring:{
+    emoji:'🦵',label:'Hamstring',
+    latin:'Semitendinosus + Semimembranosus + Biceps femoris',
+    functions:['Knee flexion','Hip extension (biarticular)'],
+    l2:'3 kas, biarticular (hem diz hem kalça hareketi). Eccentric loading (RDL, Nordic curl) strain riskini %50 azaltır (Petersen 2011). Kollajen-tendon stiffness östrojen-aracılı (Hansen 2017) — folliküler/ovulasyon\'da daha verimli.',
+    keyExercises:['rdl','ht','bsht','cpt','gbr','kbs'],
+    cycle:'Ovulasyon haftası eccentric hamstring işi rezerve, hafif tut. Folliküler/erken luteal volume penceresi.'
+  },
+  glute:{
+    emoji:'🍑',label:'Glute',
+    latin:'Gluteus maximus (+ medius + minimus)',
+    functions:['Hip extension','Hip abduction (medius)','External rotation (med/min)'],
+    l2:'Vücudun en büyük tek kası — ~700-1100 cm³ kadın. Hip Thrust en yüksek EMG (Contreras 2015) — squat/deadlift\'ten yüksek. Üç bölüm (superior/medial/inferior); ayak konumu farklı bölümü vurgu. Femur boynu yatay yük → bone loading post-tiroidektomi KMY için kritik (Beck 2017).',
+    keyExercises:['ht','bsht','cpt','rdl','sq','gbr','kbs'],
+    cycle:'Folliküler güç PR penceresi. Geç luteal +%5-10 yük düşürme önerisi (kortizol +%15-20).'
+  },
+  core:{
+    emoji:'🧘',label:'Core',
+    latin:'Transversus abdominis + Rectus abdominis + Obliques + Multifidus',
+    functions:['Anti-rotation (obliques)','Anti-extension (rectus + TVA)','Anti-flexion (erector + TVA)','Intra-abdominal pressure'],
+    l2:'4 katmanlı sistem. TVA en derin "korse" kası — bracing (diaphragm + TVA + pelvic floor) → spinal stabilizasyon. McGill "Big 3" (curl-up + side bridge + bird dog) lumbar disk yük <100 lb (vs Crunch 700+ lb). Anti-rotation > rotation lumbar sağlığı için.',
+    keyExercises:['pall','db','plk','cc','rt','fc'],
+    cycle:'Geç luteal şişkinlik hissi normal — transverse plane (rotation/anti-rotation) işleri rahat. Rectus diastasis (gebelik sonrası) için Dead Bug + heel slide rehab altın.'
+  }
+};
+
+function showMuscleAnatomy(muscleKey){
+  const a=MUSCLE_ANATOMY[muscleKey];
+  if(!a){showToast('Bu kas için anatomi bilgisi yok','warn');return;}
+  document.getElementById('ma-title').textContent=a.label;
+  document.getElementById('ma-emoji').textContent=a.emoji;
+  document.getElementById('ma-latin').innerHTML='<span class="ma-latin">'+a.latin+'</span>';
+  document.getElementById('ma-functions').innerHTML=a.functions.map(f=>`<span class="ma-fn-chip">${f}</span>`).join(' ');
+  document.getElementById('ma-l2').innerHTML=(typeof linkifyGlossary==='function')?linkifyGlossary(a.l2):a.l2;
+  const exNames=a.keyExercises.map(id=>{
+    const n=findExerciseName(id)||id.toUpperCase();
+    return `<span class="ma-exercise-chip">${n}</span>`;
+  }).join(' ');
+  document.getElementById('ma-exercises').innerHTML=exNames;
+  document.getElementById('ma-cycle').innerHTML=(typeof linkifyGlossary==='function')?linkifyGlossary(a.cycle):a.cycle;
+  document.getElementById('muscle-anatomy-modal').classList.add('open');
+}
+
 // ── Plate calculator (Phase 2 P2.3 — Hevy pattern, kg)
 // Toplam yük → bar (20/15/0) + her tarafa eşit plakalar (greedy 20+15+10+5+2.5+1.25)
 const PLATE_AVAILABLE=[20,15,10,5,2.5,1.25];
@@ -6934,6 +7072,7 @@ function renderMuscleHeatmap(){
       <div class="mh-detail-meta">${v.toFixed(1)} effective set · ${vc.label} · MEV ${target.mev} / MAV ${target.mav} / MRV ${target.mrv}</div>
       <div class="mh-detail-list"><ul style="margin:0;padding:0;">${exItems||'<li>Bu hafta hareket yok</li>'}</ul></div>
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.10);font-size:12px;color:var(--cream-soft);font-style:italic;">${guidance}</div>
+      <button class="mh-anatomy-btn" onclick="showMuscleAnatomy('${m}')">📚 Anatomi öğren · TR + Latince + L2</button>
     </div>`;
   }
   // Legend (5 renk)
