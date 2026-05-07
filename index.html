@@ -1151,6 +1151,32 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wm-mode-toggle button.active{background:rgba(180,121,144,0.20);border-color:var(--mauve-evening);color:var(--cream);}
 
 /* ════════════════════════════════════════════ */
+/* PLATE CALCULATOR · barbell + plakalar (Phase 2 P2.3 — Hevy pattern) */
+/* ════════════════════════════════════════════ */
+.set-plate-btn{background:transparent;border:none;font-size:14px;color:var(--cream-mute);cursor:pointer;padding:4px 6px;border-radius:6px;-webkit-tap-highlight-color:transparent;line-height:1;}
+.set-plate-btn:hover,.set-plate-btn:active{color:var(--mustard);background:rgba(232,178,63,0.10);}
+.plate-viz{display:flex;align-items:center;justify-content:center;gap:1px;padding:24px 16px;background:rgba(15,30,38,0.45);border-radius:14px;margin:14px 0;min-height:80px;}
+.plate-bar{height:6px;background:linear-gradient(180deg,#888,#555);border-radius:2px;width:60px;flex-shrink:0;position:relative;}
+.plate-bar::before,.plate-bar::after{content:'';position:absolute;top:-1px;height:8px;width:4px;background:#666;border-radius:1px;}
+.plate-bar::before{left:-2px;}
+.plate-bar::after{right:-2px;}
+.plate-collar{width:6px;height:14px;background:#aaa;border-radius:2px;flex-shrink:0;}
+.plate{flex-shrink:0;border-radius:3px;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;text-shadow:0 1px 2px rgba(0,0,0,0.6);}
+.plate-20{height:60px;width:14px;background:#c44a4a;}
+.plate-15{height:54px;width:13px;background:#e8b23f;color:#3a2a0a;}
+.plate-10{height:48px;width:12px;background:#5a8c4a;}
+.plate-5{height:42px;width:11px;background:#888;}
+.plate-2_5{height:34px;width:10px;background:#444;}
+.plate-1_25{height:28px;width:9px;background:#666;}
+.plate-zero{font-size:11px;color:var(--cream-mute);font-style:italic;padding:8px 14px;}
+.plate-list{display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:12px;}
+.plate-list-item{padding:6px 10px;border-radius:8px;background:rgba(232,221,196,0.06);color:var(--cream-soft);}
+.plate-mode-toggle{display:flex;gap:4px;margin-bottom:10px;}
+.plate-mode-toggle button{flex:1;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);}
+.plate-mode-toggle button.active{background:rgba(232,178,63,0.20);border-color:var(--mustard);color:var(--cream);}
+.plate-warn{font-size:11px;color:var(--coral);background:rgba(217,89,30,0.10);padding:6px 10px;border-radius:8px;text-align:center;margin-top:8px;}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1778,6 +1804,26 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="macts" style="margin-top:18px;">
       <button class="btn bsoft" style="flex:1;" onclick="closeM('glossary-modal')">Kapat</button>
       <button class="btn bghost" style="flex:1;" onclick="toggleEduLevel();updateGlossModalLevel();">🔬 Bilim Modu Değiştir</button>
+    </div>
+  </div>
+</div>
+
+<!-- PLATE CALCULATOR MODAL (Phase 2 P2.3) — barbell + plakalar görsel -->
+<div class="mo" id="plate-modal">
+  <div class="modal" style="max-width:440px;">
+    <div class="mhandle"></div>
+    <h3 id="plate-title">🥪 Plaka Dağılımı</h3>
+    <div class="msub" id="plate-sub">Toplam yük → bar + her tarafa eşit plakalar.</div>
+    <div class="plate-mode-toggle" id="plate-mode-row">
+      <button class="active" id="plate-mode-bar20" onclick="setPlateMode('bar20')">20 kg Bar</button>
+      <button id="plate-mode-bar15" onclick="setPlateMode('bar15')">15 kg Bar (W)</button>
+      <button id="plate-mode-db" onclick="setPlateMode('db')">Dumbbell (toplam)</button>
+    </div>
+    <div class="plate-viz" id="plate-viz">—</div>
+    <div class="plate-list" id="plate-list"></div>
+    <div id="plate-warn"></div>
+    <div class="macts" style="margin-top:14px;">
+      <button class="btn bsoft" style="flex:1;" onclick="closeM('plate-modal')">Kapat</button>
     </div>
   </div>
 </div>
@@ -5998,6 +6044,103 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 // ── Auto rest timer (Phase 2 Hafta 2B)
+// ── Plate calculator (Phase 2 P2.3 — Hevy pattern, kg)
+// Toplam yük → bar (20/15/0) + her tarafa eşit plakalar (greedy 20+15+10+5+2.5+1.25)
+const PLATE_AVAILABLE=[20,15,10,5,2.5,1.25];
+
+function calcPlatesPerSide(perSideKg){
+  const used=[];
+  let remaining=perSideKg;
+  PLATE_AVAILABLE.forEach(p=>{
+    while(remaining>=p-0.001){
+      used.push(p);
+      remaining=Math.round((remaining-p)*1000)/1000;
+    }
+  });
+  return{plates:used,remaining:Math.round(remaining*1000)/1000};
+}
+
+function _getPlateMode(){return localStorage.getItem('plate_mode')||'bar20';}
+function _setPlateModeStorage(m){localStorage.setItem('plate_mode',m);}
+
+function setPlateMode(mode){
+  _setPlateModeStorage(mode);
+  ['bar20','bar15','db'].forEach(m=>{
+    const b=document.getElementById('plate-mode-'+m);
+    if(b)b.classList.toggle('active',m===mode);
+  });
+  // Güncel weight ile re-render
+  if(window._lastPlateWeight!=null)showPlateModal(window._lastPlateWeight,true);
+}
+
+function showPlateModal(weight,keepMode){
+  if(!weight||weight<=0){showToast('Önce bir kg değeri gir','warn');return;}
+  window._lastPlateWeight=weight;
+  if(!keepMode){
+    const stored=_getPlateMode();
+    ['bar20','bar15','db'].forEach(m=>{
+      const b=document.getElementById('plate-mode-'+m);
+      if(b)b.classList.toggle('active',m===stored);
+    });
+  }
+  const mode=_getPlateMode();
+  const viz=document.getElementById('plate-viz');
+  const list=document.getElementById('plate-list');
+  const warn=document.getElementById('plate-warn');
+  const sub=document.getElementById('plate-sub');
+  const title=document.getElementById('plate-title');
+  if(!viz||!list||!warn||!sub||!title)return;
+  title.textContent=`🥪 ${weight} kg dağılımı`;
+  // Mode-spesifik
+  let barKg=0;
+  if(mode==='bar20')barKg=20;
+  else if(mode==='bar15')barKg=15;
+  // db: bar=0, ama gösterilen "toplam" 2× tek dumbbell olarak yorumlanır
+  if(mode==='db'){
+    sub.textContent='Dumbbell modu · "Toplam" iki dumbbellın birlikte ağırlığı, her elde yarısı.';
+    const perHand=Math.round((weight/2)*1000)/1000;
+    viz.innerHTML=`<div class="plate-zero">Her elde <strong style="color:var(--cream);font-style:normal;font-size:14px;">${perHand} kg</strong> dumbbell</div>`;
+    list.innerHTML='';
+    warn.innerHTML='';
+    document.getElementById('plate-modal').classList.add('open');
+    return;
+  }
+  sub.textContent=`Bar ${barKg} kg + her tarafa eşit plakalar (${PLATE_AVAILABLE.join(', ')}).`;
+  if(weight<barKg-0.01){
+    viz.innerHTML=`<div class="plate-zero">Yük (${weight} kg) bardan (${barKg} kg) hafif — bar dahi tek başına.</div>`;
+    list.innerHTML='';
+    warn.innerHTML='';
+    document.getElementById('plate-modal').classList.add('open');
+    return;
+  }
+  if(Math.abs(weight-barKg)<0.01){
+    viz.innerHTML=`<div class="plate-collar"></div><div class="plate-bar"></div><div class="plate-collar"></div><div class="plate-zero" style="position:absolute;">Bar tek başına</div>`;
+    list.innerHTML=`<div class="plate-list-item">Bar: ${barKg} kg · plaka yok</div>`;
+    warn.innerHTML='';
+    document.getElementById('plate-modal').classList.add('open');
+    return;
+  }
+  const perSide=Math.round(((weight-barKg)/2)*1000)/1000;
+  const result=calcPlatesPerSide(perSide);
+  // Görsel: sol plakalar (büyükten küçüğe ortada barCollar) + bar + sağ plakalar (küçükten büyüğe içeriden dışarı = mirror)
+  const sortedDesc=[...result.plates].sort((a,b)=>b-a);
+  const sortedAsc=[...result.plates].sort((a,b)=>a-b);
+  const plateCls=k=>'plate plate-'+String(k).replace('.','_');
+  const leftSide=sortedDesc.map(p=>`<div class="${plateCls(p)}">${p}</div>`).join('');
+  const rightSide=sortedAsc.map(p=>`<div class="${plateCls(p)}">${p}</div>`).join('');
+  viz.innerHTML=`${leftSide}<div class="plate-collar"></div><div class="plate-bar"></div><div class="plate-collar"></div>${rightSide}`;
+  // Liste — plaka sayım
+  const counts={};
+  result.plates.forEach(p=>{counts[p]=(counts[p]||0)+1;});
+  const items=Object.keys(counts).sort((a,b)=>parseFloat(b)-parseFloat(a)).map(p=>`<div class="plate-list-item">${counts[p]}× <strong style="color:var(--cream);">${p} kg</strong></div>`).join('');
+  list.innerHTML=`<div class="plate-list-item" style="background:rgba(123,168,176,0.18);">Bar: ${barKg} kg</div>${items}`;
+  // Warning kalan varsa
+  warn.innerHTML=result.remaining>0.01
+    ?`<div class="plate-warn">⚠️ ${result.remaining.toFixed(2)} kg eşleştirilemedi (mikro plaka yok). Yakın yüke yuvarla.</div>`
+    :'';
+  document.getElementById('plate-modal').classList.add('open');
+}
+
 // ── Set arası bilim mikro-balon (Phase 2 P2.1 — Ajan 7 + Ajan 10)
 // 90sn dinlenme bandında 1 cümle mekanizma ipucu. Sweller cognitive load uygun (~12 char/word, 1-2 sentence).
 // Egzersiz id'sine göre özel havuz, hareket-spesifik yoksa '*' genel havuza düşer.
@@ -6344,6 +6487,8 @@ function renderExDay(){
       const confirmBtn=set.state==='pending'
         ?`<button class="set-confirm" onclick="confirmSet('${dk}','${ex.id}',${sIdx})" title="Seti tamamla">✓</button>`
         :`<div class="set-state-icon ${set.state}">${stateIcon}</div>`;
+      // P2.3: kg input value veya placeholder'dan plate calc weight'i türet
+      const plateW=wVal||placeholderW||0;
       return `<div class="set-row ${stateCls} ${activeCls}">
         <div class="set-num">${sIdx+1}</div>
         <div class="set-input-wrap">
@@ -6351,7 +6496,7 @@ function renderExDay(){
                  value="${wVal}" placeholder="${placeholderW}"
                  ${isLocked?'disabled':''}
                  onchange="logSetField('${dk}','${ex.id}',${sIdx},'weight',this.value)">
-          <div class="set-input-lbl">kg</div>
+          <div class="set-input-lbl" style="display:flex;align-items:center;justify-content:center;gap:4px;">kg${plateW>0?`<button class="set-plate-btn" onclick="event.stopPropagation();showPlateModal(${plateW})" aria-label="Plaka dağılımını göster" title="🥪 Plaka dağılımı">🥪</button>`:''}</div>
         </div>
         <div class="set-input-wrap">
           <input class="set-input" type="number" inputmode="numeric" min="0" max="100"
