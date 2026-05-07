@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 7 Mayıs 2026 (Phase 2 Hafta 4 — P0 10/10 TAMAMLANDI · supplement + body neutrality + akşam check-in + haftalık özet + ⓘ bilim modu)
+**Son güncelleme:** 7 Mayıs 2026 (Phase 2 P1 ROADMAP TAMAMEN TAMAMLANDI · 4 Epic, 16 commit · Pedagojik + Görselleştirme + Beslenme + 5 Orijinal Sentez Fikri)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -209,8 +209,23 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-07 | `b1f8e40` | **Phase 2 Hafta 4B — Akşam check-in + anti-kompulsif tasarım:** Bugün sayfasında 19:00-23:59 görünür akşam check-in kartı (5 mood: ✨💪🌊🌫️🌙, hiçbiri "başarısız"). Cycle context-aware proaktif önek. Pazar gece (≥20:00) haftalık compulsive screening modal (3 yargısız soru, 1-5 skala, avg ≥3.5 → kibar 3-gün esnek hafta önerisi). 15 yeni helper, 226 satır ekleme. |
 | 2026-05-07 | `e1a29a9` | **Phase 2 Hafta 4C — Plan vs gerçek haftalık özet kartı:** Bugün sayfasında pazar ≥20:00 otomatik görünür. 6 conic-gradient ring (yürüyüş 5/7, antrenman 5/5, 1. öğün 7/7, su hedef 7/7, dinlenme 2/2, cycle log 7/7) + total volume + ort RPE + PR sayısı + skip/modify listesi (sebepleriyle) + cycle-aware faz notu + yumuşak kapanış ("Bu hafta yarım değil — STRATEJİK"). `getWeeklyDigest()` helper agregatör. 166 satır. |
 | 2026-05-07 | `ee93689` | **Phase 2 Hafta 4D — ⓘ Bilim Modu inline expand:** EXERCISE_EDU data structure (5 hareket: sq/rdl/ht/lat/pall) — Ajan 7 pedagoji metinleri tam (anatomi/biyomekanik/metabolik/yaygın yanlış kavram + L3 ileri). Bilim Modu seviye sistemi (L2 default, L3 toggle ile mTOR/EMG/PMID görünür). ⓘ Bilim sage-green chip her egzersiz kartında (edu varsa). Tap → inline accordion 4 kategori. **SYNTHESIS P0 10/10 TAMAMLANDI** 🎉. 99 satır. |
+| 2026-05-07 — Phase 2 P1 ROADMAP başlangıcı (16 commit, hepsi tek gün) | | |
+| 2026-05-07 | `2e51f0f` | **Phase 2 Hafta 5A — EXERCISE_EDU 5→29 harekete genişledi:** 24 yeni hareket × 6 alan (short/anatomy/biomech/metabolic/misconception/advanced). Tüm SP split ana hareketleri Ajan 7 pedagoji ile. Bilim ref: Schoenfeld, Contreras, McGill, Israetel, Beck, Hornberger, Hansen, Boren, Lehman, Wakahara, Brookbush, Sims. 215 satır. **P1 Epic 1A.** |
+| 2026-05-07 | `6eba68d` | **Phase 2 Hafta 5B — Glossary 68 terim modal:** 7 kategori (antrenman/kas/hormon/beslenme/tip/cycle/pattern). `linkifyGlossary(html)` regex helper — her render'da glossary terimlerini `<u class="gloss-term">` ile sar. Modal pattern + 7 kategori renk pill. EXERCISE_EDU advanced field linkified. 205 satır. **P1 Epic 1B.** |
+| 2026-05-07 | `255ad16` | **Phase 2 Hafta 5C — Pazartesi 'Bu Hafta Odak' pedagojik kartı:** 6 cycle alt-fazı × 10 alan (tag/title/subtitle/intro/hormone/physiology/training/nutrition/risk/closing). Pzt 06:00-12:00 otomatik görünür. Maisie Hill + Sims + Wojtys 1998 PMID 9568310 ref. 148 satır. **P1 Epic 1C — Epic 1 (Pedagojik) tamamlandı.** |
+| 2026-05-07 | `2b48447` | **Phase 2 Hafta 6A — Güç Trendi 1RM grid:** Egzersiz sekmesinde 6 lift (sq/ht/rdl/lat/dbp/dsp) sparkline 2×3 grid. Brzycki+Epley+RPE (calc1RM existing). Cycle phase border tint, 🏆 PR rozeti, delta kg, 8 seans inline SVG sparkline. 132 satır. **P1 Epic 2A.** |
+| 2026-05-07 | `ae6823b` | **Phase 2 Hafta 6B — Kas Heatmap SVG body diagram:** 9 kas grubu × MEV/MAV/MRV (Israetel 2018). Ön + arka silüet, EXERCISE_MUSCLE_MAP 28 hareket × kas weight (toplam 1.0). 5-renk gradient (mauve/sage/mustard/coral). Tap-to-expand detail. 246 satır. **P1 Epic 2B.** |
+| 2026-05-07 | `d9bea8b` | **Phase 2 Hafta 6C — Volume Trendi 12 hafta stacked bar:** 9 kas grubu chip seçici, default glute. Inline SVG bar chart + 3 yatay ref çizgi (MEV sage, MAV mustard, MRV coral). Auto-deload tespiti (geç luteal phase çoğunluğu VEYA -%35 düşüş). 3 stat (ort/peak/deload). 168 satır. **P1 Epic 2C.** |
+| 2026-05-07 | `95cb92f` | **Phase 2 Hafta 6D — PR Timeline + ZEN havuzu genişletme:** PR_ZEN 4 faz × 3 → 4 × 6 quote (toplam 12→24, Maisie Hill + Ajan 6 ton). Yeni PR Timeline kartı — son 12 ay kronolojik PR listesi, cycle phase tint, 4 stat (toplam/hareket/son 30g/en güçlü pencere). 148 satır. **P1 Epic 2D — Epic 2 (Görselleştirme) tamamlandı.** |
+| 2026-05-07 | `28960bb` | **Phase 2 Hafta 7A — Mikronutrient Gap kartı:** 4 mikro (C vit/K2 MK-7/Omega-3/Lif) × karnivor diyet kaynakları + status + supplement aksiyon. 3-status renk (sage/mustard/coral), doktor sorusu paketi (mavi info accent). 105 satır. **P1 Epic 3A.** |
+| 2026-05-07 | `85dc102` | **Phase 2 Hafta 7B — Pre/Post-WO timing optimizasyonu:** Pre-WO 14:30 → 14:00 (60 dk WO öncesi). 30g karb + 15-25g protein (yumurta beyazı / kıyma+yumurta). Opsiyonel 14:15 kafein 100-200mg. Calciday 2. doz 17:00 → 18:30 (Hallberg 1991, Lonnerdal 2010 demir absorpsiyon). Hipoparatiroidi cleanup tamamlandı. 6/7 satır. **P1 Epic 3B — Epic 3 (Beslenme) tamamlandı.** |
+| 2026-05-07 | `d45b8df` | **Phase 2 Hafta 8A — Body Conversation:** P1 Epic 4'ün ilk orijinal sentez fikri. Bugün dashboard'da 3 kart: sabah niyet (06:00-12:00, 5 chip 💪🌊🧘🌱🤍), akşam karşılık (21:30+, 1-5 skala), 7 gün pattern özeti. localStorage 'body_conv'. Mauve/mustard accent, anti-kompulsif tasarım. Maisie Hill + Ajan 6 ref. 194 satır. |
+| 2026-05-07 | `dccb8f0` | **Phase 2 Hafta 8B — Levotiron Diary:** Bugün sabah tap (06:00-09:30, "✓ Aldım" tek tap → HH:MM otomatik kayıt). Diet sekmesinde haftalık özet (taken/missed/avg saat/std varyasyon dakika) + 30 gün mood korelasyon (cycle_logs.mood × erken/geç timing). PDF export ileride. 185 satır. |
+| 2026-05-07 | `5a1ada8` | **Phase 2 Hafta 8C — Hacettepe Lab:** Bilim Modu L3 ON ise Egzersiz sekmesinde 4 sub-tab. Veri Atölyesi (linearSlope 6 lift), Hipotez Defteri (open/confirmed/rejected workflow), PMID Kütüphanesi (16 ref × 4 kat: Antrenman/Cycle/Tiroid/Beslenme), Pedagojik Notlar (Mayer/Sweller/Vygotsky çerçeve). 214 satır. |
+| 2026-05-07 | `a7f2f21` | **Phase 2 Hafta 8D — Wedding Mirror:** Cycle Settings'teki event date'e bağlı, ≤60 gün kala Bugün countdown card görünür. 60 gün kala 1 kez modal otomatik açılır (3 mod: Status Quo / Hafifletme -%15 vol / Resilience). <14 gün kala kg suspended notice. Mauve gradient. 150 satır. |
+| 2026-05-07 | `3f983fb` | **Phase 2 Hafta 8E — Cycle × Performance Pattern Emergence:** P1 Epic 4'ün son orijinal fikri. 4 fazlı render: çok az veri (gizli) → 2-3 cycle (locked + progress bar) → 3 cycle ✓ ama eşik yetmedi (locked) → emerged (4 phase grid + insight + literatür kıyas). hasEmergedPattern() eşiği: 3 cycle + ≥4 PR + log ≥%30. Bengisu için ≈Ağustos 2026'da otomatik aktive olacak. Sims 2016 + McNulty 2020 PMID 30067632 ref. 183 satır. **P1 Epic 4 (5 Orijinal Sentez Fikri) tamamlandı — P1 ROADMAP TAMAMI ✅** |
 
-**Toplam:** 53 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
+**Toplam:** 69 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -398,7 +413,30 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · Phase 2 P0 fazı tamam)
+## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · Phase 2 P1 ROADMAP TAMAMLANDI 🎉)
+
+### 🎉🎉 Phase 2 P1 — 4 EPIC × 16 COMMIT TAMAMI ✅
+
+**Tek günde push'landı, GitHub Pages canlıda:** https://bengisusengul.github.io/bengisu-program/
+
+| | Epic | Madde | Commit | Satır |
+|---|---|---|---|---|
+| ✅ | **1 · Pedagojik temel** | 1A EXERCISE_EDU 5→29 hareket | `2e51f0f` | 215 |
+| ✅ | | 1B Glossary 68 terim modal + altı çizili linkify | `6eba68d` | 205 |
+| ✅ | | 1C Pazartesi 'Bu Hafta Odak' (6 alt-faz × 10 alan) | `255ad16` | 148 |
+| ✅ | **2 · Görselleştirme** | 2A Güç Trendi 1RM grid (6 lift × 8 seans) | `2b48447` | 132 |
+| ✅ | | 2B Kas Heatmap SVG body diagram (9 grup) | `ae6823b` | 246 |
+| ✅ | | 2C Volume Trendi 12 hafta × MEV/MAV/MRV | `d9bea8b` | 168 |
+| ✅ | | 2D PR Timeline + ZEN havuzu 4×6 | `95cb92f` | 148 |
+| ✅ | **3 · Beslenme** | 3A Mikronutrient Gap (4 mikro × karnivor) | `28960bb` | 105 |
+| ✅ | | 3B Pre/Post-WO timing + Calciday 18:30 (Hallberg) | `85dc102` | 6 |
+| ✅ | **4 · 5 Orijinal Sentez** | 4A Body Conversation (sabah niyet → akşam diyalog) | `d45b8df` | 194 |
+| ✅ | | 4B Levotiron Diary (sabah tap + 30 gün mood corr) | `dccb8f0` | 185 |
+| ✅ | | 4C Hacettepe Lab (Bilim L3 · 4 sub-tab + 16 PMID) | `5a1ada8` | 214 |
+| ✅ | | 4D Wedding Mirror (60 gün · 3 mod · kg suspend) | `a7f2f21` | 150 |
+| ✅ | | 4E Cycle Pattern Emergence (3 cycle atlas trigger) | `3f983fb` | 183 |
+
+**Ek:** PROGRESS.md güncellemesi (bu commit).
 
 ### 🎉 Phase 2 SYNTHESIS P0 roadmap — 10/10 TAMAMLANDI
 
