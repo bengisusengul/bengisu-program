@@ -346,6 +346,19 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .egc-l3-tip{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(232,178,63,0.10);border:1px solid rgba(232,178,63,0.32);font-size:12px;color:var(--cream-soft);line-height:1.55;}
 .egc-l3-tip strong{color:var(--mustard);}
 
+/* ════════════════════════════════════════════ */
+/* BACKUP/EXPORT · localStorage JSON download/upload (Phase 3.B-B) */
+/* ════════════════════════════════════════════ */
+.bx-card{margin:0 16px 16px;padding:16px 18px;border-radius:14px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(232,178,63,0.30);color:var(--cream-soft);}
+.bx-title{font-size:13px;font-weight:700;color:var(--cream-soft);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.bx-desc{font-size:11px;color:var(--cream-mute);line-height:1.5;margin-bottom:12px;}
+.bx-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.bx-btn{padding:10px 6px;border-radius:10px;border:1px solid var(--glass-border);background:rgba(232,221,196,0.06);color:var(--cream);cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;text-align:center;line-height:1.3;-webkit-tap-highlight-color:transparent;}
+.bx-btn:active{transform:scale(0.96);background:rgba(232,178,63,0.18);}
+.bx-btn-export{border-color:rgba(90,122,79,0.45);color:var(--sage-leaf);background:rgba(90,122,79,0.12);}
+.bx-btn-import{border-color:rgba(232,178,63,0.45);color:var(--mustard);background:rgba(232,178,63,0.10);}
+.bx-meta{font-size:10px;color:var(--cream-mute);margin-top:8px;text-align:center;font-style:italic;}
+
 /* GLOSSARY (Phase 2 Hafta 5B) — altı çizili tıklanabilir bilim terimleri */
 .gloss-term{text-decoration:underline dotted rgba(232,221,196,0.55);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;color:var(--cream);transition:color 0.18s, text-decoration-color 0.18s;font-weight:500;}
 .gloss-term:hover,.gloss-term:active{color:var(--mustard);text-decoration-color:var(--mustard);}
@@ -1619,6 +1632,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Notification Settings (Phase 2 P2.6) -->
   <div id="notification-settings"></div>
+
+  <!-- Backup/Export (Phase 3.B-B) -->
+  <div id="backup-export"></div>
 
   <div style="height:8px;"></div>
 </div>
@@ -6316,6 +6332,112 @@ function setEduLevelGlobal(level){
   showToast(`🔬 Bilim Modu: ${labels[level]}`,'pr');
 }
 
+// Phase 3.B-B — Backup/Export (localStorage JSON download/upload)
+const BACKUP_KEYS=[
+  'done','swaps','meas','sel_meals','periods','cycle_logs','cycle_settings',
+  'meals_done','custom_meals','water_log','last_complete_flash','recipes_cache',
+  'fasting_hidden','protected_days','onboarded_seen','fix_period_20260504',
+  'workout_log','health_log','edu_level','body_conv','levotiron_log',
+  'hypotheses','wedding_mirror_mode','wedding_mirror_seen60','wedding_reframe_manual',
+  'wedding_moments','notification_settings','plate_mode','active_profile'
+];
+
+function exportAllData(){
+  const data={};
+  BACKUP_KEYS.forEach(k=>{
+    const v=localStorage.getItem(k);
+    if(v!==null)data[k]=v;
+  });
+  // Tüm anthropic_key + notif_fired_* gibi runtime key'leri export ETMİYORUZ
+  // (API key güvenlik, fired flag'leri ephemeral)
+  const blob={
+    app:'Bengisu Program',
+    version:'1.0',
+    exportedAt:new Date().toISOString(),
+    keys:Object.keys(data).length,
+    data
+  };
+  const json=JSON.stringify(blob,null,2);
+  const file=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(file);
+  const a=document.createElement('a');
+  const dateStr=new Date().toISOString().split('T')[0];
+  a.href=url;
+  a.download=`bengisu-program-backup-${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  showToast(`💾 ${blob.keys} alan kaydedildi · backup-${dateStr}.json`,'pr');
+}
+
+function triggerImportData(){
+  const input=document.getElementById('bx-file-input');
+  if(input)input.click();
+}
+
+function handleImportFile(event){
+  const file=event.target.files?.[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const blob=JSON.parse(e.target.result);
+      if(blob.app!=='Bengisu Program'||!blob.data){
+        showToast('⚠️ Bu dosya Bengisu Program backup\'ı değil','warn');
+        return;
+      }
+      const conf=confirm(`Bu yedek (${blob.exportedAt?.split('T')[0]}) ${Object.keys(blob.data).length} alan içeriyor. Mevcut tüm verilerin üzerine yazılacak. Devam edilsin mi?`);
+      if(!conf)return;
+      // Sadece BACKUP_KEYS içindeki key'leri yükle (güvenlik)
+      let restored=0;
+      Object.keys(blob.data).forEach(k=>{
+        if(BACKUP_KEYS.includes(k)){
+          localStorage.setItem(k,blob.data[k]);
+          restored++;
+        }
+      });
+      showToast(`✓ ${restored} alan geri yüklendi · sayfa yenileniyor`,'pr');
+      setTimeout(()=>location.reload(),1200);
+    }catch(err){
+      showToast('⚠️ Dosya okunamadı: '+(err.message||err),'warn');
+    }
+  };
+  reader.readAsText(file);
+  // Aynı dosyayı tekrar seçebilmek için input'u temizle
+  event.target.value='';
+}
+
+function getBackupSummary(){
+  let totalSize=0;
+  let filledKeys=0;
+  BACKUP_KEYS.forEach(k=>{
+    const v=localStorage.getItem(k);
+    if(v!==null){filledKeys++;totalSize+=v.length;}
+  });
+  return{filledKeys,totalKeys:BACKUP_KEYS.length,sizeKB:(totalSize/1024).toFixed(1)};
+}
+
+function renderBackupExport(){
+  const el=document.getElementById('backup-export');
+  if(!el)return;
+  const s=getBackupSummary();
+  el.innerHTML=`<div class="bx-card">
+    <div class="bx-title">💾 Yedekleme</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Tüm verilerini (cycle log, set log, ölçümler, ayarlar) <strong>tek JSON dosyaya</strong> indir veya geri yükle. <em>Cihaz değiştirirken</em> veya tarayıcı çerezlerini sildiğinde kullan. Anthropic API key güvenlik nedeniyle yedeklenmez.</div>
+    <div class="bx-row">
+      <button class="bx-btn bx-btn-export" onclick="exportAllData()">
+        📥 İndir<br><span style="font-size:10px;font-weight:400;opacity:0.7;">${s.filledKeys}/${s.totalKeys} alan · ~${s.sizeKB} KB</span>
+      </button>
+      <button class="bx-btn bx-btn-import" onclick="triggerImportData()">
+        📤 Geri Yükle<br><span style="font-size:10px;font-weight:400;opacity:0.7;">JSON dosyasından</span>
+      </button>
+    </div>
+    <input type="file" id="bx-file-input" accept="application/json" style="display:none;" onchange="handleImportFile(event)">
+    <div class="bx-meta">Son güncelleme: bugün</div>
+  </div>`;
+}
+
 function renderEduGlobalCard(){
   const el=document.getElementById('edu-global');
   if(!el)return;
@@ -8752,6 +8874,8 @@ function renderCycle(){
   if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
   // Notification settings (Phase 2 P2.6)
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
+  // Backup/Export (Phase 3.B-B)
+  if(typeof renderBackupExport==='function')renderBackupExport();
 
   // ─── Hero card (current phase) ───
   renderCyHero();
