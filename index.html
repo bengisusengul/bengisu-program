@@ -1137,6 +1137,28 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wm-mode-option-desc{font-size:12px;color:var(--cream-mute);line-height:1.5;}
 
 /* ════════════════════════════════════════════ */
+/* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
+/* ════════════════════════════════════════════ */
+.cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.cpe-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.cpe-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.cpe-phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.cpe-phase-cell{padding:10px 6px;border-radius:10px;background:rgba(232,221,196,0.04);text-align:center;}
+.cpe-phase-cell.np{border-left:3px solid var(--coral);}
+.cpe-phase-cell.ns{border-left:3px solid var(--sage-leaf);}
+.cpe-phase-cell.ng{border-left:3px solid var(--mauve-evening);}
+.cpe-phase-cell.nm{border-left:3px solid var(--mustard);}
+.cpe-phase-emoji{font-size:18px;line-height:1;margin-bottom:2px;}
+.cpe-phase-label{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;}
+.cpe-phase-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--cream);line-height:1.1;margin-top:3px;}
+.cpe-phase-sub{font-size:9px;color:var(--cream-mute);margin-top:1px;}
+.cpe-insight{padding:12px 14px;border-radius:12px;background:rgba(180,121,144,0.10);border-left:3px solid var(--mauve-evening);font-size:13px;color:var(--cream-soft);line-height:1.6;margin-bottom:10px;}
+.cpe-insight-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mauve-evening);font-weight:700;margin-bottom:6px;}
+.cpe-locked{padding:18px 14px;text-align:center;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;background:rgba(232,221,196,0.04);border-radius:12px;border:1px dashed var(--glass-border);}
+.cpe-locked-progress{margin-top:10px;height:6px;border-radius:3px;background:rgba(232,221,196,0.08);overflow:hidden;}
+.cpe-locked-fill{height:100%;background:linear-gradient(90deg,var(--mauve-evening),var(--mustard));}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1285,6 +1307,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="e-pr-timeline"></div>
   <!-- Hacettepe Lab · Bilim Modu L3 özel sekme (Phase 2 Hafta 8C) -->
   <div id="e-hacettepe-lab"></div>
+  <!-- Cycle Pattern Emergence · 3 cycle sonra atlas (Phase 2 Hafta 8E) -->
+  <div id="e-cycle-pattern"></div>
   <div style="height:8px;"></div>
 </div>
 
@@ -5972,7 +5996,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();renderHacettepeLab();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();renderHacettepeLab();renderCyclePatternEmergence();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -6939,6 +6963,164 @@ function renderHacettepeLab(){
     <div class="hl-subtitle">Bilim Modu L3 · veri + hipotez + PMID + pedagoji</div>
     <div class="hl-tabs">${tabBtns}</div>
     ${pane}
+  </div>`;
+}
+
+// ── Cycle Pattern Emergence · 3 cycle sonra kişisel atlas (Phase 2 Hafta 8E — sentezci)
+// PR + mood + energy data 3 cycle bekleniyor → otomatik "pattern bulundu" insight
+// Eşik: 3 cycle minimum + ≥6 PR (her phase'te ≥1 PR) + cycle log mood/energy ≥%50
+
+// Kayıtlı period başlangıçlarından son 3 cycle'ın phase aralıkları
+function getRecent3CyclesRanges(){
+  const ps=getPeriods();
+  if(ps.length<3)return null;
+  // Son 3 cycle: en son 3 period start arası
+  const sortedStarts=ps.map(p=>fromYmd(p.start)).filter(d=>d).sort((a,b)=>a-b);
+  if(sortedStarts.length<3)return null;
+  const last3=sortedStarts.slice(-3);
+  const cycLen=getAvgCycleLen();
+  // Bunlardan her birinin phase aralıkları (ci() relative — basit yaklaşım: cycle başından N gün)
+  return last3.map(start=>({
+    start,
+    end:new Date(start.getTime()+cycLen*86400000)
+  }));
+}
+
+// Her phase için: PR sayısı + mood ortalaması + energy ortalaması (3 cycle birlikte)
+function getCyclePatternStats(){
+  const cycles=getRecent3CyclesRanges();
+  if(!cycles)return null;
+  const earliest=cycles[0].start;
+  const latest=cycles[cycles.length-1].end;
+  // PR'ları çek (son 3 cycle aralığı içinde)
+  const allPRs=getAllPRs(12);
+  const cyclePRs=allPRs.filter(p=>p.date>=earliest && p.date<=latest);
+  // Phase bazlı sayım
+  const phases=['Menstruation','Follicular Phase','Ovulation','Luteal Phase'];
+  const phaseLabels={'Menstruation':'Regl','Follicular Phase':'Folliküler','Ovulation':'Ovulasyon','Luteal Phase':'Luteal'};
+  const phaseEmojis={'Menstruation':'🔴','Follicular Phase':'🌱','Ovulation':'🌸','Luteal Phase':'🌙'};
+  const phaseClasses={'Menstruation':'np','Follicular Phase':'ns','Ovulation':'ng','Luteal Phase':'nm'};
+  const stats={};
+  phases.forEach(p=>{stats[p]={prs:0,moodSum:0,moodN:0,energySum:0,energyN:0,daysCount:0};});
+  // PR sayısı
+  cyclePRs.forEach(pr=>{
+    if(pr.cyclePhase && stats[pr.cyclePhase])stats[pr.cyclePhase].prs++;
+  });
+  // Cycle log (mood/energy) phase bazlı
+  const moodScore={happy:5,calm:4,irritable:2,sad:2,anxious:2};
+  const cycleLogs=getCycleLogs();
+  Object.keys(cycleLogs).forEach(dk=>{
+    const d=fromYmd(dk);
+    if(!d||d<earliest||d>latest)return;
+    const c=ci(d);
+    if(!c||!stats[c.phase])return;
+    stats[c.phase].daysCount++;
+    const logEntry=cycleLogs[dk];
+    if(logEntry.mood && moodScore[logEntry.mood]){
+      stats[c.phase].moodSum+=moodScore[logEntry.mood];
+      stats[c.phase].moodN++;
+    }
+    if(logEntry.energy && Number(logEntry.energy)>0){
+      stats[c.phase].energySum+=Number(logEntry.energy);
+      stats[c.phase].energyN++;
+    }
+  });
+  // Toparla
+  const result=phases.map(p=>({
+    phase:p,
+    label:phaseLabels[p],
+    emoji:phaseEmojis[p],
+    cls:phaseClasses[p],
+    prs:stats[p].prs,
+    avgMood:stats[p].moodN?stats[p].moodSum/stats[p].moodN:null,
+    avgEnergy:stats[p].energyN?stats[p].energySum/stats[p].energyN:null,
+    moodN:stats[p].moodN,
+    energyN:stats[p].energyN,
+    daysCount:stats[p].daysCount
+  }));
+  return{cycles,phaseStats:result,totalPRs:cyclePRs.length,earliest,latest};
+}
+
+// Pattern emerged sayılır mı? Kriter: 3 cycle ✓ + ≥4 toplam PR + cycle log ≥%30
+function hasEmergedPattern(){
+  const stats=getCyclePatternStats();
+  if(!stats)return false;
+  if(stats.totalPRs<4)return false;
+  // Cycle log dolulukunu da kontrol et (veri kalitesi)
+  const totalDays=stats.phaseStats.reduce((a,p)=>a+p.daysCount,0);
+  const expected=getAvgCycleLen()*3;
+  if(totalDays<expected*0.30)return false;
+  return true;
+}
+
+// İnsight metni üretici — en güçlü PR penceresi + en düşük mood penceresi
+function generatePatternInsight(stats){
+  if(!stats)return '';
+  const peakPR=stats.phaseStats.reduce((m,p)=>p.prs>m.prs?p:m,stats.phaseStats[0]);
+  const lowMood=stats.phaseStats.filter(p=>p.avgMood!==null).sort((a,b)=>a.avgMood-b.avgMood)[0];
+  const highEnergy=stats.phaseStats.filter(p=>p.avgEnergy!==null).sort((a,b)=>b.avgEnergy-a.avgEnergy)[0];
+  let lines=[];
+  if(peakPR && peakPR.prs>0){
+    lines.push(`<strong>Güç penceresi:</strong> ${peakPR.emoji} <em>${peakPR.label}</em> — son 3 cycle'da PR'larının ${Math.round(peakPR.prs/stats.totalPRs*100)}%'i bu fazda alındı (${peakPR.prs}/${stats.totalPRs}).`);
+  }
+  if(lowMood && lowMood.avgMood!==null && lowMood.moodN>=3){
+    lines.push(`<strong>Mood düşüşü:</strong> ${lowMood.emoji} <em>${lowMood.label}</em> — ortalama mood ${lowMood.avgMood.toFixed(1)}/5. Bu fazda kendine extra şefkat planla.`);
+  }
+  if(highEnergy && highEnergy.avgEnergy!==null && highEnergy.energyN>=3){
+    lines.push(`<strong>Enerji peaki:</strong> ${highEnergy.emoji} <em>${highEnergy.label}</em> — ortalama enerji ${highEnergy.avgEnergy.toFixed(1)}/5. Bu pencere yeni hareket öğrenme ve volume artırma için ideal.`);
+  }
+  if(!lines.length){
+    return '3 cycle veri tamamlandı ama pattern için PR + mood + energy verisi henüz yeterli değil. Set log + günlük cycle log doldurma devam etsin.';
+  }
+  // Literatür kıyaslama
+  const litRef='Literatür: Sims 2016 (ROAR) folliküler/ovulasyon güç peak; McNulty 2020 meta-analiz kişisel varyasyon yüksek (PMID 30067632) — kendi bedeninin pattern\'i daha değerli.';
+  return lines.join('<br>')+'<br><br><span style="font-size:11px;color:var(--cream-mute);font-style:italic;">'+litRef+'</span>';
+}
+
+function renderCyclePatternEmergence(){
+  const el=document.getElementById('e-cycle-pattern');
+  if(!el)return;
+  const cycles=getRecent3CyclesRanges();
+  if(!cycles){
+    // 3 cycle veri yok — locked durum
+    const ps=getPeriods();
+    const have=ps?ps.length:0;
+    const need=Math.max(0,3-have);
+    if(have<2){el.innerHTML='';return;} // Çok az veri varsa hiç gösterme
+    el.innerHTML=`<div class="cpe-card">
+      <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
+      <div class="cpe-subtitle">3 cycle sonra otomatik açılır</div>
+      <div class="cpe-locked">Henüz ${have} cycle kayıtlı. ${need} cycle daha sonra Bengisu'nun kişisel cycle × güç + mood + enerji pattern'i otomatik belirir.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${(have/3*100).toFixed(0)}%;"></div></div></div>
+    </div>`;
+    return;
+  }
+  const stats=getCyclePatternStats();
+  if(!stats){el.innerHTML='';return;}
+  const emerged=hasEmergedPattern();
+  if(!emerged){
+    el.innerHTML=`<div class="cpe-card">
+      <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
+      <div class="cpe-subtitle">3 cycle ✓ · pattern için veri biriktiriliyor</div>
+      <div class="cpe-locked">3 cycle tamamlandı (${stats.totalPRs} PR · cycle log dolu günler). Pattern için minimum ≥4 PR + cycle log ≥%30 günlük doluluğu gerekli. Set log + Döngü mood/energy dolduruma devam et — otomatik açılacak.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${Math.min(100,(stats.totalPRs/4*60+(stats.phaseStats.reduce((a,p)=>a+p.daysCount,0)/(getAvgCycleLen()*3))*40)).toFixed(0)}%;"></div></div></div>
+    </div>`;
+    return;
+  }
+  // Pattern emerged — atlas görünür
+  const phaseCells=stats.phaseStats.map(p=>`<div class="cpe-phase-cell ${p.cls}">
+    <div class="cpe-phase-emoji">${p.emoji}</div>
+    <div class="cpe-phase-label">${p.label}</div>
+    <div class="cpe-phase-num">${p.prs}</div>
+    <div class="cpe-phase-sub">PR · mood ${p.avgMood?p.avgMood.toFixed(1):'—'}</div>
+  </div>`).join('');
+  const insight=generatePatternInsight(stats);
+  el.innerHTML=`<div class="cpe-card">
+    <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
+    <div class="cpe-subtitle">Son 3 cycle · ${stats.totalPRs} PR · Bengisu'nun kişisel pattern'i</div>
+    <div class="cpe-phase-grid">${phaseCells}</div>
+    <div class="cpe-insight">
+      <div class="cpe-insight-title">🪞 Pattern Bulundu</div>
+      ${insight}
+    </div>
   </div>`;
 }
 
