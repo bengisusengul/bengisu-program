@@ -323,6 +323,21 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .msub{font-size:13px;color:var(--text-mid);margin-bottom:18px;}
 .macts{display:flex;gap:10px;margin-top:20px;}
 
+/* Phase 3.A — Sade dil paragrafı (her teknik kart için) */
+.card-plain{padding:10px 14px;margin-bottom:10px;border-radius:10px;background:rgba(232,221,196,0.04);border-left:3px solid var(--sage-leaf);font-size:13px;line-height:1.6;color:var(--cream-soft);font-style:italic;}
+.card-plain strong{font-style:normal;color:var(--cream);font-weight:600;}
+.card-plain em{font-style:normal;color:var(--mustard);font-weight:600;}
+.card-plain-tag{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--sage-leaf);font-style:normal;margin-right:6px;}
+
+/* Bilim Modu global seviye chip */
+.edu-global-card{margin:0 16px 16px;padding:14px 16px;border-radius:14px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(90,122,79,0.30);color:var(--cream-soft);}
+.edu-global-card .egc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.edu-global-card .egc-info{flex:1;min-width:0;}
+.edu-global-card .egc-title{font-size:12px;font-weight:700;color:var(--cream-soft);}
+.edu-global-card .egc-desc{font-size:11px;color:var(--cream-mute);line-height:1.5;margin-top:2px;}
+.edu-global-card .egc-btn{flex-shrink:0;padding:8px 14px;border-radius:10px;background:rgba(90,122,79,0.22);border:1px solid var(--sage-leaf);color:var(--cream);font-weight:700;font-size:12px;cursor:pointer;letter-spacing:0.4px;}
+.edu-global-card .egc-btn:active{transform:scale(0.96);}
+
 /* GLOSSARY (Phase 2 Hafta 5B) — altı çizili tıklanabilir bilim terimleri */
 .gloss-term{text-decoration:underline dotted rgba(232,221,196,0.55);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;color:var(--cream);transition:color 0.18s, text-decoration-color 0.18s;font-weight:500;}
 .gloss-term:hover,.gloss-term:active{color:var(--mustard);text-decoration-color:var(--mustard);}
@@ -6243,12 +6258,26 @@ const EXERCISE_EDU={
   }
 };
 function getExerciseEdu(exId){return EXERCISE_EDU[exId]||null;}
-function getEduLevel(){return localStorage.getItem('edu_level')||'L2';}
-function setEduLevel(level){localStorage.setItem('edu_level',level);if(typeof renderExDay==='function')renderExDay();}
+// Phase 3.A — Bilim Modu 3 katman: L1 (sade default) / L2 (orta · teknik subtitle) / L3 (ileri · advanced)
+function getEduLevel(){return localStorage.getItem('edu_level')||'L1';}
+function setEduLevel(level){
+  localStorage.setItem('edu_level',level);
+  // Tüm aktif sekmelerin re-render olması için tetikleyici çağrılar
+  if(typeof renderExDay==='function')renderExDay();
+  if(typeof renderEx==='function')renderEx();
+  if(typeof renderDashboard==='function')renderDashboard();
+  if(typeof renderDiet==='function' && document.getElementById('page-diyet')?.classList.contains('active'))renderDiet();
+  if(typeof renderSkin==='function' && document.getElementById('page-cilt')?.classList.contains('active'))renderSkin();
+  if(typeof renderMeas==='function' && document.getElementById('page-olcum')?.classList.contains('active'))renderMeas();
+  if(typeof renderCycle==='function' && document.getElementById('page-cycle')?.classList.contains('active'))renderCycle();
+}
 function toggleEduLevel(){
   const cur=getEduLevel();
-  setEduLevel(cur==='L3'?'L2':'L3');
-  showToast(`🔬 Bilim Modu: ${cur==='L3'?'L2 (orta)':'L3 (ileri)'}`,'pr');
+  // L1 → L2 → L3 → L1 cycle
+  const next=cur==='L1'?'L2':cur==='L2'?'L3':'L1';
+  setEduLevel(next);
+  const labels={L1:'L1 (sade)',L2:'L2 (orta)',L3:'L3 (ileri)'};
+  showToast(`🔬 Bilim Modu: ${labels[next]}`,'pr');
 }
 function toggleExerciseEdu(exId,i){
   const id=`edu-${exId}-${i}`;
@@ -7169,7 +7198,7 @@ function renderExDay(){
         <div class="edu-section"><div class="edu-section-title">🔥 Metabolik</div><div class="edu-section-text">${_glx(edu.metabolic)}</div></div>
         <div class="edu-section warn"><div class="edu-section-title">⚠️ Yaygın Yanlış Kavram</div><div class="edu-section-text">${_glx(edu.misconception)}</div></div>
         ${advHTML}
-        <div class="edu-level-toggle"><button onclick="toggleEduLevel()" class="btn bghost bsm">🔬 Bilim Modu: ${eduLevel} ${eduLevel==='L3'?'→ L2 (orta)':'→ L3 (ileri)'}</button></div>
+        <div class="edu-level-toggle"><button onclick="toggleEduLevel()" class="btn bghost bsm">🔬 Bilim Modu: ${eduLevel} ${eduLevel==='L1'?'→ L2 (orta)':eduLevel==='L2'?'→ L3 (ileri)':'→ L1 (sade)'}</button></div>
       </div>`;
     }
     div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${eduChip}${cycleSubChip}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
@@ -7342,14 +7371,16 @@ function renderStrengthGrid(){
   if(!anyData){
     el.innerHTML=`<div class="strength-grid-card">
       <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
-      <div class="sg-subtitle">6 ana hareket · Brzycki + Epley + RPE</div>
-      <div class="sg-empty-grid">Set log girişi başladıkça 1RM trendlerin burada belirir. Her seans <strong>kg</strong> + <strong>rep</strong> + <strong>RPE</strong> doldurulduğunda otomatik çizilir. Cycle fazı sol kenardan tint olarak gösterilir.</div>
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>6 ana hareket için son seansların yaklaşık <strong>"tek tekrar maksı"</strong> grafiği. Set log'a kg + tekrar + zorluk girdikçe trend ortaya çıkar — <em>güçleniyor musun, sabit mi, düşüyor mu</em> tek bakışta görürsün. Cycle fazı her hücrenin sol kenarında renkli şerit olarak gösterilir.</div>
+      ${getEduLevel()!=='L1'?'<div class="sg-subtitle">6 ana hareket · Brzycki + Epley + RPE</div>':''}
+      <div class="sg-empty-grid">Set log girişi başladıkça 1RM trendlerin burada belirir. Her seans <strong>kg</strong> + <strong>rep</strong> + <strong>RPE</strong> doldurulduğunda otomatik çizilir.</div>
     </div>`;
     return;
   }
   el.innerHTML=`<div class="strength-grid-card">
     <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
-    <div class="sg-subtitle">6 ana hareket · Brzycki+Epley+RPE · cycle-aware tint</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>6 ana hareket için son seansların yaklaşık <strong>"tek tekrar maksı"</strong> grafiği. Set log'a kg + tekrar + zorluk girdikçe trend ortaya çıkar — <em>güçleniyor musun, sabit mi, düşüyor mu</em> tek bakışta görürsün. Cycle fazı her hücrenin sol kenarında renkli şerit olarak gösterilir.</div>
+    ${getEduLevel()!=='L1'?'<div class="sg-subtitle">6 ana hareket · Brzycki+Epley+RPE · cycle-aware tint</div>':''}
     <div class="sg-grid">${cells}</div>
   </div>`;
 }
@@ -7491,10 +7522,12 @@ function renderMuscleHeatmap(){
   if(!el)return;
   const{hits,detail,monday}=getMuscleHitsThisWeek(new Date());
   const totalSets=Object.values(hits).reduce((a,b)=>a+b,0);
+  const _mhPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Bu hafta hangi kası ne kadar çalıştığın <strong>vücut diyagramında</strong>. <em>Renk açıksa</em> o kasa az yüklendin, <em>koyusa</em> çok yüklendin demektir. Kas grubuna tıklayınca o haftaki ayrıntıyı + Latince adı + ne işe yaradığını öğrenirsin.</div>`;
   if(totalSets<0.5){
     el.innerHTML=`<div class="muscle-heatmap-card">
       <div class="mh-title">Kas Dengesi · Bu Hafta</div>
-      <div class="mh-subtitle">9 kas grubu × MEV/MAV/MRV oranı</div>
+      ${_mhPlain}
+      ${getEduLevel()!=='L1'?'<div class="mh-subtitle">9 kas grubu × MEV/MAV/MRV oranı</div>':''}
       <div class="mh-empty">Bu hafta henüz set log'u tamamlanmadı. Pazartesi'ten itibaren ✓ ettiğin setler kas grubu dağılımına işlenir, vücut diyagramında renkli alanlar olarak görünür.</div>
     </div>`;
     return;
@@ -7562,7 +7595,8 @@ function renderMuscleHeatmap(){
   </div>`;
   el.innerHTML=`<div class="muscle-heatmap-card">
     <div class="mh-title">Kas Dengesi · Bu Hafta</div>
-    <div class="mh-subtitle">9 kas grubu × ${totalSets.toFixed(0)} effective set · MEV/MAV/MRV (Israetel 2018)</div>
+    ${_mhPlain}
+    ${getEduLevel()!=='L1'?`<div class="mh-subtitle">9 kas grubu × ${totalSets.toFixed(0)} effective set · MEV/MAV/MRV (Israetel 2018)</div>`:''}
     <div class="mh-bodies">
       ${buildBody('front')}
       ${buildBody('back')}
@@ -7705,7 +7739,8 @@ function renderVolumeTrend(){
   }
   el.innerHTML=`<div class="volume-trend-card">
     <div class="vt-title">Volume Trendi · 12 Hafta</div>
-    <div class="vt-subtitle">Kas grubu × MEV/MAV/MRV bantları (Israetel 2018)</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Bir kas grubunu son 12 haftada haftada kaç set çalıştığın. <strong>Yeşil-sarı bant</strong> ideal aralık — <em>altı</em> çok az (büyüme yok), <em>üstü</em> çok fazla (toparlanma zorlaşır). Kas grubu chip'leriyle değiştir, Pazar gecesi otomatik güncellenir.</div>
+    ${getEduLevel()!=='L1'?'<div class="vt-subtitle">Kas grubu × MEV/MAV/MRV bantları (Israetel 2018)</div>':''}
     <div class="vt-chips">${chips}</div>
     ${chartHTML}
   </div>`;
@@ -7754,10 +7789,12 @@ function renderPRTimeline(){
   const el=document.getElementById('e-pr-timeline');
   if(!el)return;
   const prs=getAllPRs(12);
+  const _ptPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Hangi hareket için ne zaman ve hangi cycle gününde <strong>yeni rekor</strong> kırdığının listesi. <em>"En güçlü pencere"</em> istatistiği — en çok PR attığın cycle fazını gösterir (3 cycle veri sonrası anlamlı). Kendi pattern'ini görürsün.</div>`;
   if(!prs.length){
     el.innerHTML=`<div class="pr-timeline-card">
       <div class="pt-title">PR Zaman Çizelgesi</div>
-      <div class="pt-subtitle">Son 12 ay · cycle-aware</div>
+      ${_ptPlain}
+      ${getEduLevel()!=='L1'?'<div class="pt-subtitle">Son 12 ay · cycle-aware</div>':''}
       <div class="pt-empty">Henüz kaydedilmiş PR yok. Set log'ta ✓ giriş yap, 1RM tahmini önceki maxı geçtiğinde otomatik kaydedilir ve burada listelenir. 🏆</div>
     </div>`;
     return;
@@ -7802,7 +7839,8 @@ function renderPRTimeline(){
   }).join('');
   el.innerHTML=`<div class="pr-timeline-card">
     <div class="pt-title">PR Zaman Çizelgesi</div>
-    <div class="pt-subtitle">Son 12 ay · cycle-aware</div>
+    ${_ptPlain}
+    ${getEduLevel()!=='L1'?'<div class="pt-subtitle">Son 12 ay · cycle-aware</div>':''}
     <div class="pt-counts">
       <div class="pt-count"><div class="pt-count-v">${total}</div><div class="pt-count-l">Toplam PR</div></div>
       <div class="pt-count"><div class="pt-count-v">${uniqueEx}</div><div class="pt-count-l">Hareket</div></div>
@@ -7987,6 +8025,7 @@ function renderHacettepeLab(){
   }
   el.innerHTML=`<div class="hlab-card">
     <div class="hl-title">🧪 Hacettepe Lab</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Bilim Modu L3 açıkken görünen <strong>4 alan</strong>: kendi verilerinde basit istatistik, hipotez defteri (kendi vücut tahminlerini yazıp test et), 16 PMID makale referansı, ve uygulamanın pedagojik tasarım notları. <em>Sadece bilim seven seviyeler için.</em></div>
     <div class="hl-subtitle">Bilim Modu L3 · veri + hipotez + PMID + pedagoji</div>
     <div class="hl-tabs">${tabBtns}</div>
     ${pane}
@@ -8116,7 +8155,8 @@ function renderCyclePatternEmergence(){
     if(have<2){el.innerHTML='';return;} // Çok az veri varsa hiç gösterme
     el.innerHTML=`<div class="cpe-card">
       <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
-      <div class="cpe-subtitle">3 cycle sonra otomatik açılır</div>
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>3 cycle (yaklaşık 3 ay) sonra senin <strong>kişisel pattern'in</strong>: hangi dönemde daha güçlüsün, hangisinde mood'un düşük, hangisinde enerjin peakta. Bedeninin haritası.</div>
+      ${getEduLevel()!=='L1'?'<div class="cpe-subtitle">3 cycle sonra otomatik açılır</div>':''}
       <div class="cpe-locked">Henüz ${have} cycle kayıtlı. ${need} cycle daha sonra Bengisu'nun kişisel cycle × güç + mood + enerji pattern'i otomatik belirir.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${(have/3*100).toFixed(0)}%;"></div></div></div>
     </div>`;
     return;
@@ -8127,7 +8167,8 @@ function renderCyclePatternEmergence(){
   if(!emerged){
     el.innerHTML=`<div class="cpe-card">
       <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
-      <div class="cpe-subtitle">3 cycle ✓ · pattern için veri biriktiriliyor</div>
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>3 cycle (yaklaşık 3 ay) sonra senin <strong>kişisel pattern'in</strong>: hangi dönemde daha güçlüsün, hangisinde mood'un düşük, hangisinde enerjin peakta. Bedeninin haritası.</div>
+      ${getEduLevel()!=='L1'?'<div class="cpe-subtitle">3 cycle ✓ · pattern için veri biriktiriliyor</div>':''}
       <div class="cpe-locked">3 cycle tamamlandı (${stats.totalPRs} PR · cycle log dolu günler). Pattern için minimum ≥4 PR + cycle log ≥%30 günlük doluluğu gerekli. Set log + Döngü mood/energy dolduruma devam et — otomatik açılacak.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${Math.min(100,(stats.totalPRs/4*60+(stats.phaseStats.reduce((a,p)=>a+p.daysCount,0)/(getAvgCycleLen()*3))*40)).toFixed(0)}%;"></div></div></div>
     </div>`;
     return;
@@ -8142,7 +8183,8 @@ function renderCyclePatternEmergence(){
   const insight=generatePatternInsight(stats);
   el.innerHTML=`<div class="cpe-card">
     <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
-    <div class="cpe-subtitle">Son 3 cycle · ${stats.totalPRs} PR · Bengisu'nun kişisel pattern'i</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>3 cycle sonra senin <strong>kişisel pattern'in</strong>: hangi dönemde daha güçlüsün, hangisinde mood'un düşük, hangisinde enerjin peakta. Bedeninin haritası ortaya çıktı.</div>
+    ${getEduLevel()!=='L1'?`<div class="cpe-subtitle">Son 3 cycle · ${stats.totalPRs} PR · Bengisu'nun kişisel pattern'i</div>`:''}
     <div class="cpe-phase-grid">${phaseCells}</div>
     <div class="cpe-insight">
       <div class="cpe-insight-title">🪞 Pattern Bulundu</div>
@@ -8229,10 +8271,13 @@ function renderAdaptiveLoad(){
   if(!el)return;
   // Sadece Egzersiz sekmesinde aktif (renderEx zaten oradan çağrıyor)
   const r=getReadinessScore();
+  const _eduLvl=getEduLevel();
+  const _alPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Apple Health'ten gelen kalp atış değişkenliği, dinlenme nabzı ve uyku verilerine göre <strong>bedenin bugün antrenmana ne kadar hazır</strong> bakar. <em>Yeşil</em> = plan dahilinde devam, <em>sarı</em> = orta, <em>kırmızı</em> = bedenin yumuşak gün istedi. AI'dan derin öneri de alabilirsin.</div>`;
   if(r.state==='no_today'||r.state==='no_baseline'){
     el.innerHTML=`<div class="al-card">
       <div class="al-title">🦋 Adaptive Yük</div>
-      <div class="al-subtitle">HRV-driven readiness · ${r.state==='no_today'?'bugünkü veri':'baseline'} eksik</div>
+      ${_alPlain}
+      ${_eduLvl!=='L1'?`<div class="al-subtitle">HRV-driven readiness · ${r.state==='no_today'?'bugünkü veri':'baseline'} eksik</div>`:''}
       <div class="al-empty">${r.msg}.<br>Ölçüm sekmesinde 📷 Apple Health screenshot'ından HRV + RHR + uyku verilerini günlük ekle. 7 gün baseline sonrası adaptive yük önerisi otomatik aktive olur.</div>
     </div>`;
     return;
@@ -8249,7 +8294,8 @@ function renderAdaptiveLoad(){
   const rec=generateAdaptiveRecommendation(r);
   el.innerHTML=`<div class="al-card">
     <div class="al-title">🦋 Adaptive Yük</div>
-    <div class="al-subtitle">HRV-driven readiness · son 7 gün baseline</div>
+    ${_alPlain}
+    ${_eduLvl!=='L1'?'<div class="al-subtitle">HRV-driven readiness · son 7 gün baseline</div>':''}
     <div class="al-readiness ${r.level}">
       <div class="al-readiness-emoji">${r.emoji}</div>
       <div class="al-readiness-status">${r.label}</div>
