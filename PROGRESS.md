@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 7 Mayıs 2026 (Phase 2 KOMPLE + Phase 3.A Sade Dil Katmanı · L1 default · Bengisu kullanıcı feedback'iyle başladı, 7 commit ile tüm 6 sekme sadeleşti)
+**Son güncelleme:** 7 Mayıs 2026 (Phase 2 + Phase 3.A + Phase 3.B KOMPLE · 6 yön A-F: Service Worker/PWA, Backup/Export, Health JSON, API Proxy, Profil sistemi, Diyet Ultimate · 7 commit + diet-ultimate/SYNTHESIS.md)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -422,7 +422,26 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (7 Mayıs 2026 — Phase 3.A test ediliyor)
+## 📍 Şu Anki Durum (7 Mayıs 2026 — Phase 3.B KOMPLE)
+
+### 🚀 Phase 3.B — 6 Yön (A-F) Hepsi Tamamlandı ✅
+
+| | Yön | Commit | Çıktı |
+|---|---|---|---|
+| ✅ | **B** Backup/Export · localStorage → JSON download/upload | `850bf51` | Cycle Settings'te 💾 Yedekleme kartı, 28 anahtar, secure (API key dışlanır) |
+| ✅ | **A** Service Worker + PWA manifest · offline cache | _(SW deploy)_ | sw.js + manifest.json + apple-touch-icon, iOS A2HS install |
+| ✅ | **C** Apple Health JSON auto-sync · Health Auto Export uyumlu | `44372a1` | Ölçüm sekmesinde 📁 JSON butonu + parser (Health Auto Export + simple format) + HEALTH_SHORTCUT.md güncel |
+| ✅ | **D** Anthropic API Proxy · Cloudflare Worker rehberi | _(SW commit)_ | cloudflare-worker.js + DEPLOY-API-PROXY.md + 🛡️ ayar kartı + window.fetch monkey-patch (9 mevcut çağrı otomatik proxy'ye gider) |
+| ✅ | **E** Profil sistemi · Çoklu kullanıcı (swap-based) | `936e020` | 👤 Profiller kartı, switch/add/delete, _archive_${id}_${key} arşiv pattern, BACKUP_KEYS swap |
+| ✅ | **F** Diyet Ultimate sentez raporu · 736 satır | _(yeni)_ | diet-ultimate/SYNTHESIS.md: 24 madde × 8 lens + 30 P0/P1/P2 roadmap + 5 orijinal fikir + workout-ultimate entegrasyon |
+
+**Phase 3.B özelinde dosyalar:**
+- `manifest.json` (PWA)
+- `sw.js` (Service Worker · install/activate/fetch/push/notificationclick)
+- `cloudflare-worker.js` (API proxy script)
+- `DEPLOY-API-PROXY.md` (deploy rehberi · Wrangler kurulum 15 dk)
+- `diet-ultimate/SYNTHESIS.md` (60 KB sentez raporu)
+- `HEALTH_SHORTCUT.md` (📁 JSON bölümü güncel)
 
 ### 🪞 Phase 3.A — Sade Dil Katmanı (L1 Bilim Modu) — 7 commit ✅
 
