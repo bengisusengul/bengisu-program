@@ -3611,10 +3611,12 @@ function renderLevotironDiary(){
   const el=document.getElementById('levotiron-diary');
   if(!el)return;
   const log=getLevotironLog();
+  const _lvdPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sabah Levotiron'u <strong>kaç saatte aldığın</strong> + akşam mood'un → 30 günde pattern: <em>"erken alındığında mood 4.0/5, geç alındığında 2.8/5"</em> gibi. 3 ay sonra doktor için PDF rapor.</div>`;
   if(Object.keys(log).length===0){
     el.innerHTML=`<div class="lv-diary-card">
       <div class="lvd-title">💊 Levotiron Diary</div>
-      <div class="lvd-subtitle">Sabah aç karna · timing × mood pattern</div>
+      ${_lvdPlain}
+      ${getEduLevel()!=='L1'?'<div class="lvd-subtitle">Sabah aç karna · timing × mood pattern</div>':''}
       <div class="lvd-empty">Henüz Levotiron kaydı yok. Bugün sayfasında sabah ✓ Aldım butonuna basınca burada haftalık özet + saat varyasyon + mood korelasyonu çıkar.</div>
     </div>`;
     return;
@@ -3644,7 +3646,8 @@ function renderLevotironDiary(){
   }
   el.innerHTML=`<div class="lv-diary-card">
     <div class="lvd-title">💊 Levotiron Diary</div>
-    <div class="lvd-subtitle">Sabah aç karna · timing × mood pattern (3 ay → doktor PDF)</div>
+    ${_lvdPlain}
+    ${getEduLevel()!=='L1'?'<div class="lvd-subtitle">Sabah aç karna · timing × mood pattern (3 ay → doktor PDF)</div>':''}
     <div class="lvd-stats">
       <div class="lvd-stat"><div class="lvd-stat-v">${s7.taken}/${s7.days.length}</div><div class="lvd-stat-l">7 gün alım</div></div>
       <div class="lvd-stat"><div class="lvd-stat-v">${_minutesToTime(s7.avgMinutes)}</div><div class="lvd-stat-l">Ort saat (7g)</div></div>
@@ -3773,7 +3776,8 @@ function renderThyroidSupport(){
   }
   el.innerHTML=`<div class="thy-card">
     <div class="thy-title">🦋 Bedenim ve Tiroidim</div>
-    <div class="thy-subtitle">Total tiroidektomi destek modülü · Wiersinga 2014</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Total tiroidektomi sonrası ihtiyaç olan <strong>kapsamlı destek</strong>: 12 kan tahlili planı + 18 doktor sorusu + T4→T3 fizyolojisi. <em>Endokrinologa randevuya boş gitme.</em></div>
+    ${getEduLevel()!=='L1'?'<div class="thy-subtitle">Total tiroidektomi destek modülü · Wiersinga 2014</div>':''}
     <div class="thy-tabs">${tabBtns}</div>
     ${pane}
   </div>`;
@@ -5341,7 +5345,8 @@ function renderMicronutrientCard(){
   }).join('');
   el.innerHTML=`<div class="micro-card">
     <div class="mc-title">Mikronutrient Durumu</div>
-    <div class="mc-subtitle">4 anahtar mikro · Bengisu karnivor + yumurta + avokado + yeşillik</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Karnivor + yumurta + avokado diyetinde <strong>4 kritik mikro</strong>: C vitamini, K2, Omega-3, Lif. Hangisinin doğal kaynağı yeterli, hangisinde supplement gerekli — <em>doktor sorusu paketi</em> de hazır.</div>
+    ${getEduLevel()!=='L1'?'<div class="mc-subtitle">4 anahtar mikro · Bengisu karnivor + yumurta + avokado + yeşillik</div>':''}
     <div class="mc-grid">${items}</div>
     <div class="mc-doctor">
       <div class="mc-doctor-title">⚕️ Doktor sorusu paketi</div>
