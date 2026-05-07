@@ -4341,6 +4341,7 @@ function applySheetReason(reason){
 // L2 default (orta seviye, MSc-friendly), L3 toggle ON ile ileri (mTORC1, sitokin, vb.)
 // Format: short (özet) · anatomy + biomech + metabolic (L2 derin) · misconception · advanced (L3)
 const EXERCISE_EDU={
+  // ── ALT VÜCUT · SQUAT (Pzt) ──
   'sq':{
     short:'Quadriceps + glute primer, alt vücudun temel hareketi. Smith makinesinde sabit yörünge → form öğrenmek için dengeli giriş.',
     anatomy:'5 kas grubu sıralı yüklenir. Quadriceps (vastus medialis/lateralis/intermedius, rectus femoris) diz ekstansiyonu. Gluteus maximus kalça ekstansiyonu. Adduktörler duruşa stabilite. Erector spinae gövde dik. Core (TVA + obliques) intra-abdominal basınç.',
@@ -4348,6 +4349,106 @@ const EXERCISE_EDU={
     metabolic:'Compound, yüksek motor ünite katılımı, ~9-12 kcal/dk. mTOR aktivasyonu yüksek — hipertrofi sinyali güçlü.',
     misconception:'"Squat dizi bozar" → YANLIŞ. Dizleri bozan kötü form. McGill 2007 + Hartmann 2013 meta: derin squat doğru hizalama ile diz kıkırdağına yararlı (sinovyal sıvı sirkülasyonu ↑). Yanlış: valgus collapse, bel kavislenmesi, topuk kalkması.',
     advanced:'mTORC1 mekanik gerilim yolu — integrin-FAK-PA-mTORC1. PI3K-AKT bypass edilebilir doğrudan mekanik yük yoluyla (Hornberger 2006). 8-12 set/hafta = MEV-MAV (Israetel 2018). Erken faz adaptasyon nöral, geç faz morfolojik.'
+  },
+  'bss':{
+    short:'Tek-bacak quadriceps + glute. Bilateral squat\'ın asimetri tedavisi — sağ-sol fark açığa çıkar.',
+    anatomy:'Quadriceps (vastus lateralis baskın), gluteus medius (lateral stabilite — pelvis düşmesin), adduktörler, gluteus maximus. Tek-bacak versiyonda lateral hip stabilizatörler 2-3× yüklenir (Bourne 2018 EMG).',
+    biomech:'Arka ayak bench üstünde (parmak ucu, üst değil). Ön ayak 60-80 cm önde — diz ayak parmağıyla aynı yön. İniş ön topuktan, gövde dik. Tepede ön glute squeeze. Bilateral squat\'tan %50 daha az yükle aynı quadriceps aktivasyonu (DeForest 2014).',
+    metabolic:'Tek-bacak çalışma → kardiyovasküler talep yüksek (kan dolaşımı kompetisyonu). Set sonu nefes-nefese normal.',
+    misconception:'"Bulgarian gerçek squat değil, asistans hareketi" → YANLIŞ. Eklem yükü düşük, kas yükü yüksek — bilateral\'le aynı hipertrofi sinyali %50 yükle (Speirs 2016). Tek-bacak transfer değeri günlük yaşamda daha yüksek (yürüme, merdiven, sprint).',
+    advanced:'Cross-education effect: tek-bacak çalışma karşı bacak nöral aktivasyonunu da arttırır (Carroll 2006). Asimetri >%10 ise yaralanma riski 2.5× (Knapik 1991). Pelvic drop ölçümü Trendelenburg testi ile.'
+  },
+  'gobl':{
+    short:'Quadriceps + glute + core; dik gövde squat varyasyonu. Beginner-friendly + ovulasyon-safe.',
+    anatomy:'Quadriceps (rectus femoris vurgu — dik gövde nedeniyle), glute max, core (anterior load → anti-flexion), trapezius/biceps (statik dumbbell tutma).',
+    biomech:'Dumbbell göğüs hizasında dik tut (göbek pozisyonu yanlış — bel kavislenir). Geniş duruş, parmak uçları 30° dışa. İniş: dirsekler dizlerin içine (mobility cue). Dik gövde lumbar shear ↓.',
+    metabolic:'Anterior loaded squat → quad daha fazla, lumbar daha az. Core izometrik talep yüksek. ~7-9 kcal/dk.',
+    misconception:'"Goblet hafif egzersiz, ciddi yük olmaz" → YANLIŞ. Anterior yük dağılımı core demand katlar; 24-32 kg dumbbell beginner için ileri seviye. Core stabilite zayıfsa Goblet bilateral squat\'tan daha zorlayıcı (McGill 2007).',
+    advanced:'Anti-flexion core demand: rectus abdominis + obliques izometrik kasılması bilateral squat\'tan %30 yüksek (Schoenfeld 2010). Smith squat\'ın lumbar shear riski yokken aynı quadriceps EMG (Schoenfeld 2010, doğrulama). Ovulasyon Day 11-15 alternatif kullanılır (relaxin → bilateral knee shear riski).'
+  },
+  'gbr':{
+    short:'Beginner-friendly glute aktivasyonu. Lumbar yük yok — sırt sorunu olanlar için ideal.',
+    anatomy:'Gluteus maximus (primer), hamstring (sekonder), erector spinae izometrik. Bant kalça üstünde glute medius+minimus aktive — abduktör ko-kasılım.',
+    biomech:'Sırtüstü, dizler bükük, ayaklar yerde. Topuktan it (parmak uçundan değil — quad alır). Tepede 2 sn squeeze, posterior pelvic tilt. Üst sırt yerde sabit kalsın (servikal hiperekstansiyon yok).',
+    metabolic:'Glute izolasyon, lumbar disk yük minimum. Apartman/ev egzersizi ideal. Post-tiroidektomi KMY için yeterli mekanik yük (Beck 2017).',
+    misconception:'"Glute Bridge çocuk hareketi, ciddi sonuç vermez" → YANLIŞ. Bant + 2 sn izometrik squeeze EMG glute max %75 MVIC üretir (Contreras 2015) — ciddi aktivasyon. Hip Thrust\'a köprü, ovulasyon haftası safe alternatif.',
+    advanced:'Glute Bridge → Single Leg → Hip Thrust progresyon zinciri. Mekanizma: hip ekstansiyon torquesi, ROM kısa ama izometrik squeeze cilt-tendon entegrasyonu yüksek. Beck 2017 PMID 27875836: bone loading için zemin reaksiyon kuvveti yeterli (kemik yoğunluğu için ≥1× BW yeterli).'
+  },
+  'step':{
+    short:'Tek-bacak güç + balance. Bulgarian alternatifi — ovulasyon haftası lateral knee yükü ↓.',
+    anatomy:'Quadriceps + gluteus maximus (concentric kalkış). Gluteus medius (lateral stabilite). Calf (gastrocnemius/soleus) push-off.',
+    biomech:'Kutu/bench önünde, kutu yüksekliği diz hizasında. Bir bacakla bas, dümdüz yukarı çık (öne eğilme yok = quad). Diğer bacak hafif yere değer (bedensel bütünlük). Aşağı kontrollü 2 sn eccentric.',
+    metabolic:'Single-leg → kardiyovasküler talep yüksek. Compound + balance demand → core hep aktif. ~6-8 kcal/dk.',
+    misconception:'"Step-up basit, gerçek lift değil" → YANLIŞ. Tek-bacak yük dağılımı bilateral lift\'in %200\'ü kadar (her bacak çift bacaktan fazla). Sprint, atletik kesme, merdiven karşılığı en yüksek transfer (Reiman 2009).',
+    advanced:'Hip extensor power output: step-up bilateral squat\'tan %15 yüksek (McCurdy 2018). Knee shear lateral yükü Bulgarian\'dan ~%30 düşük (lateral compartment load ↓) — relaxin-aracılı ligament gevşekliğinde tercih edilir.'
+  },
+  'cc':{
+    short:'Karın izolasyonu — direnç altında konsantrik flexion. Cable üst pozisyonda.',
+    anatomy:'Rectus abdominis (six-pack — yüzeysel), external obliques. Kable konsantrik flexion + obliklerle anti-rotasyon. Hip flexor (iliopsoas) sekonder — bunu istemiyoruz.',
+    biomech:'Kabloda diz çök, halat başın yanında veya boyunda. Core ile aşağı bük (omurga flexionu — hip değil!). Kalça sabit. Top pozisyon: göbek diz hizasında, omurga C harfi.',
+    metabolic:'Direnç altında konsantrik karın egzersizi. Kalori düşük ama hipertrofi sinyali yüksek (yük + ROM).',
+    misconception:'"Cable Crunch karnı düzleştirir" → YANLIŞ. Lokal yağ yakımı (spot reduction) yok (Kostek 2007). Karın şekli %80 beslenme + diet, %20 kas hipertrofisi. Cable Crunch görünür "six-pack" lifleri kalın yapar — ama yağ tabakası altındaysa görünmez.',
+    advanced:'Rectus abdominis EMG: Cable Crunch 80%+ MVIC (Escamilla 2010). Hip flexor dominance riski: kalçayı sabit tutmak kritik. Anti-flexion (Pallof) ile dengeli core: %50 flexion + %50 anti-rotation/anti-extension (McGill önerisi).'
+  },
+
+  // ── ÜST VÜCUT · İTME (Sal) ──
+  'dbp':{
+    short:'Üst göğüs hipertrofi kralı. Incline 30-45° clavicular fiber maksimum.',
+    anatomy:'Pectoralis major (clavicular kısım — üst göğüs), anterior deltoid, triceps brachii. Bench eğimi 30°: pec üst %85 EMG (Trebs 2010). Eğim 60°+: anterior delt baskın, pec azalır.',
+    biomech:'Bench 30-45° (Bengisu için 45°). Dumbbell omuz hizasından göğüs üstüne press. Dirsekler 45° açıyla (90°: omuz impingement riski). Bel pede yapışık. Top pozisyonda dirsekler hafif yumuşak (tam kilit değil).',
+    metabolic:'Push compound, ~7-10 kcal/dk. mTOR sinyali güçlü. Dumbbell barbell\'den %5-15 düşük yük taşır ama tek-tek tutuş asimetri tedavisi sağlar.',
+    misconception:'"Bench Press düz olsun, incline gereksiz" → YANLIŞ. Düz bench pec sternal (alt) baskın. Incline pec clavicular (üst) — kadın anatomisinde daha eksik gelişen kısım. Bröstet \'sandık\' görünüm = üst göğüs (Schoenfeld 2017 region-specific).',
+    advanced:'Region-specific hipertrofi: pec üst %30 daha az aktive olur düz bench\'te (Schoenfeld 2017). Optimal: 30-45° incline. EMG aktivasyon farkı pec üst clavicular: incline > flat > decline. Dumbbell vs barbell: stretch reflex daha derin (eccentric ROM ↑), ama yük kapasitesi ↓.'
+  },
+  'dsp':{
+    short:'Omuz kompleksi compound. Dumbbell stabilite gerektirir — barbell\'den daha güvenli.',
+    anatomy:'Anterior deltoid (primer), medial deltoid, triceps brachii, supraspinatus (rotator cuff stabilite), upper trapezius (scapular elevation). Posterior delt minimal — Face Pull ile dengelenmeli.',
+    biomech:'Oturarak veya ayakta. Dumbbell omuz hizasından baş üstüne press. Dirsekler hafif öne (90° pure lateral değil — impingement ↓). Top pozisyonda kollar tam uzanmadan dur (eklem yükü).',
+    metabolic:'Compound, anaerobic glikoliz baskın. ~6-8 kcal/dk.',
+    misconception:'"Behind-the-neck press boyun arkasına klasik" → YANLIŞ + RİSKLİ. Sevikal hiperekstansiyon + omuz dış rotasyon ekstrem = labrum + rotator cuff yırtık riski (Gross 1993). Dumbbell front press = aynı omuz büyümesi, sıfır risk.',
+    advanced:'Anterior dominans riski: bench + shoulder press sürekli → posterior deltoid ihmali → impingement + postür çarpıklık. Posterior delt:anterior delt 1:2 hedef volume oranı (Brookbush). Standing variant core demand 2× (yere ayak basılı vs oturma).'
+  },
+  'ccf':{
+    short:'Üst göğüs izolasyonu, press hareketlerinin tamamlayıcısı. Adduction torquesi yüksek.',
+    anatomy:'Pectoralis major (clavicular + sternal — adduction primer fonksiyon), anterior deltoid, biceps short head (sekonder). Press\'ten farkı: triceps yok, omuz horizontal adduction net.',
+    biomech:'Kablolar üst pozisyonda (cross-cable veya tek). Hafif öne eğil, kollar geniş + dirsekler hafif bükük (sabit dirsek açısı). Yumuşak dirsekle orta hatta birleştir. Tepede 1 sn squeeze. Eccentric 2 sn.',
+    metabolic:'İzolasyon, ~5-7 kcal/dk. Mid-range gerilim cable\'da yüksek (free weight\'te tepede gerilim azalır).',
+    misconception:'"Fly hafif egzersiz, press her şey için yeterli" → YANLIŞ. Press = elbow extension + horizontal adduction. Fly = SADECE adduction. Pec\'te tam ROM gerilimi sadece fly\'da elde edilir (Welsch 2005 EMG). Pec stretch alt poziyonda fly\'da press\'ten %40 fazla.',
+    advanced:'Cable çekiş açısı önemli: yukarı pulley = pec üst (clavicular) baskın, orta = pec sternal, aşağı = pec alt (chest dip benzeri). Multi-angle stratejisi pec hipertrofisi optimize eder (Soncin 2018). Mekanik gerilim + metabolik stres dengesi: 8-12 rep, 2-3 sn eccentric.'
+  },
+  'lr':{
+    short:'Medial deltoid izolasyonu — omuz genişliği = bu hareket. Press\'in eksik bıraktığı yer.',
+    anatomy:'Medial deltoid (orta deltoid — abduction primer), supraspinatus (ilk 15-30° abduction), upper trapezius (90°+ scapular upward rotation).',
+    biomech:'Dumbbell yanlarda. Kollar T şekline kaldır (90° abduction). Dirsekler hafif yumuşak — sabit. Trapezius almasın → kollar omuz hizasını geçmesin (>90° trap). Tepede 2 sn medial delt squeeze.',
+    metabolic:'İzolasyon, düşük kalori (~3-5 kcal/dk). Yorgunluk hızlı — yüksek rep (12-15) optimal.',
+    misconception:'"Lateral Raise hafif yük olur, ağırlık koymalı" → YANLIŞ. Lateral raise\'de kaldırılan yük 30-40 kg değil 5-10 kg olmalıdır. Daha ağır → trapezius alır + momentum kullanır. Kontrollü 6-8 kg + 12-15 rep + 2 sn squeeze = optimal medial delt hipertrofi (Schoenfeld 2017).',
+    advanced:'Lateral raise EMG: 0-90° abduction medial delt %75 MVIC, >90° trapezius dominant geçer. Omuz genişliği = bideltoid breadth — popülasyon ortalaması 35-40 cm; medial delt hipertrofi bu ölçüyü ~2-4 cm arttırabilir. Kadında natural omuz dar; medial delt çalıştırma kıyafet düşüşü hissi azaltır.'
+  },
+  'tc':{
+    short:'Triceps izolasyonu, push hareketlerinden geriye kalan triceps acceleration. Sürekli gerilim.',
+    anatomy:'Triceps brachii üç başı: long head (omuzdan başlar — overhead\'de aktive), lateral head, medial head. Pushdown\'da lateral + medial baskın; long head için overhead extension gerekir.',
+    biomech:'Dirsekler sabit gövdeye yakın (kürek-kemik = pivot). Aşağı it, dipte 1 sn squeeze. Halat veya bar — halat dipte abduction (lateral head ↑). Yükselişte dirsek gövdeden ayrılmasın.',
+    metabolic:'İzolasyon, ~3-5 kcal/dk. Kabloda sürekli gerilim (free weight\'te gerilim noktaları değişir).',
+    misconception:'"Triceps yapmak için bench yeterli" → KISMEN YANLIŞ. Bench triceps\'i kompleks olarak çalıştırır ama lateral head izolasyonu için pushdown gerekir. Optimal kol kalınlığı: bench/dip + pushdown + overhead extension (long head için Skullcrusher veya French Press).',
+    advanced:'Triceps brachii kol toplam kütlesinin ~2/3\'ünü oluşturur — biceps\'ten daha büyük. Long head omurga adduction + omuz extensiyonu da yapar (multi-joint). Multi-angle yaklaşım: pushdown (lateral) + overhead (long head) + close-grip bench (kompleks) hipertrofi optimal (Wakahara 2013 region-specific).'
+  },
+  'pall':{
+    short:'Anti-rotasyon core izolasyonu. Statik egzersiz — hareket değil, hareketi durduruyorsun.',
+    anatomy:'Transversus abdominis + internal/external obliques + multifidus (derin omurga stabilizatörü). Klasik crunch yatay rectus abdominis ("six-pack") çalıştırır; Pallof press derin core — omurga koruma için fonksiyonel kas.',
+    biomech:'Cable yandan, kollar göğüs hizası, bar dik öne ittirilir. Cable seni döndürmek ister — sen dönmemek için core izometrik kasılır.',
+    metabolic:'Düşük enerji, yüksek nöromüsküler. Postür stabilizasyon mimarisi gelişir. Squat/deadlift core stabilite carry-over yüksek.',
+    misconception:'"Crunch core\'u en iyi çalıştırır" → YANLIŞ. Crunch flexor pattern — modern oturma zaten bu. McGill 2007 anti-rotation/anti-extension önerir. Pallof press fonksiyonel + bel-friendly (lumbar fleksiyon yok). Crunch ≠ kötü ama tek başına yetersiz.',
+    advanced:'McGill "Big 3" (curl-up, side bridge, bird dog) + Pallof = lumbar disk yük min + nöromüsküler core entegrasyon max. Anti-rotation transferi: tek-bacak hareketler, athletic cutting, postür koruma. EMG (Boren 2011): Pallof press external oblique aktivasyonu yüksek, lumbar disk shear minimum.'
+  },
+
+  // ── GLUTE & POSTERIOR (Çar) ──
+  'ht':{
+    short:'Glute izolasyon kralı. Kalça ekstansiyonu maksimum yük altında.',
+    anatomy:'Glute max\'in en yüksek EMG aktivasyonu hip thrust\'ta (Contreras 2015) — squat ve deadlift\'ten daha yüksek. Hareket izole: diz ve bel sabit.',
+    biomech:'Sırt bench üstü, ayaklar yerde, bar pelvis üstü. Kalkış: kalça yukarı (omurga nötr, ekstra kavislenme yok). Top pozisyon 1-2 sn squeeze = aktivasyon zirvesi.',
+    metabolic:'Glute max vücudun en büyük tek kası (~700-1100 cm³ kadın). Hipertrofiye en hızlı yanıt; 6-8 haftada belirgin değişim.',
+    misconception:'"Hip thrust kompleks değil, gerçek hareket squat" → YANLIŞ. İzolasyon ≠ küçük hareket. Glute izolasyonunda hip thrust kanıt-bazlı en yüksek EMG. Squat quad-baskın, hip thrust glute-baskın. İkisi farklı, ikisi gerekli.',
+    advanced:'Glute max üç bölüm (superior, medial, inferior); hip thrust ayak konumu farklı bölüm vurgu. Posterior pelvic tilt → maksimum aktivasyon (Contreras "Squeeze technique"). Femur boynu yatay yük → bone loading verimli (post-tiroidektomi KMY için kritik, Beck 2017 PMID 27875836).'
   },
   'rdl':{
     short:'Hamstring + glute hinge hareketi. Bel ile karıştırma — hareket kalçadan, omurga sabit.',
@@ -4357,14 +4458,40 @@ const EXERCISE_EDU={
     misconception:'"RDL bel egzersizi" → YANLIŞ. Bel çalışmaz, sabit kalır (izometrik). Egzersiz hamstring + glute. "Bel yandı" → form yanlış, hinge değil rotasyon.',
     advanced:'Lumbar disk shear minimum için McGill 2007 iki kuralı: nefes tut + nötr omurga. Hamstring eccentric — kas-tendon ünitesi pliometrik kapasite. Kollajen sentezi östrojen-aracılı (Hansen 2017) → folliküler/ovulasyon fazında daha verimli.'
   },
-  'ht':{
-    short:'Glute izolasyon kralı. Kalça ekstansiyonu maksimum yük altında.',
-    anatomy:'Glute max\'in en yüksek EMG aktivasyonu hip thrust\'ta (Contreras 2015) — squat ve deadlift\'ten daha yüksek. Hareket izole: diz ve bel sabit.',
-    biomech:'Sırt bench üstü, ayaklar yerde, bar pelvis üstü. Kalkış: kalça yukarı (omurga nötr, ekstra kavislenme yok). Top pozisyon 1-2 sn squeeze = aktivasyon zirvesi.',
-    metabolic:'Glute max vücudun en büyük tek kası (~700-1100 cm³ kadın). Hipertrofiye en hızlı yanıt; 6-8 haftada belirgin değişim.',
-    misconception:'"Hip thrust kompleks değil, gerçek hareket squat" → YANLIŞ. İzolasyon ≠ küçük hareket. Glute izolasyonunda hip thrust kanıt-bazlı en yüksek EMG. Squat quad-baskın, hip thrust glute-baskın. İkisi farklı, ikisi gerekli.',
-    advanced:'Glute max üç bölüm (superior, medial, inferior); hip thrust ayak konumu farklı bölüm vurgu. Posterior pelvic tilt → maksimum aktivasyon (Contreras "Squeeze technique"). Femur boynu yatay yük → bone loading verimli (post-tiroidektomi KMY için kritik, Beck 2017 PMID 27875836).'
+  'bsht':{
+    short:'B-stance hip thrust — single-leg hip thrust\'a köprü. Glute asimetri tedavisi.',
+    anatomy:'Glute max baskın bacak %80 yük (lateral fibers vurgu), hamstring + adduktör stabilite. Yardımcı bacak (parmak ucu) %20 destek + balance.',
+    biomech:'Sırt bench üstü, ana bacak ayağı tam yere, yardımcı bacak parmak ucu yere değer (heel kaldırılı). Bar pelvis üstü. Tek-bacak loading + balance demand. Posterior pelvic tilt + 2 sn squeeze.',
+    metabolic:'Tek-bacak loading → bilateral hip thrust\'ın %85-90 yükü kullanılır ama tek bacakta. Etkin stimülüs hâlâ yüksek.',
+    misconception:'"B-stance kolaylaştırılmış hip thrust" → YANLIŞ. Tek-bacak yük dağılımı + balance demand → bilateral\'den daha zorlayıcı. Single-leg hip thrust\'a önce B-stance\'tan geç (yardımcı bacak %20\'den %5\'e düşer kademeli).',
+    advanced:'Asimetri tedavisi için altın standart: Bilateral hip thrust\'ta dominant glute %60+ yük taşır → asimetri büyür. B-stance her iki tarafa eşit yük zorunlu kılar. Sakroiliac stabilite için tek-bacak loading kritik (relaxin-aracılı laksitede dikkat — ovulasyon haftası bant + dikey progresyon).'
   },
+  'cpt':{
+    short:'Glute + hamstring hinge — RDL alternatifi, lumbar yükü düşük. Glute squeeze pattern.',
+    anatomy:'Glute max (concentric kalça extensiyon), hamstring (eccentric kontrol), adduktör magnus (hip extensor). Erector spinae izometrik — hareket etmez (RDL\'den daha az lumbar yük).',
+    biomech:'Kabloya sırt dön. Ayaklar omuz genişliğinde. Eller arasında kablo (pelvis hizasında). Kalçayı geri it (RDL hareketi), kablo bacaklar arasında. Konsantrik: kalça öne it, glute squeeze.',
+    metabolic:'Glute izolasyonuna yakın. Lumbar yük RDL\'den düşük → bel hassasiyeti veya ovulasyon haftasında tercih.',
+    misconception:'"Cable Pull-Through hafif RDL" → YANLIŞ. Aynı kalça extensiyon hareketi ama yük noktası farklı (cable kalçaya doğrudan bağlı). Glute neural drive RDL\'den yüksek (Andersen 2019) ama spine load düşük.',
+    advanced:'Cable line of pull → kalça ekstansör torque maksimum. RDL\'de bar dikey ağırlık → spine compression + shear. Pull-through\'da cable horizontal → lumbar shear minimum, glute torque korundu. Ovulasyon Day 11-15 RDL alternatifi (relaxin → lumbar disk yumuşak doku gevşeklik).'
+  },
+  'cal':{
+    short:'Baldır izolasyonu — gastrocnemius (yüzeysel) + soleus (derin). Yürüme + sıçrama gücü.',
+    anatomy:'Gastrocnemius (iki başlı, yüzeysel — diz uzantılı zaman aktif), soleus (derin, tek-eklem — diz açısından bağımsız). Calf raise straight leg = gastrocnemius; bent knee = soleus.',
+    biomech:'Leg press platformunda parmak uçları (topuk dışarda). Tepede 2 sn squeeze (full plantar flexion). Eccentric 2-3 sn — soleus en çok eccentric\'te yüklenir.',
+    metabolic:'Lokal, kısa ROM. Hipertrofi yavaş — baldır lifleri %50 yavaş kasılan tip I. Yüksek rep (15-20) tip I optimal.',
+    misconception:'"Baldır genetik, ne yapsam büyümez" → KISMEN YANLIŞ. Genetik baldır lif sayısı + tendon uzunluğu sabit; ama kas hipertrofisi çalışmayla mümkün. Sorun: çoğu insan yetersiz volume + ROM kullanır. Optimal: 12-16 set/hafta + tam ROM + 2 sn squeeze + eccentric kontrol.',
+    advanced:'Baldır lifleri %50 yavaş kasılan (vs 25% diğer kaslar) — tip I dayanıklılık baskın. Hipertrofi için yüksek rep (15-25) + uzun TUT (time under tension). Achilles tendon stiffness sıçrama performansı belirler — ekstra eccentric yük tendon adaptation tetikler (Bohm 2015).'
+  },
+  'db':{
+    short:'Anti-extension core — derin TVA aktivasyonu. McGill "Big 3" üyesi, bel-friendly.',
+    anatomy:'Transversus abdominis (TVA — en derin karın kası, korse fonksiyonu), rectus abdominis (anti-extension), multifidus. Crunch\'a göre lumbar yük %70 daha az (McGill 2007).',
+    biomech:'Sırtüstü, kollar yukarı (90°), dizler 90°. Karşı kol+bacak yavaşça yere uzat. Bel zemine bastırılmış (alt bel ile masa arası boşluk yok). Diğer taraf. Yavaş — 4 sn dışarı, 2 sn geri.',
+    metabolic:'Düşük kalori, yüksek nöromüsküler. Postür ve omurga stabilite carry-over.',
+    misconception:'"Dead Bug çocuk hareketi, ciddi core değil" → YANLIŞ. Core stabilite zayıfsa Dead Bug\'da bel kavislenir → hareket başarısız. McGill 2007: Dead Bug + Side Bridge + Bird Dog (Big 3) lumbar disk yükü <100 lb (vs Crunch 700+ lb). Klinik bel rehab gold standard.',
+    advanced:'TVA aktivasyonu: bracing (diaphragm + TVA + pelvic floor sandwich) → intra-abdominal pressure → spinal stabilizasyon. Dead Bug\'da kontralateral movement → multifidus + obliques cross-pattern aktive. Atletik koordinasyon için temel (sprint, koşu, yük taşıma).'
+  },
+
+  // ── ÜST VÜCUT · ÇEKME (Per) ──
   'lat':{
     short:'Sırt + bicep çekme hareketi. Latissimus dorsi (sırt kanatları) ana hedef.',
     anatomy:'Latissimus dorsi vücudun en geniş kası (adduction + extension + internal rotation). Trapezius orta+alt + rhomboids scapular retraction. Biceps brachii + brachialis dirsek fleksiyonu.',
@@ -4373,13 +4500,87 @@ const EXERCISE_EDU={
     misconception:'"Bar boyun arkasına çekmek lat\'ı daha çok çalıştırır" → YANLIŞ. Omuz kapsülü impingement + sevikal ekstrem yük. EMG fark minimum (Lehman 2004), risk maksimum. Modern öneri: bar göğse, hep göğse.',
     advanced:'Lat lifleri mültifibriler — farklı çekme açıları farklı demetleri aktive eder. Geniş tutuş + bar göğse = lat üst. Dar tutuş + bar göbeğe = lat alt + rhomboid. 2-3 farklı çekme/hafta = full lat hipertrofi (Schoenfeld 2017 multi-angle).'
   },
-  'pall':{
-    short:'Anti-rotasyon core izolasyonu. Statik egzersiz — hareket değil, hareketi durduruyorsun.',
-    anatomy:'Transversus abdominis + internal/external obliques + multifidus (derin omurga stabilizatörü). Klasik crunch yatay rectus abdominis ("six-pack") çalıştırır; Pallof press derin core — omurga koruma için fonksiyonel kas.',
-    biomech:'Cable yandan, kollar göğüs hizası, bar dik öne ittirilir. Cable seni döndürmek ister — sen dönmemek için core izometrik kasılır.',
-    metabolic:'Düşük enerji, yüksek nöromüsküler. Postür stabilizasyon mimarisi gelişir. Squat/deadlift core stabilite carry-over yüksek.',
-    misconception:'"Crunch core\'u en iyi çalıştırır" → YANLIŞ. Crunch flexor pattern — modern oturma zaten bu. McGill 2007 anti-rotation/anti-extension önerir. Pallof press fonksiyonel + bel-friendly (lumbar fleksiyon yok). Crunch ≠ kötü ama tek başına yetersiz.',
-    advanced:'McGill "Big 3" (curl-up, side bridge, bird dog) + Pallof = lumbar disk yük min + nöromüsküler core entegrasyon max. Anti-rotation transferi: tek-bacak hareketler, athletic cutting, postür koruma. EMG (Boren 2011): Pallof press external oblique aktivasyonu yüksek, lumbar disk shear minimum.'
+  'cr':{
+    short:'Horizontal pull, orta sırt + biceps. Lat pulldown\'ın horizontal versiyonu.',
+    anatomy:'Mid-trapezius + rhomboids (scapular retraction primer), latissimus dorsi (lower fibers), posterior deltoid, biceps brachii.',
+    biomech:'Otur, ayaklar platforma. Göbeğe çek (lat alt + rhomboid). Üst sırt geri, kürek kemiklerini sıkıştır 1 sn. Omurga nötr — ileri-geri salıntı yok (lumbar shear ↑). Kol uzat ama omuz çekme — full eccentric.',
+    metabolic:'Compound çekme, ~6-8 kcal/dk. Push:pull oranı 1:1 (bench:row volume eşit) postür için kritik.',
+    misconception:'"Cable Row sırt için ama bicep alır" → KISMEN YANLIŞ. Form bozuksa bicep dominant geçer. Doğru form: dirsek geri çekme = sırt, dirsek bükme = bicep. Cue: "kürek kemiklerini birleştir" (sırt) vs "barı göbeğe çek" (bicep).',
+    advanced:'Horizontal vs vertical pull — birbirini tamamlar. Vertical (lat pulldown) = lat üst dominant. Horizontal (row) = mid-trap + rhomboid + lat alt. Posterior chain postür için 2:1 row:pulldown önerilir (modern oturma kültürü kompansasyonu, Hartig 2007).'
+  },
+  'dbrow':{
+    short:'Tek kol horizontal pull. Asimetri tedavisi + lat alt fibers vurgu.',
+    anatomy:'Latissimus dorsi (lower fibers), mid-trapezius, rhomboids, posterior deltoid, biceps. Tek kol → core anti-rotation (obliques + multifidus) izometrik.',
+    biomech:'Bench\'e tek el + tek diz dayan (omurga nötr, paralel zemine). Diğer elde dumbbell, tam asılı. Kalçaya doğru çek (göbek-kalça hattı, omuza değil — omuz = trap dominant). Eccentric 2 sn, full ROM.',
+    metabolic:'Tek-kol → core demand 2× (anti-rotation izometrik). Kalori orta.',
+    misconception:'"Single-arm row aynı bilateral row" → YANLIŞ. Tek-kol = yük asimetrik, core anti-rotation gerekir. Bilateral row\'dan daha yüksek core EMG (Fenwick 2009). Asimetri (sağ-sol fark) tedavisi için altın.',
+    advanced:'Lat lower fibers EMG: dumbbell row > seated cable row > pulldown (Lehman 2004). Tek-kol stretch reflex daha derin (kol tam asılır eccentric tepe). Pull pattern variation (vertical + horizontal + tek-kol) lat hipertrofisi optimize.'
+  },
+  'fp':{
+    short:'Posterior deltoid + üst sırt + external rotation. Postür hareketinin kralı.',
+    anatomy:'Posterior deltoid, mid + upper trapezius, rhomboids, infraspinatus + teres minor (external rotation). Modern oturma için kompansasyon kası — anterior dominansını dengeler.',
+    biomech:'Kablo yüz hizasında (göğsten yukarı). Halat kullan — kulaklara çek (yana doğru). Dirsekler yukarıda + arkaya. External rotation: top pozisyonda eller sıkılı yumruk gibi yüze yakın, dirsekler omuzdan yüksek.',
+    metabolic:'İzolasyon kompleks (3 kas). ~3-5 kcal/dk. Düşük yük + yüksek rep (12-20) + form öncelikli.',
+    misconception:'"Face Pull süslü egzersiz, gerçek sırt değil" → YANLIŞ. Posterior deltoid pec major\'ın 1/3\'ü kadar — ihmal kolay. Anterior dominans (bench + press) → impingement + omuz ağrısı. Face Pull = klinik öncesi koruma (Brookbush "Posterior Health Foundation").',
+    advanced:'Push:Pull dengesi: bench/press ne kadar yapılırsa Face Pull o kadar gerekir. Optimal: pek 2-3× volume olmasın posterior chain\'den. Face Pull = posterior delt + ext rot kompozisyonu — supraspinatus impingement koruma (Cools 2007). Olimpik atletler haftada 4-6 set Face Pull (omuz sağlığı).'
+  },
+  'curl':{
+    short:'Biceps izolasyon klasiği. Dirsek fleksiyon + supination (palms up).',
+    anatomy:'Biceps brachii (long + short head), brachialis (derin, biceps altında), brachioradialis (önkol). Supinated grip = biceps + brachialis. Hammer (neutral) = brachialis + brachioradialis.',
+    biomech:'Dirsekler sabit gövdeye yakın (omuz pivot etmemeli — yoksa anterior delt alır). Tepede squeeze 1 sn. Aşağıda tam uzat (eccentric stretch). Bilek düz — dorsiflexion/palmar flexion yok (önkol straini).',
+    metabolic:'İzolasyon, ~3-4 kcal/dk. Hipertrofi için 8-15 rep + 2-3 sn eccentric. Biceps tip II baskın → orta-yüksek yük yanıt.',
+    misconception:'"Biceps Curl kol günü olmadan büyümez" → KISMEN YANLIŞ. Compound çekme (rows, pulldown) biceps\'i ciddi çalıştırır → izole curl secondary. Ama kol gözle görülür hipertrofi için izolasyon gerekir (volume + farklı açılar).',
+    advanced:'Biceps brachii bicycle peak yüksekliği = long head hipertrofi (incline curl: omuzdan extension → long head stretch). Brachialis = kol ön çevresi (sleeve doluluğu) — neutral grip / hammer curl baskın. Kol total volume: curl + hammer + reverse curl = comprehensive (Wakahara 2012).'
+  },
+  'ham':{
+    short:'Brachialis + brachioradialis vurgulu kol egzersizi. Neutral grip = nötr bilek.',
+    anatomy:'Brachialis (biceps altında derin — kol sleeve doluluk için kritik), brachioradialis (önkol üst), biceps brachii (sekonder). Bicep curl\'de baskın long head burada minimum.',
+    biomech:'Dumbbell yan tarafa, palms birbirine bakar (neutral grip). Dirsek sabit gövdeye yakın. Yavaş indir (3 sn eccentric). Tepede 1 sn. Bilek nötr — radial deviation yok.',
+    metabolic:'İzolasyon, ~3-4 kcal/dk. Brachialis derin yapısı tip II baskın — orta yük (8-12 rep) optimal.',
+    misconception:'"Hammer Curl bicep curl alternatifi" → KISMEN YANLIŞ. Aynı bicep değil — brachialis + brachioradialis baskın. Brachialis bicep\'in derin kası, ayrı kas demeti. Optimal kol: bicep curl + hammer curl (Schoenfeld 2017 multi-angle).',
+    advanced:'Brachialis pure dirsek fleksör (omuz fonksiyonu yok) — bicep curl variations\'tan en izole. Kol çevresi (özellikle ön + lateral) brachialis hipertrofi yansır. Hammer curl + reverse curl = önkol balance (radial-ulnar developmental). Dumbbell vs cable: cable mid-range gerilim sürekli, dumbbell tepede gravitasyonel düşüş.'
+  },
+
+  // ── TOTAL BODY · HİBRİD (Cum) ──
+  'apu':{
+    short:'Pull-up\'a köprü. Sırt + lat + bicep — kendi vücut ağırlığın ile yapı taşı hareketi.',
+    anatomy:'Latissimus dorsi (primer pull), biceps brachii, rhomboids, mid-trap, brachialis. Tam pull-up\'tan farkı: bant yükü hafifletir, hareket sahip olunur.',
+    biomech:'Bar üstünde, bant ayakların altında veya diz arkasında (büyük bant = daha fazla yardım). Tam asılış başlangıç. Çene bara kadar çek. Lat\'tan başla (omurga değil), göğüs barı kucaklar gibi.',
+    metabolic:'Compound, kendi vücut ağırlığı + yardım. ~7-9 kcal/dk. Tip II baskın, anaerobic glikoliz.',
+    misconception:'"Bantlı pull-up cheating, gerçek değil" → YANLIŞ. Bantlı varyasyon progresif overload zinciri: büyük bant → küçük bant → tam pull-up. Eccentric pull-up + bantlı = en hızlı pull-up\'a varan iki yol (Pinto 2014). Kadın sporcular için anatomik dezavantaj (alt vücut ağırlığı ↑) → bant kullanımı standart.',
+    advanced:'Pull-up vs lat pulldown EMG: pull-up lat %25 yüksek (Doma 2013) — kendi vücut ağırlığı stabilizasyon talebi nedeniyle. Wide neutral grip < pull-up < chin-up biceps katılımı (chin-up bicep maximum). Bantlı progresyon: 1-2 ay sonra ilk tam pull-up tipik (Bengisu hedef: Eylül 2026).'
+  },
+  'kbs':{
+    short:'Hip-hinge dinamik power hareketi. Glute + hamstring + tam-vücut koordinasyon.',
+    anatomy:'Gluteus maximus (concentric power), hamstring, erector spinae (izometrik), core (intra-abdominal pressure), trapezius/deltoid (statik tutma). Posterior chain dinamik patlama.',
+    biomech:'KB iki elde, omuzlar arası. Hip hinge — kalçayı geri it, dizler hafif bükük. Kalça patlamasıyla swing (omuzdan değil). Top pozisyon: KB göğüs hizası (kollar düz, glute squeeze). Aşağı: kontrollü kalça hinge, KB bacak arasından gelir.',
+    metabolic:'High-intensity, kardiyovasküler talep ekstrem (~10-15 kcal/dk). Anaerobic-aerobic karışım — HIIT etkisi.',
+    misconception:'"KB Swing belim için kötü" → YANLIŞ FORM RİSKLİ. Form doğru → glute powermove. Form yanlış (squat hareketi gibi yapma, omuzdan kaldırma) → bel yaralanır. McGill 2010: doğru hip-hinge swing\'de lumbar shear minimum, glute aktivasyon maksimum.',
+    advanced:'Glute EMG dinamik patlama — hip thrust statik aktivasyondan farklı kuvvet eğrisi. KB Swing = rate of force development training (RFD) — atletik powermove. Cycle-aware: ovulasyon Day 11-15 dynamic + plyometric kontrindike (relaxin → ligament gevşek). Folliküler/erken luteal optimal.'
+  },
+  'plk':{
+    short:'Anti-extension core izometrik. McGill "Big 3" üyesi, plank varyasyon dizisi.',
+    anatomy:'Transversus abdominis, rectus abdominis (anti-extension), obliques, multifidus, erector spinae. Side plank: quadratus lumborum + obliques baskın. Shoulder tap: anterior delt + serratus anterior + core anti-rotation.',
+    biomech:'Standart: dirsekler omuz altında, vücut düz çizgi, glute squeeze, core sıkı. Side: tek kola yatay, vücut düz, kalça yukarı. Shoulder tap: plank pozisyonu, sıralı omuz dokunuş — kalça sallanmasın.',
+    metabolic:'İzometrik, düşük kalori (~3-5 kcal/dk). Nöromüsküler dayanıklılık + postür baskın.',
+    misconception:'"Plank ne kadar uzun olursa o kadar iyi" → YANLIŞ. McGill 2007: 60+ sn plank → form bozulur, lumbar yük artar. Optimal: 30-45 sn × 3-4 set + perfect form. Time-under-tension yerine perfect form\'la varyasyon önerilir (side plank, shoulder tap, leg lift).',
+    advanced:'Plank EMG: rectus abdominis %43, oblique %52, lumbar erector %20 (Schoenfeld 2014). Side plank quadratus lumborum + obliques %75+ MVIC — tek-bacak/yan stabilite athletic transfer. Plank → push-up → handstand progresyon zinciri (omuz girdle dayanıklılık).'
+  },
+  'fc':{
+    short:'Total core + grip + tam-vücut postür. Carrier — günlük yaşam gücü kralı.',
+    anatomy:'Trapezius (üst + orta), forearm flexors (grip), erector spinae, glute (yürüme), obliques (anti-rotation, anti-lateral flexion), serratus anterior (scapular stability).',
+    biomech:'İki dumbbell yanlarda (en ağır kaldırılabilen). Dik duruş, omuzlar geri, scapula nötr (shrug değil). Adım adım yürü — küçük, kontrollü adımlar. Core sıkı, nefes alıştır (Valsalva değil).',
+    metabolic:'İzometrik tutma + dinamik yürüme. ~8-10 kcal/dk + grip + postür. Carrier — günlük yaşam gücü transfer max (alışveriş, kucaklama, taşıma).',
+    misconception:'"Farmer\'s Carry hafif, sadece yürüme" → YANLIŞ. Yük omuzdan ayağa basınç dağılımı + grip + core sürekli aktivasyon. Trap üst + alt birlikte aktive (yer çekimi statik direnç). Maximal grip strength ölçüsü = total upper body strength korelasyon (Beasley 2017 r=0.78).',
+    advanced:'Bone loading: ground reaction force + statik kompresyon → osteojenik stimülüs (Beck 2017 KMY için kritik post-tiroidektomi). Grip strength = mortality predictor (Leong 2015) — forearm flexors total fonksiyon prokimasi. Trap pattern: shrug ≠ carry; carry\'de scapular nötr-stabil.'
+  },
+  'rt':{
+    short:'Yan karın + obliques rotation. Hareket-bazlı core (anti-rotation Pallof\'un karşıtı).',
+    anatomy:'External obliques (primer rotation), internal obliques, rectus abdominis (sekonder), erector spinae (anti-extension). Rotation pattern hareket karşıtı izolasyon.',
+    biomech:'Dizler bükük, hafif geriye yaslan (45° gövde). Yana doğru dönüş — kontrollü, tam ROM. Dumbbell veya plate elde. Omurga rotasyonu nazikçe — savur değil.',
+    metabolic:'İzolasyon, dinamik. Düşük kalori (~3-5 kcal/dk). Yan karın hipertrofisi — bel kıvrımı görünüm.',
+    misconception:'"Russian Twist beli mahveder" → KISMEN YANLIŞ. Hızlı + yüksek yük + tam rotasyon → lumbar disk shear ↑ (McGill kritiği). Yavaş + kontrollü + orta yük → güvenli + etkili. Cycle-aware: ovulasyon Day 11-15 (relaxin) → Pallof\'a geç (anti-rotation, omurga rotasyonu yok).',
+    advanced:'Spinal rotation sırasında disk lifleri shear gerilimine maruz kalır — annulus fibrosus hasarı kümülatif. McGill 2007: anti-rotation (Pallof) > rotation (Russian Twist) lumbar sağlığı için. Russian Twist sporcu (golf, tenis, sürat) için fonksiyonel ama bel hassasiyetinde kontrindike.'
   }
 };
 function getExerciseEdu(exId){return EXERCISE_EDU[exId]||null;}
