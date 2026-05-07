@@ -999,6 +999,30 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .pt-empty{text-align:center;padding:20px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
 
 /* ════════════════════════════════════════════ */
+/* MİKRONUTRIENT GAP · 4 mikro × Bengisu karnivor (Phase 2 Hafta 7A — Ajan 4) */
+/* ════════════════════════════════════════════ */
+.micro-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(217,89,30,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.mc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.mc-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mc-item{padding:12px 12px;border-radius:12px;background:rgba(232,221,196,0.04);border:1px solid var(--glass-border);position:relative;}
+.mc-item.status-ok{border-color:rgba(90,122,79,0.40);background:rgba(90,122,79,0.08);}
+.mc-item.status-mid{border-color:rgba(232,178,63,0.40);background:rgba(232,178,63,0.06);}
+.mc-item.status-low{border-color:rgba(217,89,30,0.40);background:rgba(217,89,30,0.06);}
+.mc-emoji{font-size:22px;line-height:1;margin-bottom:4px;}
+.mc-name{font-size:12px;font-weight:700;color:var(--cream);letter-spacing:0.3px;}
+.mc-target{font-size:10px;color:var(--cream-mute);margin-bottom:6px;}
+.mc-status-badge{font-size:9px;padding:2px 8px;border-radius:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:inline-block;margin-bottom:6px;}
+.mc-status-badge.ok{background:rgba(90,122,79,0.25);color:var(--sage-leaf);}
+.mc-status-badge.mid{background:rgba(232,178,63,0.25);color:var(--mustard);}
+.mc-status-badge.low{background:rgba(217,89,30,0.25);color:var(--coral);}
+.mc-source{font-size:11px;color:var(--cream-soft);line-height:1.5;margin-top:4px;}
+.mc-source-title{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);margin-bottom:2px;font-weight:600;}
+.mc-action{font-size:11px;color:var(--cream-soft);line-height:1.5;margin-top:6px;padding:6px 8px;border-radius:8px;background:rgba(232,221,196,0.04);font-style:italic;}
+.mc-doctor{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:12px;color:var(--cream-soft);line-height:1.55;}
+.mc-doctor-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:6px;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1087,6 +1111,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="card"><div class="cb" id="m2b"></div></div>
   <div class="slbl">Takviye Programı</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
+
+  <!-- Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama) -->
+  <div id="micronutrient-wrap"></div>
 
   <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:16px;">
@@ -3968,7 +3995,84 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();}
+
+// ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
+// 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
+// Her biri için: target + Bengisu karnivor diyetinde tahmini natural source + status + supplement aksiyon
+const MICRONUTRIENT_INFO=[
+  {
+    key:'vitc',
+    emoji:'🍋',
+    name:'Vitamin C',
+    target:'≥75 mg/gün',
+    status:'mid', // ok | mid | low (karnivor diyette default mid)
+    statusLabel:'Sınırda',
+    sourceTitle:'Karnivor kaynak',
+    source:'Limon (sıkma) ~30 mg, biber dilimi ~25 mg, maydanoz/dereotu ~10-15 mg, avokado ~10 mg. 1. öğüne mecburi 🍋 + biber + maydanoz = ~50-60 mg.',
+    action:'Hedef: günde +1 limon sıkımı + 1 yk maydanoz/dereotu + 1 ince biber dilimi. Demir emilimi 3-4× artırır (regl haftası kritik).'
+  },
+  {
+    key:'k2',
+    emoji:'🧈',
+    name:'K2 MK-7',
+    target:'90-120 µg/gün',
+    status:'mid',
+    statusLabel:'Yeterli (et+yumurta)',
+    sourceTitle:'Karnivor kaynak',
+    source:'Yumurta sarısı (~32 µg/yumurta), tereyağı/ghee (~15 µg/yk), karaciğer (~70 µg/100g, haftada 1-2 kere), ferment besinler (yok karnivor).',
+    action:'Calciday\'in K2 MK-7 içeriği belirsiz — doktor sorusu (Qalyviz formülasyonu). Eksikse 100µg MK-7 supplement (yağlı öğünle).'
+  },
+  {
+    key:'omega3',
+    emoji:'🐟',
+    name:'Omega-3 (EPA+DHA)',
+    target:'1-2 g/gün',
+    status:'ok',
+    statusLabel:'İyi (balık günleri)',
+    sourceTitle:'Karnivor kaynak',
+    source:'Somon 200g ~3.5g, levrek 200g ~1.5g, sardalya ~2g/100g, kuzu/dana ~0.2g/100g, omega-3 yumurta ~0.3g/yumurta. Haftada ≥3 balık → günlük ortalama 1.5g+.',
+    action:'Hedef: haftada minimum 3 öğün balık (somon/levrek/sardalya). Balık <3 ise 1g EPA+DHA supplement (öğünle).'
+  },
+  {
+    key:'fiber',
+    emoji:'🥑',
+    name:'Lif',
+    target:'15-25 g/gün',
+    status:'low',
+    statusLabel:'Düşük (klasik öneri 25-30g)',
+    sourceTitle:'Karnivor kaynak',
+    source:'½ avokado ~7g, roka/ıspanak ~2g/100g, karalahana ~4g/100g, semizotu ~3g/100g, soğan ~2g, maydanoz ~2g. Toplam ~12-18g günlük (avokado + bol yeşillik ile).',
+    action:'Karnivor lif klasik öneriden düşük doğal — sindirim/transit sorunu yoksa endişeleme. Şişkinlik veya transit yavaş ise: psyllium husk 5-10g/akşam (su ile), opsiyonel.'
+  }
+];
+
+function renderMicronutrientCard(){
+  const el=document.getElementById('micronutrient-wrap');
+  if(!el)return;
+  const items=MICRONUTRIENT_INFO.map(m=>{
+    const statusCls='status-'+m.status;
+    const badgeCls=m.status;
+    return `<div class="mc-item ${statusCls}">
+      <div class="mc-emoji">${m.emoji}</div>
+      <div class="mc-name">${m.name}</div>
+      <div class="mc-target">${m.target}</div>
+      <span class="mc-status-badge ${badgeCls}">${m.statusLabel}</span>
+      <div class="mc-source-title">${m.sourceTitle}</div>
+      <div class="mc-source">${m.source}</div>
+      <div class="mc-action">${m.action}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="micro-card">
+    <div class="mc-title">Mikronutrient Durumu</div>
+    <div class="mc-subtitle">4 anahtar mikro · Bengisu karnivor + yumurta + avokado + yeşillik</div>
+    <div class="mc-grid">${items}</div>
+    <div class="mc-doctor">
+      <div class="mc-doctor-title">⚕️ Doktor sorusu paketi</div>
+      Qalyviz/Calciday içerik formu (D3 + K2 MK-7 var mı?), serum 25(OH)D 6-12 ay 1× (hedef 30-50 ng/mL), TSH/sT4/sT3 takibi, serum demir + ferritin (regl haftası kontrol için), B12 + folat (karnivor B12 yüksek ama emilim?). Tek seferde tüm bunlar bir test paneliyle istenebilir.
+    </div>
+  </div>`;
+}
 
 function renderDietDay(){
   const d=S.dD,idx=d.getDay()%7,c=ci(d),per=inP(d)||preP(d);
