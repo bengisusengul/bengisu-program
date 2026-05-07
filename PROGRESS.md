@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 7 Mayıs 2026 (Phase 2 P1 ROADMAP TAMAMEN TAMAMLANDI · 4 Epic, 16 commit · Pedagojik + Görselleştirme + Beslenme + 5 Orijinal Sentez Fikri)
+**Son güncelleme:** 7 Mayıs 2026 (🎉🎉🎉 Phase 2 KOMPLE TAMAMLANDI · P0 10/10 + P1 4 Epic × 16 commit + P2 8/8 madde · Toplam 24 P1+P2 commit + PROGRESS sync, ~5300 satır net ekleme tek günde)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -224,8 +224,17 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-07 | `5a1ada8` | **Phase 2 Hafta 8C — Hacettepe Lab:** Bilim Modu L3 ON ise Egzersiz sekmesinde 4 sub-tab. Veri Atölyesi (linearSlope 6 lift), Hipotez Defteri (open/confirmed/rejected workflow), PMID Kütüphanesi (16 ref × 4 kat: Antrenman/Cycle/Tiroid/Beslenme), Pedagojik Notlar (Mayer/Sweller/Vygotsky çerçeve). 214 satır. |
 | 2026-05-07 | `a7f2f21` | **Phase 2 Hafta 8D — Wedding Mirror:** Cycle Settings'teki event date'e bağlı, ≤60 gün kala Bugün countdown card görünür. 60 gün kala 1 kez modal otomatik açılır (3 mod: Status Quo / Hafifletme -%15 vol / Resilience). <14 gün kala kg suspended notice. Mauve gradient. 150 satır. |
 | 2026-05-07 | `3f983fb` | **Phase 2 Hafta 8E — Cycle × Performance Pattern Emergence:** P1 Epic 4'ün son orijinal fikri. 4 fazlı render: çok az veri (gizli) → 2-3 cycle (locked + progress bar) → 3 cycle ✓ ama eşik yetmedi (locked) → emerged (4 phase grid + insight + literatür kıyas). hasEmergedPattern() eşiği: 3 cycle + ≥4 PR + log ≥%30. Bengisu için ≈Ağustos 2026'da otomatik aktive olacak. Sims 2016 + McNulty 2020 PMID 30067632 ref. 183 satır. **P1 Epic 4 (5 Orijinal Sentez Fikri) tamamlandı — P1 ROADMAP TAMAMI ✅** |
+| 2026-05-07 — Phase 2 P2 ROADMAP başlangıcı + bitişi (8 commit, hepsi tek gün) | | |
+| 2026-05-07 | `bb59653` | **Phase 2 P2.1 — Set arası bilim mikro-balon:** SCIENCE_MICRO_TIPS 30 havuz × 93 tip. Rest timer 90sn banner'a 1-2 cümle mekanizma ipucu (Sweller cognitive load uygun). startSetTimer içinde S.activeTimer.microTip atanır, timer süresince sabit. 175 satır. |
+| 2026-05-07 | `2b055c3` | **Phase 2 P2.2 — Wedding countdown opt-out + somatic reframing:** Mood ≤2 (irritable/sad/anxious) VEYA geç luteal/regl'de countdown auto soft-hide → "anı modu" öne çıkar. 3 textarea: paylaşmak istediğin an + bedeniyle his + bedenine cümle. Manuel toggle Sayı/Anı modu. 99 satır. **⭐⭐⭐⭐ en yüksek etki** |
+| 2026-05-07 | `0e6b4cd` | **Phase 2 P2.3 — Plate Calculator:** Hevy pattern, kg cinsinden barbell + plakalar görsel. 3 mod (20kg Bar / 15kg Bar W / Dumbbell), greedy plate breakdown (20+15+10+5+2.5+1.25). Set log'da kg yanı 🥪 ikon. Olympic plate renkleri. 146 satır. |
+| 2026-05-07 | `76c3ee3` | **Phase 2 P2.4 — Etkileşimli Kas Anatomi modal:** Heatmap detail card'ında "📚 Anatomi öğren" butonu. 9 kas grubu × 7 alan (TR + Latince + ana fonksiyon chip + L2 mekanizma + key exercises + cycle bağlantısı). linkifyGlossary entegrasyonu. 139 satır. |
+| 2026-05-07 | `e95467d` | **Phase 2 P2.5 — Tiroidektomi Destek Modülü "Bedenim ve Tiroidim":** Diet sekmesinde 3 sub-tab kart: Kan Tahlili (12 test, 5 öncelikli), Doktor Soruları (5 kat × 18 soru), T4→T3 Fizyoloji (Wiersinga 2014 + deiodinaz tipleri + ko-faktörler). 150 satır. |
+| 2026-05-07 | `ca6af34` | **Phase 2 P2.6 — Push Notification iOS PWA:** Cycle Settings altında "🔔 Hatırlatmalar" kartı. 5 reminder (06:30 Levotiron default ON / 09:00 Body / 14:00 Pre-WO / 18:30 Calciday2 / 21:30 Akşam). In-page Notification API + setInterval 30sn check + günlük dupe önleme. iOS 16.4+ PWA. 162 satır. |
+| 2026-05-07 | `00473ba` | **Phase 2 P2.7 — Voice Logging Türkçe:** Custom Food + Hipotez Defteri textarea'larında 🎙️ button. Web Speech API tr-TR + Türkçe sayı parser ("iki yüz elli" → "250"). 30+ TR sayı kelimesi compound destek. Coral pulse recording animation. 131 satır. |
+| 2026-05-07 | `ff23cd2` | **Phase 2 P2.8 — Wearable Predictive HRV → Adaptive Yük:** Whoop pattern. Health Photo modal'ına HRV input + AI prompt. Egzersiz sekmesinde Adaptive Load kartı (3-status readiness: yeşil/sarı/kırmızı). HRV(50%)+RHR(25%)+uyku(25%) ağırlıklı skor. Kuralsal öneri + opsiyonel Claude API derin öneri (cycle phase + HRV + uyku + 4-6 cümle anti-kompulsif Türkçe). 225 satır. **P2 ROADMAP TAMAMI ✅** |
 
-**Toplam:** 69 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
+**Toplam:** 77 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -413,7 +422,20 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · Phase 2 P1 ROADMAP TAMAMLANDI 🎉)
+## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · 🎉🎉🎉 Phase 2 KOMPLE TAMAMLANDI)
+
+### 🎯 Phase 2 P2 — 8/8 madde tamamı ✅
+
+| | Madde | Commit | Etki |
+|---|---|---|---|
+| ✅ | P2.1 Set arası bilim mikro-balon (90sn rest timer banner) | `bb59653` | ⭐⭐⭐ |
+| ✅ | P2.2 **Wedding countdown opt-out + somatic reframing** | `2b055c3` | ⭐⭐⭐⭐ |
+| ✅ | P2.3 Plate calculator (kg cinsinden barbell + plakalar) | `0e6b4cd` | ⭐⭐ |
+| ✅ | P2.4 Etkileşimli Kas Anatomi modal (TR + Latince + L2) | `76c3ee3` | ⭐⭐⭐ |
+| ✅ | P2.5 Tiroidektomi Destek Modülü (kan tahlili + doktor sorusu) | `e95467d` | ⭐⭐⭐ |
+| ✅ | P2.6 Push Notification iOS PWA (5 reminder) | `ca6af34` | ⭐⭐ |
+| ✅ | P2.7 Voice Logging Türkçe (Web Speech API + sayı parser) | `00473ba` | ⭐⭐ |
+| ✅ | P2.8 Wearable Predictive HRV → Adaptive Yük + Claude API | `ff23cd2` | ⭐⭐⭐ |
 
 ### 🎉🎉 Phase 2 P1 — 4 EPIC × 16 COMMIT TAMAMI ✅
 
