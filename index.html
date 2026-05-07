@@ -323,6 +323,18 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .msub{font-size:13px;color:var(--text-mid);margin-bottom:18px;}
 .macts{display:flex;gap:10px;margin-top:20px;}
 
+/* GLOSSARY (Phase 2 Hafta 5B) — altı çizili tıklanabilir bilim terimleri */
+.gloss-term{text-decoration:underline dotted rgba(232,221,196,0.55);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;color:var(--cream);transition:color 0.18s, text-decoration-color 0.18s;font-weight:500;}
+.gloss-term:hover,.gloss-term:active{color:var(--mustard);text-decoration-color:var(--mustard);}
+.gloss-cat-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.gloss-cat-kas{background:rgba(180,121,144,0.18);color:#D89AAE;border:1px solid rgba(180,121,144,0.35);}
+.gloss-cat-antrenman{background:rgba(90,122,79,0.18);color:#A8C0A0;border:1px solid rgba(90,122,79,0.35);}
+.gloss-cat-hormon{background:rgba(232,178,63,0.18);color:#E8B23F;border:1px solid rgba(232,178,63,0.35);}
+.gloss-cat-beslenme{background:rgba(217,89,30,0.18);color:#E8755A;border:1px solid rgba(217,89,30,0.35);}
+.gloss-cat-tip{background:rgba(123,168,176,0.18);color:#9DC3CB;border:1px solid rgba(123,168,176,0.35);}
+.gloss-cat-cycle{background:rgba(180,121,144,0.18);color:#D89AAE;border:1px solid rgba(180,121,144,0.35);}
+.gloss-cat-pattern{background:rgba(232,221,196,0.12);color:var(--cream);border:1px solid var(--glass-border);}
+
 /* ALT */
 .alt{border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;cursor:pointer;margin-bottom:8px;transition:all 0.15s;}
 .alt:active{background:var(--pink-pale);}
@@ -1425,6 +1437,27 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="macts" style="margin-top:14px;">
       <button class="btn bghost" style="flex:1;" onclick="closeM('compulsive-screen-modal')">Sonra</button>
       <button class="btn bp" id="cs-save-btn" style="flex:2;" disabled onclick="saveCsAndShow()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- GLOSSARY MODAL (Phase 2 Hafta 5B) — altı çizili bilim terimleri tıklanınca açılır -->
+<div class="mo" id="glossary-modal">
+  <div class="modal" style="max-width:440px;">
+    <div class="mhandle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+      <h3 id="gloss-term-title" style="margin:0;">Terim</h3>
+      <span id="gloss-term-cat" class="gloss-cat-pill gloss-cat-pattern">kategori</span>
+    </div>
+    <div id="gloss-term-def" style="margin-top:14px;font-size:14px;line-height:1.7;color:var(--cream);"></div>
+    <div id="gloss-term-l3" style="margin-top:12px;display:none;padding:12px 14px;border-radius:12px;background:rgba(232,221,196,0.06);border-left:3px solid var(--sage-leaf);">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--sage-leaf);margin-bottom:6px;font-weight:600;">🔬 L3 İleri</div>
+      <div style="font-size:13px;line-height:1.65;color:var(--cream);" id="gloss-term-l3-text"></div>
+    </div>
+    <div id="gloss-term-ref" style="margin-top:12px;font-size:11px;color:var(--text-light);font-style:italic;"></div>
+    <div class="macts" style="margin-top:18px;">
+      <button class="btn bsoft" style="flex:1;" onclick="closeM('glossary-modal')">Kapat</button>
+      <button class="btn bghost" style="flex:1;" onclick="toggleEduLevel();updateGlossModalLevel();">🔬 Bilim Modu Değiştir</button>
     </div>
   </div>
 </div>
@@ -4601,6 +4634,171 @@ function toggleExerciseEdu(exId,i){
   if(arr)arr.style.transform=open?'rotate(0deg)':'rotate(90deg)';
 }
 
+// ── Glossary 50+ bilim terimi (Phase 2 Hafta 5B — Ajan 7 pedagoji)
+// Kategoriler: kas (anatomi), antrenman, hormon, beslenme, tip (tıbbi), cycle, pattern (hareket)
+// Kullanım: linkifyGlossary(text) terimleri otomatik altı çizili tıklanabilir yapar.
+// L2 default: def + ref. L3 toggle: + l3 detayı.
+const GLOSSARY={
+  // ── Antrenman/Bilim (18) ──
+  'rpe':{cat:'antrenman',def:'Rate of Perceived Exertion (Algılanan Zorluk Derecesi). 1-10 ölçek: 10=tek tekrar daha yapamam, 8=2 tekrar kaldı (RIR2), 6=çok kolay.',ref:'Zourdos 2016',l3:'OMNI-RES skala otoregülasyon için altın standart. Set bazlı RPE → cycle × performance pattern emergence için temel veri. Folliküler RPE 8.5 ≈ luteal RPE 7.5 (aynı yük).'},
+  'rir':{cat:'antrenman',def:'Reps in Reserve — yedekteki tekrar sayısı. RIR2 = 2 tekrar kaldı, set sona ermek üzere. Hipertrofi için RIR 0-3 optimal.',ref:'Helms 2016',l3:'Hipertrofi için en geçerli intensity göstergesi (Helms 2018 meta). RIR=10-RPE çevirisi: RIR0=RPE10, RIR2=RPE8, RIR4=RPE6.'},
+  'mev':{cat:'antrenman',def:'Minimum Effective Volume — kas grubu büyümesi için gereken en az haftalık set. Glute MEV ≈ 8 set, biceps MEV ≈ 8 set.',ref:'Israetel 2018',l3:'Renaissance Periodization framework: MEV altında volume → maintenance only, hipertrofi yok. Cycle deload haftası MEV\'e düşer (set %30-50 azaltma).'},
+  'mav':{cat:'antrenman',def:'Maximum Adaptive Volume — kas büyümesi için optimum haftalık set aralığı. Glute MAV 12-16, biceps 12-14, lat 12-18.',ref:'Israetel 2018',l3:'MAV bireysel — yaş, deneyim, recovery kapasitesine göre değişir. Kadında folliküler MAV → luteal\'da %15-20 düşer (recovery kompromisi).'},
+  'mrv':{cat:'antrenman',def:'Maximum Recoverable Volume — toparlanılabilir maksimum haftalık set. Üstüne çıkarsan: stagnation veya regression.',ref:'Israetel 2018',l3:'MRV aşımı sinyalleri: 2-3 hafta üst üste set performansı düşer, mood ↓, uyku bozulur, libido ↓ (overreaching → overtraining sürekliliği).'},
+  'mtor':{cat:'antrenman',def:'Mechanistic Target of Rapamycin — kas protein sentezi (MPS) ana sinyal yolu. Direnç antrenmanı + protein → mTOR aktive.',ref:'Hornberger 2006',l3:'mTORC1 (Complex 1) hipertrofi için kritik; mTORC2 ayrı fonksiyon. Leucine direkt mTORC1 aktivatör (3g/öğün eşik). Mekanik gerilim → integrin-FAK-fosfatidik asit-mTORC1 yolu.'},
+  'mtorc1':{cat:'antrenman',def:'mTOR Complex 1 — kas hipertrofisi için ana protein kompleksi. Mekanik gerilim + leucine → aktivasyon → MPS başlar.',ref:'Hornberger 2006',l3:'PI3K-AKT bypass edilebilir doğrudan mekanik yük yoluyla (Hornberger 2006 PMID 16737952). Rapamycin mTORC1 inhibe → kas büyümesi durur (bilimsel doğrulama deneyleri).'},
+  'emg':{cat:'antrenman',def:'Electromyography — kas elektriksel aktivitesi ölçümü. Hangi egzersizin hangi kası ne kadar aktive ettiği bilim verisi.',ref:'Schoenfeld 2014',l3:'Surface EMG (sEMG) yüzeysel kaslar için; intramuskular EMG derin kaslar için. EMG yüksekliği ≠ hipertrofi garantisi (Vigotsky 2017 kritik). MVIC normalizasyon altın standart.'},
+  'mvic':{cat:'antrenman',def:'Maximum Voluntary Isometric Contraction — bir kasın izometrik max kasılması. EMG verisi % MVIC olarak ifade edilir.',ref:'Schoenfeld 2014',l3:'Egzersiz EMG\'si %75+ MVIC = hipertrofi-yeterli aktivasyon kabul edilir. Hip thrust glute max %75-90 MVIC, squat %50-65 MVIC (Contreras 2015).'},
+  'hipertrofi':{cat:'antrenman',def:'Kas büyümesi — sarkomer ve myofibril çoğalmasıyla kas kesiti artar. Mekanik gerilim + metabolik stres + protein → hipertrofi.',ref:'Schoenfeld 2010',l3:'Sarkoplazmik (su+glikojen, geçici) vs miyofibrillar (gerçek lif eklenmesi) hipertrofi. Hyperplasia (lif sayısı artışı) insanda tartışmalı; hipertrofi ana mekanizma.'},
+  'periodizasyon':{cat:'antrenman',def:'Antrenman programının zaman içinde yapılandırılması — yoğunluk ve hacim sistematik değişir. Doğrusal, dalga, blok modelleri var.',ref:'NSCA 2016',l3:'Linear (doğrusal): yük artar, volume düşer 4-12 hafta. DUP (dalga): aynı hafta içi 3 farklı stimulus. Block: mezo-cycle bazlı (anatomik adaptasyon → güç → güç-hipertrofi → peak).'},
+  'deload':{cat:'antrenman',def:'Hafifletme haftası — volume ve/veya intensity %30-50 düşürülür. Toparlanma + sinir sistemi yenilenmesi.',ref:'NSCA 2016',l3:'Cycle-aware deload kadın için: regl Day 1-2 doğal deload (volume %20-30 ↓), her 4. hafta planlı deload + cycle pencere ile hizala. Geç luteal Hafta 4 ideal deload zamanı.'},
+  'eccentric':{cat:'antrenman',def:'Uzayan-kasılma fazı — kas yük altında uzar (RDL\'de iniş, squat\'ta iniş). Hipertrofi için en güçlü sinyal.',ref:'Schoenfeld 2017',l3:'Eccentric kontraksiyon concentric\'ten %20-30 daha fazla yük taşıyabilir. Lif mikro-yıkım (microtears) en yüksek eccentric\'te → adaptasyon stimulusu max. 2-4 sn eccentric optimal.'},
+  'concentric':{cat:'antrenman',def:'Kısalan-kasılma fazı — kas yük altında kısalır (squat\'ta kalkış, curl\'de yukarı). Power output ölçümü.',ref:'Schoenfeld 2017',l3:'Concentric peak velocity → power output (RFD = rate of force development). Olympic lift ve power training concentric vurgu yapar.'},
+  'rom':{cat:'antrenman',def:'Range of Motion — eklem hareket aralığı. Tam ROM = hipertrofi, kısmi ROM = belirli açılarda overload.',ref:'Schoenfeld 2020',l3:'Tam ROM hipertrofi için %15-25 daha verimli (McMahon 2014). Stretched position hipertrofi en yüksek (squat altta, RDL altta, fly altta) — uzun lengthened-pozisyon training popülerleşiyor.'},
+  'tut':{cat:'antrenman',def:'Time Under Tension — sette kas gerilim süresi. Tipik 30-60 sn / set hipertrofi için optimal.',ref:'Schoenfeld 2010',l3:'TUT yüksek olursa (>70 sn) yük düşer → mekanik gerilim ↓. TUT çok kısa (<20 sn) metabolik stres ↓. Sweet spot: 8-12 rep × 2-3 sn eccentric = 30-50 sn TUT.'},
+  '1rm':{cat:'antrenman',def:'One-Repetition Maximum — bir kez yapılabilen maksimum yük. Tüm yüzdeler buradan çıkar (%80 1RM = 8RM).',ref:'Brzycki 1993',l3:'Brzycki formülü: 1RM = yük × (36/(37-rep)). Epley: yük × (1+rep/30). RPE-bazlı: 1RM = yük / RPE-multiplier table (Helms 2018). Cycle-aware tahmin: ovulasyon week 1RM önceki 1RM\'den %3-5 yüksek olabilir.'},
+  'valsalva':{cat:'antrenman',def:'Valsalva manevrası — nefes tutarak intra-abdominal basınç oluşturma. Squat/deadlift\'te omurga koruma için kritik.',ref:'McGill 2007',l3:'Glottis kapalı + diafragma + TVA + pelvic floor = bracing. Sinüs basıncı 200+ mmHg → spine stiffness 2-4× artar. Hipertansiyon riski olanlar dikkat: tek tekrar tut, 3+ rep tehlikeli.'},
+
+  // ── Kas/Anatomi (12) ──
+  'rectus abdominis':{cat:'kas',def:'Yüzeysel karın kası — six-pack lifleri. Anti-flexion + flexion fonksiyonu.',ref:'Schoenfeld 2014',l3:'Lif tipi karışık (tip I + tip II); sarılı linea alba bağ doku. Diastasis recti: gebelik sonrası lif ayrılması, dead bug + heel slide rehab altın standart.'},
+  'obliques':{cat:'kas',def:'Yan karın kasları — internal + external obliques. Rotasyon + lateral flexion + anti-rotation.',ref:'McGill 2007',l3:'External oblique yüzeysel (rotation), internal oblique derin (anti-rotation, TVA ile birleşik). Pallof Press external oblique %70+ MVIC (Boren 2011).'},
+  'latissimus dorsi':{cat:'kas',def:'Sırtın en geniş kası ("V şekli" yapan). Adduction + extension + internal rotation.',ref:'Schoenfeld 2017',l3:'Lat lifleri mültifibriler — farklı çekme açıları farklı demetleri aktive. Wide grip lat üst (clavicular), close grip lat alt + rhomboid. Sigara/oturma kültürü en çok ihmal edilen kas.'},
+  'erector spinae':{cat:'kas',def:'Omurga arkasında dikey lifler — postür ve anti-flexion. Spinalis + longissimus + iliocostalis.',ref:'McGill 2007',l3:'RDL\'de eccentric loading erector spinae hipertrofi tetikler. Hip hinge\'de izometrik (sabit). Kronik bel ağrısı %80 erector spinae zayıflığı + obliques imbalance.'},
+  'trapezius':{cat:'kas',def:'Sırt üst-orta kası, üç bölüm: upper (shoulder shrug), middle (scapular retraction), lower (scapular depression).',ref:'Cools 2007',l3:'Scapular dyskinesis (kürek-kemik bozukluk) trapezius alt zayıflık. Face Pull + scapular pull-up trap orta+alt aktive. Boyun ağrısı sıkça trap upper hyperaktivasyon.'},
+  'rhomboids':{cat:'kas',def:'Kürek kemikleri arası derin kaslar — scapular retraction. Cable Row, Face Pull primer.',ref:'Schoenfeld 2017',l3:'Trap orta ile birlikte çalışır — postür "geri kürek" hareketi. Modern oturma → rhomboid uzar zayıflar. Cable Row alt göbek = rhomboid + lat lower.'},
+  'gluteus maximus':{cat:'kas',def:'Vücudun en büyük tek kası — kalça extensiyonu. Hip Thrust kralı.',ref:'Contreras 2015',l3:'Üç bölüm: superior, medial, inferior. ~700-1100 cm³ kadın. Hipertrofi 6-8 haftada belirgin. Femur boynu yatay yük → bone loading post-tiroidektomi KMY için kritik.'},
+  'gluteus medius':{cat:'kas',def:'Glute max yan-üstündeki kas — hip abduction + lateral pelvis stabilizatör. Trendelenburg testi.',ref:'Bourne 2018',l3:'Tek-bacak hareketlerde aşırı yüklenir (Bulgarian, Step-Up). Zayıflığı: pelvis düşmesi, koşuda IT band irritasyonu, diz valgusu. Side plank + clamshell aktivasyon gold.'},
+  'hamstring':{cat:'kas',def:'Bacak arka grubu — semitendinosus, semimembranosus, biceps femoris. Knee flexion + hip extension.',ref:'Schoenfeld 2014',l3:'Eccentric loading (RDL, Nordic curl) hamstring strain %50 azaltır (Petersen 2011). Cycle: ovulasyon haftası relaxin → eccentric hamstring işi rezerve, hafif tut.'},
+  'quadriceps':{cat:'kas',def:'Bacak ön grubu — vastus lateralis/medialis/intermedius, rectus femoris. Knee extension + (rectus femoris) hip flexion.',ref:'Schoenfeld 2014',l3:'Vastus medialis oblique (VMO) son 15° ekstansiyon — VMO zayıflığı patellar tracking sorununa yol açar. Step-up VMO baskın aktivasyon.'},
+  'transversus abdominis':{cat:'kas',def:'En derin karın kası — korse fonksiyonu. Anti-extension + intra-abdominal basınç.',ref:'McGill 2007',l3:'TVA aktivasyonu = bracing (diaphragm + TVA + pelvic floor sandwich). Postpartum diastasis recti rehabilitasyon ana hedef. Dead Bug + Pallof TVA aktivasyonu yüksek.'},
+  'scapular retraction':{cat:'kas',def:'Kürek kemiklerini birbirine yaklaştırma hareketi. Cable Row, Face Pull, lat\'ın temel hareketi.',ref:'Cools 2007',l3:'Trapezius mid + rhomboid + lat alt birlikte. Modern oturma → kürek protraction (uzaklaşma) baskın → posterior chain weakness. Retraction çalışmaları postür koruyucu.'},
+
+  // ── Hormon/Endokrin (10) ──
+  'östrojen':{cat:'hormon',def:'Kadın seks hormonu — folliküler fazda yükselir, ovulasyonda peak. Kollajen sentezi, kemik koruma, mood.',ref:'Hansen 2017',l3:'Östrojen reseptörleri kasta var → hipertrofi sinyali destekler. Folliküler fazda recovery hızlı, MPS yüksek. Postmenopoz östrojen düşüşü → sarkopeni hızlanır.'},
+  'progesteron':{cat:'hormon',def:'Luteal faz hormonu — ovulasyondan sonra yükselir, regle yakın düşer. BMR ↑, vücut ısısı ↑, mood değişimi.',ref:'Sims 2016',l3:'Progesteron geç luteal fazda BMR %8-12 artırır → kalori ihtiyacı +100-150 kcal. Vücut ısısı +0.3°C → su ihtiyacı ↑. NREM uyku derinliği etkilenebilir.'},
+  'kortizol':{cat:'hormon',def:'Stres hormonu — adrenal bezler salgılar. Sabah peak, akşam düşer. Kronik yüksekse kas kaybı + yağ depolama.',ref:'McEwen 2007',l3:'Kortizol katabolik (kas yıkıcı). Direnç antrenmanı akut artırır (sağlıklı), kronik stres + uyku borcu kortikoid disfonksiyonu yaratır. Geç luteal kortizol +%15-20.'},
+  'testosteron':{cat:'hormon',def:'Anabolik hormon — kadında düşük seviyede ama önemli (kas, libido, mood). Ovulasyon haftası küçük peak.',ref:'Sims 2016',l3:'Kadın testosteronu erkeğin %5-10\'u. Ovulasyon week 3-5% bireysel artış (folliküler fazın sonu, LH peak ile). PR\'a yatkınlık biraz artabilir ama relaxin riski dengelemeli.'},
+  'lh':{cat:'hormon',def:'Luteinizing Hormone — ovulasyonu tetikler. Day 12-14 keskin peak.',ref:'Sims 2016',l3:'LH peak 24-36 saat sürer → ovulasyon. Ovulasyon test çubukları LH ölçer. Peak sırasında relaxin de yüksek → ligament gevşekliği +30-50%.'},
+  'fsh':{cat:'hormon',def:'Follicle-Stimulating Hormone — folliküler fazda yumurta gelişimini uyarır.',ref:'Sims 2016',l3:'FSH erken folliküler fazda yüksek (Day 3-7), ardından östrojen yükselişi inhibe eder. PCOS\'ta FSH:LH oranı bozulur (LH baskın).'},
+  'relaxin':{cat:'hormon',def:'Ovulasyon ve gebelikte yükselen hormon — ligament gevşekliği yapar. ACL ve sakroiliac yaralanma riski 2-3×.',ref:'Wojtys 1998',l3:'Day 11-15 relaxin peak (LH peak ile beraber). ACL non-contact riski ovulasyon haftasında 2-3× yüksek (Wojtys 1998 PMID 9568310). Plyometric, sprint, Smith squat valgus risk → cycle-safe alternatifler önerilir.'},
+  't3':{cat:'hormon',def:'Aktif tiroid hormonu (triiodotironin). Metabolizma, ısı üretimi, kas protein sentezi.',ref:'Roti 1993',l3:'T3 = aktif form (T4 → T3 dönüşüm hücre düzeyinde). T4-only Levotiron alanlarda T3 düşük olabilir (Wiersinga 2014). Selenium T4→T3 deiodinaz enzim ko-faktörü.'},
+  't4':{cat:'hormon',def:'Tiroksin — tiroidin ürettiği ana hormon, T3\'e dönüşür. Levotiron (levotiroksin) sentetik T4.',ref:'Roti 1993',l3:'T4 yarı ömrü ~7 gün → günlük dozda kararlı seviye. Total tiroidektomi sonrası life-long T4 replacement gerekir. Dose titration TSH + serbest T4\'e göre.'},
+  'tsh':{cat:'hormon',def:'Thyroid-Stimulating Hormone — hipofizden salgılanır, tiroid uyarır. Tiroidektomi sonrası replacement dozu TSH\'a göre.',ref:'Wiersinga 2014',l3:'Total tiroidektomi sonrası TSH suppresyonu (kanser riski varsa <0.1) veya normal aralık (0.4-4.0). Kemik koruma için aşırı suppresyon (osteoporoz riski) önerilmez.'},
+
+  // ── Beslenme (10) ──
+  'makro':{cat:'beslenme',def:'Makronutrient — protein, yağ, karbonhidrat. Mikro = vitamin/mineral. Kalori bu üçünden gelir.',ref:'ISSN 2018',l3:'Protein 4 kcal/g, karb 4 kcal/g, yağ 9 kcal/g, alkol 7 kcal/g. Diet for athletes (Burke 2018): protein 1.6-2.2 g/kg, yağ 0.8-1.2 g/kg, kalan karb.'},
+  'glikoliz':{cat:'beslenme',def:'Glikozdan ATP üretme yolu. Anaerobic (hızlı, sürdürülemez) + aerobic (sürdürülebilir). Set 30-90 sn baskın.',ref:'McArdle 2014',l3:'Anaerobic glikoliz laktat üretir → "yanma" hissi. Aerobic glikoliz piruvat → mitokondri Krebs döngüsü. Hipertrofi için anaerobic glikoliz baskın (8-12 rep × 30-50 sn TUT).'},
+  'glikojen':{cat:'beslenme',def:'Karbonhidrat depo formu — kasta ve karaciğerde. Antrenman fuel.',ref:'Burke 2018',l3:'Kas glikojeni ~400g, karaciğer ~100g (toplam 2000 kcal). Karb-az diyette glikojen düşük → high-intensity performance ↓. Post-WO 30 dk pencere mit (timing> total daily intake matters).'},
+  'rda':{cat:'beslenme',def:'Recommended Dietary Allowance — popülasyon %97-98 için yeterli minimum. Maintenance, optimal değil.',ref:'IOM 2006',l3:'RDA temel sağlık için, performance için yetmez. Örn: protein RDA 0.8 g/kg, sporcu için 1.6-2.2 g/kg. UL (Upper Limit) toksisite eşiği — RDA ile UL arası geniş genelde.'},
+  'ea':{cat:'beslenme',def:'Energy Availability — yağsız kütle başına net kalori (intake - exercise). Kadında <30 kcal/kg LBM klinik düşük.',ref:'Loucks 2007',l3:'IOC RED-S 2023: <30 klinik düşük, 30-45 subklinik, ≥45 hedef. EA = (kalori - egzersiz harcaması) / FFM (yağsız kütle). Bengisu için ~58 kg LBM × 45 = 2610 kcal hedef yeterli.'},
+  'red-s':{cat:'beslenme',def:'Relative Energy Deficiency in Sport — yetersiz EA\'dan kaynaklı sistemik bozukluk. Tiroid, regl, kemik, mood etkilenir.',ref:'Mountjoy 2018',l3:'IOC 2014\'te tanımlandı, 2018+2023 update. 10 sistem etkilenir: metabolik, hematolojik, üreme, kemik (osteoporoz riski), kardiyovasküler, GI, immün, endokrin, psikolojik, performance.'},
+  'bmr':{cat:'beslenme',def:'Basal Metabolic Rate — istirahat halinde günlük enerji harcaması. Kişiye göre 1200-1800 kcal kadında.',ref:'Mifflin 1990',l3:'Mifflin-St Jeor formülü kadın: 10×kg + 6.25×cm − 5×yaş − 161. Geç luteal fazda +%8-12. Tiroidektomi T4 replacement uygunsa BMR normaldir, yetersizse %20+ düşebilir.'},
+  'tdee':{cat:'beslenme',def:'Total Daily Energy Expenditure — günlük toplam kalori harcaması. BMR + aktivite + besin ısısı (TEF).',ref:'Mifflin 1990',l3:'TDEE = BMR × aktivite faktörü (sedanter 1.2, hafif 1.375, orta 1.55, ağır 1.725). NEAT (non-exercise activity thermogenesis) bireyler arası 800 kcal fark yapabilir.'},
+  'protein sentezi':{cat:'beslenme',def:'Muscle Protein Synthesis (MPS) — kas inşa süreci. mTOR aktivasyonu + amino asitler ile başlar.',ref:'Phillips 2014',l3:'MPS antrenman sonrası 24-48 saat yükselir (Macnaughton 2016). Eşik: 0.4 g protein/kg/öğün × 4-5 öğün. Leucine (3g) MPS tetikleyici.'},
+  'leucine':{cat:'beslenme',def:'Esansiyel amino asit — mTOR direkt aktivatörü. 2.5-3g/öğün hipertrofi eşiği.',ref:'Norton 2009',l3:'BCAA (branched-chain amino acids: leucine, isoleucine, valine) içinde leucine en önemli. Yumurta + et leucine açısından zengin (~2-3g/100g protein). Whey isolate %12 leucine.'},
+
+  // ── Tıp/Tiroid (6) ──
+  'tiroidektomi':{cat:'tip',def:'Tiroid bezinin cerrahi olarak alınması — total veya parsiyel. Sonrası life-long T4 replacement.',ref:'Wiersinga 2014',l3:'Total tiroidektomi → kalsitonin (paratiroid sekonder) düşer → kalsiyum metabolizması dikkat. Parsiyel tiroidektomi remnant doku TSH\'a yanıt verir. Bengisu: total → Levotiron 100 mcg sabah aç karna.'},
+  'levotiroksin':{cat:'tip',def:'Sentetik T4 — tiroid hormon replacement. Aç karna, sabah, su ile. Diğer ilaç/supplementten 4 saat ayrı.',ref:'Wiersinga 2014',l3:'Calcium, demir, çinko, magnezyum, soya, kahve, gluten emilimi bozar (≥4 saat ara). Yarı ömür 7 gün → günlük doz kararlı seviye yapar. Doz değişimi 4-6 hafta sonra TSH\'da görünür.'},
+  'calciday':{cat:'tip',def:'Kalsiyum + D3 + K2 kombine supplement. Tiroidektomi sonrası kemik koruma için profilaktik.',ref:'Beck 2017',l3:'Kalsiyum sitrat (karbonattan daha iyi emilir aç karna), D3 emilimi yağla iyi (öğünle al), K2 MK-7 form (uzun yarı ömür). Levotiron\'dan ≥4 saat ayrı (Hallberg etkisi).'},
+  'kmy':{cat:'tip',def:'Kemik Mineral Yoğunluğu (Bone Mineral Density). DEXA tarama ölçer. T-score: -1 normal, -2.5 osteoporoz.',ref:'Beck 2017',l3:'Tiroidektomi sonrası TSH suppresyonu → KMY %5-15 düşebilir (5 yıl). Direnç antrenmanı + bone loading exercises (squat, hip thrust) + Calciday + D3 kombine koruyucu (PMID 27875836).'},
+  'sakroiliac':{cat:'tip',def:'Sacrum (kuyruk sokumu) ve ilium (leğen kemiği) arasındaki eklem. Hip thrust ve RDL\'de yüklenir.',ref:'Vleeming 2012',l3:'Sakroiliak eklem düşük hareket, yüksek stabilite. Relaxin gevşeklik yapar (gebelik + ovulasyon). Tek-bacak hareketler (B-stance HT) sakral yük yönetimi için önemli — ovulasyon haftası dikkat.'},
+  'valgus':{cat:'tip',def:'Diz içe çökme — squat/yürüyüşte diz orta hatta doğru kayar. Gluteus medius zayıflığı + ACL riski.',ref:'Hewett 2005',l3:'Drop-jump testi valgus skor ≥6 cm = ACL non-contact riski 5× (Hewett 2005). Cycle: ovulasyon haftası relaxin ile valgus eğilimi artar. Goblet squat + cue "dizler dışa" eğitim.'},
+
+  // ── Cycle/Kadın (6) ──
+  'folliküler':{cat:'cycle',def:'Cycle ilk yarısı (Day 1-13 ortalama). Östrojen yükselir, FSH yumurta gelişir. Recovery hızlı, PR penceresi.',ref:'Sims 2016',l3:'Folliküler erken (Day 1-5 menstrüasyon overlap), folliküler orta (Day 6-10 build), folliküler geç (Day 11-13 LH yükseliş). Folliküler ortada hipertrofi ve volume için optimal.'},
+  'luteal':{cat:'cycle',def:'Cycle ikinci yarısı (Day 15-28 ortalama). Progesteron yüksek, BMR ↑, vücut ısısı ↑. Recovery yavaş.',ref:'Sims 2016',l3:'Erken luteal (Day 15-21 erken progesterone, volume penceresi), geç luteal (Day 22-28 PMS + premenstrüel düşüş). Geç luteal +100-150 kcal, deload haftası burada başlat.'},
+  'ovulasyon':{cat:'cycle',def:'Yumurta salınımı (Day 12-14 ortalama). LH peak + relaxin peak + östrojen tepe. Ligament dikkat.',ref:'Wojtys 1998',l3:'Ovulasyon penceresi ~24 saat. LH+relaxin Day 11-15 peak — ACL non-contact yaralanma riski 2-3× (PMID 9568310). Plyometric, sprint, valgus eğilimi olan hareketler kontrindike.'},
+  'menstrüasyon':{cat:'cycle',def:'Regl — endometrium dökülmesi (Day 1-5 ortalama). Hemoglobin Day 3-5 en düşük.',ref:'Sims 2016',l3:'Regl Day 1-2 doğal deload (volume %20-30 ↓ önerilir). Demir aktif kullanılıyor → kırmızı et + ciğer + B12 vurgu. Magnezyum 350-400 mg kramp koruması.'},
+  'corpus luteum':{cat:'cycle',def:'Ovulasyon sonrası yumurtalık skarı — progesteron üretir. Hamile değilse 14 gün sonra parçalanır → regl.',ref:'Sims 2016',l3:'Corpus luteum yarı ömrü sabit ~14 gün → luteal faz uzunluğu fix. Cycle uzunluğu varyasyonu folliküler fazdan gelir (12 → 28+ gün arası). Luteal faz <10 gün infertilite işareti.'},
+  'nrem':{cat:'cycle',def:'Non-REM uyku — derin dinlenme + hücre onarım. Growth hormon peak burada.',ref:'Walker 2017',l3:'NREM 3-4. evre delta dalga = en derin uyku, GH salınımı, MPS\'in çoğu burada. Geç luteal progesteron NREM bozar (uyku verimi ↓). Magnezyum + hidrasyon + serin oda yardımcı.'},
+
+  // ── Pattern/Hareket (6) ──
+  'hip hinge':{cat:'pattern',def:'Kalça mafsallı hareket — diz hafif bükük, gövde öne, kalça arkaya. RDL, deadlift, KB swing temeli.',ref:'McGill 2007',l3:'Hip hinge ≠ squat (squat diz baskın). Hinge\'de bel **sabit** (izometrik), kalça hareket eder. Yer kaldırma, kucaklama, sandalyeden kalkma günlük transfer.'},
+  'anti-rotation':{cat:'pattern',def:'Vücudu döndürmeye çalışan kuvvete dur de. Pallof Press, Farmer\'s Carry tek el.',ref:'McGill 2007',l3:'Obliques + multifidus izometrik kasılır. Athletic cutting, sprint, fonksiyonel postür için kritik. McGill: rotation > anti-rotation\'dan lumbar disk hasar riski.'},
+  'anti-extension':{cat:'pattern',def:'Belin geri kavislenmesini engelle. Plank, Dead Bug, hollow body.',ref:'McGill 2007',l3:'Rectus abdominis + TVA izometrik. Hyperlordosis (aşırı bel kavislenmesi) için tedavi. Plank + Dead Bug Big 3 üyeleri (lumbar disk yükü <100 lb).'},
+  'anti-flexion':{cat:'pattern',def:'Belin öne katlanmasını engelle. Pasif RDL, deadlift. Erector spinae + TVA izometrik.',ref:'McGill 2007',l3:'Hip hinge sırasında izometrik anti-flexion = bel düz kalır. Hatalı: lumbar flexion (rounding). Sonuç: disk shear, herniation riski.'},
+  'posterior chain':{cat:'pattern',def:'Vücut arka kasları zinciri — glute + hamstring + erector spinae + trapezius alt + lat. Modern ihmal.',ref:'McGill 2007',l3:'Anterior dominans (oturma + öne yatkın postür) → posterior chain weakness → bel ağrısı, omuz impingement, kalça sertliği. RDL + Hip Thrust + Cable Row + Face Pull = posterior chain temel.'},
+  'mps':{cat:'beslenme',def:'Muscle Protein Synthesis — kas protein sentezi. Antrenman + amino asit → mTOR → MPS.',ref:'Phillips 2014',l3:'Antrenman sonrası 24-48 saat MPS yükselir (Macnaughton 2016). Per-meal protein eşik 0.4 g/kg, distribute günlük 4-5 öğün. Pre-sleep casein MPS 8 saat.'}
+};
+
+function getGloss(term){
+  const k=(term||'').toLowerCase().trim();
+  return GLOSSARY[k]||null;
+}
+
+function toggleGlossary(term){
+  const g=getGloss(term);
+  if(!g)return;
+  const titleEl=document.getElementById('gloss-term-title');
+  const catEl=document.getElementById('gloss-term-cat');
+  const defEl=document.getElementById('gloss-term-def');
+  const refEl=document.getElementById('gloss-term-ref');
+  const l3Wrap=document.getElementById('gloss-term-l3');
+  const l3Text=document.getElementById('gloss-term-l3-text');
+  if(!titleEl||!defEl)return;
+  titleEl.textContent=term;
+  catEl.textContent=g.cat;
+  catEl.className='gloss-cat-pill gloss-cat-'+g.cat;
+  defEl.textContent=g.def;
+  refEl.textContent=g.ref?'Kaynak: '+g.ref:'';
+  if(getEduLevel()==='L3' && g.l3){
+    l3Wrap.style.display='block';
+    l3Text.textContent=g.l3;
+  } else {
+    l3Wrap.style.display='none';
+  }
+  document.getElementById('glossary-modal').classList.add('open');
+  // store last opened term so toggleEduLevel from modal can re-render
+  window._lastGlossTerm=term;
+}
+
+// Bilim Modu modal içinde değiştirildiğinde paneli güncelle
+function updateGlossModalLevel(){
+  if(window._lastGlossTerm){
+    toggleGlossary(window._lastGlossTerm);
+  }
+}
+
+// Glossary key cache (longest first to avoid partial matches)
+function _getGlossKeysOrdered(){
+  if(!window._glossKeysOrdered){
+    window._glossKeysOrdered=Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length);
+  }
+  return window._glossKeysOrdered;
+}
+
+// HTML metnini tarayıp glossary terimlerini <u class="gloss-term"> ile sar.
+// Sadece düz metin pasajları (HTML tag dışı) match edilir.
+// Aynı paragrafta her terim sadece 1× linkleştirilir (overload önleme).
+function linkifyGlossary(html){
+  if(!html)return html;
+  const keys=_getGlossKeysOrdered();
+  const seen=new Set();
+  // Split HTML into tag/non-tag segments to skip attributes
+  const parts=html.split(/(<[^>]+>)/);
+  for(let i=0;i<parts.length;i++){
+    if(parts[i].startsWith('<'))continue; // skip HTML tag
+    let txt=parts[i];
+    keys.forEach(term=>{
+      if(seen.has(term))return; // already linked once in this html
+      const esc=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      // Word boundary using non-letter/digit groups (Turkish letter aware)
+      const re=new RegExp('(^|[^a-zA-Z0-9çÇğĞıİöÖşŞüÜ])('+esc+')(?=[^a-zA-Z0-9çÇğĞıİöÖşŞüÜ]|$)','i');
+      const m=txt.match(re);
+      if(m){
+        seen.add(term);
+        const before=m[1];
+        const matched=m[2];
+        const idx=m.index+before.length;
+        txt=txt.substring(0,idx)+'<u class="gloss-term" onclick="toggleGlossary(\''+term.replace(/'/g,"\\'")+'\')">'+matched+'</u>'+txt.substring(idx+matched.length);
+      }
+    });
+    parts[i]=txt;
+  }
+  return parts.join('');
+}
+
 // ── Cycle-aware antrenman matrisi (Phase 2 Hafta 3B — Ajan 2 endokrin + Ajan 5 yaralanma)
 // Faz × Day → intensity/volume faktörü + substitusyon flag + bilim notu
 function getCycleAwareWorkoutAdjustment(d){
@@ -4973,13 +5171,15 @@ function renderExDay(){
     let eduChip='', eduPanel='';
     if(edu){
       eduChip=`<button class="btn bsm edu-chip" onclick="toggleExerciseEdu('${ex.id}',${i})" aria-label="Bilim açıklaması">ⓘ Bilim</button>`;
-      const advHTML=eduLevel==='L3' && edu.advanced?`<div class="edu-section advanced"><div class="edu-section-title">L3 İleri</div><div class="edu-section-text">${edu.advanced}</div></div>`:'';
+      // linkifyGlossary her bölümde glossary terimleri otomatik altı çizili (Phase 2 Hafta 5B)
+      const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
+      const advHTML=eduLevel==='L3' && edu.advanced?`<div class="edu-section advanced"><div class="edu-section-title">L3 İleri</div><div class="edu-section-text">${_glx(edu.advanced)}</div></div>`:'';
       eduPanel=`<div class="exh-edu" id="edu-${ex.id}-${i}" style="display:none;">
         <div class="edu-short">${edu.short}</div>
-        <div class="edu-section"><div class="edu-section-title">🦴 Anatomi</div><div class="edu-section-text">${edu.anatomy}</div></div>
-        <div class="edu-section"><div class="edu-section-title">⚙️ Biyomekanik</div><div class="edu-section-text">${edu.biomech}</div></div>
-        <div class="edu-section"><div class="edu-section-title">🔥 Metabolik</div><div class="edu-section-text">${edu.metabolic}</div></div>
-        <div class="edu-section warn"><div class="edu-section-title">⚠️ Yaygın Yanlış Kavram</div><div class="edu-section-text">${edu.misconception}</div></div>
+        <div class="edu-section"><div class="edu-section-title">🦴 Anatomi</div><div class="edu-section-text">${_glx(edu.anatomy)}</div></div>
+        <div class="edu-section"><div class="edu-section-title">⚙️ Biyomekanik</div><div class="edu-section-text">${_glx(edu.biomech)}</div></div>
+        <div class="edu-section"><div class="edu-section-title">🔥 Metabolik</div><div class="edu-section-text">${_glx(edu.metabolic)}</div></div>
+        <div class="edu-section warn"><div class="edu-section-title">⚠️ Yaygın Yanlış Kavram</div><div class="edu-section-text">${_glx(edu.misconception)}</div></div>
         ${advHTML}
         <div class="edu-level-toggle"><button onclick="toggleEduLevel()" class="btn bghost bsm">🔬 Bilim Modu: ${eduLevel} ${eduLevel==='L3'?'→ L2 (orta)':'→ L3 (ileri)'}</button></div>
       </div>`;
