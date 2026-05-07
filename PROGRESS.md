@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 7 Mayıs 2026 (🎉🎉🎉 Phase 2 KOMPLE TAMAMLANDI · P0 10/10 + P1 4 Epic × 16 commit + P2 8/8 madde · Toplam 24 P1+P2 commit + PROGRESS sync, ~5300 satır net ekleme tek günde)
+**Son güncelleme:** 7 Mayıs 2026 (Phase 2 KOMPLE + Phase 3.A Sade Dil Katmanı · L1 default · Bengisu kullanıcı feedback'iyle başladı, 7 commit ile tüm 6 sekme sadeleşti)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -422,7 +422,32 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · 🎉🎉🎉 Phase 2 KOMPLE TAMAMLANDI)
+## 📍 Şu Anki Durum (7 Mayıs 2026 — Phase 3.A test ediliyor)
+
+### 🪞 Phase 3.A — Sade Dil Katmanı (L1 Bilim Modu) — 7 commit ✅
+
+**Bengisu feedback'i:** "Çok fazla teknik kelime ve terim var. Anlaşılır olmamış pek egzersiz sekmesi. Birkaç anlamadım yerin ekran fotosunu atıyorum sana. Altlarına aşırı basit ve yalın bir dille ne anlama geldiklerini her section için yazamaz mıyız?"
+
+**Çözüm:** 3 katmanlı Bilim Modu (önceki 2 katmanlıydı: L2/L3):
+- **L1 (yeni default · sade)** → Yalın Türkçe paragraflar her zaman görünür, teknik subtitle gizli
+- **L2 (orta)** → Sade + teknik subtitle (Brzycki/MEV/MAV/RPE)
+- **L3 (ileri)** → + advanced (mTOR/EMG/PMID) + 🧪 Hacettepe Lab açılır
+
+| | Madde | Commit |
+|---|---|---|
+| ✅ | Bilim Modu altyapı (L1 default + 3-step cycle) + .card-plain CSS | `6c757c7` |
+| ✅ | Egzersiz sekmesi 7 kart sade paragraf | `6c757c7` |
+| ✅ | Bugün + Döngü sekmeleri 8 kart sade paragraf | `97fc40d` |
+| ✅ | Diyet sekmesi 3 kart sade paragraf | `22af70d` |
+| ✅ | Cilt + Ölçüm sekmeleri 3 kart sade paragraf | `82cb56c` |
+| ✅ | Bilim Modu global seçici (Döngü Settings altı, 3 buton) | `ea9b4bb` |
+| ✅ | Hacettepe Lab her zaman görünür kilitli tease (L1/L2'de) | `25685af` |
+
+**Yeni "🪞 Bu kart" pattern:** Her teknik kartın altında italik sage-green border'lı paragraf (~20 kart). Format: bold ile ana fikir, mustard accent ile vurgu.
+
+**Bilim Modu global seçici:** Döngü sekmesi → Cycle Settings altı → "🔬 Bilim Modu Seviyesi" 3-buton kartı. L3 tip: "🧪 Hacettepe Lab açıldı."
+
+**Hacettepe Lab tease:** L1/L2'deyken kilitli görünür ("🔒 🧪 Hacettepe Lab"), butona basınca otomatik L3 + smooth scroll.
 
 ### 🎯 Phase 2 P2 — 8/8 madde tamamı ✅
 
