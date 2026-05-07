@@ -863,6 +863,24 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wd-phase-note{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(180,121,144,0.14);border:1px solid rgba(180,121,144,0.32);font-size:12px;color:var(--cream-soft);line-height:1.55;font-style:italic;}
 .wd-closing{margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.10);font-size:12px;color:var(--cream-mute);line-height:1.6;text-align:center;}
 .wd-closing em{color:var(--mustard-soft);font-style:normal;font-weight:600;}
+
+/* ════════════════════════════════════════════ */
+/* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
+/* ════════════════════════════════════════════ */
+.edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
+.edu-chip:active{transform:scale(0.95);}
+.exh-edu{margin-top:10px;padding:14px;border-radius:14px;background:rgba(15,30,38,0.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(90,122,79,0.32);color:var(--cream);animation:eveSlideIn 0.25s ease-out;}
+.edu-short{font-size:13px;color:var(--cream-soft);line-height:1.6;margin-bottom:14px;font-style:italic;padding-bottom:10px;border-bottom:1px dashed rgba(255,255,255,0.10);}
+.edu-section{margin-bottom:12px;}
+.edu-section:last-child{margin-bottom:0;}
+.edu-section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--mustard-soft);font-weight:700;margin-bottom:4px;}
+.edu-section-text{font-size:12px;color:var(--cream-soft);line-height:1.65;}
+.edu-section.warn{padding:10px;border-radius:10px;background:rgba(217,89,30,0.10);border-left:3px solid var(--coral);}
+.edu-section.warn .edu-section-title{color:var(--coral-soft);}
+.edu-section.advanced{padding:10px;border-radius:10px;background:rgba(180,121,144,0.10);border-left:3px solid var(--mauve-evening);}
+.edu-section.advanced .edu-section-title{color:var(--mauve-evening);}
+.edu-level-toggle{margin-top:14px;padding-top:10px;border-top:1px dashed rgba(255,255,255,0.10);text-align:center;}
+.edu-level-toggle button{font-size:11px !important;letter-spacing:0.4px;}
 </style>
 </head>
 <body>
@@ -4319,6 +4337,69 @@ function applySheetReason(reason){
   if(typeof renderWeekSum==='function')renderWeekSum();
 }
 
+// ── Bilim Modu — egzersiz mikro-açıklama (Phase 2 Hafta 4D — Ajan 7 pedagoji)
+// L2 default (orta seviye, MSc-friendly), L3 toggle ON ile ileri (mTORC1, sitokin, vb.)
+// Format: short (özet) · anatomy + biomech + metabolic (L2 derin) · misconception · advanced (L3)
+const EXERCISE_EDU={
+  'sq':{
+    short:'Quadriceps + glute primer, alt vücudun temel hareketi. Smith makinesinde sabit yörünge → form öğrenmek için dengeli giriş.',
+    anatomy:'5 kas grubu sıralı yüklenir. Quadriceps (vastus medialis/lateralis/intermedius, rectus femoris) diz ekstansiyonu. Gluteus maximus kalça ekstansiyonu. Adduktörler duruşa stabilite. Erector spinae gövde dik. Core (TVA + obliques) intra-abdominal basınç.',
+    biomech:'Diz fleksiyonu + kalça fleksiyonu eş zamanlı. İniş: kalça arkaya, diz öne, gövde 30-45° eğim. Smith bar yörüngesini sabit kılar — vücut bara uyum sağlar. Avantaj: form bozulamaz; dezavantaj: doğal ROM kısıtlanabilir.',
+    metabolic:'Compound, yüksek motor ünite katılımı, ~9-12 kcal/dk. mTOR aktivasyonu yüksek — hipertrofi sinyali güçlü.',
+    misconception:'"Squat dizi bozar" → YANLIŞ. Dizleri bozan kötü form. McGill 2007 + Hartmann 2013 meta: derin squat doğru hizalama ile diz kıkırdağına yararlı (sinovyal sıvı sirkülasyonu ↑). Yanlış: valgus collapse, bel kavislenmesi, topuk kalkması.',
+    advanced:'mTORC1 mekanik gerilim yolu — integrin-FAK-PA-mTORC1. PI3K-AKT bypass edilebilir doğrudan mekanik yük yoluyla (Hornberger 2006). 8-12 set/hafta = MEV-MAV (Israetel 2018). Erken faz adaptasyon nöral, geç faz morfolojik.'
+  },
+  'rdl':{
+    short:'Hamstring + glute hinge hareketi. Bel ile karıştırma — hareket kalçadan, omurga sabit.',
+    anatomy:'Posterior chain — hamstring (semitendinosus, semimembranosus, biceps femoris) + glute max + erector spinae. Eccentric (uzayarak) iniş kontrolünde, concentric kalkış.',
+    biomech:'Hip hinge — kalça mafsal hareketi, diz hafif bükük (10-15°) ve sabit. Bar bacağa yakın iner. Omurga **nötr** tüm hareket boyu. Bel hareket etmeyecek, kalça hareket edecek.',
+    metabolic:'Hamstring derin lif aktivasyonu yüksek (Schoenfeld 2014 EMG). Hip hinge transfer değeri yüksek (yer kaldırma, kucaklama).',
+    misconception:'"RDL bel egzersizi" → YANLIŞ. Bel çalışmaz, sabit kalır (izometrik). Egzersiz hamstring + glute. "Bel yandı" → form yanlış, hinge değil rotasyon.',
+    advanced:'Lumbar disk shear minimum için McGill 2007 iki kuralı: nefes tut + nötr omurga. Hamstring eccentric — kas-tendon ünitesi pliometrik kapasite. Kollajen sentezi östrojen-aracılı (Hansen 2017) → folliküler/ovulasyon fazında daha verimli.'
+  },
+  'ht':{
+    short:'Glute izolasyon kralı. Kalça ekstansiyonu maksimum yük altında.',
+    anatomy:'Glute max\'in en yüksek EMG aktivasyonu hip thrust\'ta (Contreras 2015) — squat ve deadlift\'ten daha yüksek. Hareket izole: diz ve bel sabit.',
+    biomech:'Sırt bench üstü, ayaklar yerde, bar pelvis üstü. Kalkış: kalça yukarı (omurga nötr, ekstra kavislenme yok). Top pozisyon 1-2 sn squeeze = aktivasyon zirvesi.',
+    metabolic:'Glute max vücudun en büyük tek kası (~700-1100 cm³ kadın). Hipertrofiye en hızlı yanıt; 6-8 haftada belirgin değişim.',
+    misconception:'"Hip thrust kompleks değil, gerçek hareket squat" → YANLIŞ. İzolasyon ≠ küçük hareket. Glute izolasyonunda hip thrust kanıt-bazlı en yüksek EMG. Squat quad-baskın, hip thrust glute-baskın. İkisi farklı, ikisi gerekli.',
+    advanced:'Glute max üç bölüm (superior, medial, inferior); hip thrust ayak konumu farklı bölüm vurgu. Posterior pelvic tilt → maksimum aktivasyon (Contreras "Squeeze technique"). Femur boynu yatay yük → bone loading verimli (post-tiroidektomi KMY için kritik, Beck 2017 PMID 27875836).'
+  },
+  'lat':{
+    short:'Sırt + bicep çekme hareketi. Latissimus dorsi (sırt kanatları) ana hedef.',
+    anatomy:'Latissimus dorsi vücudun en geniş kası (adduction + extension + internal rotation). Trapezius orta+alt + rhomboids scapular retraction. Biceps brachii + brachialis dirsek fleksiyonu.',
+    biomech:'Bar göğse (clavicle hizası), boyun arkasına değil (omuz impingement + sevikal yük). Dirsek aşağı + içe. Bilek nötr. Top pozisyon: bar göğüs, kürekler birbirine, lat kasılmış. Eccentric kontrollü, 2 sn.',
+    metabolic:'Üst vücut çekme — push antagonisti. Modern oturma kültürü ön-baskın (göğüs sıkı, sırt zayıf), sırt çekme bunu dengeler.',
+    misconception:'"Bar boyun arkasına çekmek lat\'ı daha çok çalıştırır" → YANLIŞ. Omuz kapsülü impingement + sevikal ekstrem yük. EMG fark minimum (Lehman 2004), risk maksimum. Modern öneri: bar göğse, hep göğse.',
+    advanced:'Lat lifleri mültifibriler — farklı çekme açıları farklı demetleri aktive eder. Geniş tutuş + bar göğse = lat üst. Dar tutuş + bar göbeğe = lat alt + rhomboid. 2-3 farklı çekme/hafta = full lat hipertrofi (Schoenfeld 2017 multi-angle).'
+  },
+  'pall':{
+    short:'Anti-rotasyon core izolasyonu. Statik egzersiz — hareket değil, hareketi durduruyorsun.',
+    anatomy:'Transversus abdominis + internal/external obliques + multifidus (derin omurga stabilizatörü). Klasik crunch yatay rectus abdominis ("six-pack") çalıştırır; Pallof press derin core — omurga koruma için fonksiyonel kas.',
+    biomech:'Cable yandan, kollar göğüs hizası, bar dik öne ittirilir. Cable seni döndürmek ister — sen dönmemek için core izometrik kasılır.',
+    metabolic:'Düşük enerji, yüksek nöromüsküler. Postür stabilizasyon mimarisi gelişir. Squat/deadlift core stabilite carry-over yüksek.',
+    misconception:'"Crunch core\'u en iyi çalıştırır" → YANLIŞ. Crunch flexor pattern — modern oturma zaten bu. McGill 2007 anti-rotation/anti-extension önerir. Pallof press fonksiyonel + bel-friendly (lumbar fleksiyon yok). Crunch ≠ kötü ama tek başına yetersiz.',
+    advanced:'McGill "Big 3" (curl-up, side bridge, bird dog) + Pallof = lumbar disk yük min + nöromüsküler core entegrasyon max. Anti-rotation transferi: tek-bacak hareketler, athletic cutting, postür koruma. EMG (Boren 2011): Pallof press external oblique aktivasyonu yüksek, lumbar disk shear minimum.'
+  }
+};
+function getExerciseEdu(exId){return EXERCISE_EDU[exId]||null;}
+function getEduLevel(){return localStorage.getItem('edu_level')||'L2';}
+function setEduLevel(level){localStorage.setItem('edu_level',level);if(typeof renderExDay==='function')renderExDay();}
+function toggleEduLevel(){
+  const cur=getEduLevel();
+  setEduLevel(cur==='L3'?'L2':'L3');
+  showToast(`🔬 Bilim Modu: ${cur==='L3'?'L2 (orta)':'L3 (ileri)'}`,'pr');
+}
+function toggleExerciseEdu(exId,i){
+  const id=`edu-${exId}-${i}`;
+  const el=document.getElementById(id);
+  const arr=document.getElementById(id+'_arr');
+  if(!el)return;
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  if(arr)arr.style.transform=open?'rotate(0deg)':'rotate(90deg)';
+}
+
 // ── Cycle-aware antrenman matrisi (Phase 2 Hafta 3B — Ajan 2 endokrin + Ajan 5 yaralanma)
 // Faz × Day → intensity/volume faktörü + substitusyon flag + bilim notu
 function getCycleAwareWorkoutAdjustment(d){
@@ -4685,7 +4766,24 @@ function renderExDay(){
         cycleSubChip=`<button class="btn bsm cycle-safe-chip" onclick="applyOvulationSub(${i},${dow},'${dk}')" title="${sub.reason}">🌸 ${altName}\'a geç</button>`;
       }
     }
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${cycleSubChip}</div><div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
+    // Bilim Modu — ⓘ inline edu accordion (Phase 2 Hafta 4D)
+    const edu=getExerciseEdu(ex.id);
+    const eduLevel=getEduLevel();
+    let eduChip='', eduPanel='';
+    if(edu){
+      eduChip=`<button class="btn bsm edu-chip" onclick="toggleExerciseEdu('${ex.id}',${i})" aria-label="Bilim açıklaması">ⓘ Bilim</button>`;
+      const advHTML=eduLevel==='L3' && edu.advanced?`<div class="edu-section advanced"><div class="edu-section-title">L3 İleri</div><div class="edu-section-text">${edu.advanced}</div></div>`:'';
+      eduPanel=`<div class="exh-edu" id="edu-${ex.id}-${i}" style="display:none;">
+        <div class="edu-short">${edu.short}</div>
+        <div class="edu-section"><div class="edu-section-title">🦴 Anatomi</div><div class="edu-section-text">${edu.anatomy}</div></div>
+        <div class="edu-section"><div class="edu-section-title">⚙️ Biyomekanik</div><div class="edu-section-text">${edu.biomech}</div></div>
+        <div class="edu-section"><div class="edu-section-title">🔥 Metabolik</div><div class="edu-section-text">${edu.metabolic}</div></div>
+        <div class="edu-section warn"><div class="edu-section-title">⚠️ Yaygın Yanlış Kavram</div><div class="edu-section-text">${edu.misconception}</div></div>
+        ${advHTML}
+        <div class="edu-level-toggle"><button onclick="toggleEduLevel()" class="btn bghost bsm">🔬 Bilim Modu: ${eduLevel} ${eduLevel==='L3'?'→ L2 (orta)':'→ L3 (ileri)'}</button></div>
+      </div>`;
+    }
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${eduChip}${cycleSubChip}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
