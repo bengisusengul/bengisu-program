@@ -898,6 +898,31 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mf-closing em{color:var(--sage-leaf);font-style:normal;font-weight:600;}
 
 /* ════════════════════════════════════════════ */
+/* GÜÇ TRENDİ · 6 lift × 1RM grid (Phase 2 Hafta 6A — Ajan 9) */
+/* ════════════════════════════════════════════ */
+.strength-grid-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.sg-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.sg-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.sg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sg-cell{padding:12px 10px;border-radius:12px;background:rgba(232,221,196,0.04);border:1px solid var(--glass-border);position:relative;overflow:hidden;}
+.sg-cell.has-pr{border-color:rgba(232,178,63,0.55);background:rgba(232,178,63,0.06);}
+.sg-cell.phase-np{border-left:3px solid var(--coral);}
+.sg-cell.phase-ns{border-left:3px solid var(--sage-leaf);}
+.sg-cell.phase-ng{border-left:3px solid var(--mauve-evening);}
+.sg-cell.phase-nm{border-left:3px solid var(--mustard);}
+.sg-name{font-size:11px;font-weight:600;color:var(--cream-soft);margin-bottom:4px;line-height:1.2;}
+.sg-1rm{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream);line-height:1.1;}
+.sg-1rm small{font-size:11px;color:var(--cream-mute);font-family:inherit;}
+.sg-delta{font-size:10px;font-weight:600;margin-top:2px;}
+.sg-delta.up{color:var(--sage-leaf);}
+.sg-delta.down{color:var(--coral);}
+.sg-delta.flat{color:var(--cream-mute);}
+.sg-spark{margin-top:6px;}
+.sg-pr-badge{position:absolute;top:8px;right:8px;font-size:14px;}
+.sg-empty{font-size:11px;color:var(--cream-mute);font-style:italic;text-align:center;padding:14px 6px;line-height:1.5;}
+.sg-empty-grid{padding:20px 12px;text-align:center;font-size:13px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1025,6 +1050,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="ch"><h3>Bu Haftanın Özeti</h3></div>
     <div class="cb" id="e-week"></div>
   </div>
+  <!-- Güç Trendi · 6 lift × 1RM tahmini sparkline grid (Phase 2 Hafta 6A) -->
+  <div id="e-strength-grid"></div>
   <div style="height:8px;"></div>
 </div>
 
@@ -5179,7 +5206,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -5408,6 +5435,110 @@ function renderWeekSum(){
   const el=document.getElementById('e-week');if(!el)return;
   const today=new Date(),mon=new Date(today);mon.setDate(today.getDate()-today.getDay()+1);
   el.innerHTML=`<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;">${DN.map((dn,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);const sp=SP[d.getDay()],dk=d.toDateString(),exs=EX[d.getDay()]||[],done=exs.filter((_,j)=>S.done[dk+'_'+j]).length,isT=d.toDateString()===today.toDateString();return`<div onclick="S.eD=new Date('${dk}');renderStrip('e-strip',S.eD,dd=>{S.eD=dd;renderExDay();});renderExDay();" style="flex-shrink:0;width:52px;padding:10px 6px;border-radius:14px;background:${isT?'var(--text)':'var(--surface)'};border:1px solid ${isT?'var(--text)':'var(--border)'};text-align:center;cursor:pointer;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:${isT?'rgba(255,255,255,0.6)':'var(--text-light)'};">${dn}</div><div style="font-size:18px;margin:3px 0;">${sp?sp.e:'🛌'}</div><div style="font-size:11px;color:${isT?'rgba(255,255,255,0.7)':'var(--text-light)'};">${sp?done+'/'+exs.length:'-'}</div></div>`;}).join('')}</div>`;
+}
+
+// ── Güç Trendi · 6 lift × 1RM tahmini sparkline grid (Phase 2 Hafta 6A — Ajan 9 veri görselleştirme)
+// 6 ana hareket: Squat (sq), Hip Thrust (ht), RDL (rdl), Lat Pulldown (lat), Incline DB Press (dbp), DB Shoulder Press (dsp)
+// Her hücre: en güncel 1RM tahmini + delta (önceki seansa göre) + son N seans sparkline + PR rozeti + cycle phase tint
+const STRENGTH_GRID_LIFTS=[
+  {id:'sq',name:'Squat',short:'Smith Squat'},
+  {id:'ht',name:'Hip Thrust',short:'HT'},
+  {id:'rdl',name:'RDL',short:'Romanian DL'},
+  {id:'lat',name:'Lat Pulldown',short:'Lat'},
+  {id:'dbp',name:'Incline Press',short:'Inc DB Press'},
+  {id:'dsp',name:'Shoulder Press',short:'OHP'}
+];
+
+// Bir hareket için son N seans 1RM verisi (oneRMEstimate) + son cycle phase
+function getLiftHistory(exId,n=8){
+  const log=S.workoutLog||{};
+  const dates=Object.keys(log).filter(d=>log[d][exId]?.oneRMEstimate>0).sort((a,b)=>new Date(a)-new Date(b));
+  const series=dates.map(d=>({
+    dk:d,
+    oneRM:log[d][exId].oneRMEstimate,
+    cyclePhase:log[d][exId].cyclePhase,
+    cycleDay:log[d][exId].cycleDay
+  }));
+  return series.slice(-n);
+}
+
+// 1RM trendinden delta + PR + cycle hint
+function summarizeLift(history){
+  if(!history.length)return{empty:true};
+  const last=history[history.length-1];
+  const prev=history.length>=2?history[history.length-2]:null;
+  const delta=prev?(last.oneRM-prev.oneRM):0;
+  const allTimeMax=history.reduce((m,h)=>h.oneRM>m?h.oneRM:m,0);
+  const isPR=last.oneRM>=allTimeMax;
+  // Phase class for left border tint (np/ns/ng/nm)
+  let phaseCls='';
+  if(last.cyclePhase==='Menstruation')phaseCls='phase-np';
+  else if(last.cyclePhase==='Follicular Phase')phaseCls='phase-ns';
+  else if(last.cyclePhase==='Ovulation')phaseCls='phase-ng';
+  else if(last.cyclePhase==='Luteal Phase')phaseCls='phase-nm';
+  return{empty:false,last,prev,delta,isPR,phaseCls,sessionCount:history.length};
+}
+
+// Mini sparkline helper — STRENGTH_GRID için ölçek; bir hareketin tüm history'sinden çiz
+function liftSparkline(history,opts){
+  if(!history||history.length<2)return '';
+  const values=history.map(h=>h.oneRM);
+  const min=Math.min(...values),max=Math.max(...values);
+  const range=max-min||1;
+  const w=120,h=28,pad=4;
+  const points=values.map((v,i)=>{
+    const x=pad+(i/(values.length-1))*(w-2*pad);
+    const y=h-pad-((v-min)/range)*(h-2*pad);
+    return[x,y];
+  });
+  const polyline=points.map(p=>`${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const allTimeMax=Math.max(...values);
+  const circles=points.map((p,i)=>{
+    const isLast=i===points.length-1;
+    const isPRPoint=values[i]>=allTimeMax;
+    let fill='rgba(232,178,63,0.55)';
+    if(isLast)fill='var(--mustard)';
+    if(isPRPoint && i!==points.length-1)fill='var(--coral)';
+    return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${isLast?2.8:1.6}" fill="${fill}"/>`;
+  }).join('');
+  return `<svg class="sg-spark" viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none" aria-label="Son ${values.length} seans 1RM trendi"><polyline points="${polyline}" fill="none" stroke="rgba(232,178,63,0.55)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>${circles}</svg>`;
+}
+
+function renderStrengthGrid(){
+  const el=document.getElementById('e-strength-grid');
+  if(!el)return;
+  const cells=STRENGTH_GRID_LIFTS.map(lift=>{
+    const hist=getLiftHistory(lift.id,8);
+    const s=summarizeLift(hist);
+    if(s.empty){
+      return `<div class="sg-cell"><div class="sg-name">${lift.name}</div><div class="sg-empty">Henüz set log yok.<br>Set ✓ giriş yap, trend çıkacak.</div></div>`;
+    }
+    const deltaStr=s.delta>0?`+${s.delta.toFixed(1)} kg`:s.delta<0?`${s.delta.toFixed(1)} kg`:'değişim yok';
+    const deltaCls=s.delta>0.05?'up':s.delta<-0.05?'down':'flat';
+    const prBadge=s.isPR && s.sessionCount>=2?`<div class="sg-pr-badge" title="Personal Record">🏆</div>`:'';
+    const spark=liftSparkline(hist);
+    return `<div class="sg-cell ${s.isPR && s.sessionCount>=2?'has-pr':''} ${s.phaseCls}">${prBadge}
+      <div class="sg-name">${lift.name}</div>
+      <div class="sg-1rm">${s.last.oneRM.toFixed(1)} <small>kg 1RM</small></div>
+      <div class="sg-delta ${deltaCls}">${s.prev?deltaStr:`${s.sessionCount} seans`}</div>
+      ${spark}
+    </div>`;
+  }).join('');
+  // Hiç veri yoksa kompakt boş durum
+  const anyData=STRENGTH_GRID_LIFTS.some(l=>getLiftHistory(l.id,1).length>0);
+  if(!anyData){
+    el.innerHTML=`<div class="strength-grid-card">
+      <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
+      <div class="sg-subtitle">6 ana hareket · Brzycki + Epley + RPE</div>
+      <div class="sg-empty-grid">Set log girişi başladıkça 1RM trendlerin burada belirir. Her seans <strong>kg</strong> + <strong>rep</strong> + <strong>RPE</strong> doldurulduğunda otomatik çizilir. Cycle fazı sol kenardan tint olarak gösterilir.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML=`<div class="strength-grid-card">
+    <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
+    <div class="sg-subtitle">6 ana hareket · Brzycki+Epley+RPE · cycle-aware tint</div>
+    <div class="sg-grid">${cells}</div>
+  </div>`;
 }
 
 // SKIN
