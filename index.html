@@ -794,6 +794,18 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* ════════════════════════════════════════════ */
 .cycle-safe-chip{background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(217,89,30,0.12)) !important;border:1px solid rgba(232,178,63,0.55) !important;color:var(--mustard) !important;font-weight:600 !important;}
 .cycle-safe-chip:active{transform:scale(0.95);}
+
+/* ════════════════════════════════════════════ */
+/* 5-METRİK PANO (Phase 2 Hafta 4A — Ajan 6 body neutrality) */
+/* ════════════════════════════════════════════ */
+.mm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mm-cell{padding:10px 12px;border-radius:12px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);text-align:center;display:flex;flex-direction:column;gap:2px;}
+.mm-cell .mm-icon{font-size:20px;margin-bottom:2px;}
+.mm-cell .mm-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--cream-mute);font-weight:600;}
+.mm-cell .mm-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
+.mm-cell .mm-val.empty{color:var(--cream-mute);font-style:italic;}
+.mm-cell .mm-target{font-size:10px;color:var(--cream-mute);margin-top:2px;line-height:1.3;}
+.mm-section-lbl{font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center;}
 </style>
 </head>
 <body>
@@ -1038,39 +1050,42 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <!-- METRICS -->
 <div id="page-olcum" class="page">
   <div class="topbar">
-    <div class="tb-label">Vücut Takibi</div>
+    <div class="tb-label">Vücudumla Uyum</div>
     <h1><em>Ölçüm</em> 📊</h1>
-    <div class="tb-sub">Eylül 2026 hedefi: 58 kg</div>
+    <div class="tb-sub">Eylül'e doğru · 5 metrik birlikte</div>
     <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
     <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
   </div>
   <div id="health-paste-msg"></div>
   <div id="milestone-celebration"></div>
   <div class="card">
-    <div class="ch"><h3>Eylül Hedefi</h3><span style="font-size:12px;color:var(--text-light);">~5 ay · ~5 kg/ay</span></div>
+    <div class="ch"><h3>Eylül'e Doğru</h3><span style="font-size:12px;color:var(--text-light);">5 metrik · vücudunla uyum</span></div>
     <div class="cb">
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">76.90</div>
         <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
       </div>
       <div class="pw">
-        <div class="plbls"><span>76.9 kg</span><span>58 kg</span></div>
+        <div class="plbls"><span>76.9 kg</span><span>58 kg <span style="opacity:0.7;font-weight:400;">(geniş 56-60)</span></span></div>
         <div class="pt"><div class="pf" id="pbar"></div></div>
       </div>
       <div class="pnote" id="pnote"></div>
+      <!-- 5-metrik pano: kg + 4 ek metrik (Phase 2 Hafta 4A — Ajan 6 body neutrality) -->
+      <div id="multi-metrics" style="margin-top:18px;padding-top:14px;border-top:1px dashed var(--glass-border);"></div>
     </div>
   </div>
 
-  <div class="slbl">Aylık Ara Hedefler</div>
+  <div class="slbl">Aylık Aralıklar · Yön Eylül'e Doğru</div>
   <div class="card">
     <div class="cb">
+      <div style="font-size:11px;color:var(--text-mid);margin-bottom:10px;font-style:italic;">Hız bedenine ait — bu aralıklar yumuşak yön. Tutarsa tut, kaçırsan yargılama yok; cycle, uyku, regl, stres etkili.</div>
       <div class="tl" id="milestone-tl">
         <div class="tli"><div class="tlt">26 Nis</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Başlangıç</div><div class="tlde">76.9 kg</div><span class="tltag tm">Start</span></div></div>
-        <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Mayıs sonu</div><div class="tlde">71.9 kg · −5.0 kg</div><span class="tltag td">Hedef</span></div></div>
-        <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Haziran sonu</div><div class="tlde">66.9 kg · −5.0 kg</div><span class="tltag td">Hedef</span></div></div>
-        <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Temmuz sonu</div><div class="tlde">63.0 kg · −3.9 kg</div><span class="tltag td">Hedef</span></div></div>
-        <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Ağustos sonu</div><div class="tlde">60.0 kg · −3.0 kg</div><span class="tltag td">Hedef</span></div></div>
-        <div class="tli"><div class="tlt">Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Final hedef ✅</div><div class="tlde">58.0 kg · −2.0 kg</div><span class="tltag tg">Final</span></div></div>
+        <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Mayıs sonu</div><div class="tlde">73-75 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Haziran sonu</div><div class="tlde">69-72 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Temmuz sonu</div><div class="tlde">65-69 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Ağustos sonu</div><div class="tlde">61-65 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Eylül hedef bandı</div><div class="tlde">56-60 kg · ideal aralık</div><span class="tltag tg">Final</span></div></div>
       </div>
     </div>
   </div>
@@ -4446,6 +4461,40 @@ function renderProds(){
 }
 
 // METRICS
+// 5-metrik pano: kg + bel + kuvvet + hareket + ruh hali (Phase 2 Hafta 4A)
+function getMultiMetricProgress(){
+  const last=S.meas?.length?S.meas[S.meas.length-1]:null;
+  const curWaist=last?.waist||null;
+  // Squat 1RM tahmini — son 4 hafta workout_log'tan
+  const log=S.workoutLog||{};
+  let bestSquat1RM=0;
+  const fourWeeksAgo=Date.now()-28*86400000;
+  for(const dk in log){
+    if(new Date(dk).getTime()<fourWeeksAgo)continue;
+    const e=log[dk]?.['sq']||log[dk]?.['gobl']||log[dk]?.['bss'];
+    if(e?.oneRMEstimate>bestSquat1RM)bestSquat1RM=e.oneRMEstimate;
+  }
+  // 7-gün ortalama adım (Apple Health)
+  const health=(typeof getHealthLog==='function')?getHealthLog():{};
+  let stepsTotal=0,stepsDays=0;
+  const sevenDaysAgo=Date.now()-7*86400000;
+  for(const dk in health){
+    if(new Date(dk).getTime()<sevenDaysAgo)continue;
+    if(health[dk].steps){stepsTotal+=health[dk].steps;stepsDays++;}
+  }
+  const avgSteps=stepsDays?Math.round(stepsTotal/stepsDays):null;
+  // 7-gün ortalama ruh hali (cycle_logs)
+  const logs=(typeof getCycleLogs==='function')?getCycleLogs():{};
+  const moodScores={happy:5,calm:4,irritable:2,sad:1,anxious:2};
+  let moodTotal=0,moodCount=0;
+  for(const dk in logs){
+    if(new Date(dk).getTime()<sevenDaysAgo)continue;
+    if(logs[dk].mood&&moodScores[logs[dk].mood]!=null){moodTotal+=moodScores[logs[dk].mood];moodCount++;}
+  }
+  const avgMood=moodCount?(moodTotal/moodCount).toFixed(1):null;
+  return{curWaist,bestSquat1RM,avgSteps,stepsDays,avgMood,moodCount};
+}
+
 function renderMeas(){
   const l=S.meas.length?S.meas[S.meas.length-1]:{weight:76.9,fat:34.1,muscle:49.3,waist:84,hip:110},pr=S.meas.length>1?S.meas[S.meas.length-2]:null;
   const cur=l.weight||76.9;
@@ -4454,6 +4503,18 @@ function renderMeas(){
   document.getElementById('pbar').style.width=prog+'%';
   const lostKg=(76.9-cur).toFixed(2);
   const remKg=(cur-58).toFixed(2);
+  // 5-metrik mini pano (Hafta 4A)
+  const mmEl=document.getElementById('multi-metrics');
+  if(mmEl){
+    const mm=getMultiMetricProgress();
+    mmEl.innerHTML=`<div class="mm-section-lbl">+ 4 başka metrik (vücudunla bütüncül uyum)</div>
+    <div class="mm-grid">
+      <div class="mm-cell"><div class="mm-icon">📏</div><div class="mm-lbl">Bel</div><div class="mm-val ${mm.curWaist?'':'empty'}">${mm.curWaist?mm.curWaist+' cm':'—'}</div><div class="mm-target">→ 70-72 cm yumuşak yön</div></div>
+      <div class="mm-cell"><div class="mm-icon">💪</div><div class="mm-lbl">Squat kuvveti</div><div class="mm-val ${mm.bestSquat1RM>0?'':'empty'}">${mm.bestSquat1RM>0?mm.bestSquat1RM+' kg':'—'}</div><div class="mm-target">tahmini 1RM (son 4 hafta)</div></div>
+      <div class="mm-cell"><div class="mm-icon">🚶</div><div class="mm-lbl">Hareket</div><div class="mm-val ${mm.avgSteps?'':'empty'}">${mm.avgSteps?mm.avgSteps.toLocaleString('tr-TR').replace(/,/g,'.'):'—'}</div><div class="mm-target">7-gün ort. adım${mm.stepsDays?` · ${mm.stepsDays}/7`:''}</div></div>
+      <div class="mm-cell"><div class="mm-icon">💚</div><div class="mm-lbl">Ruh hali</div><div class="mm-val ${mm.avgMood?'':'empty'}">${mm.avgMood?mm.avgMood+'/5':'—'}</div><div class="mm-target">7-gün ort. (Döngü log)${mm.moodCount?` · ${mm.moodCount} kayıt`:''}</div></div>
+    </div>`;
+  }
   // Milestone celebration kontrol et
   const milestoneEl=document.getElementById('milestone-celebration');
   if(milestoneEl){
@@ -4466,7 +4527,9 @@ function renderMeas(){
       milestoneEl.innerHTML='';
     }
   }
-  document.getElementById('pnote').innerHTML=`<strong>${lostKg}</strong> kg verildi · <strong>${remKg}</strong> kg hedefe kaldı<div style="font-size:11px;color:var(--text-light);margin-top:4px;">⚠️ Renpho bioimpedance karnivor + IF diyette ±%5-8 hata payı (dehidrasyon + elektrolit). DEXA tercih.</div>`;
+  // Body neutrality dil — değer odaklı yerine ilişki odaklı (Hafta 4A — Ajan 6)
+  const lostStr=parseFloat(lostKg)>=0?`<strong>${lostKg}</strong> kg yolculuğun başından`:`<strong>${Math.abs(lostKg)}</strong> kg başlangıçtan üstte`;
+  document.getElementById('pnote').innerHTML=`${lostStr} · 56-60 kg yumuşak hedef bandına <strong>${remKg>0?remKg:0}</strong> kg<div style="font-size:11px;color:var(--text-light);margin-top:4px;">Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Renpho bioimpedance karnivor + IF diyette ±%5-8 hata payı. DEXA daha güvenilir.</div>`;
   document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Kas Kütlesi',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
   const hist=document.getElementById('mhist');
   hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm kaydı yok.</p>';
