@@ -975,6 +975,30 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .vt-empty{text-align:center;padding:18px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.55;}
 
 /* ════════════════════════════════════════════ */
+/* PR TIMELINE · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D — Ajan 6 + Ajan 9) */
+/* ════════════════════════════════════════════ */
+.pr-timeline-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.pt-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.pt-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.pt-counts{display:flex;justify-content:space-around;padding:12px 0;margin-bottom:12px;border-top:1px dashed rgba(255,255,255,0.10);border-bottom:1px dashed rgba(255,255,255,0.10);}
+.pt-count{text-align:center;flex:1;}
+.pt-count-v{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream);line-height:1.1;}
+.pt-count-l{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);font-weight:600;margin-top:2px;}
+.pt-list{display:flex;flex-direction:column;gap:8px;}
+.pt-item{padding:10px 12px;border-radius:12px;background:rgba(232,221,196,0.04);border-left:3px solid var(--mustard);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.pt-item.phase-np{border-left-color:var(--coral);}
+.pt-item.phase-ns{border-left-color:var(--sage-leaf);}
+.pt-item.phase-ng{border-left-color:var(--mauve-evening);}
+.pt-item.phase-nm{border-left-color:var(--mustard);}
+.pt-item-left{flex:1;min-width:0;}
+.pt-item-name{font-size:13px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pt-item-meta{font-size:10px;color:var(--cream-mute);margin-top:2px;}
+.pt-item-1rm{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--mustard);font-weight:400;line-height:1.1;flex-shrink:0;text-align:right;}
+.pt-item-1rm small{font-size:10px;color:var(--cream-mute);}
+.pt-item-delta{font-size:10px;font-weight:600;color:var(--sage-leaf);}
+.pt-empty{text-align:center;padding:20px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1108,6 +1132,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="e-muscle-heatmap"></div>
   <!-- Volume Trendi · 12 hafta × kas grubu × MEV/MAV/MRV (Phase 2 Hafta 6C) -->
   <div id="e-volume-trend"></div>
+  <!-- PR Timeline · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D) -->
+  <div id="e-pr-timeline"></div>
   <div style="height:8px;"></div>
 </div>
 
@@ -4432,26 +4458,40 @@ function skipSet(dk,exId,setIdx,reason){
 }
 
 // ── PR celebration (Phase 2 Hafta 2C) — cycle-aware ZEN
+// Cycle-aware PR ZEN quote havuzu (Phase 2 Hafta 6D — Maisie Hill + Ajan 6 kadın psikoloji)
+// 4 ana faz × 6 quote = 24 quote havuzu. Bilge Kadın / Genç Kız / Anne / Cadı arketipleriyle hizalı.
 const PR_ZEN={
   'Menstruation':[
     'Regl PR\'ı: sezginin ne kadar derin olduğunun kanıtı.',
     'Bu hafta dinlemen + güçlenmen aynı anda — nadir bir armağan.',
-    'Bedenin akışta, sen de akışınla birlikte güçleniyorsun.'
+    'Bedenin akışta, sen de akışınla birlikte güçleniyorsun.',
+    'Bilge Kadın kemiğinden konuştu — kasın onu duydu.',
+    'Hemoglobin düşük, kuvvet yüksek. Bedenin bilgisi karmaşık ve tam.',
+    'Kış toprağı sessiz çalışır. Bu rekor o sessizlikten doğdu.'
   ],
   'Follicular Phase':[
     'Östrojen yükseliyor, sen de — bu sezon başlangıcı.',
     'Yeni döngü, yeni güç. Bedenin kapasitesini kanıtladı.',
-    'İlkbaharda büyürsün. Hücreler senin çağrını duyuyor.'
+    'İlkbaharda büyürsün. Hücreler senin çağrını duyuyor.',
+    'Genç Kız arketibi merak ettiğini denedi — beden cevap verdi.',
+    'Kollajen sentezi peakta. Kemik, tendon, kas hep birlikte.',
+    'Folliküler ışığında her tekrar yeniden başlangıç gibi tazeydi.'
   ],
   'Ovulation':[
     'Zirvedeki hâlin bu. Vücut + zihin tam senkron.',
     'Bugün güçlü hissetmen tesadüf değil — biyolojin seni destekliyor.',
-    'Anne arketibin kendi gücünü tanıdığında doğar.'
+    'Anne arketibin kendi gücünü tanıdığında doğar.',
+    'LH peak\'inde aldığın bu rekor bedeninin sana güvendiği gün.',
+    'Östrojen + testosteron + sinerji — bu pencere dar ama parlaktı.',
+    'Yaratıcılık günü güç günüyle birleşti. İkisi aynı kelime.'
   ],
   'Luteal Phase':[
     'Cadı\'nın bilgeliği güçle birleşince → bu rekor doğdu.',
     'Geç luteal\'de PR? Bu vücut bilinci, hormon değil.',
-    'Sınır koymayı bildiğin gibi kasını da bilirsin.'
+    'Sınır koymayı bildiğin gibi kasını da bilirsin.',
+    'BMR yüksek, mood hassas, yine de güç bulundu — bu kararlılık.',
+    'Progesteron derinleştirir; sen derinlikten kuvvet çıkarttın.',
+    'Sonbahar toprağı yorgun ama verimli. Bu PR onun mahsulü.'
   ]
 };
 function getPRZenQuote(phase){
@@ -5262,7 +5302,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -5950,6 +5990,109 @@ function renderVolumeTrend(){
     <div class="vt-subtitle">Kas grubu × MEV/MAV/MRV bantları (Israetel 2018)</div>
     <div class="vt-chips">${chips}</div>
     ${chartHTML}
+  </div>`;
+}
+
+// ── PR Timeline · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D — Ajan 6 + Ajan 9)
+// Tüm hareketlerin tüm PR'larını çıkar, kronolojik (newest first), cycle phase tint ile.
+// Her hareket için sadece unique PR'lar (önceki maxı geçen seanslar).
+
+function getAllPRs(monthsBack=12,now){
+  now=now||new Date();
+  const cutoff=new Date(now);cutoff.setMonth(cutoff.getMonth()-monthsBack);
+  const log=S.workoutLog||{};
+  const dates=Object.keys(log).filter(d=>{
+    const dt=new Date(d);
+    return !isNaN(dt.getTime()) && dt.getTime()>=cutoff.getTime();
+  }).sort((a,b)=>new Date(a)-new Date(b));
+  // Tüm exercise id'lerinin running max'ını izle, her geçişte PR olarak işaretle
+  const runningMax={};
+  const prs=[];
+  dates.forEach(dk=>{
+    Object.keys(log[dk]).forEach(exId=>{
+      const e=log[dk][exId];
+      if(!e||!e.oneRMEstimate||e.oneRMEstimate<=0)return;
+      const prev=runningMax[exId]||0;
+      if(e.oneRMEstimate>prev){
+        prs.push({
+          exId,
+          exName:findExerciseName(exId)||exId.toUpperCase(),
+          oneRM:e.oneRMEstimate,
+          prev,
+          delta:e.oneRMEstimate-prev,
+          dk,
+          date:new Date(dk),
+          cyclePhase:e.cyclePhase,
+          cycleDay:e.cycleDay
+        });
+        runningMax[exId]=e.oneRMEstimate;
+      }
+    });
+  });
+  return prs.sort((a,b)=>b.date-a.date); // newest first
+}
+
+function renderPRTimeline(){
+  const el=document.getElementById('e-pr-timeline');
+  if(!el)return;
+  const prs=getAllPRs(12);
+  if(!prs.length){
+    el.innerHTML=`<div class="pr-timeline-card">
+      <div class="pt-title">PR Zaman Çizelgesi</div>
+      <div class="pt-subtitle">Son 12 ay · cycle-aware</div>
+      <div class="pt-empty">Henüz kaydedilmiş PR yok. Set log'ta ✓ giriş yap, 1RM tahmini önceki maxı geçtiğinde otomatik kaydedilir ve burada listelenir. 🏆</div>
+    </div>`;
+    return;
+  }
+  // Stats: total PR sayısı + unique exercise sayısı + son 30 gün PR sayısı
+  const total=prs.length;
+  const uniqueEx=new Set(prs.map(p=>p.exId)).size;
+  const last30=prs.filter(p=>{
+    const diff=(Date.now()-p.date.getTime())/86400000;
+    return diff<=30;
+  }).length;
+  // Phase distribution (en güçlü cycle penceresini tespit)
+  const phaseCount={'Menstruation':0,'Follicular Phase':0,'Ovulation':0,'Luteal Phase':0};
+  prs.forEach(p=>{if(p.cyclePhase&&phaseCount[p.cyclePhase]!==undefined)phaseCount[p.cyclePhase]++;});
+  const topPhase=Object.entries(phaseCount).sort((a,b)=>b[1]-a[1])[0];
+  const phaseLabels={
+    'Menstruation':'Regl',
+    'Follicular Phase':'Folliküler',
+    'Ovulation':'Ovulasyon',
+    'Luteal Phase':'Luteal'
+  };
+  // List items (max 12 son PR)
+  const items=prs.slice(0,12).map(p=>{
+    let phaseCls='';
+    if(p.cyclePhase==='Menstruation')phaseCls='phase-np';
+    else if(p.cyclePhase==='Follicular Phase')phaseCls='phase-ns';
+    else if(p.cyclePhase==='Ovulation')phaseCls='phase-ng';
+    else if(p.cyclePhase==='Luteal Phase')phaseCls='phase-nm';
+    const dateStr=p.date.toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+    const phaseStr=p.cyclePhase?phaseLabels[p.cyclePhase]+(p.cycleDay?' · Gün '+p.cycleDay:''):'cycle takibi yok';
+    const deltaStr=p.prev>0?`+${p.delta.toFixed(1)} kg`:'ilk kayıt';
+    return `<div class="pt-item ${phaseCls}">
+      <div class="pt-item-left">
+        <div class="pt-item-name">🏆 ${p.exName}</div>
+        <div class="pt-item-meta">${dateStr} · ${phaseStr}</div>
+      </div>
+      <div>
+        <div class="pt-item-1rm">${p.oneRM.toFixed(1)} <small>kg</small></div>
+        <div class="pt-item-delta">${deltaStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="pr-timeline-card">
+    <div class="pt-title">PR Zaman Çizelgesi</div>
+    <div class="pt-subtitle">Son 12 ay · cycle-aware</div>
+    <div class="pt-counts">
+      <div class="pt-count"><div class="pt-count-v">${total}</div><div class="pt-count-l">Toplam PR</div></div>
+      <div class="pt-count"><div class="pt-count-v">${uniqueEx}</div><div class="pt-count-l">Hareket</div></div>
+      <div class="pt-count"><div class="pt-count-v">${last30}</div><div class="pt-count-l">Son 30g</div></div>
+      <div class="pt-count"><div class="pt-count-v" style="font-size:14px;line-height:1.5;">${topPhase[1]>0?phaseLabels[topPhase[0]]:'-'}</div><div class="pt-count-l">En güçlü pencere</div></div>
+    </div>
+    <div class="pt-list">${items}</div>
+    ${prs.length>12?`<div style="text-align:center;margin-top:10px;font-size:11px;color:var(--cream-mute);font-style:italic;">+${prs.length-12} PR daha (gösterilenden sonra)</div>`:''}
   </div>`;
 }
 
