@@ -877,6 +877,27 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wd-closing em{color:var(--mustard-soft);font-style:normal;font-weight:600;}
 
 /* ════════════════════════════════════════════ */
+/* MONDAY FOCUS · "Bu Hafta Odak" (Phase 2 Hafta 5C — Ajan 7 pedagoji) */
+/* Pazartesi 06:00-12:00 görünür · sage-green pedagojik accent */
+/* ════════════════════════════════════════════ */
+.monday-focus-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(90,122,79,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);animation:eveSlideIn 0.3s ease-out;}
+.mf-tag{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--sage-leaf);font-weight:700;text-align:center;}
+.mf-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
+.mf-subtitle{font-size:12px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-style:italic;line-height:1.5;}
+.mf-intro{font-size:13px;line-height:1.65;color:var(--cream-soft);padding:12px 14px;border-radius:12px;background:rgba(90,122,79,0.10);border-left:3px solid var(--sage-leaf);margin-bottom:12px;}
+.mf-section{margin-bottom:10px;padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);}
+.mf-section-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:5px;color:var(--cream-soft);display:flex;align-items:center;gap:6px;}
+.mf-section-text{font-size:12.5px;color:var(--cream-soft);line-height:1.65;}
+.mf-section.hormone .mf-section-title{color:var(--mauve-evening);}
+.mf-section.physiology .mf-section-title{color:var(--mustard);}
+.mf-section.training .mf-section-title{color:var(--sage-leaf);}
+.mf-section.nutrition .mf-section-title{color:var(--coral);}
+.mf-section.risk{background:rgba(217,89,30,0.10);border:1px solid rgba(217,89,30,0.25);}
+.mf-section.risk .mf-section-title{color:var(--coral);}
+.mf-closing{margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.10);font-size:12px;color:var(--cream-mute);line-height:1.6;text-align:center;font-style:italic;}
+.mf-closing em{color:var(--sage-leaf);font-style:normal;font-weight:600;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -906,6 +927,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
+  <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
   <div id="evening-checkin"></div>     <!-- Akşam 30sn check-in (19:00-23:59 görünür) — Phase 2 Hafta 4B -->
   <div id="weekly-digest"></div>       <!-- Pazar 20:00+ haftalık özet — Phase 2 Hafta 4C -->
 
@@ -2358,6 +2380,8 @@ function renderDashboard(){
       <div class="dash-greet-zen">"${zen}"</div>
     </div>`;
   }
+  // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
+  renderMondayFocus();
   // Akşam check-in kartı (Phase 2 Hafta 4B) — 19:00-23:59 arası, henüz check-in yapılmadıysa
   renderEveningCheckIn();
   // Haftalık özet kartı (Phase 2 Hafta 4C) — pazar ≥20:00
@@ -2472,6 +2496,130 @@ function resetEveningCheckIn(){
   if(logs[dk])delete logs[dk].eveningCheckIn;
   saveCycleLogs(logs);
   renderEveningCheckIn();
+}
+
+// ── "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C — Ajan 7)
+// 6 alt-faz × {intro, hormone, physiology, training, nutrition, risk, closing}
+// Görünür: DOW=1 (Pazartesi) && saat 06:00-12:00 arası, Bugün sayfasında
+const WEEKLY_FOCUS_TEXTS={
+  menstruation:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Kış · Bilge Kadın',
+    subtitle:'Regl haftası — bedenin ritmin yavaş, derinlik içe dönüyor.',
+    intro:'Maisie Hill bu fazı "iç kış" olarak tanımlar. Endometrium dökülüyor, hemoglobin Day 3-5 en düşük seviyede. Bilge Kadın arketipi devrede — dinlenme bilgelik, hafiflik direnç değil. Bu hafta yarım hafta değil, derinleşme haftası.',
+    hormone:'Östrojen ve progesteron en düşükte. FSH yumurta gelişimi başlatmak için yükselişe geçer (yeni döngünün ön provası).',
+    physiology:'BMR 1-2 gün içinde normalize. Bazal vücut ısısı 36.4°C civarı (luteal pikten 0.3°C düşüş). Demir aktif kullanılıyor — Day 1-2 yorgunluk fizyolojik, kalite zayıflığı değil.',
+    training:'Day 1-2: tam dinlenme veya yoga akışı + restoratif streç. Day 3-5: hafif üst-vücut (lat pulldown, face pull, bicep curl) RPE 6-7. Compound hareketler son set rahat. Yürüyüş 5-6 km yeterli.',
+    nutrition:'Demir + B12 vurgusu — kırmızı et, ciğer (B12 yüksek). C vitamini yanında (limon, biber, maydanoz) demir emilimi 3-4× artar. Magnezyum 350-400 mg kramp koruması. Su +500 ml ekstra.',
+    risk:'Sims uyarısı: regl haftasında "zorla devam et" sesi REDS riski yaratır. Day 1-2 dinlenme bilimsel olarak doğru karar — geri kalan günler de bedeninin sözüne kulak ver.',
+    closing:'Bu hafta <em>derinleşme</em> hafta. Pazartesi sabah okuduğun bu metni Cuma gece tekrar okumak isteyebilirsin — değişen ne hissedeceğini görmek için.'
+  },
+  follicular_build:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Erken İlkbahar · Genç Kız',
+    subtitle:'Folliküler erken — östrojen yükseliyor, kas yapımı için yeşil ışık.',
+    intro:'Genç Kız arketipi: enerji geri geliyor, merak doruğa yakın, yenilik açlığı yüksek. Bu hafta yeni hareket öğrenmek, form perfeksiyonu, volume + intensity için optimal. Bedeninin söylediği: "deneyebilirim".',
+    hormone:'Östrojen 50→200 pg/mL yükselişe geçti. FSH azalır (östrojen negatif feedback). Progesteron hala düşük — recovery hızlı.',
+    physiology:'İnsülin duyarlılığı yüksek (karb iyi kullanılır), kas glikojeni dolu, MPS sinyali güçlü. Kollajen sentezi östrojen-aracılı ↑ (Hansen 2017) — eklem-tendon adaptasyonu için iyi pencere.',
+    training:'Volume %5-10 artırma penceresi. Yeni egzersiz öğrenmek için ideal hafta. Compound hareketler RPE 7-8.5 — RPE 9 baskısı yok. Eccentric tempo 3-1-1 deneyebilirsin (hipertrofi mTORC1 aktivasyonu max).',
+    nutrition:'Karb hedefe ulaş (60-80g, post-WO). Protein +5-10g (1.8 g/kg yerine 2.0 g/kg). Folliküler east week leucine 3g/öğün × 4-5 öğün — MPS 24-48 saat aktif kalır.',
+    risk:'Yeni harekette form öncelik. Östrojen recovery hızlandırır ama eklem-tendon adaptasyon hala 4-6 hafta. Ovulasyon haftası yaklaşırken (Day 11+) riskli hareketleri test etme.',
+    closing:'Bu hafta <em>denemek</em> hafta. Vücudun yeni şeyler öğrenmek için en açık zamanı — ama "denemek" ≠ "zorlamak". RPE 8.5\'i geçme, form önce.'
+  },
+  follicular_peak:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Geç İlkbahar · Genç Kız (PR Penceresi)',
+    subtitle:'Folliküler geç — östrojen tepe, ovulasyona yaklaşıyor. PR denemesi için iyi günler.',
+    intro:'Östrojen pre-ovulasyon zirvesinde. Sims: "performans penceresi" — fiziksel dayanıklılık, güç, motivasyon en yüksek seviyede. Ama bu hafta sonu ovulasyona girilir → Day 11+ ligament dikkati başlar.',
+    hormone:'Östrojen 200-400 pg/mL peak. LH yükselişe geçer (ovulasyonu tetikleyecek). Progesteron hala düşük.',
+    physiology:'1RM tahmini önceki seansa kıyasla %3-5 yüksek olabilir (östrojen + nöral aktivasyon). Ağrı eşiği yüksek, ağrı toleransı yüksek. Toparlanma 24-36 saat (luteal\'da 48-72 saat).',
+    training:'Bu hafta rep PR veya ağırlık PR denemesi için optimal — ama RPE 9.5 baskısı yok. Day 11\'den itibaren riskli hareketler (Smith squat, ağır RDL, plyometric) için cycle-safe alternatife geç. Compound hareketler RPE 8.5 ile.',
+    nutrition:'Pre-WO 14:00 30g karb (bal + kivi) yararlı. Post-WO protein 30-40g + karb 40-60g (kg/yağsız kütle göre). Kreatin günlük 5g (PR week kreatin saturasyonu kritik).',
+    risk:'Day 11-13 LH yükselişe başlar — relaxin de yükselişe başlar. ACL non-contact riski artmaya başlar. Bilateral hareketleri tek-bacak alternatife (B-Stance HT) progresif çevirme. Plyometric/sprint Day 11+ kontrindike.',
+    closing:'Bu hafta <em>parlamak</em> hafta — ama parlama "kanıtlama" değil. PR atarsan kutla; atmazsan bedeninin söylediğini dinle. "Hız bedenine ait."'
+  },
+  ovulation:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Yaz · Anne (Ligament Dikkati)',
+    subtitle:'Ovulasyon — LH peak + relaxin peak. Volume korunur, intensity dikkatli.',
+    intro:'Anne arketipi: doğurgan, yaratıcı, ama korunaklı. Vücut yumurtayı koruyor, ligamentler gevşek (hamilelik hazırlığı). PR baskısı yok — bedeninin senin lehine yaptığı bilim doğru anlaşılırsa, bu hafta yaralanma yok haftası.',
+    hormone:'LH peak 24-36 saat (Day 12-14). Östrojen pre-peak\'ten ufak düşüş, sonra plato. Testosteron küçük peak (kadında %3-5). Relaxin peak — ligament gevşekliği +30-50%.',
+    physiology:'Ligament-tendon laksitesi maksimum. ACL non-contact yaralanma riski 2-3× (Wojtys 1998 PMID 9568310). Diz valgus eğilimi artar. Sakroiliac stabilite ↓.',
+    training:'Bilateral squat → Goblet (lumbar tork ↓). Bulgarian → Step-Up (lateral knee yükü ↓). RDL → Cable Pull-Through (lumbar shear ↓). Hip Thrust → Glute Bridge bant (sakroiliac stabilite ↑). Kompleks hareketler için form öncelik, eccentric tempo 3-1-1.',
+    nutrition:'Standart luteal-öncesi protokolü — protein 1.8-2.0 g/kg, karb post-WO penceresinde. C vitamini 100 mg/gün (kollajen sentezi destek). Magnezyum 300-350 mg.',
+    risk:'Plyometric, sprint, valgus eğilimli hareketler (Smith squat, dynamic dumbbell exercises) tamamen kontrindike. Drop-jump testi valgus skor ≥6 cm = ACL riski 5× (Hewett 2005). Yeni 1RM denemesi YOK.',
+    closing:'Bu hafta <em>korumak</em> hafta. Volume aynı, intensity %3-5 düşük, alternatif hareketler tıklanır. Bedeninin yaratıcı haftası — eklemleri bunu yarın bilecek.'
+  },
+  luteal_build:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Erken Sonbahar · Cadı (Volume Penceresi)',
+    subtitle:'Erken luteal — progesteron yükseliyor, fat oxidation artar. Volume için iyi gün.',
+    intro:'Cadı arketipi (bilge): introspection, derinleşme, sezgi keskin. Progesteron başlar yükselmeye ama PMS henüz yok. Bu hafta volume-heavy işler ve dayanıklılık için iyi pencere — agresif intensity düşmeli ama volume kalır.',
+    hormone:'Progesteron 1→8 ng/mL yükselişe geçti. Östrojen ikinci peak (luteal mid). Testosteron normalize. Relaxin düşer.',
+    physiology:'Fat oxidation ↑ — yağ daha verimli yakılır. İnsülin duyarlılığı orta (karb hala kullanılır). BMR hafif yükselir (+5-8%). Vücut ısısı +0.2°C. Magnezyum + B6 başlamak için ideal.',
+    training:'Volume %5 artırma penceresi (rep aralığı 10-15). Intensity orta (RPE 7-8). Yardımcı hareketler için iyi gün — single-leg work, glute izolasyon, core. Compound hareketler RPE 8 max.',
+    nutrition:'Magnezyum 300-350 mg + B6 (P5P 25mg) başlat — kramp + mood koruma. Karb post-WO penceresi (40-50g) — fat oxidation\'a rağmen rezerv için. Protein 1.8-2.0 g/kg. Su +250 ml (BMR yükselişi).',
+    risk:'PMS belirtileri Day 21-22\'den başlayabilir. Mood değişimi farkındalığı yüksek tut — antrenman kararını "zorla" değil "dinle"den ver. Geç luteal\'a hazırlık başlıyor.',
+    closing:'Bu hafta <em>derinleşme</em> hafta. Cadı arketipi sezgi konuşur — bedenin söylediği "biraz çoğaltabilirim" doğru, "ekstra zorla" doğru değil. Aralık hassas.'
+  },
+  luteal_late:{
+    tag:'PAZARTESI · BU HAFTA ODAK',
+    title:'Geç Sonbahar · Cadı (Mood-Protective Hafta)',
+    subtitle:'Geç luteal + PMS. BMR yüksek, mood hassas. Deload haftası için ideal pencere.',
+    intro:'Cadı bilgesinin son haftası — vücut yumurtayı bekledi, gelmiyor, bir sonraki kışa hazırlanıyor. Progesteron peak\'te + düşüşe başlıyor → PMS. NSCA periodization önerisi: deload haftası burada başlar. "Bu hafta yarım değil — stratejik." Maisie Hill: "Bu fazda kendine bilge davran."',
+    hormone:'Progesteron peak 10-15 ng/mL, sonra son 2-3 gün düşüş. Östrojen ikinci pikten düşer. Kortizol +%15-20 (progesteron-aracılı). Serotonin ↓ (mood değişim).',
+    physiology:'BMR +%8-12 (kalori ihtiyacı +100-150 kcal). Vücut ısısı +0.3°C (uyku verimi etkilenebilir). Su tutma normal (ödem değil). NREM uyku derinliği ↓ (progesteron-aracılı).',
+    training:'Set sayısı koru, ağırlığı %5-10 düşür (otoregülasyon). Cum (Total Hibrid) opsiyonel skip. Compound hareketler RPE 7-8 max. Plyometric/sprint kontrindike (kortizol stresor + bağışıklık ↓). Yürüyüş + yoga akışı bonus.',
+    nutrition:'Geç luteal cycle bonus +150 kcal (RED-S koruma, BMR +%8-12). Karb 60g post-WO (insülin duyarlılık koruma). Magnezyum 350-400 mg + tryptophan kaynakları (yumurta, hindi) → serotonin sentezi. Hidrasyon +500 ml.',
+    risk:'PMS 2-3 gün öncesi: "yargısız bilgi" tutumu. Antrenman atlama düşüncesi gelirse → cevabı bedeninle ilişkide ara, "disiplin" söyleminde değil. Compulsive screening pazar gece check.',
+    closing:'Bu hafta <em>stratejik</em> hafta. Yarım değil — bedenine notlar düştüğün hafta. Bedeninle ilişkin dürüst kalsın. Pazartesi taze başlangıç hakkın saklı.'
+  }
+};
+
+// Pazartesi sabah hangi odak metni gösterilecek
+function getMondayFocusKey(d){
+  const c=ci(d||new Date());
+  if(!c)return null;
+  const cycLen=getAvgCycleLen();
+  if(inP(d||new Date()) || c.phase==='Menstruation')return 'menstruation';
+  if(c.phase==='Follicular Phase'){
+    return c.day<=10?'follicular_build':'follicular_peak';
+  }
+  if(c.phase==='Ovulation')return 'ovulation';
+  if(c.phase==='Luteal Phase'){
+    return c.day>=cycLen-6?'luteal_late':'luteal_build';
+  }
+  return null;
+}
+
+// Pazartesi sabah Bugün dashboard'unda "Bu Hafta Odak" kartı render
+function renderMondayFocus(){
+  const el=document.getElementById('monday-focus');
+  if(!el)return;
+  // Sadece Bugün sayfasındayken
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  // Pazartesi 06:00-12:00 arası görünür
+  const dow=now.getDay();
+  const h=now.getHours();
+  if(dow!==1 || h<6 || h>=12){el.innerHTML='';return;}
+  const key=getMondayFocusKey(now);
+  if(!key){el.innerHTML='';return;}
+  const f=WEEKLY_FOCUS_TEXTS[key];
+  if(!f){el.innerHTML='';return;}
+  const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
+  el.innerHTML=`<div class="monday-focus-card">
+    <div class="mf-tag">${f.tag}</div>
+    <div class="mf-title">${f.title}</div>
+    <div class="mf-subtitle">${f.subtitle}</div>
+    <div class="mf-intro">${_glx(f.intro)}</div>
+    <div class="mf-section hormone"><div class="mf-section-title">🌸 Hormon Profili</div><div class="mf-section-text">${_glx(f.hormone)}</div></div>
+    <div class="mf-section physiology"><div class="mf-section-title">⚙️ Fizyolojik Durum</div><div class="mf-section-text">${_glx(f.physiology)}</div></div>
+    <div class="mf-section training"><div class="mf-section-title">💪 Antrenman</div><div class="mf-section-text">${_glx(f.training)}</div></div>
+    <div class="mf-section nutrition"><div class="mf-section-title">🥩 Beslenme</div><div class="mf-section-text">${_glx(f.nutrition)}</div></div>
+    <div class="mf-section risk"><div class="mf-section-title">⚠️ Dikkat</div><div class="mf-section-text">${_glx(f.risk)}</div></div>
+    <div class="mf-closing">${f.closing}</div>
+  </div>`;
 }
 
 // ── Compulsive screening modal handlers (Phase 2 Hafta 4B)
