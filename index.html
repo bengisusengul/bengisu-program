@@ -366,6 +366,19 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .bx-btn-import{border-color:rgba(232,178,63,0.45);color:var(--mustard);background:rgba(232,178,63,0.10);}
 .bx-meta{font-size:10px;color:var(--cream-mute);margin-top:8px;text-align:center;font-style:italic;}
 
+/* Profil sistemi (Phase 3.B-E) */
+.prof-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.prof-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);border:1px solid var(--glass-border);}
+.prof-row.active{border-color:rgba(180,121,144,0.50);background:rgba(180,121,144,0.10);}
+.prof-info{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.prof-emoji{font-size:18px;}
+.prof-name{font-size:13px;font-weight:600;color:var(--cream);}
+.prof-badge{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--mauve-evening);font-weight:700;background:rgba(180,121,144,0.15);padding:2px 8px;border-radius:8px;}
+.prof-actions{display:flex;gap:4px;flex-shrink:0;}
+.prof-btn{padding:5px 10px;border-radius:7px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);font-size:11px;cursor:pointer;font-family:inherit;}
+.prof-btn:active{transform:scale(0.94);}
+.prof-btn-del{color:var(--coral);border-color:rgba(217,89,30,0.30);}
+
 /* GLOSSARY (Phase 2 Hafta 5B) — altı çizili tıklanabilir bilim terimleri */
 .gloss-term{text-decoration:underline dotted rgba(232,221,196,0.55);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;color:var(--cream);transition:color 0.18s, text-decoration-color 0.18s;font-weight:500;}
 .gloss-term:hover,.gloss-term:active{color:var(--mustard);text-decoration-color:var(--mustard);}
@@ -1645,6 +1658,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- API Proxy ayarı (Phase 3.B-D) -->
   <div id="api-proxy-card"></div>
+
+  <!-- Profil sistemi (Phase 3.B-E) -->
+  <div id="profile-card"></div>
 
   <div style="height:8px;"></div>
 </div>
@@ -6673,6 +6689,141 @@ function renderApiProxyCard(){
   </div>`;
 }
 
+// Phase 3.B-E — Profil sistemi (namespace tabanlı çoklu user)
+// Yaklaşım: aktif profil = ana localStorage. Profil değişince mevcut BACKUP_KEYS
+// `_archive_${profileId}_${key}` olarak yedeklenir, hedef profil verileri ana
+// anahtarlara yüklenir. Tüm mevcut kod değişmez — sadece "swap" yapılır.
+
+const PROFILE_DEFAULT_ID='bengisu';
+
+function getActiveProfileId(){return localStorage.getItem('active_profile')||PROFILE_DEFAULT_ID;}
+function getProfileList(){
+  const raw=localStorage.getItem('profiles_list');
+  if(raw){try{return JSON.parse(raw);}catch(e){}}
+  // İlk açılışta default profil oluştur
+  const def=[{id:'bengisu',name:'Bengisu',emoji:'☀️',createdAt:Date.now()}];
+  localStorage.setItem('profiles_list',JSON.stringify(def));
+  return def;
+}
+function saveProfileList(list){localStorage.setItem('profiles_list',JSON.stringify(list));}
+
+function archiveCurrentProfile(){
+  const id=getActiveProfileId();
+  BACKUP_KEYS.forEach(k=>{
+    if(k==='active_profile')return; // meta-key, archive etme
+    const v=localStorage.getItem(k);
+    if(v!==null){
+      localStorage.setItem(`_archive_${id}_${k}`,v);
+    }else{
+      // Boş alanı temizle (geçmişte vardı, şimdi silinmiş)
+      localStorage.removeItem(`_archive_${id}_${k}`);
+    }
+  });
+}
+
+function loadProfileFromArchive(id){
+  // Önce mevcut tüm BACKUP_KEYS'i temizle
+  BACKUP_KEYS.forEach(k=>{
+    if(k==='active_profile')return;
+    localStorage.removeItem(k);
+  });
+  // Sonra hedef profilin arşiv verisini ana anahtarlara yükle
+  BACKUP_KEYS.forEach(k=>{
+    if(k==='active_profile')return;
+    const v=localStorage.getItem(`_archive_${id}_${k}`);
+    if(v!==null)localStorage.setItem(k,v);
+  });
+}
+
+function switchToProfile(id){
+  const cur=getActiveProfileId();
+  if(id===cur){showToast('Bu zaten aktif profil','warn');return;}
+  // 1. Mevcut profili arşive yedekle
+  archiveCurrentProfile();
+  // 2. Hedef profil verisini yükle (ilk seferse boş başlar)
+  loadProfileFromArchive(id);
+  // 3. Aktif profil ID'sini güncelle
+  localStorage.setItem('active_profile',id);
+  // 4. State'i refresh et + tüm sekmeleri re-render
+  S.done=JSON.parse(localStorage.getItem('done')||'{}');
+  S.swaps=JSON.parse(localStorage.getItem('swaps')||'{}');
+  S.meas=JSON.parse(localStorage.getItem('meas')||'[]');
+  S.workoutLog=JSON.parse(localStorage.getItem('workout_log')||'{}');
+  const list=getProfileList();
+  const p=list.find(x=>x.id===id);
+  showToast(`✓ ${p?.emoji||'👤'} ${p?.name||id} profiline geçildi`,'pr');
+  setTimeout(()=>location.reload(),800);
+}
+
+function addNewProfile(){
+  const name=prompt('Yeni profil adı (örn. "Annem", "Kız Kardeş"):');
+  if(!name||!name.trim())return;
+  const emoji=prompt('Emoji (opsiyonel, örn. 🌷, 💕, 🦋):','👤')||'👤';
+  const id=name.trim().toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20);
+  if(!id){showToast('Geçerli bir ad gir','warn');return;}
+  const list=getProfileList();
+  if(list.find(p=>p.id===id)){
+    showToast('Bu ID zaten var, farklı bir ad seç','warn');
+    return;
+  }
+  list.push({id,name:name.trim(),emoji,createdAt:Date.now()});
+  saveProfileList(list);
+  // Yeni profile geç (mevcut veri arşive yedeklenir, yeni profil boş başlar)
+  if(confirm(`"${emoji} ${name.trim()}" profili oluşturuldu. Şimdi geçmek ister misin?\n(Mevcut verilerin "${getActiveProfileId()}" profiline yedeklenir, geri dönebilirsin.)`)){
+    switchToProfile(id);
+  }else{
+    renderProfileCard();
+  }
+}
+
+function deleteProfile(id){
+  if(id===getActiveProfileId()){
+    showToast('Aktif profili silemezsin · önce başka profile geç','warn');
+    return;
+  }
+  if(id===PROFILE_DEFAULT_ID){
+    showToast('Ana profili (Bengisu) silemezsin','warn');
+    return;
+  }
+  const list=getProfileList();
+  const p=list.find(x=>x.id===id);
+  if(!p)return;
+  if(!confirm(`"${p.emoji} ${p.name}" profili ve tüm verisi kalıcı silinsin mi?\nGeri alınamaz.`))return;
+  // Arşivdeki verisini sil
+  BACKUP_KEYS.forEach(k=>localStorage.removeItem(`_archive_${id}_${k}`));
+  // Listeden çıkar
+  saveProfileList(list.filter(x=>x.id!==id));
+  showToast(`✗ ${p.emoji} ${p.name} silindi`,'pr');
+  renderProfileCard();
+}
+
+function renderProfileCard(){
+  const el=document.getElementById('profile-card');
+  if(!el)return;
+  const list=getProfileList();
+  const active=getActiveProfileId();
+  const items=list.map(p=>{
+    const isActive=p.id===active;
+    return `<div class="prof-row${isActive?' active':''}">
+      <div class="prof-info">
+        <span class="prof-emoji">${p.emoji}</span>
+        <span class="prof-name">${p.name}</span>
+        ${isActive?'<span class="prof-badge">aktif</span>':''}
+      </div>
+      <div class="prof-actions">
+        ${isActive?'':`<button class="prof-btn" onclick="switchToProfile('${p.id}')">🔄 Geç</button>`}
+        ${(!isActive&&p.id!==PROFILE_DEFAULT_ID)?`<button class="prof-btn prof-btn-del" onclick="deleteProfile('${p.id}')">🗑</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="bx-card" style="border-color:rgba(180,121,144,0.30);">
+    <div class="bx-title">👤 Profiller</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Çoklu kullanıcı</strong> — Bengisu, kız kardeş, anne gibi farklı kişilerin verilerini ayrı tut. Profil değiştirince mevcut verin <em>otomatik yedeklenir</em>, hedef profilin verisi yüklenir. Anthropic API key + proxy ayarı <strong>tüm profillerde ortak</strong>.</div>
+    <div class="prof-list">${items}</div>
+    <button class="bx-btn" style="width:100%;margin-top:8px;" onclick="addNewProfile()">+ Yeni Profil Ekle</button>
+  </div>`;
+}
+
 function renderEduGlobalCard(){
   const el=document.getElementById('edu-global');
   if(!el)return;
@@ -9113,6 +9264,8 @@ function renderCycle(){
   if(typeof renderBackupExport==='function')renderBackupExport();
   // API Proxy ayarı (Phase 3.B-D)
   if(typeof renderApiProxyCard==='function')renderApiProxyCard();
+  // Profil sistemi (Phase 3.B-E)
+  if(typeof renderProfileCard==='function')renderProfileCard();
 
   // ─── Hero card (current phase) ───
   renderCyHero();
