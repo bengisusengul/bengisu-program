@@ -1653,7 +1653,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <h1><em>Ölçüm</em> 📊</h1>
     <div class="tb-sub">Eylül'e doğru · 5 metrik birlikte</div>
     <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
+    <button class="health-paste-btn" style="right:96px;background:rgba(123,168,176,0.18);border-color:rgba(123,168,176,0.45);" onclick="openHealthJsonPicker()" title="Health Auto Export JSON · toplu çoklu gün">📁 JSON</button>
     <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
+    <input type="file" accept="application/json,.json" id="health-json-input" style="display:none;" onchange="handleHealthJson(event)">
   </div>
   <div id="health-paste-msg"></div>
   <div id="milestone-celebration"></div>
@@ -4771,6 +4773,107 @@ function openHealthPhotoPicker(){
   if(!inp)return;
   inp.value='';
   inp.click();
+}
+
+// Phase 3.B-C — Apple Health JSON auto-sync (Health Auto Export iOS app uyumlu)
+// Format: { data: { metrics: [{ name, units, data: [{ date, qty }, ...] }, ... ] } }
+// Veya basit: { 'YYYY-MM-DD': { steps, active_kcal, sleep_min, hr_avg, hr_rest, hrv } }
+function openHealthJsonPicker(){
+  const inp=document.getElementById('health-json-input');
+  if(!inp)return;
+  inp.value='';
+  inp.click();
+}
+
+function handleHealthJson(event){
+  const file=event.target.files?.[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const blob=JSON.parse(e.target.result);
+      const result=parseHealthAutoExport(blob)||parseSimpleDayMap(blob);
+      if(!result||Object.keys(result).length===0){
+        showToast('⚠️ Tanınmayan format · Health Auto Export veya {YYYY-MM-DD: {...}} bekleniyor','warn');
+        return;
+      }
+      const days=Object.keys(result);
+      const conf=confirm(`${days.length} günlük Apple Health verisi bulundu (${days[0]} → ${days[days.length-1]}). Mevcut günlük kayıtların üzerine yazılacak. Devam edilsin mi?`);
+      if(!conf)return;
+      let imported=0;
+      days.forEach(dk=>{
+        const cleaned=result[dk];
+        if(!cleaned||typeof cleaned!=='object')return;
+        // Mevcut saveHealthDay sadece bugün için — direkt localStorage manipulate
+        const all=getHealthLog();
+        all[dk]={...(all[dk]||{}),...cleaned,imported_at:new Date().toISOString()};
+        localStorage.setItem('health_log',JSON.stringify(all));
+        imported++;
+      });
+      showToast(`✓ ${imported} gün Apple Health verisi içe aktarıldı`,'pr');
+      if(typeof renderSelDay==='function')renderSelDay();
+      if(typeof renderEx==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderEx();
+    }catch(err){
+      showToast('⚠️ JSON okunamadı: '+(err.message||err),'warn');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value='';
+}
+
+// Health Auto Export iOS app formatı parser
+// https://www.healthexportapp.com/
+function parseHealthAutoExport(blob){
+  if(!blob||!blob.data||!Array.isArray(blob.data.metrics))return null;
+  const metricMap={
+    'step_count':'steps',
+    'active_energy':'active_kcal',
+    'apple_exercise_time':'exercise_min',
+    'sleep_analysis':'sleep_min', // sleep total minutes hesaplanmalı
+    'heart_rate':'hr_avg',
+    'resting_heart_rate':'hr_rest',
+    'heart_rate_variability':'hrv',
+    'apple_stand_time':'stand_hr'
+  };
+  const result={};
+  blob.data.metrics.forEach(m=>{
+    const fieldName=metricMap[m.name];
+    if(!fieldName||!Array.isArray(m.data))return;
+    m.data.forEach(d=>{
+      // d.date format: "2026-05-07 00:00:00 +0300" veya "2026-05-07"
+      const dk=(d.date||'').split(' ')[0].split('T')[0];
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(dk))return;
+      if(!result[dk])result[dk]={};
+      // Sleep özel: qty saat, dakikaya çevir
+      let val=d.qty;
+      if(fieldName==='sleep_min')val=Math.round((val||0)*60);
+      else if(fieldName==='hrv')val=Math.round((val||0)*10)/10;
+      else val=Math.round(val||0);
+      // Aynı gün için multiple sample → ortalama (HRV/HR) veya toplam (steps)
+      if(result[dk][fieldName]!=null){
+        if(fieldName==='steps'||fieldName==='active_kcal'||fieldName==='exercise_min'||fieldName==='sleep_min'||fieldName==='stand_hr'){
+          result[dk][fieldName]+=val;
+        }else{
+          result[dk][fieldName]=Math.round(((result[dk][fieldName]+val)/2)*10)/10;
+        }
+      }else{
+        result[dk][fieldName]=val;
+      }
+    });
+  });
+  return Object.keys(result).length?result:null;
+}
+
+// Basit format parser: { 'YYYY-MM-DD': { steps, active_kcal, ... } }
+function parseSimpleDayMap(blob){
+  if(!blob||typeof blob!=='object')return null;
+  const result={};
+  Object.keys(blob).forEach(k=>{
+    if(/^\d{4}-\d{2}-\d{2}$/.test(k) && blob[k] && typeof blob[k]==='object'){
+      result[k]=blob[k];
+    }
+  });
+  return Object.keys(result).length?result:null;
 }
 // User picked a screenshot → read base64, open modal in loading state, send to Claude
 function handleHealthPhoto(e){

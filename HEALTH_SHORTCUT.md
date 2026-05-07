@@ -1,8 +1,11 @@
 # 🍏 Apple Health → Bengisu Program
 
-Apple Health verilerini siteye taşımanın yolu: **screenshot al, AI okusun.**
+Apple Health verilerini siteye taşımanın **iki yolu**:
 
-iOS Shortcut, clipboard, JSON kopyalama yok. Sadece bir ekran görüntüsü.
+1. **📷 Photo + AI** (günlük, 10 saniye) — screenshot al, Claude AI okusun
+2. **📁 JSON auto-sync** (haftalık/aylık toplu) — Health Auto Export iOS app + JSON yükleme
+
+İkisi de eşit çalışır. Photo hızlı, JSON çoklu gün için verimli.
 
 ---
 
@@ -66,6 +69,60 @@ Sayılar var ama UI yoğun, AI okumayı şaşırabilir. Olur ama önce Summary'i
 ## 🤖 Maliyet
 
 Claude Haiku 4.5 vision: ~$0.001 fotoğraf başına. Günde 1 screenshot yüklersen aylık **~3 sent**. Anthropic key'in zaten Diet/Recipe için kullandığın key.
+
+---
+
+## 📁 JSON auto-sync · toplu çoklu gün (Phase 3.B-C)
+
+Birden fazla günlük veriyi tek seferde içe aktarmak için. **Health Auto Export** iOS app'i kullanılır:
+
+### Kurulum (tek seferlik · 5 dk)
+
+1. App Store → "**Health Auto Export · JSON+CSV**" indir (~£0.99 / aylık ücretsiz tier var)
+2. Aç → Apple Health'e izin ver (Steps, Active Energy, Heart Rate, HRV, Resting HR, Sleep, Exercise Minutes, Stand Hours)
+3. **Automation** sekmesi → yeni automation ekle:
+   - Frequency: **Weekly** (Pazar gecesi)
+   - Format: **JSON**
+   - Aggregation: **Daily**
+   - Export Method: **iCloud Drive** veya **Email** (kendine)
+
+### Haftalık ritüel (1 dk)
+
+1. iCloud Drive / Email'den JSON dosyayı al
+2. Bengisu Program → **Ölçüm** sekmesi → topbar'da **📁 JSON** butonu
+3. Dosyayı seç → "X gün içe aktarılacak, devam edilsin mi?" → Evet
+4. Tüm haftanın adım/kalori/uyku/HRV/RHR verisi tek seferde yüklenir
+
+### JSON formatı
+
+Health Auto Export çıktısı:
+```json
+{
+  "data": {
+    "metrics": [
+      { "name": "step_count", "units": "count", "data": [{"date":"2026-05-07","qty":8542}] },
+      { "name": "heart_rate_variability", "units": "ms", "data": [{"date":"2026-05-07","qty":52.3}] },
+      ...
+    ]
+  }
+}
+```
+
+Veya manuel basit format (kendi script'inle yazarsan):
+```json
+{
+  "2026-05-07": { "steps": 8542, "active_kcal": 420, "sleep_min": 480, "hrv": 52.3, "hr_rest": 58 }
+}
+```
+
+Site iki formatı da destekler — parser otomatik tanır.
+
+### Photo vs JSON ne zaman?
+
+- **Photo**: günlük tek gün hızlı kayıt. iCloud Drive yok ya da app indirmek istemiyorsan.
+- **JSON**: 7+ gün toplu kayıt. Health Auto Export automation kurduysan haftalık otomatik.
+
+İkisi aynı `health_log` localStorage anahtarına yazar — Adaptive Yük (Egzersiz) ve günlük detayda aynı veriyi gösterir.
 
 ---
 
