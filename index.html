@@ -1139,6 +1139,16 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wm-mode-option.active{border-color:var(--mauve-evening);background:rgba(180,121,144,0.12);}
 .wm-mode-option-title{font-size:14px;font-weight:700;color:var(--cream-soft);margin-bottom:4px;}
 .wm-mode-option-desc{font-size:12px;color:var(--cream-mute);line-height:1.5;}
+/* Phase 2 P2.2 — Wedding countdown opt-out + somatic readiness */
+.wm-soft{padding:14px 16px;border-radius:14px;background:rgba(180,121,144,0.12);border:1px solid rgba(180,121,144,0.30);font-size:13px;color:var(--cream-soft);line-height:1.6;text-align:center;font-style:italic;margin-bottom:10px;}
+.wm-soft em{color:var(--mauve-evening);font-style:normal;font-weight:600;}
+.wm-reframe{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+.wm-reframe-prompt{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;text-align:center;margin-bottom:8px;}
+.wm-reframe-input{width:100%;padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:13px;line-height:1.5;}
+.wm-reframe-input:focus{outline:none;border-color:rgba(180,121,144,0.55);background:rgba(180,121,144,0.08);}
+.wm-mode-toggle{display:flex;gap:6px;margin-top:6px;}
+.wm-mode-toggle button{flex:1;padding:6px 4px;border-radius:8px;font-size:10px;font-weight:600;cursor:pointer;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);}
+.wm-mode-toggle button.active{background:rgba(180,121,144,0.20);border-color:var(--mauve-evening);color:var(--cream);}
 
 /* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
@@ -3169,6 +3179,55 @@ function openWeddingMirrorManually(){
   }
 }
 
+// Phase 2 P2.2 — Wedding countdown opt-out + somatic readiness reframing (Ajan 6)
+// Bugünün mood'u ≤2 (irritable/sad/anxious) VEYA geç luteal/regl'de countdown auto soft-hide.
+// Reframing modu: "kg" yerine "paylaşmak istediğin 3 anı" — somatik hazırlık.
+function getTodayMoodScore(){
+  const moodScore={happy:5,calm:4,irritable:2,sad:2,anxious:2};
+  // Önce evening check-in'den (4B) bak
+  try{
+    const ec=getEveningCheckIn(new Date());
+    if(ec&&ec.mood){
+      const m=EVENING_MOODS.find(x=>x.id===ec.mood);
+      if(m&&moodScore[m.m])return moodScore[m.m];
+    }
+  }catch(e){}
+  // Sonra cycle log mood
+  const dk=ymd(new Date());
+  const logs=getCycleLogs();
+  const todayMood=logs[dk]?.mood;
+  if(todayMood&&moodScore[todayMood])return moodScore[todayMood];
+  return null;
+}
+
+function shouldSoftHideCountdown(){
+  const mood=getTodayMoodScore();
+  if(mood!==null&&mood<=2)return true;
+  const c=ci(new Date());
+  if(!c)return false;
+  if(c.phase==='Menstruation')return true;
+  if(c.phase==='Luteal Phase'&&c.day>=getAvgCycleLen()-4)return true;
+  return false;
+}
+
+function getWeddingReframeManual(){return localStorage.getItem('wedding_reframe_manual')==='1';}
+function setWeddingReframeManual(on){localStorage.setItem('wedding_reframe_manual',on?'1':'0');renderWeddingMirror();}
+
+function getWeddingMoments(){
+  return JSON.parse(localStorage.getItem('wedding_moments')||'["","",""]');
+}
+function saveWeddingMoment(idx,text){
+  const arr=getWeddingMoments();
+  arr[idx]=text;
+  localStorage.setItem('wedding_moments',JSON.stringify(arr));
+}
+
+const WEDDING_REFRAME_PROMPTS=[
+  'Kız kardeşinle paylaşmak istediğin bir an',
+  'Bu süreçte bedeninle hatırlamak istediğin bir his',
+  'Düğün gününe bedenine söyleyeceğin bir cümle'
+];
+
 function renderWeddingMirror(){
   const el=document.getElementById('wedding-mirror');
   if(!el)return;
@@ -3184,20 +3243,51 @@ function renderWeddingMirror(){
     resilience:{l:'Resilience · 💪',d:'Volume aynı · nöral preparation · kuvvet+duruş peak'}
   };
   const modeInfo=mode?modeLabels[mode]:null;
+  // P2.2: Auto soft-hide tetik — mood ≤2 veya geç luteal/regl
+  const autoSoftHide=shouldSoftHideCountdown();
+  const manualReframe=getWeddingReframeManual();
+  const reframeMode=autoSoftHide||manualReframe;
   // <14 gün suspend notice
   const suspendNotice=days<=14?`<div class="wm-suspend-notice">⚖️ <em>Kg hedefi geçici askıya alındı.</em> Düğün haftası sıvı dalgalanması %1-2 (sodyum + kortizol + uyku). Tartı bilgisi şu hafta yorumlanamaz — bedeninle ilişkide kal, sayıyla değil.</div>`:'';
-  // Mod seçilmemişse "Mod Seç" butonu öncelikli
-  const actions=mode
+  // Soft-hide bilgilendirme
+  let softNotice='';
+  if(autoSoftHide){
+    const c=ci(new Date());
+    const mood=getTodayMoodScore();
+    if(mood!==null&&mood<=2)softNotice=`<div class="wm-soft">Bugün <em>biraz hassassın</em>. Bedenin sayı yerine duygu konuşmasını istedi — countdown bir kenarda. Aşağıda paylaşmak istediğin bir şey var mı?</div>`;
+    else if(c&&c.phase==='Menstruation')softNotice=`<div class="wm-soft">Regl Gün ${c.day} · <em>iç kış</em>. Sayı bu hafta önemli değil — bedeninle ilişkin var.</div>`;
+    else softNotice=`<div class="wm-soft">Geç luteal Gün ${c.day} · <em>derinleşme</em>. Progesteron peak\'te, kg dalgalanması doğal — sayı yorumlanamaz.</div>`;
+  }
+  // Mod toggle
+  const modeToggle=`<div class="wm-mode-toggle">
+    <button class="${!reframeMode?'active':''}" onclick="setWeddingReframeManual(false)">Sayı modu</button>
+    <button class="${reframeMode?'active':''}" onclick="setWeddingReframeManual(true)">Anı modu</button>
+  </div>`;
+  // Reframing içerik
+  let body='';
+  if(reframeMode){
+    const moments=getWeddingMoments();
+    const inputs=WEDDING_REFRAME_PROMPTS.map((p,i)=>`<input type="text" class="wm-reframe-input" placeholder="${p}" value="${(moments[i]||'').replace(/"/g,'&quot;')}" oninput="saveWeddingMoment(${i},this.value)" maxlength="140">`).join('');
+    body=`<div class="wm-tag">💍 ${lbl}</div>
+      <div class="wm-reframe-prompt">${days} gün · bedeniyle hatırlamak istediğin 3 şey</div>
+      <div class="wm-reframe">${inputs}</div>`;
+  }else{
+    body=`<div class="wm-tag">💍 ${lbl}</div>
+      <div class="wm-countdown">${days} <small>gün</small></div>
+      ${modeInfo?`<div class="wm-mode">${modeInfo.l}</div><div class="wm-mode-detail"><strong>Aktif mod:</strong> ${modeInfo.d}</div>`:`<div class="wm-mode" style="color:var(--cream-mute);">Mod henüz seçilmedi</div>`}
+      ${suspendNotice}`;
+  }
+  // Mod seçilmemişse "Mod Seç" butonu öncelikli (sayı modunda)
+  const actions=reframeMode?'':(mode
     ?`<div class="wm-actions"><button class="btn bghost" style="font-size:11px;" onclick="openWeddingMirrorManually()">Mod Değiştir</button></div>`
-    :`<div class="wm-actions"><button class="btn bp" style="font-size:11px;" onclick="openWeddingMirrorManually()">Mod Seç</button></div>`;
-  // Trigger: 60 gün kala otomatik modal
-  setTimeout(maybeOpenWeddingMirrorModal,400);
+    :`<div class="wm-actions"><button class="btn bp" style="font-size:11px;" onclick="openWeddingMirrorManually()">Mod Seç</button></div>`);
+  // Trigger: 60 gün kala otomatik modal (sadece sayı modunda)
+  if(!reframeMode)setTimeout(maybeOpenWeddingMirrorModal,400);
   el.innerHTML=`<div class="wm-card">
-    <div class="wm-tag">💍 ${lbl}</div>
-    <div class="wm-countdown">${days} <small>gün</small></div>
-    ${modeInfo?`<div class="wm-mode">${modeInfo.l}</div><div class="wm-mode-detail"><strong>Aktif mod:</strong> ${modeInfo.d}</div>`:`<div class="wm-mode" style="color:var(--cream-mute);">Mod henüz seçilmedi</div>`}
-    ${suspendNotice}
+    ${softNotice}
+    ${body}
     ${actions}
+    ${modeToggle}
   </div>`;
 }
 
