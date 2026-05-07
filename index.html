@@ -337,6 +337,14 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .edu-global-card .egc-desc{font-size:11px;color:var(--cream-mute);line-height:1.5;margin-top:2px;}
 .edu-global-card .egc-btn{flex-shrink:0;padding:8px 14px;border-radius:10px;background:rgba(90,122,79,0.22);border:1px solid var(--sage-leaf);color:var(--cream);font-weight:700;font-size:12px;cursor:pointer;letter-spacing:0.4px;}
 .edu-global-card .egc-btn:active{transform:scale(0.96);}
+.edu-lvl-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
+.edu-lvl-btn{padding:10px 6px;border-radius:10px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);cursor:pointer;text-align:center;font-family:inherit;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.edu-lvl-btn:active{transform:scale(0.94);}
+.edu-lvl-btn.active{background:rgba(90,122,79,0.30);border-color:var(--sage-leaf);color:var(--cream);box-shadow:inset 0 0 0 1px rgba(90,122,79,0.45);}
+.edu-lvl-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;line-height:1.1;}
+.edu-lvl-sub{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin-top:2px;}
+.egc-l3-tip{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(232,178,63,0.10);border:1px solid rgba(232,178,63,0.32);font-size:12px;color:var(--cream-soft);line-height:1.55;}
+.egc-l3-tip strong{color:var(--mustard);}
 
 /* GLOSSARY (Phase 2 Hafta 5B) — altı çizili tıklanabilir bilim terimleri */
 .gloss-term{text-decoration:underline dotted rgba(232,221,196,0.55);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;color:var(--cream);transition:color 0.18s, text-decoration-color 0.18s;font-weight:500;}
@@ -1605,6 +1613,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Ayarları Kaydet</button>
     </div>
   </div>
+
+  <!-- Bilim Modu global seviye seçici (Phase 3.A) -->
+  <div id="edu-global"></div>
 
   <!-- Notification Settings (Phase 2 P2.6) -->
   <div id="notification-settings"></div>
@@ -6297,6 +6308,38 @@ function toggleEduLevel(){
   const labels={L1:'L1 (sade)',L2:'L2 (orta)',L3:'L3 (ileri)'};
   showToast(`🔬 Bilim Modu: ${labels[next]}`,'pr');
 }
+
+// Phase 3.A — Bilim Modu global seçici (Döngü sekmesinde Cycle Settings altı)
+function setEduLevelGlobal(level){
+  setEduLevel(level);
+  const labels={L1:'L1 (sade)',L2:'L2 (orta)',L3:'L3 (ileri)'};
+  showToast(`🔬 Bilim Modu: ${labels[level]}`,'pr');
+}
+
+function renderEduGlobalCard(){
+  const el=document.getElementById('edu-global');
+  if(!el)return;
+  const cur=getEduLevel();
+  const opts=[
+    {id:'L1',l:'L1',sub:'Sade',desc:'Yalın Türkçe paragraflar'},
+    {id:'L2',l:'L2',sub:'Orta',desc:'+ teknik subtitle (RPE/MEV/MAV)'},
+    {id:'L3',l:'L3',sub:'İleri',desc:'+ ileri detay + 🧪 Hacettepe Lab açılır'}
+  ];
+  const btns=opts.map(o=>`<button class="edu-lvl-btn ${cur===o.id?'active':''}" onclick="setEduLevelGlobal('${o.id}')">
+    <div class="edu-lvl-name">${o.l}</div>
+    <div class="edu-lvl-sub">${o.sub}</div>
+  </button>`).join('');
+  el.innerHTML=`<div class="edu-global-card">
+    <div class="egc-row" style="display:block;">
+      <div class="egc-info" style="margin-bottom:10px;">
+        <div class="egc-title">🔬 Bilim Modu Seviyesi</div>
+        <div class="egc-desc">Tüm sekmelerde gösterilen bilgi yoğunluğu. <strong>Şu an: ${cur}</strong>. ${cur==='L1'?'Sade paragraflar her zaman görünür, teknik terimler ve Hacettepe Lab gizli.':cur==='L2'?'Sade + teknik subtitle (RPE, MEV/MAV/MRV gibi terimler).':'Tam bilim modu — Hacettepe Lab Egzersiz sekmesinde açılır, mTOR/EMG/PMID detayları görünür.'}</div>
+      </div>
+      <div class="edu-lvl-row">${btns}</div>
+      ${cur==='L3'?'<div class="egc-l3-tip">🧪 <strong>Hacettepe Lab açıldı.</strong> Egzersiz sekmesinde aşağıya in — PR Timeline\'ın altında 4 sub-tab\'lı Lab kartı: Veri Atölyesi, Hipotez Defteri, PMID Kütüphanesi, Pedagojik Notlar.</div>':''}
+    </div>
+  </div>`;
+}
 function toggleExerciseEdu(exId,i){
   const id=`edu-${exId}-${i}`;
   const el=document.getElementById(id);
@@ -8697,6 +8740,8 @@ function renderCycle(){
   // Onboarding banner kaldırıldı — auto-seed init()'te yapılıyor
   document.getElementById('cy-onboard-wrap').innerHTML='';
 
+  // Bilim Modu global seviye seçici (Phase 3.A)
+  if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
   // Notification settings (Phase 2 P2.6)
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
 
