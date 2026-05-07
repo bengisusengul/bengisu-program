@@ -948,6 +948,33 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mh-empty{text-align:center;padding:22px 12px;font-size:13px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
 
 /* ════════════════════════════════════════════ */
+/* VOLUME TRENDI · 12 hafta × kas grubu × MEV/MAV/MRV (Phase 2 Hafta 6C — Ajan 9) */
+/* ════════════════════════════════════════════ */
+.volume-trend-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.vt-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.vt-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:12px;font-weight:600;}
+.vt-chips{display:flex;gap:6px;overflow-x:auto;padding:0 4px 8px;margin-bottom:10px;scrollbar-width:none;}
+.vt-chips::-webkit-scrollbar{display:none;}
+.vt-chip{flex-shrink:0;padding:6px 12px;border-radius:14px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.3px;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.vt-chip.active{background:rgba(90,122,79,0.30);border-color:var(--sage-leaf);color:var(--cream);}
+.vt-chip:active{transform:scale(0.95);}
+.vt-chart-wrap{position:relative;padding:10px 4px 6px;}
+.vt-svg{width:100%;height:auto;display:block;}
+.vt-bar{transition:opacity 0.15s, fill 0.15s;}
+.vt-bar.deload{opacity:0.55;}
+.vt-deload-tag{font-size:8px;fill:var(--cream-mute);}
+.vt-axis-label{font-size:8px;fill:var(--cream-mute);}
+.vt-ref-mev{stroke:rgba(90,122,79,0.55);stroke-width:0.6;stroke-dasharray:2,2;}
+.vt-ref-mav{stroke:rgba(232,178,63,0.55);stroke-width:0.6;stroke-dasharray:2,2;}
+.vt-ref-mrv{stroke:rgba(217,89,30,0.55);stroke-width:0.6;stroke-dasharray:2,2;}
+.vt-ref-label{font-size:8px;font-weight:700;}
+.vt-summary{display:flex;justify-content:space-around;padding:10px 0 0;margin-top:10px;border-top:1px dashed rgba(255,255,255,0.10);font-size:11px;color:var(--cream-mute);}
+.vt-summary-stat{text-align:center;flex:1;}
+.vt-summary-v{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream-soft);font-weight:300;line-height:1.1;}
+.vt-summary-l{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;}
+.vt-empty{text-align:center;padding:18px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.55;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1079,6 +1106,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="e-strength-grid"></div>
   <!-- Kas Heatmap · 9 kas grubu SVG body diagram (Phase 2 Hafta 6B) -->
   <div id="e-muscle-heatmap"></div>
+  <!-- Volume Trendi · 12 hafta × kas grubu × MEV/MAV/MRV (Phase 2 Hafta 6C) -->
+  <div id="e-volume-trend"></div>
   <div style="height:8px;"></div>
 </div>
 
@@ -5233,7 +5262,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -5783,6 +5812,144 @@ function renderMuscleHeatmap(){
     ${legend}
     <div style="text-align:center;font-size:11px;color:var(--cream-mute);font-style:italic;">Kas grubuna tıkla → bu hafta detay</div>
     ${detailHTML}
+  </div>`;
+}
+
+// ── Volume Trendi · 12 hafta × kas grubu × MEV/MAV/MRV (Phase 2 Hafta 6C — Ajan 9)
+// Kas grubu chip seçici + 12 haftalık inline SVG bar grafiği + MEV/MAV/MRV ref çizgileri
+let _activeVolumeMuscle='glute'; // default — Bengisu için en kritik
+
+function setActiveVolumeMuscle(muscle){
+  _activeVolumeMuscle=muscle;
+  renderVolumeTrend();
+}
+
+// Belirli bir kas grubu için son N haftanın effective set sayıları + deload flag
+function getWeeklyVolumeSeries(muscle,weeksBack=12,now){
+  now=now||new Date();
+  // Bu haftanın Pazartesi 00:00'ı
+  const dow=now.getDay();
+  const offset=dow===0?6:dow-1;
+  const thisMonday=new Date(now);thisMonday.setHours(0,0,0,0);thisMonday.setDate(thisMonday.getDate()-offset);
+  const log=S.workoutLog||{};
+  const series=[];
+  for(let i=weeksBack-1;i>=0;i--){
+    const monday=new Date(thisMonday);monday.setDate(monday.getDate()-i*7);
+    const sunday=new Date(monday);sunday.setDate(sunday.getDate()+7);
+    let volume=0;
+    let cyclePhases=[]; // hangi fazlar bu hafta geçti
+    Object.keys(log).forEach(dk=>{
+      const d=new Date(dk);
+      if(isNaN(d.getTime()))return;
+      if(d.getTime()<monday.getTime()||d.getTime()>=sunday.getTime())return;
+      Object.keys(log[dk]).forEach(exId=>{
+        const entry=log[dk][exId];
+        if(!entry||!entry.sets)return;
+        const doneSets=entry.sets.filter(s=>s.state==='done').length;
+        if(!doneSets)return;
+        const map=EXERCISE_MUSCLE_MAP[exId];
+        if(!map||!map[muscle])return;
+        volume+=doneSets*map[muscle];
+        if(entry.cyclePhase)cyclePhases.push(entry.cyclePhase);
+      });
+    });
+    // Deload heuristik: bu haftanın çoğunluğu Geç Luteal veya Menstruation'da geçtiyse, VEYA kullanıcı volume %30'dan fazla düşürmüşse
+    const isLateLutealOrPeriod=cyclePhases.length && cyclePhases.filter(p=>p==='Menstruation').length>=cyclePhases.length*0.5;
+    series.push({monday:new Date(monday),volume,isDeload:isLateLutealOrPeriod});
+  }
+  // Volume trendine göre kullanıcı kendi başlattığı deload tespiti (önceki hafta vs bu hafta -%30+)
+  for(let i=1;i<series.length;i++){
+    const prev=series[i-1].volume;
+    if(prev>0 && series[i].volume<prev*0.65 && series[i].volume>0){
+      series[i].isDeload=true;
+    }
+  }
+  return series;
+}
+
+function renderVolumeTrend(){
+  const el=document.getElementById('e-volume-trend');
+  if(!el)return;
+  const muscles=Object.keys(MUSCLE_TARGETS);
+  // Chip selector
+  const chips=muscles.map(m=>{
+    const lbl=MUSCLE_TARGETS[m].label;
+    const active=m===_activeVolumeMuscle?' active':'';
+    return `<div class="vt-chip${active}" onclick="setActiveVolumeMuscle('${m}')">${lbl}</div>`;
+  }).join('');
+  // Series for active muscle
+  const target=MUSCLE_TARGETS[_activeVolumeMuscle];
+  const series=getWeeklyVolumeSeries(_activeVolumeMuscle,12);
+  const totalVolumeRecent=series.reduce((a,s)=>a+s.volume,0);
+  // Empty state — aktif kas grubu için hiç veri yoksa, ama başka grupta veri varsa yine de chip'leri göster
+  let chartHTML='';
+  if(totalVolumeRecent<0.5){
+    chartHTML=`<div class="vt-empty">Bu kas grubu için son 12 hafta veri yok. ${target.label} çalıştığında set log'unu doldur, trend burada belirir. MEV ${target.mev} / MAV ${target.mav} / MRV ${target.mrv} hedef bantları çizilecek.</div>`;
+  }else{
+    // SVG bar chart — viewBox 360×180
+    const W=360,H=160,padL=24,padR=8,padT=12,padB=24;
+    const innerW=W-padL-padR;
+    const innerH=H-padT-padB;
+    // Y-scale: 0 → max(MRV*1.15, max bar)
+    const maxBar=Math.max(...series.map(s=>s.volume));
+    const yMax=Math.max(target.mrv*1.15,maxBar*1.10,target.mrv+2);
+    const yScale=v=>padT+innerH-(v/yMax)*innerH;
+    const barW=innerW/series.length-2;
+    const bars=series.map((s,i)=>{
+      const x=padL+i*(innerW/series.length)+1;
+      const y=yScale(s.volume);
+      const h=padT+innerH-y;
+      const vc=getMuscleVolumeColor(s.volume,target);
+      const deloadClass=s.isDeload?' deload':'';
+      const deloadTag=s.isDeload?`<text class="vt-deload-tag" x="${x+barW/2}" y="${padT+innerH+8}" text-anchor="middle">🛌</text>`:'';
+      // Hafta etiketi (aylık değişimde sadece ilk haftayı göster, vs.)
+      const showLabel=i===0||i===series.length-1||i===Math.floor(series.length/2);
+      const m=s.monday;
+      const labelTxt=showLabel?(m.getDate()+'/'+(m.getMonth()+1)):'';
+      const xLabel=showLabel?`<text class="vt-axis-label" x="${x+barW/2}" y="${padT+innerH+15}" text-anchor="middle">${labelTxt}</text>`:'';
+      return `<rect class="vt-bar${deloadClass}" x="${x}" y="${y}" width="${barW}" height="${Math.max(0,h)}" rx="2" fill="${vc.color}"><title>${m.toLocaleDateString('tr-TR',{day:'numeric',month:'short'})} haftası: ${s.volume.toFixed(1)} set${s.isDeload?' · 🛌 deload':''}</title></rect>${deloadTag}${xLabel}`;
+    }).join('');
+    // Reference lines
+    const refLine=(val,cls,label)=>{
+      const y=yScale(val);
+      return `<line class="vt-ref-${cls}" x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}"/>
+        <text class="vt-ref-label" x="${W-padR-2}" y="${y-2}" text-anchor="end" fill="${cls==='mev'?'rgba(90,122,79,0.85)':cls==='mav'?'rgba(232,178,63,0.85)':'rgba(217,89,30,0.85)'}">${label} ${val}</text>`;
+    };
+    const refs=refLine(target.mev,'mev','MEV')+refLine(target.mav,'mav','MAV')+refLine(target.mrv,'mrv','MRV');
+    // Y-axis ticks (sadece 0 ve yMax)
+    const yAxisLabels=`<text class="vt-axis-label" x="${padL-4}" y="${yScale(0)+3}" text-anchor="end">0</text>
+      <text class="vt-axis-label" x="${padL-4}" y="${yScale(yMax)+3}" text-anchor="end">${Math.round(yMax)}</text>`;
+    // 12 hafta özet stats
+    const avgVolume=totalVolumeRecent/series.filter(s=>s.volume>0).length||0;
+    const peakWeek=series.reduce((max,s)=>s.volume>max.volume?s:max,{volume:0});
+    const deloadCount=series.filter(s=>s.isDeload).length;
+    chartHTML=`<div class="vt-chart-wrap">
+      <svg class="vt-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" aria-label="${target.label} 12 hafta volume trendi">
+        ${refs}
+        ${bars}
+        ${yAxisLabels}
+      </svg>
+      <div class="vt-summary">
+        <div class="vt-summary-stat">
+          <div class="vt-summary-v">${avgVolume.toFixed(1)}</div>
+          <div class="vt-summary-l">Ort/hafta</div>
+        </div>
+        <div class="vt-summary-stat">
+          <div class="vt-summary-v">${peakWeek.volume.toFixed(0)}</div>
+          <div class="vt-summary-l">Peak hafta</div>
+        </div>
+        <div class="vt-summary-stat">
+          <div class="vt-summary-v">${deloadCount}</div>
+          <div class="vt-summary-l">🛌 Deload</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  el.innerHTML=`<div class="volume-trend-card">
+    <div class="vt-title">Volume Trendi · 12 Hafta</div>
+    <div class="vt-subtitle">Kas grubu × MEV/MAV/MRV bantları (Israetel 2018)</div>
+    <div class="vt-chips">${chips}</div>
+    ${chartHTML}
   </div>`;
 }
 
