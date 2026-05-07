@@ -2959,7 +2959,8 @@ function renderWeeklyDigest(){
   const prHTML=w.prCount>0?`<div class="wd-pr-row"><span class="wd-pr-badge">🏆 ${w.prCount} PR</span></div>`:'';
   el.innerHTML=`<div class="weekly-digest-card">
     <div class="wd-title">🌸 Hafta Tamamlandı</div>
-    <div class="wd-subtitle">Gerçekleşen · Yargısız bilgi</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Pazar gecesi otomatik açılan <strong>haftalık özet</strong> — yürüyüş, antrenman, öğün, su, dinlenme ve cycle log için 6 hedef ringi + total volume + PR sayısı + skip/modify kararları. <em>Yargısız bilgi: bu hafta yarım değil — stratejik.</em></div>
+    ${getEduLevel()!=='L1'?'<div class="wd-subtitle">Gerçekleşen · Yargısız bilgi</div>':''}
     <div class="wd-rings">
       ${ring(w.walks,ringTarget.walks,'🚶','Yürüyüş')}
       ${ring(w.workouts,ringTarget.workouts,'💪','Antrenman')}
@@ -3020,6 +3021,7 @@ function renderEveningCheckIn(){
   }
   el.innerHTML=`<div class="evening-checkin-card">
     <div class="ec-title">🌙 Akşam check-in · 30 saniye</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Akşam 19:00-23:59 arası bugünkü mood'unu <strong>5 emoji'den biriyle</strong> işaretle. <em>Hiçbiri "başarısız" değil</em> — sadece bugünün tonu. Veriler "En güçlü pencere" analizi için birikir.</div>
     ${preface}
     <div class="ec-chips">${EVENING_MOODS.map(m=>`<button class="ec-chip" onclick="pickEveningMood('${m.id}')" aria-label="${m.l}"><span class="ec-chip-e">${m.e}</span><span class="ec-chip-l">${m.l}</span></button>`).join('')}</div>
     <div class="ec-hint">Hiçbiri "başarı" veya "başarısız" değil. Bugün sadece bedenin tonu.</div>
@@ -3153,10 +3155,12 @@ function renderMondayFocus(){
   const f=WEEKLY_FOCUS_TEXTS[key];
   if(!f){el.innerHTML='';return;}
   const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
+  const _mfPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Pazartesi sabahları (06-12 arası) bedenin <strong>o hafta hangi cycle fazında</strong> olacağı ve bu fazda nasıl beslenip antrenman yapacağına dair pedagojik bir kart. Haftaya bilinçli başlamak için.</div>`;
   el.innerHTML=`<div class="monday-focus-card">
-    <div class="mf-tag">${f.tag}</div>
+    ${getEduLevel()!=='L1'?`<div class="mf-tag">${f.tag}</div>`:''}
     <div class="mf-title">${f.title}</div>
-    <div class="mf-subtitle">${f.subtitle}</div>
+    ${_mfPlain}
+    ${getEduLevel()!=='L1'?`<div class="mf-subtitle">${f.subtitle}</div>`:''}
     <div class="mf-intro">${_glx(f.intro)}</div>
     <div class="mf-section hormone"><div class="mf-section-title">🌸 Hormon Profili</div><div class="mf-section-text">${_glx(f.hormone)}</div></div>
     <div class="mf-section physiology"><div class="mf-section-title">⚙️ Fizyolojik Durum</div><div class="mf-section-text">${_glx(f.physiology)}</div></div>
@@ -3230,6 +3234,7 @@ function renderBodyConversationMorning(){
   }
   el.innerHTML=`<div class="bc-morning-card">
     <div class="bc-tag">🌅 Sabah · 2 Dakika</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sabah <strong>"bedeniyle ne istersin"</strong> kartı, 5 niyet seçeneği. Akşam 21:30+ aynı niyet için "geldi mi" karşılığı sorulur. <em>Beden bilinci pratiği</em> — doğru cevap yok.</div>
     <div class="bc-prompt">Bugün bedeninle ne istersin?</div>
     <div class="bc-chips">${BODY_INTENTIONS.map(i=>`<button class="bc-chip" onclick="pickBodyIntention('${i.id}')" aria-label="${i.l}"><span class="bc-chip-e">${i.e}</span><span class="bc-chip-l">${i.l}</span></button>`).join('')}</div>
     <div class="bc-hint">Doğru cevap yok — sadece bedeninin sözüne kulak ver.</div>
@@ -3258,6 +3263,7 @@ function renderBodyConversationEvening(){
   }
   el.innerHTML=`<div class="bc-evening-card">
     <div class="bc-tag">🌙 Akşam Karşılık · 30 Saniye</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sabah seçtiğin niyet <strong>bugün geldi mi?</strong> 1-5 skala ile yanıtla. Yargısız kayıt — pattern'in 7 günde belirir.</div>
     <div class="bc-eve-q">Sabah <em>${i.l}</em> dedin. ${i.eveQ}</div>
     <div class="bc-rating">${[1,2,3,4,5].map(n=>`<button class="bc-rating-btn" onclick="pickBodyEveningRating(${n})">${n}</button>`).join('')}</div>
     <div class="bc-rating-anchor"><span>Hayır, gelmedi</span><span>Evet, tam geldi</span></div>
@@ -3475,14 +3481,17 @@ function renderWeddingMirror(){
   </div>`;
   // Reframing içerik
   let body='';
+  const _wmPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Düğün gününe kaç gün kaldığını gösterir. <strong>Mood'un düşükse</strong> veya regl/luteal sonunda otomatik gizlenir, yerine "paylaşmak istediğin 3 anı" formu gelir — beden sayı yerine duygu konuşur.</div>`;
   if(reframeMode){
     const moments=getWeddingMoments();
     const inputs=WEDDING_REFRAME_PROMPTS.map((p,i)=>`<input type="text" class="wm-reframe-input" placeholder="${p}" value="${(moments[i]||'').replace(/"/g,'&quot;')}" oninput="saveWeddingMoment(${i},this.value)" maxlength="140">`).join('');
-    body=`<div class="wm-tag">💍 ${lbl}</div>
+    body=`${getEduLevel()!=='L1'?`<div class="wm-tag">💍 ${lbl}</div>`:''}
+      ${_wmPlain}
       <div class="wm-reframe-prompt">${days} gün · bedeniyle hatırlamak istediğin 3 şey</div>
       <div class="wm-reframe">${inputs}</div>`;
   }else{
-    body=`<div class="wm-tag">💍 ${lbl}</div>
+    body=`${getEduLevel()!=='L1'?`<div class="wm-tag">💍 ${lbl}</div>`:''}
+      ${_wmPlain}
       <div class="wm-countdown">${days} <small>gün</small></div>
       ${modeInfo?`<div class="wm-mode">${modeInfo.l}</div><div class="wm-mode-detail"><strong>Aktif mod:</strong> ${modeInfo.d}</div>`:`<div class="wm-mode" style="color:var(--cream-mute);">Mod henüz seçilmedi</div>`}
       ${suspendNotice}`;
@@ -3892,7 +3901,8 @@ function renderNotificationSettings(){
       :'';
   el.innerHTML=`<div class="notif-card">
     <div class="notif-title">🔔 Hatırlatmalar</div>
-    <div class="notif-subtitle">5 zamanlı bildirim · iOS 16.4+ PWA destekli</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>5 zamanlı bildirim:</strong> 06:30 Levotiron, 09:00 sabah niyet, 14:00 pre-WO, 18:30 Calciday 2. doz, 21:30 akşam check-in. Tab açıkken çalışır — iOS'ta <em>"Ana Ekrana Ekle"</em> yapılırsa daha iyi.</div>
+    ${getEduLevel()!=='L1'?'<div class="notif-subtitle">5 zamanlı bildirim · iOS 16.4+ PWA destekli</div>':''}
     ${statusHTML}
     <div>${rows}</div>
     ${permBtn}
