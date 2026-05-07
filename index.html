@@ -7989,8 +7989,16 @@ const HLAB_PMID={
 function renderHacettepeLab(){
   const el=document.getElementById('e-hacettepe-lab');
   if(!el)return;
-  // Sadece Bilim Modu L3 açıksa görünür
-  if(getEduLevel()!=='L3'){el.innerHTML='';return;}
+  // L3 değilken: kilitli tease göster (Bengisu kartın varlığını bilsin diye)
+  if(getEduLevel()!=='L3'){
+    el.innerHTML=`<div class="hlab-card" style="opacity:0.85;">
+      <div class="hl-title">🔒 🧪 Hacettepe Lab</div>
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Bilim Modu <strong>L3 (İleri)</strong> açıkken görünür. 4 sub-tab: <em>Veri Atölyesi</em> (kendi 1RM trendlerinde regresyon), <em>Hipotez Defteri</em> (kendi vücut tahminlerini test et), <em>PMID Kütüphanesi</em> (16 makale), <em>Pedagojik Notlar</em> (Mayer/Sweller/Vygotsky).</div>
+      <div style="text-align:center;padding:14px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;">Bilim seven bir mod — şu an L${getEduLevel().substr(1)}'desin. Tıklayınca L3'e geçilir + Lab açılır.</div>
+      <button class="btn bp" style="width:100%;font-size:13px;font-weight:700;padding:12px;" onclick="setEduLevelGlobal('L3');document.getElementById('e-hacettepe-lab')?.scrollIntoView({behavior:'smooth',block:'start'});">🔓 L3'e Geç + Hacettepe Lab'ı Aç</button>
+    </div>`;
+    return;
+  }
   const tabs=[
     {id:'data',l:'📊 Veri Atölyesi'},
     {id:'hypothesis',l:'🧪 Hipotez Defteri'},
