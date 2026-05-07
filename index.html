@@ -1643,6 +1643,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Backup/Export (Phase 3.B-B) -->
   <div id="backup-export"></div>
 
+  <!-- API Proxy ayarı (Phase 3.B-D) -->
+  <div id="api-proxy-card"></div>
+
   <div style="height:8px;"></div>
 </div>
 
@@ -6548,6 +6551,128 @@ function renderBackupExport(){
   </div>`;
 }
 
+// Phase 3.B-D — Anthropic API Proxy ayarı (Cloudflare Worker üzerinden)
+// callAnthropic(body) helper: proxy URL varsa ona, yoksa direkt Anthropic'e gönderir.
+// Tüm AI çağrıları bu helper'dan geçer (Renpho, Custom Food, Adaptive Yük, Recipe...).
+
+function getApiProxyUrl(){return localStorage.getItem('api_proxy_url')||'';}
+function getApiProxyToken(){return localStorage.getItem('api_proxy_token')||'';}
+function setApiProxyUrl(url){localStorage.setItem('api_proxy_url',url||'');}
+function setApiProxyToken(token){localStorage.setItem('api_proxy_token',token||'');}
+
+async function callAnthropic(body){
+  return window.fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'content-type':'application/json',
+      'x-api-key':localStorage.getItem('anthropic_key')||'',
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify(body)
+  });
+}
+
+// Phase 3.B-D — fetch monkey-patch: Anthropic API çağrılarını proxy varsa yönlendir.
+// Tüm mevcut fetch('https://api.anthropic.com/v1/messages',...) çağrıları otomatik proxy'ye gider.
+(function installFetchProxyShim(){
+  if(window._origFetch)return; // idempotent
+  window._origFetch=window.fetch;
+  window.fetch=function(input,init){
+    try{
+      const url=typeof input==='string'?input:(input&&input.url)||'';
+      if(url.startsWith('https://api.anthropic.com/')){
+        const proxyUrl=localStorage.getItem('api_proxy_url')||'';
+        if(proxyUrl){
+          const newUrl=proxyUrl.replace(/\/$/,'')+url.replace('https://api.anthropic.com','');
+          const headers=new Headers(init?.headers||{});
+          // API key client'ta gerekmiyor — sunucuda
+          headers.delete('x-api-key');
+          headers.delete('anthropic-dangerous-direct-browser-access');
+          // Auth token varsa ekle
+          const token=localStorage.getItem('api_proxy_token')||'';
+          if(token)headers.set('x-bengisu-token',token);
+          return window._origFetch(newUrl,{...init,headers});
+        }
+      }
+    }catch(e){console.warn('Fetch shim error:',e);}
+    return window._origFetch(input,init);
+  };
+})();
+
+function saveApiProxySettings(){
+  const urlEl=document.getElementById('apx-url');
+  const tokenEl=document.getElementById('apx-token');
+  const url=urlEl?urlEl.value.trim():'';
+  const token=tokenEl?tokenEl.value.trim():'';
+  // Basit URL validation
+  if(url && !/^https?:\/\//i.test(url)){
+    showToast('⚠️ Proxy URL https:// veya http:// ile başlamalı','warn');
+    return;
+  }
+  setApiProxyUrl(url);
+  setApiProxyToken(token);
+  showToast(url?'✓ API Proxy aktif':'✓ Direct mode (API key client)','pr');
+  renderApiProxyCard();
+}
+
+async function testApiProxy(){
+  const url=document.getElementById('apx-url')?.value.trim();
+  if(!url){showToast('Önce Proxy URL gir','warn');return;}
+  try{
+    // Save edip sonra basit test çağrısı yap
+    setApiProxyUrl(url);
+    const tokenEl=document.getElementById('apx-token');
+    if(tokenEl)setApiProxyToken(tokenEl.value.trim());
+    showToast('⏳ Test çağrısı...','pr');
+    const res=await callAnthropic({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:30,
+      messages:[{role:'user',content:'Tek kelime "merhaba" yaz.'}]
+    });
+    if(!res.ok){
+      const txt=await res.text();
+      showToast('❌ Hata '+res.status+': '+txt.substring(0,80),'warn');
+      return;
+    }
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'(boş)';
+    showToast('✓ Proxy çalışıyor · "'+text.substring(0,40)+'"','pr');
+  }catch(e){
+    showToast('❌ '+(e.message||e),'warn');
+  }
+}
+
+function renderApiProxyCard(){
+  const el=document.getElementById('api-proxy-card');
+  if(!el)return;
+  const url=getApiProxyUrl();
+  const token=getApiProxyToken();
+  const status=url?'<span style="color:var(--sage-leaf);">✓ aktif</span>':'<span style="color:var(--cream-mute);">— direct mode</span>';
+  el.innerHTML=`<div class="bx-card" style="border-color:rgba(123,168,176,0.30);">
+    <div class="bx-title">🛡️ API Proxy <span style="font-size:11px;font-weight:400;margin-left:6px;">${status}</span></div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Anthropic API key'i <strong>sunucu tarafına</strong> taşı (Cloudflare Worker). Key sızma riskini ortadan kaldırır + rate limit + origin kısıtlama. Kurulum rehberi: <em>DEPLOY-API-PROXY.md</em> (repo'da). Boş bırakırsan direct mode (mevcut davranış).</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div>
+        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">Proxy URL (opsiyonel)</label>
+        <input type="url" id="apx-url" placeholder="https://bengisu-api-proxy.workers.dev"
+               value="${url.replace(/"/g,'&quot;')}"
+               style="width:100%;padding:8px 10px;border-radius:8px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:12px;">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">Auth Token (opsiyonel)</label>
+        <input type="password" id="apx-token" placeholder="Worker'da AUTH_TOKEN tanımladıysan"
+               value="${token.replace(/"/g,'&quot;')}"
+               style="width:100%;padding:8px 10px;border-radius:8px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:12px;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <button class="bx-btn" onclick="saveApiProxySettings()">💾 Kaydet</button>
+        <button class="bx-btn bx-btn-export" onclick="testApiProxy()">🧪 Test Et</button>
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderEduGlobalCard(){
   const el=document.getElementById('edu-global');
   if(!el)return;
@@ -8986,6 +9111,8 @@ function renderCycle(){
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
   // Backup/Export (Phase 3.B-B)
   if(typeof renderBackupExport==='function')renderBackupExport();
+  // API Proxy ayarı (Phase 3.B-D)
+  if(typeof renderApiProxyCard==='function')renderApiProxyCard();
 
   // ─── Hero card (current phase) ───
   renderCyHero();
