@@ -1243,6 +1243,15 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .notif-test-btn{padding:6px 12px;border-radius:8px;background:transparent;border:1px solid var(--glass-border);color:var(--cream-mute);font-size:11px;cursor:pointer;margin-top:8px;}
 
 /* ════════════════════════════════════════════ */
+/* VOICE INPUT · Web Speech API tr-TR (Phase 2 P2.7) */
+/* ════════════════════════════════════════════ */
+.voice-btn{padding:10px 12px;border-radius:10px;background:rgba(232,178,63,0.15);border:1px solid rgba(232,178,63,0.40);color:var(--mustard);font-size:18px;cursor:pointer;flex-shrink:0;transition:all 0.15s;-webkit-tap-highlight-color:transparent;line-height:1;}
+.voice-btn:active{transform:scale(0.94);}
+.voice-btn.recording{background:rgba(217,89,30,0.25);border-color:var(--coral);color:var(--coral);animation:voicePulse 1.2s ease-in-out infinite;}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(217,89,30,0.55);}50%{box-shadow:0 0 0 8px rgba(217,89,30,0);}}
+@media (prefers-reduced-motion: reduce){.voice-btn.recording{animation:none;}}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1807,7 +1816,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="msub">Bugün ne yedin? Önce kendin tahmin et, sonra Claude ile karşılaştır — kendi sezgine güven kası gelişir.</div>
     <div class="fr">
       <label>Ne yedin? (örn: 250g tavuk şiş + ezme · 200g köfte + bulgur)</label>
-      <textarea class="cfm-textarea" id="cfm-text" placeholder="Yemek adını ve miktarını yaz..."></textarea>
+      <div style="display:flex;gap:6px;align-items:flex-end;">
+        <textarea class="cfm-textarea" id="cfm-text" placeholder="Yemek adını ve miktarını yaz..." style="flex:1;"></textarea>
+        <button type="button" class="voice-btn" onclick="startVoiceInput('cfm-text',true)" title="Sesli giriş (Türkçe)" aria-label="Sesli giriş">🎙️</button>
+      </div>
     </div>
     <div style="margin:12px 0 6px;font-size:12px;color:var(--text-mid);font-weight:600;">1️⃣ Önce sen tahmin et:</div>
     <div class="fgrid">
@@ -3838,6 +3850,120 @@ function renderNotificationSettings(){
   </div>`;
   // Loop başlat (idempotent)
   ensureNotificationLoop();
+}
+
+// ── Voice Input · Web Speech API tr-TR (Phase 2 P2.7 — Ajan 11)
+// Tek-shot Türkçe transcription. Kullanıcı butona basar → konuşur → 1 cümle textarea'ya gider.
+// Chrome/Edge desktop + Safari iOS 14.5+ destekli.
+let _activeVoiceRec=null;
+
+function startVoiceInput(targetElId,append){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    showToast('Tarayıcın sesli giriş desteklemiyor (Chrome/Safari öner)','warn');
+    return;
+  }
+  const targetEl=document.getElementById(targetElId);
+  if(!targetEl){console.warn('Voice target not found:',targetElId);return;}
+  const triggerBtn=document.querySelector(`button.voice-btn[onclick*="${targetElId}"]`);
+  // Aktifse durdur
+  if(_activeVoiceRec){
+    try{_activeVoiceRec.stop();}catch(e){}
+    _activeVoiceRec=null;
+    document.querySelectorAll('.voice-btn.recording').forEach(b=>b.classList.remove('recording'));
+    return;
+  }
+  const rec=new SR();
+  rec.lang='tr-TR';
+  rec.continuous=false;
+  rec.interimResults=false;
+  rec.maxAlternatives=1;
+  if(triggerBtn)triggerBtn.classList.add('recording');
+  let resultText='';
+  rec.onresult=(ev)=>{
+    if(ev.results&&ev.results.length){
+      resultText=ev.results[0][0].transcript||'';
+    }
+  };
+  rec.onerror=(ev)=>{
+    let msg='Sesli giriş hatası';
+    if(ev.error==='not-allowed'||ev.error==='service-not-allowed')msg='Mikrofon izni gerekli';
+    else if(ev.error==='no-speech')msg='Ses algılanamadı, tekrar dene';
+    else if(ev.error==='audio-capture')msg='Mikrofon bulunamadı';
+    showToast(msg,'warn');
+  };
+  rec.onend=()=>{
+    if(triggerBtn)triggerBtn.classList.remove('recording');
+    _activeVoiceRec=null;
+    if(resultText){
+      const cleaned=_postProcessTurkishVoice(resultText);
+      if(append&&targetEl.value){
+        targetEl.value=targetEl.value.trimEnd()+' '+cleaned;
+      }else{
+        targetEl.value=cleaned;
+      }
+      targetEl.dispatchEvent(new Event('input',{bubbles:true}));
+      targetEl.dispatchEvent(new Event('change',{bubbles:true}));
+      showToast('🎙️ "'+cleaned.substring(0,40)+(cleaned.length>40?'...':'')+'"','pr');
+      targetEl.focus();
+    }
+  };
+  try{
+    rec.start();
+    _activeVoiceRec=rec;
+    showToast('🎙️ Konuş — Türkçe dinleniyor','pr');
+  }catch(e){
+    if(triggerBtn)triggerBtn.classList.remove('recording');
+    showToast('Sesli giriş başlatılamadı: '+(e.message||e),'warn');
+    _activeVoiceRec=null;
+  }
+}
+
+// Türkçe sesli girişlerde yaygın transcription "düzeltmeleri"
+function _postProcessTurkishVoice(text){
+  if(!text)return '';
+  let t=text.trim();
+  // İlk harf büyük (cümle başı)
+  if(t.length)t=t[0].toLocaleUpperCase('tr-TR')+t.slice(1);
+  // Yaygın yanlış birleştirme: "iki yüz gram" → "200 gram", "üç yüz" → "300", "yüz elli" → "150"
+  const numWords={'sıfır':0,'bir':1,'iki':2,'üç':3,'dört':4,'beş':5,'altı':6,'yedi':7,'sekiz':8,'dokuz':9,'on':10,'yirmi':20,'otuz':30,'kırk':40,'elli':50,'altmış':60,'yetmiş':70,'seksen':80,'doksan':90,'yüz':100,'bin':1000};
+  // Basit pattern: "iki yüz" → 200, "üç yüz elli" → 350
+  const tokens=t.split(/\s+/);
+  const out=[];
+  let i=0;
+  while(i<tokens.length){
+    const lw=tokens[i].toLocaleLowerCase('tr-TR').replace(/[.,?!:;]/g,'');
+    if(numWords[lw]!==undefined){
+      let val=numWords[lw];
+      // "iki yüz" pattern'i
+      if(i+1<tokens.length){
+        const next=tokens[i+1].toLocaleLowerCase('tr-TR').replace(/[.,?!:;]/g,'');
+        if(numWords[next]!==undefined && numWords[next]>=100 && val<numWords[next]){
+          val=val*numWords[next];
+          i++;
+          // "iki yüz elli" pattern'i — sonrasında daha küçük sayı
+          if(i+1<tokens.length){
+            const next2=tokens[i+1].toLocaleLowerCase('tr-TR').replace(/[.,?!:;]/g,'');
+            if(numWords[next2]!==undefined && numWords[next2]<val){
+              val+=numWords[next2];
+              i++;
+            }
+          }
+        }else if(numWords[next]!==undefined && numWords[next]<val && next!==lw){
+          // "yirmi beş" pattern'i
+          val+=numWords[next];
+          i++;
+        }
+      }
+      out.push(String(val));
+    }else{
+      out.push(tokens[i]);
+    }
+    i++;
+  }
+  t=out.join(' ');
+  // "200 gram" doğal kalsın, ekstra düzeltme yok
+  return t;
 }
 
 // ── Compulsive screening modal handlers (Phase 2 Hafta 4B)
@@ -7769,7 +7895,10 @@ function renderHacettepeLab(){
     pane=`<div class="hl-pane">
       <h4>Bilimsel Yöntem · kendi vücudunla deney</h4>
       <p style="font-size:12px;">Hipotez yaz → veri biriktirir → doğrula veya reddet. Örnek: "Folliküler haftada squat 1RM ovulasyona göre %3-5 daha yüksek" / "Levotiron 06:30 öncesi → mood ortalama 4+/5".</p>
-      <textarea id="hl-hyp-textarea" class="hl-hyp-input" placeholder="Hipotez: Bedeniyle ilgili bir tahminin..."></textarea>
+      <div style="display:flex;gap:6px;align-items:flex-end;">
+        <textarea id="hl-hyp-textarea" class="hl-hyp-input" placeholder="Hipotez: Bedeniyle ilgili bir tahminin..." style="flex:1;"></textarea>
+        <button type="button" class="voice-btn" onclick="startVoiceInput('hl-hyp-textarea',true)" title="Sesli giriş (Türkçe)" aria-label="Sesli giriş">🎙️</button>
+      </div>
       <button class="lv-tap-btn" onclick="addHypothesis()" style="background:linear-gradient(135deg,rgba(232,178,63,0.42),rgba(232,178,63,0.22));border-color:rgba(232,178,63,0.55);">+ Hipotez Ekle</button>
       <div class="hl-hyp-list">${list}</div>
     </div>`;
