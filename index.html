@@ -1115,6 +1115,28 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .hl-locked{padding:18px 14px;text-align:center;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;background:rgba(232,221,196,0.04);border-radius:12px;border:1px dashed var(--glass-border);}
 
 /* ════════════════════════════════════════════ */
+/* WEDDING MIRROR · düğüne 60 gün özel mod (Phase 2 Hafta 8D — sentezci) */
+/* ════════════════════════════════════════════ */
+.wm-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.20),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.45);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.wm-tag{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mauve-evening);font-weight:700;text-align:center;}
+.wm-label{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
+.wm-countdown{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--mauve-evening);text-align:center;line-height:1.1;margin-bottom:4px;letter-spacing:0.5px;}
+.wm-countdown small{font-size:14px;color:var(--cream-mute);}
+.wm-mode{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-soft);font-weight:600;text-align:center;margin-bottom:14px;}
+.wm-mode-detail{padding:12px 14px;border-radius:12px;background:rgba(232,221,196,0.04);font-size:13px;color:var(--cream-soft);line-height:1.55;margin-bottom:10px;}
+.wm-mode-detail strong{color:var(--cream);}
+.wm-suspend-notice{padding:10px 12px;border-radius:10px;background:rgba(232,178,63,0.10);border-left:3px solid var(--mustard);font-size:12px;color:var(--cream-soft);line-height:1.5;margin-top:10px;}
+.wm-suspend-notice em{color:var(--mustard);font-style:normal;font-weight:600;}
+.wm-actions{display:flex;gap:8px;margin-top:10px;}
+.wm-actions button{flex:1;padding:8px 4px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;}
+.wm-modal-content{padding:8px;}
+.wm-mode-option{padding:14px 16px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(232,221,196,0.04);margin-bottom:10px;cursor:pointer;transition:all 0.15s;}
+.wm-mode-option:active{transform:scale(0.98);}
+.wm-mode-option.active{border-color:var(--mauve-evening);background:rgba(180,121,144,0.12);}
+.wm-mode-option-title{font-size:14px;font-weight:700;color:var(--cream-soft);margin-bottom:4px;}
+.wm-mode-option-desc{font-size:12px;color:var(--cream-mute);line-height:1.5;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1144,6 +1166,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
+  <div id="wedding-mirror"></div>      <!-- Wedding Mirror countdown (≤60 gün event'a kala) — Phase 2 Hafta 8D -->
   <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
   <div id="lv-morning"></div>          <!-- Levotiron sabah tap (06:00-09:30) — Phase 2 Hafta 8B -->
   <div id="bc-morning"></div>          <!-- Body Conversation sabah niyet (06:00-12:00) — Phase 2 Hafta 8A -->
@@ -1717,6 +1740,32 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="macts" style="margin-top:18px;">
       <button class="btn bsoft" style="flex:1;" onclick="closeM('glossary-modal')">Kapat</button>
       <button class="btn bghost" style="flex:1;" onclick="toggleEduLevel();updateGlossModalLevel();">🔬 Bilim Modu Değiştir</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEDDING MIRROR MODE MODAL (Phase 2 Hafta 8D) — düğüne 60 gün kala 1 kez otomatik açılır -->
+<div class="mo" id="wedding-mirror-modal">
+  <div class="modal" style="max-width:460px;">
+    <div class="mhandle"></div>
+    <h3 id="wm-modal-title">💍 Düğüne 60 gün kaldı</h3>
+    <div class="msub" id="wm-modal-sub">Bu süreçte vücudunla nasıl olmak istersin? Üç mod arasından seçim yap — her zaman değiştirilebilir.</div>
+    <div class="wm-modal-content" id="wm-modal-content">
+      <div class="wm-mode-option" data-mode="status_quo" onclick="selectWeddingMode('status_quo')">
+        <div class="wm-mode-option-title">🌿 Status Quo</div>
+        <div class="wm-mode-option-desc">Mevcut programa devam — set log + cycle-aware ayarlamalar. Düğün ekstra baskı yaratmaz, beden zaten kendi yolunda. Önerilen: yeterli stresor varsa.</div>
+      </div>
+      <div class="wm-mode-option" data-mode="lighten" onclick="selectWeddingMode('lighten')">
+        <div class="wm-mode-option-title">🌊 Hafifletme (-%15 volume)</div>
+        <div class="wm-mode-option-desc">Set sayısı %15 azalır, intensity korunur. Kortizol+stres düşük tutulur, recovery kapasitesi düğün ön günü için saklanır. Önerilen: bedende yorgunluk/stres sinyali varsa.</div>
+      </div>
+      <div class="wm-mode-option" data-mode="resilience" onclick="selectWeddingMode('resilience')">
+        <div class="wm-mode-option-title">💪 Hazırlık-Resilience</div>
+        <div class="wm-mode-option-desc">Volume aynı, ek nöral preparation (compound RPE 8-9 günleri). Kuvvet + duruş + dayanıklılık peak için strateji. Önerilen: enerji yüksekse + form sağlamsa.</div>
+      </div>
+    </div>
+    <div class="macts" style="margin-top:14px;">
+      <button class="btn bsoft" style="flex:1;" onclick="closeM('wedding-mirror-modal')">Sonra Karar Veririm</button>
     </div>
   </div>
 </div>
@@ -2618,6 +2667,8 @@ function renderDashboard(){
       <div class="dash-greet-zen">"${zen}"</div>
     </div>`;
   }
+  // Wedding Mirror countdown (Phase 2 Hafta 8D) — event date varsa ≤60 gün kala görünür
+  renderWeddingMirror();
   // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
   renderMondayFocus();
   // Levotiron sabah tap (Phase 2 Hafta 8B) — 06:00-09:30 her gün
@@ -3020,6 +3071,105 @@ function renderBodyConversationPattern(){
   el.innerHTML=`<div class="bc-pattern-card">
     <div class="bc-pattern-title">🪞 7 Gün Body Conversation</div>
     <div class="bc-pattern-body"><span class="bc-pattern-emoji">${topIntent.e}</span>${signal}</div>
+  </div>`;
+}
+
+// ── Wedding Mirror · düğüne 60 gün kala özel mod (Phase 2 Hafta 8D — sentezci)
+// Event date Cycle Settings'te tanımlı (cycle_settings.eventDate). ≤60 gün kala countdown
+// görünür. 60 gün kala 1 kez modal otomatik açılır (mod seçimi). <14 gün kala kg suspended.
+
+function getDaysUntilEvent(){
+  const settings=getCycleSettings();
+  if(!settings.eventDate)return null;
+  const ev=fromYmd(settings.eventDate);
+  if(!ev||isNaN(ev.getTime()))return null;
+  const now=new Date();now.setHours(0,0,0,0);
+  ev.setHours(0,0,0,0);
+  return Math.round((ev.getTime()-now.getTime())/86400000);
+}
+
+function getWeddingMode(){return localStorage.getItem('wedding_mirror_mode')||null;}
+function setWeddingMode(mode){
+  localStorage.setItem('wedding_mirror_mode',mode);
+  // Highlight aktif option
+  document.querySelectorAll('.wm-mode-option').forEach(el=>{
+    el.classList.toggle('active',el.dataset.mode===mode);
+  });
+}
+function selectWeddingMode(mode){
+  setWeddingMode(mode);
+  const labels={status_quo:'Status Quo',lighten:'Hafifletme',resilience:'Resilience'};
+  showToast(`💍 Mod: ${labels[mode]} kayıtlı`,'pr');
+  setTimeout(()=>{
+    closeM('wedding-mirror-modal');
+    renderWeddingMirror();
+  },500);
+}
+
+function maybeOpenWeddingMirrorModal(){
+  const days=getDaysUntilEvent();
+  if(days===null)return;
+  // 60 gün kala 1 kez
+  if(days<=60 && days>=58 && !localStorage.getItem('wedding_mirror_seen60')){
+    localStorage.setItem('wedding_mirror_seen60','1');
+    const settings=getCycleSettings();
+    const lbl=settings.eventLabel||'Düğün';
+    document.getElementById('wm-modal-title').textContent=`💍 ${lbl}'e ${days} gün kaldı`;
+    document.getElementById('wedding-mirror-modal').classList.add('open');
+    // Pre-select existing mode if any
+    const cur=getWeddingMode();
+    if(cur){
+      document.querySelectorAll('.wm-mode-option').forEach(el=>{
+        el.classList.toggle('active',el.dataset.mode===cur);
+      });
+    }
+  }
+}
+
+function openWeddingMirrorManually(){
+  const days=getDaysUntilEvent();
+  if(days===null){showToast('Önce Cycle Settings\'te "Önemli Tarih" ekle','warn');return;}
+  const settings=getCycleSettings();
+  const lbl=settings.eventLabel||'Düğün';
+  document.getElementById('wm-modal-title').textContent=`💍 ${lbl}'e ${days} gün kaldı`;
+  document.getElementById('wedding-mirror-modal').classList.add('open');
+  const cur=getWeddingMode();
+  if(cur){
+    document.querySelectorAll('.wm-mode-option').forEach(el=>{
+      el.classList.toggle('active',el.dataset.mode===cur);
+    });
+  }
+}
+
+function renderWeddingMirror(){
+  const el=document.getElementById('wedding-mirror');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const days=getDaysUntilEvent();
+  if(days===null||days<0||days>60){el.innerHTML='';return;}
+  const settings=getCycleSettings();
+  const lbl=settings.eventLabel||'Önemli Tarih';
+  const mode=getWeddingMode();
+  const modeLabels={
+    status_quo:{l:'Status Quo · 🌿',d:'Mevcut programa devam · cycle-aware ayarlamalar'},
+    lighten:{l:'Hafifletme · 🌊',d:'Set %15 ↓ · intensity korunur · cortisol koruma'},
+    resilience:{l:'Resilience · 💪',d:'Volume aynı · nöral preparation · kuvvet+duruş peak'}
+  };
+  const modeInfo=mode?modeLabels[mode]:null;
+  // <14 gün suspend notice
+  const suspendNotice=days<=14?`<div class="wm-suspend-notice">⚖️ <em>Kg hedefi geçici askıya alındı.</em> Düğün haftası sıvı dalgalanması %1-2 (sodyum + kortizol + uyku). Tartı bilgisi şu hafta yorumlanamaz — bedeninle ilişkide kal, sayıyla değil.</div>`:'';
+  // Mod seçilmemişse "Mod Seç" butonu öncelikli
+  const actions=mode
+    ?`<div class="wm-actions"><button class="btn bghost" style="font-size:11px;" onclick="openWeddingMirrorManually()">Mod Değiştir</button></div>`
+    :`<div class="wm-actions"><button class="btn bp" style="font-size:11px;" onclick="openWeddingMirrorManually()">Mod Seç</button></div>`;
+  // Trigger: 60 gün kala otomatik modal
+  setTimeout(maybeOpenWeddingMirrorModal,400);
+  el.innerHTML=`<div class="wm-card">
+    <div class="wm-tag">💍 ${lbl}</div>
+    <div class="wm-countdown">${days} <small>gün</small></div>
+    ${modeInfo?`<div class="wm-mode">${modeInfo.l}</div><div class="wm-mode-detail"><strong>Aktif mod:</strong> ${modeInfo.d}</div>`:`<div class="wm-mode" style="color:var(--cream-mute);">Mod henüz seçilmedi</div>`}
+    ${suspendNotice}
+    ${actions}
   </div>`;
 }
 
