@@ -1190,6 +1190,34 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mh-anatomy-btn:active{transform:scale(0.96);background:rgba(232,178,63,0.20);}
 
 /* ════════════════════════════════════════════ */
+/* TİROİDEKTOMİ DESTEK · "Bedenim ve Tiroidim" (Phase 2 P2.5 — Ajan 6 + Ajan 1) */
+/* ════════════════════════════════════════════ */
+.thy-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.thy-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.thy-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.thy-tabs{display:flex;gap:4px;background:rgba(232,221,196,0.04);border-radius:12px;padding:4px;margin-bottom:14px;}
+.thy-tab{flex:1;padding:8px 4px;border-radius:9px;cursor:pointer;color:var(--cream-mute);font-size:10px;font-weight:600;letter-spacing:0.2px;text-align:center;border:none;background:transparent;transition:all 0.15s;-webkit-tap-highlight-color:transparent;line-height:1.2;}
+.thy-tab.active{background:rgba(123,168,176,0.32);color:var(--cream);}
+.thy-tab:active{transform:scale(0.96);}
+.thy-pane{font-size:13px;color:var(--cream-soft);line-height:1.6;}
+.thy-test-row{padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);margin-bottom:8px;border-left:3px solid var(--mauve-evening);}
+.thy-test-row.priority{border-left-color:var(--coral);background:rgba(217,89,30,0.06);}
+.thy-test-row.routine{border-left-color:var(--sage-leaf);}
+.thy-test-name{font-size:13px;font-weight:700;color:var(--cream);margin-bottom:2px;}
+.thy-test-meta{font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.6px;font-weight:600;}
+.thy-test-target{font-size:12px;color:var(--cream-soft);margin-top:4px;line-height:1.5;}
+.thy-test-why{font-size:11px;color:var(--cream-mute);margin-top:4px;font-style:italic;line-height:1.5;}
+.thy-question-cat{margin-bottom:12px;}
+.thy-question-cat-title{font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:6px;}
+.thy-question-item{font-size:12px;color:var(--cream-soft);padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.08);line-height:1.5;}
+.thy-question-item:last-child{border-bottom:none;}
+.thy-question-item::before{content:'❓ ';color:var(--mustard);font-weight:700;}
+.thy-phys{padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:13px;color:var(--cream-soft);line-height:1.6;margin-bottom:10px;}
+.thy-phys h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream-soft);margin:8px 0 6px;letter-spacing:0.2px;}
+.thy-phys p{margin:6px 0;}
+.thy-pill{display:inline-block;padding:3px 9px;border-radius:8px;background:rgba(232,178,63,0.18);color:var(--mustard);font-size:11px;font-weight:600;margin:2px 4px 2px 0;}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1311,6 +1339,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Levotiron Diary haftalık özet (Phase 2 Hafta 8B) -->
   <div id="levotiron-diary"></div>
+
+  <!-- Tiroidektomi Destek Modülü (Phase 2 P2.5) -->
+  <div id="thyroid-support"></div>
 
   <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:16px;">
@@ -3532,6 +3563,124 @@ function renderLevotironDiary(){
   </div>`;
 }
 
+// ── Tiroidektomi Destek Modülü "Bedenim ve Tiroidim" (Phase 2 P2.5 — Ajan 6 + Ajan 1)
+// Total tiroidektomi sonrası kapsamlı destek: kan tahlili planı + doktor sorusu bankası +
+// T4→T3 fizyolojisi + ilaç zamanlama özet. Wiersinga 2014 framework.
+
+const THYROID_BLOOD_TESTS=[
+  {name:'TSH (Thyroid Stimulating Hormone)',freq:'3-6 ay',target:'0.4-2.5 mIU/L (suppression istenirse <0.5)',why:'Levotiron doz titrasyon ana referans. Total tiroidektomi sonrası kanser riski varsa hafif suppresyon istenebilir; yoksa normal aralık (KMY koruma).',priority:'priority'},
+  {name:'Free T4 (sT4)',freq:'3-6 ay',target:'0.9-1.8 ng/dL · üst yarıda hedef',why:'Levotiron form (T4 only). sT4 üst yarıda hipotiroid semptomları (yorgunluk, kilo) önlenmiş olur.',priority:'priority'},
+  {name:'Free T3 (sT3)',freq:'6 ay',target:'2.3-4.2 pg/mL',why:'T4→T3 dönüşüm yeterli mi? T4-only replacement\'ta sT3 düşükse + semptomlar varsa kombine T4+T3 düşünülebilir (Wiersinga 2014).',priority:'priority'},
+  {name:'Anti-TPO + Anti-Tg',freq:'1-2 yıl',target:'düşük seviye',why:'Hashimoto\'nun klinik aktivitesini izle. Total tiroidektomi sonrası bile rezidual otoimmünite mood/inflamasyon ile ilişkili olabilir.',priority:'routine'},
+  {name:'Tiroglobulin (Tg) + Anti-Tg',freq:'6-12 ay',target:'tıbbi karar',why:'Tiroid kanseri sonrası tümör marker takibi (varsa). Endokrinolog karar verir.',priority:'routine'},
+  {name:'Serum Kalsiyum + iPTH',freq:'6-12 ay',target:'Ca 8.5-10.5 mg/dL · iPTH 15-65 pg/mL',why:'Paratiroid bezleri tiroidektomi sırasında etkilenmiş olabilir. Calciday profilaktik olsa da Ca seviyesi takip edilmeli.',priority:'priority'},
+  {name:'25(OH) Vitamin D',freq:'6-12 ay',target:'30-50 ng/mL',why:'Tiroid hormon-D vit etkileşimi var; KMY koruma için D yeterliliği şart. Calciday içeriği belirsizse ek D3 1000-2000 IU.',priority:'routine'},
+  {name:'Ferritin + Tam Kan Sayımı',freq:'6 ay',target:'Ferritin 30-100 ng/mL · Hb 12-15 g/dL',why:'Düşük ferritin Levotiron emilimini azaltır + saç dökülmesi/yorgunluk paralel görünüm. Regl + karnivor diyette demir takibi kritik.',priority:'priority'},
+  {name:'B12 + Folat',freq:'12 ay',target:'B12 >400 pg/mL · Folat >5 ng/mL',why:'Hipotiroidi B12 emilimini bozabilir (atrofik gastrit eşlik edebilir). Karnivor diyette B12 yüksek ama emilim test edilmeli.',priority:'routine'},
+  {name:'Lipit Profili',freq:'12 ay',target:'LDL <130 · HDL >50 · TG <150',why:'Hipotiroidi LDL ↑, hiper-tedavi HDL ↓ riski. Yıllık baseline.',priority:'routine'},
+  {name:'DEXA (Kemik Mineral Yoğunluğu)',freq:'2-3 yıl',target:'T-score >-1 normal · -1 ile -2.5 osteopeni',why:'Tiroidektomi sonrası TSH suppresyonu KMY %5-15 düşürebilir 5 yılda. Beck 2017 PMID 27875836: bone loading egzersiz + Calciday + D3 koruyucu.',priority:'routine'},
+  {name:'Selenyum Serum (opsiyonel)',freq:'12 ay (suplemente başlamadan önce baseline)',target:'70-150 µg/L',why:'Selenyum T4→T3 deiodinaz ko-faktörü. 200 mcg/gün başlamadan baseline ölçüm doktor kararı.',priority:'routine'}
+];
+
+const THYROID_DOCTOR_QUESTIONS={
+  'İlaç & Doz':[
+    'Levotiron dozumu nasıl kararlaştırıyorsun (TSH-based mi, sT4 üst yarıda mı)?',
+    'TSH suppresyon hedefimiz nedir (kanser nüks riski yoksa normal aralık tercih ederim)?',
+    'sT3 düşük geliyorsa kombine T4+T3 (Liothyronine) düşünür müyüz?',
+    'Levotiron sabah 06:30 aç karna; eğer kaçırırsam ertesi gün çift doz mu yoksa tek mi?',
+    'İlaç emilimini bozan supplement/yiyecek listesi (Ca, demir, çinko, soya, kahve, gluten) — minimum aralık 2 saat mi 4 saat mi?'
+  ],
+  'Supplement Onayı':[
+    'Selenyum 200 mcg/gün T4→T3 dönüşüm desteği için uygun mu (Sims literatürü)?',
+    'Çinko 15 mg + Bakır 1.5 mg (10:1 oranı) immün/cilt için uygun mu (et yiyenlerde Cu eksikliği nadir)?',
+    'Calciday içeriği (D3 + K2 MK-7 var mı, hangi formdaki kalsiyum)?',
+    'Kreatin 5 g/gün tiroid fonksiyonuna etki eder mi? Kan testi öncesi kaç gün kesmeliyim?'
+  ],
+  'Performans & Beslenme':[
+    'Tiroidektomi + direnç antrenmanı + karnivor diyet kombinasyonunda günlük protein/karb dağılımı önerin nedir?',
+    'Energy availability >45 kcal/kg LBM hedefliyorum — RED-S koruma için yeterli mi?',
+    'Cycle phase × performance pattern\'i takip ediyorum; T4 dozumu cycle\'a göre ayarlamak gerekir mi?'
+  ],
+  'Kemik Sağlığı':[
+    'KMY için DEXA hangi sıklıkta? T-score şu anda nedir?',
+    'D vitamini hedef aralığı 30-50 ng/mL mi yoksa daha yüksek (40-60) mi tercih ediyorsun?',
+    'Bone loading egzersizleri (squat, hip thrust, deadlift) yeterli mi yoksa ek farmakolojik önlem (bisfosfonat) gerekir mi?'
+  ],
+  'Mood & Cognitive':[
+    'Hipotiroidi semptomları (yorgunluk, brain fog, mood düşüklüğü) düzelmiyorsa T3 ekleme + sT3 hedefi nedir?',
+    'NREM uyku derinliği bozulmuş hissediyorum — tiroid ile bağlantı olabilir mi?',
+    'Levotiron dozumun sabah aldığım saate göre mood/enerji üzerine etkisi olur mu (Levotiron Diary verilerim mevcut)?'
+  ]
+};
+
+const THYROID_PHYSIOLOGY_TEXT=`
+<h4>Total Tiroidektomi Sonrası: T4 → T3 Dönüşüm</h4>
+<p>Tiroid bezi normalde <span class="thy-pill">~80% T4</span> + <span class="thy-pill">~20% T3</span> üretir. Total tiroidektomi sonrası tüm hormon ekzojen kaynaktan: <strong>Levotiroksin (sentetik T4)</strong>. T4 inaktif ön hormon — hücre düzeyinde <strong>deiodinaz</strong> enzimleriyle aktif T3'e dönüşür.</p>
+<p><strong>Deiodinaz tipleri:</strong></p>
+<ul>
+  <li><strong>D1 (karaciğer, böbrek):</strong> serum T3 üretir. Selenyum ko-faktör.</li>
+  <li><strong>D2 (beyin, hipofiz, kas):</strong> dokuda lokal T3. Selenyum ko-faktör.</li>
+  <li><strong>D3 (plasenta, fetal):</strong> T3 inaktivasyon (gebelik düzenleyici).</li>
+</ul>
+<h4>Neden T4-only Bazen Yetmez?</h4>
+<p>Wiersinga 2014 (PMID 24935156) ETA Guidelines: T4 monoterapi ile sT3 alt sınırda kalan ve <em>persistant hipotiroidi semptomları</em> (yorgunluk, brain fog, mood) yaşayan hastalarda kombine T4+T3 (Liothyronine) düşünülebilir. Polimorfizm (DIO2 geni) bireylerde dönüşüm verimi farklı.</p>
+<h4>Ko-faktörler ve Antagonistler</h4>
+<p><strong>Destekleyenler:</strong> Selenyum (deiodinaz), Çinko (T3 reseptör), Demir (peroksidaz aktivitesi).<br>
+<strong>Emilim antagonistleri:</strong> Kalsiyum, Demir, Magnezyum, Çinko, Soya, Kahve, Gluten — Levotiron alımından <strong>en az 2 saat</strong> ayrı (Hallberg etkisi). Dolayısıyla sabah 06:30 Levotiron → 08:30+ ilk supplement/öğün.</p>
+<h4>Cycle × Tiroid</h4>
+<p>Östrojen TBG (tiroid bağlayıcı globulin) artırır → serbest T4 dalgalanabilir. Folliküler/luteal arasında ufak doz ayarlaması bireysel: pattern Levotiron Diary'de izlenebilir.</p>
+`;
+
+let _thySupportTab='tests'; // tests | questions | physiology
+
+function setThyTab(t){_thySupportTab=t;renderThyroidSupport();}
+
+function renderThyroidSupport(){
+  const el=document.getElementById('thyroid-support');
+  if(!el)return;
+  const tabs=[
+    {id:'tests',l:'🩸 Kan Tahlili'},
+    {id:'questions',l:'❓ Doktor Soruları'},
+    {id:'physiology',l:'🧬 T4→T3 Fizyoloji'}
+  ];
+  const tabBtns=tabs.map(t=>`<button class="thy-tab${t.id===_thySupportTab?' active':''}" onclick="setThyTab('${t.id}')">${t.l}</button>`).join('');
+  let pane='';
+  if(_thySupportTab==='tests'){
+    const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
+    const rows=THYROID_BLOOD_TESTS.map(t=>`<div class="thy-test-row ${t.priority}">
+      <div class="thy-test-name">${t.name}</div>
+      <div class="thy-test-meta">${t.priority==='priority'?'Öncelik':'Rutin'} · Sıklık: ${t.freq}</div>
+      <div class="thy-test-target">🎯 Hedef: ${t.target}</div>
+      <div class="thy-test-why">${_glx(t.why)}</div>
+    </div>`).join('');
+    const priCount=THYROID_BLOOD_TESTS.filter(t=>t.priority==='priority').length;
+    const totCount=THYROID_BLOOD_TESTS.length;
+    pane=`<div class="thy-pane">
+      <div style="font-size:11px;color:var(--cream-mute);margin-bottom:10px;font-style:italic;">${totCount} test · ${priCount} öncelikli (3-6 ay) · diğerleri rutin (1-3 yıl). Hepsini tek istek panelinde toplu istemek mümkün.</div>
+      ${rows}
+    </div>`;
+  }else if(_thySupportTab==='questions'){
+    const cats=Object.keys(THYROID_DOCTOR_QUESTIONS).map(cat=>{
+      const items=THYROID_DOCTOR_QUESTIONS[cat].map(q=>`<div class="thy-question-item">${q}</div>`).join('');
+      return `<div class="thy-question-cat"><div class="thy-question-cat-title">${cat}</div>${items}</div>`;
+    }).join('');
+    const total=Object.values(THYROID_DOCTOR_QUESTIONS).reduce((a,b)=>a+b.length,0);
+    pane=`<div class="thy-pane">
+      <div style="font-size:11px;color:var(--cream-mute);margin-bottom:10px;font-style:italic;">${total} soru · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} kategori. Endokrinologa randevu öncesi ihtiyacın olanları seç.</div>
+      ${cats}
+    </div>`;
+  }else if(_thySupportTab==='physiology'){
+    const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
+    pane=`<div class="thy-pane"><div class="thy-phys">${_glx(THYROID_PHYSIOLOGY_TEXT)}</div></div>`;
+  }
+  el.innerHTML=`<div class="thy-card">
+    <div class="thy-title">🦋 Bedenim ve Tiroidim</div>
+    <div class="thy-subtitle">Total tiroidektomi destek modülü · Wiersinga 2014</div>
+    <div class="thy-tabs">${tabBtns}</div>
+    ${pane}
+  </div>`;
+}
+
 // ── Compulsive screening modal handlers (Phase 2 Hafta 4B)
 function openCompulsiveScreening(){
   // Skorları temizle, butonları reset
@@ -4769,7 +4918,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderLevotironDiary();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderLevotironDiary();renderThyroidSupport();}
 
 // ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
 // 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
