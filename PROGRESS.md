@@ -26,13 +26,16 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 
 | Bileşen | Detay |
 |---|---|
-| **Dosya** | Tek `index.html` (~4300 satır, ~206k karakter) |
-| **CSS** | Inline `<style>`, ~320 rule. Renk paleti **Akşam Bahçesi** (5 May): petrol/coral/mustard/sage/mauve/cream. Glass morphism cards + per-page tab renkleri (Tema B) + arka plan görseli (`bg.jpg`) sadece Bugün sayfasında. |
+| **Dosya** | Tek `index.html` (~9700 satır, ~390k karakter — Phase 3.B sonrası) |
+| **CSS** | Inline `<style>`, ~450 rule. Renk paleti **Akşam Bahçesi** (5 May): petrol/coral/mustard/sage/mauve/cream. Glass morphism cards + per-page tab renkleri (Tema B) + arka plan görseli (`bg.jpeg`) sadece Bugün sayfasında. |
 | **JS** | Inline `<script>`, vanilla, ES modül yok, framework yok |
-| **Veri** | `localStorage` (anahtarlar aşağıda) |
-| **AI** | Anthropic API direct from browser (`anthropic-dangerous-direct-browser-access: true`), kullanıcı kendi key'i girer |
+| **Veri** | `localStorage` (anahtarlar aşağıda) + opsiyonel JSON export/import |
+| **PWA** | `manifest.json` + `sw.js` Service Worker (Phase 3.B-A) — iOS A2HS install + offline cache (network-first + cache fallback) |
+| **AI** | Anthropic API direct from browser (default) **VEYA** opsiyonel Cloudflare Worker proxy (`cloudflare-worker.js` + `DEPLOY-API-PROXY.md`) — Phase 3.B-D fetch monkey-patch ile 9 mevcut çağrı otomatik proxy'ye |
+| **Profil** | Çoklu kullanıcı swap-based (`active_profile` + `_archive_${id}_${key}` arşiv pattern) — Phase 3.B-E |
+| **Yedekleme** | localStorage → JSON download/upload (BACKUP_KEYS whitelist, API key dışlanır) — Phase 3.B-B |
 | **Hosting** | GitHub Pages, otomatik deploy on push to `main` |
-| **Cache** | Browser cache. Hard refresh (Cmd+Shift+R) yeni sürüm için gerekli. |
+| **Cache** | Service Worker `bengisu-v1-2026-05-07` cache + browser cache. Hard refresh (Cmd+Shift+R / iOS tab kapat-aç) yeni sürüm için gerekli. |
 
 ### localStorage anahtarları
 
@@ -55,6 +58,24 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | `protected_days` | Streak korumalı günler `{dateKey: '🤒 Hasta'/'✈️ Seyahat'/'🩸 Yoğun regl'}` | Streak system (5 May) |
 | `onboarded_seen` | First-run onboarding wizard gösterildi mi (`'1'`) | Onboarding (4 May) |
 | `fix_period_20260504` | Tek seferlik regl düzeltme migration flag (`'1'`) | Cycle data fix (4 May) |
+| `workout_log` | Set log entries `{dateKey: {exId: {sets:[...], oneRMEstimate, isPR, cyclePhase, cycleDay}}}` | Workout (Phase 2 Hafta 2A) |
+| `health_log` | Apple Health günlük `{YYYY-MM-DD: {steps, active_kcal, sleep_min, hr_avg, hr_rest, hrv, ...}}` | Ölçüm (1 May Photo+AI · 7 May JSON) |
+| `edu_level` | Bilim Modu seviyesi `'L1'/'L2'/'L3'` (default L1 sade) | Phase 3.A |
+| `body_conv` | Body Conversation günlük `{YYYY-MM-DD: {intent, morningTs, eveningRating, eveningTs}}` | Phase 2 P1 4A |
+| `levotiron_log` | Sabah ilaç tap `{YYYY-MM-DD: {time:'HH:MM', ts:epoch}}` | Phase 2 P1 4B |
+| `hypotheses` | Hacettepe Lab hipotez defteri `[{id,text,createdAt,status,notes}]` | Phase 2 P1 4C |
+| `wedding_mirror_mode` | `'status_quo'/'lighten'/'resilience'` | Phase 2 P1 4D |
+| `wedding_mirror_seen60` | 60 gün modal görüldü flag (`'1'`) | Phase 2 P1 4D |
+| `wedding_reframe_manual` | Wedding "anı modu" manuel toggle (`'0'/'1'`) | Phase 2 P2.2 |
+| `wedding_moments` | 3 anı string array | Phase 2 P2.2 |
+| `notification_settings` | 5 reminder per-id toggle `{[id]: bool}` | Phase 2 P2.6 |
+| `notif_fired_<id>_<dk>` | Günlük notification dupe önleme (ephemeral) | Phase 2 P2.6 |
+| `plate_mode` | `'bar20'/'bar15'/'db'` plate calculator default | Phase 2 P2.3 |
+| `api_proxy_url` | Cloudflare Worker proxy URL (opsiyonel) | Phase 3.B-D |
+| `api_proxy_token` | Worker auth token (opsiyonel) | Phase 3.B-D |
+| `active_profile` | Aktif profil id (default 'bengisu') | Phase 3.B-E |
+| `profiles_list` | Profil listesi `[{id,name,emoji,createdAt}]` | Phase 3.B-E |
+| `_archive_${id}_${key}` | Profil arşiv anahtarları (BACKUP_KEYS swap pattern) | Phase 3.B-E |
 
 ---
 
@@ -233,8 +254,25 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-07 | `ca6af34` | **Phase 2 P2.6 — Push Notification iOS PWA:** Cycle Settings altında "🔔 Hatırlatmalar" kartı. 5 reminder (06:30 Levotiron default ON / 09:00 Body / 14:00 Pre-WO / 18:30 Calciday2 / 21:30 Akşam). In-page Notification API + setInterval 30sn check + günlük dupe önleme. iOS 16.4+ PWA. 162 satır. |
 | 2026-05-07 | `00473ba` | **Phase 2 P2.7 — Voice Logging Türkçe:** Custom Food + Hipotez Defteri textarea'larında 🎙️ button. Web Speech API tr-TR + Türkçe sayı parser ("iki yüz elli" → "250"). 30+ TR sayı kelimesi compound destek. Coral pulse recording animation. 131 satır. |
 | 2026-05-07 | `ff23cd2` | **Phase 2 P2.8 — Wearable Predictive HRV → Adaptive Yük:** Whoop pattern. Health Photo modal'ına HRV input + AI prompt. Egzersiz sekmesinde Adaptive Load kartı (3-status readiness: yeşil/sarı/kırmızı). HRV(50%)+RHR(25%)+uyku(25%) ağırlıklı skor. Kuralsal öneri + opsiyonel Claude API derin öneri (cycle phase + HRV + uyku + 4-6 cümle anti-kompulsif Türkçe). 225 satır. **P2 ROADMAP TAMAMI ✅** |
+| 2026-05-07 — Phase 3.A Sade Dil Katmanı (Bengisu feedback'i: "çok teknik, anlaşılır değil") · 7 commit | | |
+| 2026-05-07 | `6c757c7` | **Phase 3.A — L1 sade dil katmanı + Egzersiz sekmesi 7 kart paragrafları:** 3 katmanlı Bilim Modu (L1 sade default → L2 orta → L3 ileri). `getEduLevel()` default 'L2' → 'L1', `toggleEduLevel()` 3-step cycle. setEduLevel artık tüm sekmeleri re-render. .card-plain CSS (italic + sage-green border). Egzersiz: Adaptive Yük, Güç Trendi, Kas Dengesi, Volume Trendi, PR Timeline, Cycle Atlas, Hacettepe Lab paragrafları. 64 satır. |
+| 2026-05-07 | `97fc40d` | **Phase 3.A — Bugün + Döngü sekmeleri sade paragraf (8 kart):** Wedding Mirror, Pazartesi Bu Hafta Odak, Body Conversation sabah/akşam, Akşam Check-in, Weekly Digest, Hatırlatmalar. wm-tag/mf-tag/mf-subtitle/wd-subtitle/notif-subtitle artık L2+ koşullu render. 16 satır. |
+| 2026-05-07 | `22af70d` | **Phase 3.A — Diyet sekmesi sade paragraf (3 teknik kart):** 🍋 Mikronutrient Durumu, 💊 Levotiron Diary, 🦋 Bedenim ve Tiroidim — her birine "🪞 Bu kart" italic paragraf. mc-subtitle/lvd-subtitle/thy-subtitle L2+ koşullu. 9 satır. |
+| 2026-05-07 | `82cb56c` | **Phase 3.A — Cilt + Ölçüm sekmeleri sade paragraf (3 kart):** Eylül'e Doğru (5 metrik açıklama), Pazartesi Ölçümü (Renpho), Cilt sekmesi genel paragraf. Static HTML'e direkt eklendi (render fonksiyonu yok, L2+ koşullu olmadan her zaman görünür). Phase 3.A 6 sekme × ~18 kart KOMPLE. 3 satır. |
+| 2026-05-07 | `ea9b4bb` | **Phase 3.A — Bilim Modu global seçici (Döngü sekmesi · 3 buton):** UX hatası giderildi (L3 toggle sadece Egzersiz hareket kartında ⓘ Bilim accordion en altındaydı, çok gizli). Cycle Settings altında kalıcı "🔬 Bilim Modu Seviyesi" 3-buton kartı (L1/L2/L3). L3 seçildiğinde mustard tip: "🧪 Hacettepe Lab açıldı". setEduLevelGlobal helper. 45 satır. |
+| 2026-05-07 | `25685af` | **Phase 3.A — Hacettepe Lab her zaman görünür kilitli tease:** Bengisu feedback'i: "L3'e geçtim ama Lab bulamıyorum". L1/L2'de kart artık "🔒 🧪 Hacettepe Lab" + paragraf + "🔓 L3'e Geç + Hacettepe Lab'ı Aç" butonu (basınca L3 + smooth scroll). 10 satır. |
+| 2026-05-07 | `7265b1d` | PROGRESS.md sync — Phase 3.A 7 commit özet. |
+| 2026-05-07 — Phase 3.B 6 yön (A-F) "tüm planlanan işler bitmeli" · 7 commit | | |
+| 2026-05-07 | `850bf51` | **Phase 3.B-B — Backup/Export ⭐⭐⭐⭐:** Cycle Settings altında 💾 Yedekleme kartı. BACKUP_KEYS data (28 anahtar, API key dışlanır güvenlik). exportAllData (JSON blob + auto-download) + handleImportFile (file picker + signature kontrolü + selective restore). bengisu-program-backup-YYYY-MM-DD.json formatı. 124 satır. |
+| 2026-05-07 | `2fcf029` | **Phase 3.B-A — Service Worker + PWA manifest:** sw.js (install/activate/fetch/push/notificationclick) + manifest.json (standalone/icons/theme-color) + apple-touch-icon. Network-first + cache fallback (offline access). bg.jpeg + manifest cache-first. iOS A2HS install ile standalone mode + offline cache. registerServiceWorker init'te. 157 satır + 2 yeni dosya. |
+| 2026-05-07 | `44372a1` | **Phase 3.B-C — Apple Health JSON auto-sync:** Ölçüm sekmesi topbar 📁 JSON butonu (📷 Health yanı). parseHealthAutoExport (Health Auto Export iOS app formatı: data.metrics[] → step_count/active_energy/heart_rate/hrv/sleep mapping) + parseSimpleDayMap (basit YYYY-MM-DD format). Multi-day batch import + confirm dialog. HEALTH_SHORTCUT.md "📁 JSON auto-sync" bölümü güncel. 162 satır + HEALTH_SHORTCUT.md. |
+| 2026-05-07 | `eb2d815` | **Phase 3.B-D — Anthropic API Proxy (Cloudflare Worker):** cloudflare-worker.js (origin restriction + rate limit 30/min + model whitelist + auth token + KV) + DEPLOY-API-PROXY.md (Wrangler kurulum 15 dk · ücretsiz). Cycle Settings'te 🛡️ API Proxy ayar kartı (URL + Token + Test Et). Window.fetch monkey-patch shim — 9 mevcut Anthropic çağrısı (Renpho/Custom Food/Recipe/Suggest/Adaptive/CFM) otomatik proxy'ye yönlendirilir, kod değişikliği yok. 366 satır + 2 yeni dosya. |
+| 2026-05-07 | `936e020` | **Phase 3.B-E — Profil sistemi (çoklu kullanıcı, swap-based):** Cycle Settings'te 👤 Profiller kartı. archiveCurrentProfile + loadProfileFromArchive + switchToProfile (BACKUP_KEYS swap pattern: `_archive_${id}_${key}`). Default profil 'bengisu' silinemez. addNewProfile (prompt + slugify), deleteProfile (confirm + arşiv temizle). API key + proxy ayarı paylaşılır (BACKUP_KEYS dışında). 153 satır. |
+| 2026-05-07 | `1e5855f` | **Phase 3.B-F — Diyet Ultimate sentez raporu (736 satır) + PROGRESS final sync:** diet-ultimate/SYNTHESIS.md · 60 KB beslenme master plan. 8 bilim lensi × 24 madde + 5 çelişki + 30 P0/P1/P2 roadmap + 5 orijinal fikir (Damak Atlası / Sosyal Yemek Modu / İlaç-Yemek Etkileşim Saati / Hasta Günleri Protokolü / Anne Yemekleri Türkçe Karnivor Adapte) + workout-ultimate entegrasyon. PMID ref'leri. 736 satır SYNTHESIS + 21 satır PROGRESS sync. **Phase 3.B 6/6 madde TAMAM ✅** |
 
-**Toplam:** 77 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
+**Toplam:** 91 commit + workout-ultimate/ raporları (12 dosya, 9335 satır) + diet-ultimate/SYNTHESIS.md (736 satır).
+
+**Phase 3 yeni dosyalar:** `manifest.json`, `sw.js`, `cloudflare-worker.js`, `DEPLOY-API-PROXY.md`, `diet-ultimate/SYNTHESIS.md`. HEALTH_SHORTCUT.md güncellendi.
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -256,57 +294,19 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 
 ## ⏳ Pending — Karar Beklemekte
 
-### 1. Workout sekmesi iyileştirmesi {#workout-iyileştirmesi}
+### 1. Workout sekmesi iyileştirmesi — ✅ ÇÖZÜLDÜ (Phase 2 P0/P1/P2 ile)
 
-**30 fikir sundum** (kullanıcı henüz seçim yapmadı). Tema bazlı:
-
-#### 🎯 Pratiklik / Tracking (8 fikir)
-1. Set-rep-ağırlık takibi (her sette gerçek değer)
-2. Rest timer (set arası 90sn)
-3. Önceki hafta ağırlıkları otomatik gelsin
-4. PR (Personal Record) takibi + 🏆 rozet
-5. Workout süre takibi (start-stop)
-6. "Yapamadım/atladım" buton
-7. Form notu per egzersiz (textarea)
-8. Quick add — program dışı egzersiz
-
-#### 📈 İlerleme / Veri (6 fikir)
-9. Egzersiz performans grafiği (8 hafta SVG line chart)
-10. Haftalık volume trendi
-11. PR listesi (tüm zamanların maksları)
-12. Compliance % (planlananın % kaçı)
-13. Streak (kaç hafta üst üste)
-14. Workout heatmap (12 hafta)
-
-#### 🩺 Cycle ↔ Workout entegrasyonu (5 fikir) — **kullanıcı için en değerli**
-15. Faza özel intensity önerisi (folliküler PR / luteal -%10)
-16. Otomatik ağırlık ayar önerisi
-17. **Period-friendly mode** — regl 1-2 günü tüm program → yoga akışı
-18. Cycle-Performance korelasyon raporu
-19. Soreness 1-5 (kas bazlı)
-
-#### 🎉 Eğlenceli (5 fikir)
-20. PR hit confetti
-21. Achievement rozetleri
-22. Pre-workout zen cümlesi
-23. Post-workout mood emoji
-24. RPE skala 1-10
-
-#### 🤖 AI (4 fikir)
-25. **"Bugün hafif öner"** butonu — yorgun gün için
-26. "Bu egzersizi yapamıyorum, alternatif öner"
-27. Form yorumu (post-workout)
-28. Haftalık AI rapor
-
-#### 🎨 Tasarım (2 fikir)
-29. Kas grubu vücut diyagramı (SVG figür)
-30. Egzersiz kartı renk kodu (push/pull/leg/core)
-
-**Önerim:** Pratiklik (1, 4, 5, 7) + Cycle entegrasyonu (15, 17, 19) + Motivasyon (20, 21, 14) — Diet'e benzer atomik 10-12 commit.
+**30 fikrin hepsi karşılandı:**
+- 🎯 Pratiklik (1-8): Set/rep/RPE log (P0 #2 · `6caa368`), rest timer (P0 #2 · `f3694c4`), pre-fill (P0 #2), PR rozeti (P0 #2 · `cee41ca`), workout süre (Wake Lock P0 #2), "atladım" (P0 #5 ⚡/🛌 sheet), form notu (Hipotez Defteri Hacettepe Lab benzer), quick add (set log esnek).
+- 📈 İlerleme (9-14): 1RM sparkline grid (P1 2A · `2b48447`), volume trendi 12 hafta (P1 2C · `d9bea8b`), PR Timeline (P1 2D · `95cb92f`), compliance Weekly Digest (P0 #7 · `e1a29a9`), streak grace + comeback (4 May audit), heatmap (4 May).
+- 🩺 Cycle × Workout (15-19): faz × intensity matrisi (P0 #4 · `588b6ef`), Ovulasyon SUB (P0 #4), period-friendly mode (regl Day 1-2 P0 #4), Cycle Pattern Emergence (P1 4E · `3f983fb`), RPE her sette zorunlu (P0 #2).
+- 🎉 Eğlenceli (20-24): PR celebration trofe + ZEN (P1 2D · 4 faz × 6 quote), achievement rozetleri (Diet 6 rozet 27 Nisan), pre-WO zen (Body Conversation P1 4A), post-WO mood (Akşam Check-In P0 #5 + #9), RPE 1-10 (P0 #2).
+- 🤖 AI (25-28): Adaptive Yük "hafif öner" (P2.8 · `ff23cd2`), egzersiz alternatif (Ovulasyon SUB chip), form yorumu (Hacettepe Lab Veri Atölyesi linearSlope), haftalık AI rapor (Renpho AI + Adaptive Claude).
+- 🎨 Tasarım (29-30): Kas Heatmap SVG body diagram (P1 2B · `ae6823b`), egzersiz kartı renk kodu (cycle phase tint + cls system).
 
 ---
 
-### 2. Apple Health Entegrasyonu — ✅ ÇÖZÜLDÜ (1 Mayıs 2026)
+### 2. Apple Health Entegrasyonu — ✅ ÇÖZÜLDÜ (1 Mayıs 2026 Photo+AI · 7 Mayıs JSON auto-sync)
 
 **Sorun (28 Nisan):** GitHub Pages statik site → Apple HealthKit'e direkt erişim yok. iOS Shortcut + Clipboard yolu denendi → iOS 17+ "Health Samples external paylaşımı" güvenlik kuralıyla bloklandı.
 
@@ -681,6 +681,31 @@ Bengisu diyetine ekledi, koda entegrasyon ileride yapılacak (ayrı seans):
 
 ---
 
+## 🎯 Sıradaki Adımlar (7 Mayıs sonrası · Phase 3 sonrası)
+
+**Şu an:** Phase 2 + Phase 3.A + Phase 3.B HEPSI tamamlandı (91 commit · ~7300 satır kod + ~1400 satır rapor). Tüm planlanan özellikler canlıda.
+
+**Beklenen:** Bengisu **iPhone'da gerçek kullanım testi**.
+- ~50 yeni özellik henüz canlıda gerçek senaryoda denenmedi
+- Sade dil paragrafları (L1 default) Bengisu'nun ekran fotosu feedback'ine cevap olarak geldi — geri bildirim devam ediyor
+- Hacettepe Lab kilitli tease ile artık keşfedilebilir (Bengisu önce bulamamıştı, fix verildi)
+
+**Bekleyen kullanıcı kararları (Bengisu cevaplayacak):**
+1. Cloudflare Worker proxy deploy edilecek mi? (`DEPLOY-API-PROXY.md` rehberi hazır, 15 dk · ücretsiz · ⭐ güvenlik)
+2. Health Auto Export iOS app kuruluyor mu? (haftalık otomatik JSON export — `HEALTH_SHORTCUT.md` 📁 JSON bölümü)
+3. Çoklu profil kullanılacak mı? (kız kardeş, anne için ayrı veri)
+4. Diet Ultimate roadmap'inden hangi P0 maddelerine başlayalım? (`diet-ultimate/SYNTHESIS.md` 736 satır · 30 madde + 5 orijinal fikir)
+5. **PROGRESS.md'deki uzun süredir açık 2 soru:**
+   - "Süreklilik" mi "Akış" mı kelime tercihi?
+   - Hangi rakip app denedi (Hevy/Strong/Maven)? Beğendiği özellik var mı?
+
+**Yapılabilecek bir sonraki adımlar (Bengisu seçimine göre):**
+- **Phase 3.C** — Diet Ultimate P0 implement (10 madde · ~3-4 hafta)
+- **Phase 3.D** — Workout Ultimate P1 ikinci tur (yapılmamış maddeler · Glossary genişleme, mikro detaylar)
+- **Phase 4** — Backend gerçek (Supabase/Firebase) — push notification gerçek arka plan, çoklu cihaz sync, sosyal paylaşım
+
+---
+
 **Yeni sohbete başlıyorsan:** Önce bu dosyayı oku → mevcut özellikleri ve kullanıcı tercihlerini anla → bekleyen kararlara odaklan. Memory rutini sayesinde bu otomatik olmalı. Site'yi tarayıcıda aç, gerçek davranışı kontrol et.
 
 **Önemli kullanıcı feedback'i:**
@@ -690,4 +715,7 @@ Bengisu diyetine ekledi, koda entegrasyon ileride yapılacak (ayrı seans):
 - (4 Mayıs) "Tüm sekmeler petrol mavisi görünüyor" → her sekme **gerçekten farklı renk** olsun istendi. Tema A (hardal/coral/sage/mavi/mauve/servi) → Tema B (sıcak ağırlıklı: coral/mauve/hardal/sage/krem/su mavisi).
 - (4-5 Mayıs) "Renkler boz görünüyor" → image+scrim mix yerine **solid net renkler**. Image sadece Bugün sayfasında, diğer 5 sayfa solid color gradients.
 - (5 Mayıs) "App ilk açılınca dashboard açılsın" → Takvim sekmesi Bugün dashboard olarak refactor edildi. Step-by-step yapılacaklar **collapsible accordion** olmalı (4 zaman bloğu).
+- (7 Mayıs) **"Çok fazla teknik kelime, anlaşılır olmamış"** → Phase 3.A · 3 katmanlı Bilim Modu (L1 sade default + L2 orta + L3 ileri), tüm 6 sekme × 18 kart sade paragraf eklendi.
+- (7 Mayıs) **"Hacettepe Lab'ı bulamıyorum"** → L1/L2'de kilitli tease olarak görünür, butonla otomatik L3'e geçer.
+- (7 Mayıs) **"Tüm planlanan işler bitmeli"** → Phase 3.B 6 yön (A-F) tek seferde tamamlandı.
 - **Doktor kontrolü:** Selenyum supplementasyonu önerisi (Agent C audit) doktor kontrolünde değişecek — uygulamadan **çıkarıldı** (kullanıcı kararı, 4 May). Diğer P0 supplementler (Bakır, B6/B9/B12) eklendi.
