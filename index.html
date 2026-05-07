@@ -1218,6 +1218,31 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .thy-pill{display:inline-block;padding:3px 9px;border-radius:8px;background:rgba(232,178,63,0.18);color:var(--mustard);font-size:11px;font-weight:600;margin:2px 4px 2px 0;}
 
 /* ════════════════════════════════════════════ */
+/* NOTIFICATION SETTINGS · iOS PWA web push (Phase 2 P2.6 — Ajan 8 + Ajan 11) */
+/* ════════════════════════════════════════════ */
+.notif-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);color:var(--cream);}
+.notif-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:4px;}
+.notif-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);margin-bottom:12px;font-weight:600;}
+.notif-status{padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);font-size:12px;color:var(--cream-soft);line-height:1.5;margin-bottom:12px;border-left:3px solid var(--cream-mute);}
+.notif-status.granted{border-left-color:var(--sage-leaf);background:rgba(90,122,79,0.10);}
+.notif-status.denied{border-left-color:var(--coral);background:rgba(217,89,30,0.08);}
+.notif-status.unsupported{border-left-color:var(--mustard);background:rgba(232,178,63,0.08);}
+.notif-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 8px;border-radius:10px;transition:background 0.15s;}
+.notif-row+.notif-row{border-top:1px dashed rgba(255,255,255,0.10);}
+.notif-info{flex:1;min-width:0;}
+.notif-time{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
+.notif-name{font-size:12px;color:var(--cream-soft);font-weight:600;}
+.notif-desc{font-size:10px;color:var(--cream-mute);line-height:1.4;}
+.notif-toggle{flex-shrink:0;}
+.notif-toggle input{appearance:none;-webkit-appearance:none;width:38px;height:22px;background:rgba(232,221,196,0.12);border-radius:11px;position:relative;cursor:pointer;border:1px solid var(--glass-border);transition:background 0.15s;}
+.notif-toggle input:checked{background:rgba(232,178,63,0.55);border-color:var(--mustard);}
+.notif-toggle input::before{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--cream-soft);transition:left 0.18s;}
+.notif-toggle input:checked::before{left:18px;}
+.notif-perm-btn{display:block;width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(232,178,63,0.42),rgba(232,178,63,0.20));border:1px solid var(--mustard);color:var(--cream);font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;}
+.notif-perm-btn:active{transform:scale(0.98);}
+.notif-test-btn{padding:6px 12px;border-radius:8px;background:transparent;border:1px solid var(--glass-border);color:var(--cream-mute);font-size:11px;cursor:pointer;margin-top:8px;}
+
+/* ════════════════════════════════════════════ */
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
@@ -1522,6 +1547,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Ayarları Kaydet</button>
     </div>
   </div>
+
+  <!-- Notification Settings (Phase 2 P2.6) -->
+  <div id="notification-settings"></div>
 
   <div style="height:8px;"></div>
 </div>
@@ -3679,6 +3707,137 @@ function renderThyroidSupport(){
     <div class="thy-tabs">${tabBtns}</div>
     ${pane}
   </div>`;
+}
+
+// ── Notification Settings · iOS PWA web push (Phase 2 P2.6 — Ajan 8 + Ajan 11)
+// In-page Notification API kullanıyor (service worker ileride). PWA olarak A2HS ile iOS 16.4+
+// destekli; tab açıkken her zaman çalışır. localStorage 'notification_settings' = {[id]: bool}.
+const NOTIFICATION_REMINDERS=[
+  {id:'levotiron',time:'06:30',title:'💊 Levotiron · sabah aç karna',body:'Yemek/kahveden ≥30 dk önce. Hedef 06:30.',default:true,emoji:'💊',name:'Levotiron'},
+  {id:'body_morning',time:'09:00',title:'🌅 Body Conversation',body:'Bugün bedeniyle ne istersin? 5 niyet · 2 dakika.',default:false,emoji:'🌅',name:'Sabah niyet'},
+  {id:'pre_wo',time:'14:00',title:'🍯 Pre-WO Karb+Protein',body:'30g karb + 15-25g protein · PPL antrenmanından 60 dk önce.',default:false,emoji:'🍯',name:'Pre-workout'},
+  {id:'calciday2',time:'18:30',title:'💊 Calciday 2. doz',body:'Öğünden 1.5h sonra · Hallberg etkisi (demir absorpsiyon).',default:false,emoji:'💊',name:'Calciday 2. doz'},
+  {id:'evening',time:'21:30',title:'🌙 Akşam check-in',body:'30 saniye bedeninle ilişkide kal · 5 mood seçeneği.',default:false,emoji:'🌙',name:'Akşam check-in'}
+];
+
+function getNotificationSettings(){
+  return JSON.parse(localStorage.getItem('notification_settings')||'{}');
+}
+function saveNotificationSettings(s){localStorage.setItem('notification_settings',JSON.stringify(s));}
+function isReminderEnabled(id){
+  const s=getNotificationSettings();
+  if(s[id]===undefined){
+    const r=NOTIFICATION_REMINDERS.find(x=>x.id===id);
+    return !!(r&&r.default);
+  }
+  return s[id]===true;
+}
+function setReminderEnabled(id,on){
+  const s=getNotificationSettings();
+  s[id]=!!on;
+  saveNotificationSettings(s);
+}
+
+function getNotifPermissionStatus(){
+  if(!('Notification' in window))return 'unsupported';
+  return Notification.permission; // 'default' | 'granted' | 'denied'
+}
+
+async function requestNotificationPermission(){
+  if(!('Notification' in window)){
+    showToast('Tarayıcın bildirim desteklemiyor','warn');
+    return;
+  }
+  const r=await Notification.requestPermission();
+  showToast(r==='granted'?'✓ Bildirim izni verildi':r==='denied'?'❌ İzin reddedildi':'İzin sonrasında deneyebilirsin','pr');
+  renderNotificationSettings();
+}
+
+function fireTestNotification(){
+  if(getNotifPermissionStatus()!=='granted'){
+    showToast('Önce bildirim izni gerekli','warn');
+    return;
+  }
+  try{
+    new Notification('🦋 Bengisu Test',{body:'Bildirim çalışıyor — sabah 06:30 Levotiron için aktif.',silent:false});
+  }catch(e){console.warn('Notification fail:',e);}
+}
+
+// Periyodik kontrol — tab açıkken her dakika kontrol, dakika eşleşirse + henüz fire edilmediyse tetikle
+function _firedToday(id){
+  const dk=ymd(new Date());
+  return localStorage.getItem('notif_fired_'+id+'_'+dk)==='1';
+}
+function _markFired(id){
+  const dk=ymd(new Date());
+  localStorage.setItem('notif_fired_'+id+'_'+dk,'1');
+}
+
+function checkAndFireNotifications(){
+  if(getNotifPermissionStatus()!=='granted')return;
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  const cur=hh+':'+mm;
+  NOTIFICATION_REMINDERS.forEach(r=>{
+    if(!isReminderEnabled(r.id))return;
+    if(r.time!==cur)return;
+    if(_firedToday(r.id))return;
+    try{
+      new Notification(r.title,{body:r.body,silent:false,tag:'reminder-'+r.id});
+      _markFired(r.id);
+    }catch(e){console.warn('Reminder fire fail:',r.id,e);}
+  });
+}
+
+// Initialize: tab açıldığında interval başlat (tab kapanırsa otomatik durur)
+let _notifIntervalId=null;
+function ensureNotificationLoop(){
+  if(_notifIntervalId)return;
+  _notifIntervalId=setInterval(checkAndFireNotifications,30000); // 30 sn'de bir kontrol
+}
+
+function renderNotificationSettings(){
+  const el=document.getElementById('notification-settings');
+  if(!el)return;
+  const status=getNotifPermissionStatus();
+  let statusHTML='';
+  if(status==='unsupported'){
+    statusHTML=`<div class="notif-status unsupported">⚠️ Bu tarayıcı bildirim API desteklemiyor. iOS 16.4+ için Safari ile siteyi aç → "Ana Ekrana Ekle" → PWA üzerinden bildirim aktive olur.</div>`;
+  }else if(status==='granted'){
+    statusHTML=`<div class="notif-status granted">✓ Bildirim izni verildi. Tab açıkken seçili saatlerde tetiklenecek. (Tab kapalıyken çalışmaz — gerçek arka plan push için ileride service worker eklenecek.)</div>`;
+  }else if(status==='denied'){
+    statusHTML=`<div class="notif-status denied">❌ Bildirim reddedildi. Tarayıcı ayarlarından siteye izin ver, sayfayı yenile.</div>`;
+  }else{
+    statusHTML=`<div class="notif-status">📡 Henüz izin istenmedi. Aşağıdaki butona basınca tarayıcı izin sorar.</div>`;
+  }
+  const rows=NOTIFICATION_REMINDERS.map(r=>{
+    const en=isReminderEnabled(r.id);
+    return `<div class="notif-row">
+      <div class="notif-info">
+        <div class="notif-time">${r.emoji} ${r.time}</div>
+        <div class="notif-name">${r.name}</div>
+        <div class="notif-desc">${r.body}</div>
+      </div>
+      <label class="notif-toggle">
+        <input type="checkbox" ${en?'checked':''} ${status!=='granted'?'disabled':''} onchange="setReminderEnabled('${r.id}',this.checked);renderNotificationSettings();">
+      </label>
+    </div>`;
+  }).join('');
+  const permBtn=status==='default'||status==='unsupported'
+    ?`<button class="notif-perm-btn" onclick="requestNotificationPermission()">🔔 Bildirim İzni Ver</button>`
+    :status==='granted'
+      ?`<button class="notif-test-btn" onclick="fireTestNotification()">Test bildirimi</button>`
+      :'';
+  el.innerHTML=`<div class="notif-card">
+    <div class="notif-title">🔔 Hatırlatmalar</div>
+    <div class="notif-subtitle">5 zamanlı bildirim · iOS 16.4+ PWA destekli</div>
+    ${statusHTML}
+    <div>${rows}</div>
+    ${permBtn}
+  </div>`;
+  // Loop başlat (idempotent)
+  ensureNotificationLoop();
 }
 
 // ── Compulsive screening modal handlers (Phase 2 Hafta 4B)
@@ -8121,6 +8280,9 @@ function renderCycle(){
 
   // Onboarding banner kaldırıldı — auto-seed init()'te yapılıyor
   document.getElementById('cy-onboard-wrap').innerHTML='';
+
+  // Notification settings (Phase 2 P2.6)
+  if(typeof renderNotificationSettings==='function')renderNotificationSettings();
 
   // ─── Hero card (current phase) ───
   renderCyHero();
