@@ -1886,6 +1886,8 @@ function renderSelDay(){
   const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Magnezyum bisglycinate ${mgDose}mg</b> — uyku + kas gevşemesi${inP(d)?' + kramp giderici':''}</div><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt + eklem</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce.${mgNote?' '+mgNote+'.':''}</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver). Bedeninin günü kapatmasına izin ver.</div></div>`;
   const vacuum_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>İstisna yok — her sabah.</b><br><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · setler arası 30 sn dinlen<br><br><span style="color:var(--pink-deep);">⭐ Fasted = derin core (TVA) için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Şiddetli kramp varsa atla:</b> Vacuum karın fleksiyonunu artırır. Yerine 2 dk derin nefes (4-7-8 tekniği) yap.</div>':''}</div>`;
   const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan <b>en az 4 saat</b> sonra (literatür önerisi · emilim insoluble kompleks oluşturmasın).<br>1. öğün sonrasında almak ideal.<br>2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br>🔴 Regl günü: elektrolit kaybı + period → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
+  const selenium_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Selenyum 200 mcg/gün</b> · 1. öğünle (10:00)<br>• Tiroidektomi sonrası <b>T4→T3 dönüşümünü destekler</b> (deiodinaz enzimleri selenoprotein) · Sims literatürü + Endocrine Society 2023<br>• Methionine içeren proteinle birlikte iyi emilir (yumurta, et)<br>• UL 400 mcg/gün — 200 mcg makul güvenli aralık<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Selenyum başlamadan serum selenyum seviyesi gerekli mi? Selenometyonin vs selenat formu hangisi öneriliyor? 6-12 hafta sonra TSH/T3 kontrol edilsin.</span></div>`;
+  const zinc_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Çinko 15 mg + Bakır 1.5 mg</b> · 22:00 (yatmadan 1 saat önce)<br>• Karnivor diyette demir + protein yüksek, çinko da yeterli — supplement <b>insülin duyarlılığı + immün + cilt</b> için<br>• <b>Zn:Cu = 10:1 dengesi</b> kritik (yüksek Zn → Cu eksikliği → anemi/nöropati riski)<br>• Calciday'den (Ca/Zn antagonizmi) ve Levotiron'dan (en az 2 saat) ayrı<br>• Magnezyum'dan 1 saat sonra (mineral ayrımı için)<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Bakır supplement gerçekten gerekli mi (et yiyenlerde Cu eksikliği nadir)? Serum çinko/bakır oranı 0.7-1.0 sağlıklı; ölçümle başlamak ideal. Zinc gluconate vs picolinate vs bisglycinate — hangisi tercih?</span></div>`;
 
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -1902,6 +1904,7 @@ function renderSelDay(){
       ${tliX('07:30','🚶 Yürüyüş 7-8 km','Fasted · 90 dk','te',walk_detail)}
       ${tliX('09:15','☀️ Tam Sabah Cilt Rutini',yestRetinol?'4 adım · duştan sonra · retinol gecesi sonrası':'6 adım · duştan sonra · SPF en son','ts',skin_morning_detail)}
       ${tliX('10:00','🥩 1. Öğün (pencere açılışı)',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('10:05','🌿 Selenyum 200mcg','1. öğünle · T4→T3 dönüşüm + selenoprotein','tm',selenium_detail)}
       ${tliX('10:30','💊 Calciday (1. doz)','Levotiron\'dan 4 saat sonra · yemek sonrası','tm',calciday_detail)}
       ${tliX('14:30','🍯 Pre-workout','1 yk bal VEYA 1 kivi + tuzlu su · ~60 kcal','td',preworkout_detail)}
       ${tliX('15:00','🏋️ PPL Antrenman','15:00–16:30 · beslenmiş halde','te',ex_detail)}
@@ -1909,6 +1912,7 @@ function renderSelDay(){
       ${tliX('17:05','💪 Kreatin 5g (Bulk Creapure)','Post-workout · 2. öğünle al · 3L+ su','tm',creatine_detail)}
       ${tliX('18:30','💊 Qalyviz','Yağlı öğünle · D vit emilimi','tm',qalyviz_detail)}
       ${tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail)}
+      ${tliX('22:00','💊 Çinko 15mg + Bakır 1.5mg','Yatmadan ~1 saat · Ca/Levotiron\'dan uzak · Zn:Cu 10:1','tm',zinc_detail)}
       ${tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail)}
       ${tliX('23:00','💊 Magnezyum + Kolajen','Mg bisglycinate 300mg · yatmadan 30 dk önce','tm',supp_night_detail)}
     </div></div></div>`;
@@ -2019,6 +2023,7 @@ function buildDailyBlocks(d){
     ],
     noon:[
       tliX('10:00','🥩 1. Öğün (pencere açılışı)',m1.n+' + '+ms.n,'td',meal1_detail),
+      tliX('10:05','🌿 Selenyum 200mcg','1. öğünle · T4→T3 dönüşüm + selenoprotein','tm',selenium_detail),
       tliX('10:30','💊 Calciday (1. doz)','Levotiron\'dan 4 saat sonra','tm',calciday_detail),
       tliX('14:30','🍯 Pre-workout','1 yk bal · ~60-90 kcal','td',preworkout_detail),
     ],
@@ -2030,6 +2035,7 @@ function buildDailyBlocks(d){
     evening:[
       tliX('18:30','💊 Qalyviz','Yağlı öğünle · D vit','tm',qalyviz_detail),
       tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail),
+      tliX('22:00','💊 Çinko 15mg + Bakır 1.5mg','Yatmadan ~1 saat · Ca/Levotiron\'dan uzak · Zn:Cu 10:1','tm',zinc_detail),
       tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail),
       tliX('23:00','💊 Magnezyum + Kolajen','Mg '+mgDose+'mg · yatmadan 30 dk','tm',supp_night_detail),
     ],
@@ -3406,14 +3412,15 @@ function renderDietDay(){
     <div class="tli"><div class="tlt">07:10</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">☀️ Mini SPF</div><div class="tlde">Yürüyüş öncesi 3 dk · cleanser/serum YOK</div></div></div>
     <div class="tli"><div class="tlt">07:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🚶 Yürüyüş 7-8 km</div><div class="tlde">Fasted · 90 dk</div></div></div>
     <div class="tli"><div class="tlt">09:15</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">☀️ Tam sabah cilt rutini</div><div class="tlde">Duş sonrası · 6 adım · SPF en son</div></div></div>
-    <div class="tli"><div class="tlt">10:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün (pencere açılışı)</div><div class="tlde">Et + yumurta + yağ · Omega-3 + B-Complex (Methylfolate 400mcg + P5P 25mg + Methyl-B12 500mcg)</div></div></div>
+    <div class="tli"><div class="tlt">10:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 1. Öğün (pencere açılışı)</div><div class="tlde">Et + yumurta + yağ · Omega-3 + B-Complex (Methylfolate 400mcg + P5P 25mg + Methyl-B12 500mcg) + <b>Selenyum 200mcg</b> (T4→T3 dönüşüm, selenoprotein sentezi)</div></div></div>
     <div class="tli"><div class="tlt">10:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Calciday (1. doz)</div><div class="tlde">Levotiron'dan 4 saat sonra · yemek sonrası</div></div></div>
     <div class="tli"><div class="tlt">14:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🍯 Pre-workout</div><div class="tlde">1 yk bal VEYA 1 kivi + tuzlu su · ~60 kcal glikojen</div></div></div>
     <div class="tli"><div class="tlt">15:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🏋️ PPL antrenman</div><div class="tlde">15:00–16:30 · beslenmiş halde</div></div></div>
-    <div class="tli"><div class="tlt">17:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün (post-workout)</div><div class="tlde">Et/balık + karb pencere · Kreatin 5g + Çinko 15mg + Bakır 1.5mg (Zn:Cu dengesi) + Calciday (2. doz)</div></div></div>
+    <div class="tli"><div class="tlt">17:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün (post-workout)</div><div class="tlde">Et/balık + karb pencere · Kreatin 5g + Calciday (2. doz)</div></div></div>
     <div class="tli"><div class="tlt">18:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Qalyviz</div><div class="tlde">Yağlı öğünle · D vit emilimi</div></div></div>
     <div class="tli"><div class="tlt">19:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🌙 Pencere kapanır</div><div class="tlde">14-15 saat gece açlığı başlar</div></div></div>
-    <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Magnezyum + Kolajen</div><div class="tlde">Mg bisglycinate 300mg · yatmadan 30 dk önce</div></div></div>`;
+    <div class="tli"><div class="tlt">22:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">💊 Çinko 15mg + Bakır 1.5mg</div><div class="tlde">Yatmadan ~1 saat · Ca/Levotiron'dan uzak (en az 2 saat) · Zn:Cu = 10:1 dengesi</div></div></div>
+    <div class="tli"><div class="tlt">23:00</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">💊 Magnezyum + Kolajen</div><div class="tlde">Mg bisglycinate 300mg · yatmadan 30 dk önce · Zn'dan 1 saat sonra (mineral ayrımı)</div></div></div>`;
 
   // Günlük makro özeti — 4 ring (gerçek vs hedef)
   const macroEl = document.getElementById('d-macro-summary');
@@ -4470,7 +4477,7 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) · Hedef: 58 kg (Eylül 2026, ~5 ay, ~5 kg/ay) · Bağlam: post-tiroidektomi (Levotiron + Calciday profilaktik) · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Karnivor + 10:00-19:00 IF · 6 gün PPL antrenman (yeni başladı) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Yorumlarken bunu hatırlat.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül hedefine yolda mı?\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) · Hedef: 58 kg (Eylül 2026, ~5 ay, ~5 kg/ay) · Bağlam: post-tiroidektomi (Levotiron + Calciday profilaktik · Selenyum 200mcg · Çinko 15mg+Bakır 1.5mg) · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Karnivor + 10:00-19:00 IF · 5/7 yürüyüş + 4-5/7 esnek güç antrenmanı (5-gün split) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Yorumlarken bunu hatırlat.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül hedefine yolda mı?\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
   catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
   btn.innerHTML='🤖 Re-analyse';btn.disabled=false;

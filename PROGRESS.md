@@ -515,7 +515,7 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 Bengisu diyetine ekledi, koda entegrasyon ileride yapılacak (ayrı seans):
 - **Selenyum 200 mcg/gün** — tiroidektomi sonrası tiroid sağlığı (T4→T3 dönüşüm desteği, Sims literatürü). Daha önce uygulamadan çıkarılmıştı (4 May), şimdi geri ekleniyor. UL 400 mcg, makul doz.
-- **Çinko 15 mcg/gün ⚠️ (doz doğrula)** — kullanıcı "15 mcg" yazdı ama standart çinko dozu **15-30 mg** (mcg ≠ mg, 1000× fark). 15 mcg pratikte etkisiz. Bengisu'ya soruldu, cevap bekliyor: 15 mg mı yoksa 15 mcg mı? Kadın RDA 8 mg, supplement tipik 15-30 mg, UL 40 mg.
+- ✅ **Çinko 15 mg/gün** — Bengisu doğruladı (7 May, "15 mg çinko"). Kadın RDA 8 mg, supplement tipik 15-30 mg, UL 40 mg. Levotiron'dan ≥4 saat ayrı, Calciday'den ayrı (Ca/Zn antagonizmi), tercihen yatmadan önce.
 
 **Entegrasyon yapılacaklar:**
 - Diyet sekmesi supplement zamanlama tablosuna (`supp-tl` veya `creatine_detail` benzeri) eklenecek
