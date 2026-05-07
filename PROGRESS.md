@@ -1,6 +1,6 @@
 # 📋 Bengisu Program — Progress & Status
 
-**Son güncelleme:** 6 Mayıs 2026 (Egzersiz "Ultimate" 12-ajan sıralı analizi + Phase 2 Quick Wins commit'i)
+**Son güncelleme:** 7 Mayıs 2026 (Phase 2 Hafta 4 — P0 10/10 TAMAMLANDI · supplement + body neutrality + akşam check-in + haftalık özet + ⓘ bilim modu)
 **Site:** https://bengisusengul.github.io/bengisu-program/
 **Repo:** https://github.com/bengisusengul/bengisu-program
 
@@ -203,8 +203,14 @@ Bengisu'nun **kişisel sağlık takip uygulaması**. Tek dosyalı (HTML+CSS+JS) 
 | 2026-05-06 | `f3694c4` | **Phase 2 Hafta 2B — Wake Lock + auto rest timer:** `acquireWakeLock`, `releaseWakeLock`, visibilitychange listener, `startSetTimer`, `stopSetTimer`, `adjustTimer`, `timerComplete`, `renderRestTimer`. Set ✓ sonrası otomatik timer (compound 150s, izolasyon 75s, core 45s). Vibration [180,80,180,80,260] (Android), iOS visual flash fallback. 159 satır ekleme. PROGRESS güncellendi: Selenyum 200mcg + Çinko ⚠ doz doğrulama bekleyen supplement entegrasyonu. |
 | 2026-05-06 | `cee41ca` | **Phase 2 Hafta 2C — PR celebration + antrenman özeti + sparkline:** `celebratePR`, `getPRZenQuote` (cycle-aware ZEN havuzları: Folliküler/Ovulasyon/Luteal/Regl), `findExerciseName`, `renderPRCelebration`, `closePR`. Trophy 🏆 entrance animasyon, "Önceki → Yeni" karşılaştırma, +delta, arketip rozeti. `renderSessionSummary` (üstte "✨ Antrenman Tamam" / "📊 Şu ana kadar" — kg·rep volume, ort RPE, PR count, atlanan, değişen). `renderExSparkline` her hareket için son 4 seans 1RM SVG inline trendi. 190 satır ekleme. **Hafta 2 (set log altyapısı) TAMAMLANDI.** |
 | 2026-05-06 | `588b6ef` | **Phase 2 Hafta 3 — 5-gün split + cycle-aware antrenman matrisi:** SP yenilendi (Pzt Alt-Squat / Sal Üst-Push / Çar Glute-Posterior / Per Üst-Pull / Cum Total-Hibrid / Cmt-Paz dinlenme). EX güncellendi: 27 eski + 10 yeni hareket (bss, gobl, step, ccf, bsht, cpt, db, apu, kbs, fc). CD soğumaları yeni split'e hizalandı. `getCycleAwareWorkoutAdjustment(d)` 7 faz × öneri tablosu (intensity/volume çarpanları + bilim notu + substitusyon flag). `OVULATION_SUB` tablosu + `applyOvulationSub()` (Day 11-15 cycle-safe alternatif chip per egzersiz: Smith→Goblet, Bulgarian→Step-Up, RDL→Cable Pull-Through, HT→Glute Bridge, B-Stance HT→Glute Bridge, Russian Twist→Pallof). Banner zenginleştirildi (yoğunluk×N · hacim×M rozet + faz tip italik). 238 satır ekleme. |
+| 2026-05-06 | `a87fb8a` | PROGRESS.md gün sonu sync (14 commit'lik büyük gün özeti). |
+| 2026-05-07 | `65dbb22` | **Supplement entegrasyonu:** Selenyum 200 mcg eklendi (10:00 1. öğünle, T4→T3 dönüşüm + selenoprotein sentezi). Çinko 15 mg + Bakır 1.5 mg (Zn:Cu 10:1) 17:00'dan **22:00'a** taşındı (Ca/Zn antagonizmi önlendi, Mg'dan 1 saat ayrı). `selenium_detail` + `zinc_detail` expandable kartlar (doktor soruları dahil). Renpho AI prompt context güncellendi (supplement listesi + 5-gün split). |
+| 2026-05-07 | `3d564b6` | **Phase 2 Hafta 4A — Body neutrality + 5-metrik Eylül hedefi:** Topbar "Vücut Takibi" → "Vücudumla Uyum". Eylül kartı "5 metrik · vücudunla uyum" + 4 ek metrik mini pano (📏 Bel · 💪 Squat 1RM · 🚶 Adım 7-gün ort · 💚 Ruh hali). Aylık ara hedefler **aralık** formatına çevrildi (May 73-75 / Eyl 56-60). pnote dil revizyonu, "Hız bedenine ait" yumuşak ton. `getMultiMetricProgress` helper. |
+| 2026-05-07 | `b1f8e40` | **Phase 2 Hafta 4B — Akşam check-in + anti-kompulsif tasarım:** Bugün sayfasında 19:00-23:59 görünür akşam check-in kartı (5 mood: ✨💪🌊🌫️🌙, hiçbiri "başarısız"). Cycle context-aware proaktif önek. Pazar gece (≥20:00) haftalık compulsive screening modal (3 yargısız soru, 1-5 skala, avg ≥3.5 → kibar 3-gün esnek hafta önerisi). 15 yeni helper, 226 satır ekleme. |
+| 2026-05-07 | `e1a29a9` | **Phase 2 Hafta 4C — Plan vs gerçek haftalık özet kartı:** Bugün sayfasında pazar ≥20:00 otomatik görünür. 6 conic-gradient ring (yürüyüş 5/7, antrenman 5/5, 1. öğün 7/7, su hedef 7/7, dinlenme 2/2, cycle log 7/7) + total volume + ort RPE + PR sayısı + skip/modify listesi (sebepleriyle) + cycle-aware faz notu + yumuşak kapanış ("Bu hafta yarım değil — STRATEJİK"). `getWeeklyDigest()` helper agregatör. 166 satır. |
+| 2026-05-07 | `ee93689` | **Phase 2 Hafta 4D — ⓘ Bilim Modu inline expand:** EXERCISE_EDU data structure (5 hareket: sq/rdl/ht/lat/pall) — Ajan 7 pedagoji metinleri tam (anatomi/biyomekanik/metabolik/yaygın yanlış kavram + L3 ileri). Bilim Modu seviye sistemi (L2 default, L3 toggle ile mTOR/EMG/PMID görünür). ⓘ Bilim sage-green chip her egzersiz kartında (edu varsa). Tap → inline accordion 4 kategori. **SYNTHESIS P0 10/10 TAMAMLANDI** 🎉. 99 satır. |
 
-**Toplam:** 47 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
+**Toplam:** 53 commit + workout-ultimate/ raporları (repo'da, 12 dosya).
 
 **Ek (repo dışı):** Memory rutini yazıldı — `~/.claude/projects/.../memory/feedback_progress_routine.md` + `MEMORY.md`. Yeni sohbet başında PROGRESS.md otomatik okunacak.
 
@@ -392,7 +398,38 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 
 ---
 
-## 📍 Şu Anki Durum (6 Mayıs 2026 — gün sonu)
+## 📍 Şu Anki Durum (7 Mayıs 2026 — gün sonu · Phase 2 P0 fazı tamam)
+
+### 🎉 Phase 2 SYNTHESIS P0 roadmap — 10/10 TAMAMLANDI
+
+| | Madde | Commit |
+|---|---|---|
+| ✅ | #1 Hipoparatiroidi temizliği | `ffb2619` |
+| ✅ | #2 Set/rep/RPE girişi sistemi | `6caa368`+`f3694c4`+`cee41ca` |
+| ✅ | #3 5-gün dengeli split | `588b6ef` |
+| ✅ | #4 Cycle-aware antrenman matrisi | `588b6ef` |
+| ✅ | #5 Quick state ✓/⚡/🛌 + akşam check-in | `6caa368`+`b1f8e40` |
+| ✅ | #6 ⓘ Bilim Modu inline expand | `ee93689` |
+| ✅ | #7 Plan vs gerçek haftalık özet | `e1a29a9` |
+| ✅ | #8 Body neutrality + 5 satır Eylül | `3d564b6` |
+| ✅ | #9 Anti-kompulsif tasarım | `b1f8e40` |
+| ✅ | #10 Renpho AI + onboarding tıbbi etiket | `ffb2619` |
+
+### 7 Mayıs (bugün) — 5 commit, Phase 2 Hafta 4 tamamlandı
+
+✅ **Supplement entegrasyonu (`65dbb22`):** Selenyum 200 mcg (10:00) + Çinko 15 mg / Bakır 1.5 mg yeniden zamanlandı (22:00, Ca/Zn antagonizm önlendi). `selenium_detail` + `zinc_detail` doktor sorularıyla.
+
+✅ **4A — Body neutrality + 5-metrik Eylül hedefi (`3d564b6`):** Ölçüm sekmesi tek-kg-tiranlığı yerine 5 metrikli (kg + bel + squat 1RM + adım + ruh hali). Aylık aralıklar (May 73-75 → Eyl 56-60), "Hız bedenine ait" yumuşak ton.
+
+✅ **4B — Akşam check-in + anti-kompulsif (`b1f8e40`):** 19:00-23:59 5-mood check-in (✨💪🌊🌫️🌙, hiçbiri "başarısız"). Pazar 20:00+ haftalık compulsive screening (3 yargısız soru, avg ≥3.5 → kibar esnek hafta önerisi).
+
+✅ **4C — Plan vs gerçek haftalık özet (`e1a29a9`):** Pazar 20:00+ Bugün'de otomatik 6-ring conic-gradient pano (yürüyüş/antrenman/öğün/su/dinlenme/cycle log) + total volume + skip/modify + faz notu + "stratejik hafta, yarım değil" kapanış.
+
+✅ **4D — ⓘ Bilim Modu inline expand (`ee93689`):** 5 ana hareket için Ajan 7 pedagoji metni (anatomi/biyomekanik/metabolik/yaygın yanlış kavram + L3 ileri toggle). EXERCISE_EDU data + sage-green ⓘ chip.
+
+### Önceki günün (6 Mayıs) ✅ özetler
+
+
 
 ✅ **Bugün sekmesi bare-image + greeting'e indirgendi (6 May).** Bg.jpg artık ana hero, sade selam kartı (cycle phase + ZEN) hariç hiçbir şey yok. 📷 Health Ölçüm sekmesinde.
 
@@ -477,22 +514,30 @@ GitHub Pages 30-60 saniyede deploy eder. Hard refresh = tab kapat-aç (mobil) / 
 - AI'ın okuduğu sayıların doğruluğu (Türkçe binlik ayraç vb.)
 - Modal düzenlenebilir alanlarda input UX
 
-⏳ **Phase 2 — Egzersiz "Ultimate" devam ediyor:**
-- Hafta 1 Quick Wins ✅ (`ffb2619`)
-- Hafta 2 Set log altyapısı ✅ (`6caa368` + `f3694c4` + `cee41ca`)
-- Hafta 3 5-gün split + cycle-aware matrisi ✅ (`588b6ef`)
-- **Hafta 4 (sıradaki):** SYNTHESIS P0 kalan 4 madde:
-  - **#6 ⓘ inline expand bilim modu** — Bilim Modu toggle + L2/L3 mikro-açıklama (Ajan 7 pedagoji)
-  - **#7 Plan vs gerçek haftalık özet** — Pazar gece kart, multiple streak (Ajan 8 + 9)
-  - **#8 Body neutrality dil revizyonu** — 5 satır Eylül hedefi (kg/ölçü/kuvvet/dayanıklılık/ruh hali), aralık hedefler (Ajan 6)
-  - **#9 Anti-kompulsif tasarım** — haftalık compulsive screening, "daha az ye" hiçbir yerde, confetti haftalık milestone'a kaydır
-  - **+ Akşam 30 sn check-in** (P0 #5 yarı tamam — ✓/⚡/🛌 var, akşam check-in eksik)
-- **P1 (Hafta 5+, 4-8 hafta süreceği tahmin):** 5 orijinal fikir
-  - 🧪 Hacettepe Lab — bilim modu özel sekme (PMID kütüphanesi, hipotez defteri)
-  - 💬 Body Conversation — sabah niyet → akşam karşılaştırma somatic diyalog
-  - 📊 Cycle Pattern Emergence — 3 cycle sonra "Bengisu'nun Cycle Atlası"
-  - 💊 Levotiron Diary — ilaç × performance × mood pattern, doktor PDF export
-  - 💍 Wedding Mirror — düğüne 60 gün kala özel mod, 14 gün önce kg suspension
+✅ **Phase 2 P0 fazı 10/10 TAMAMLANDI (7 May).** Egzersiz Ultimate roadmap'te tüm zorunlu maddeler kodda. Kullanıcı testi sonrası P1'e geçilebilir.
+
+🎯 **Sıradaki ufuk — P1 (4-8 hafta süreceği tahmin):**
+
+**Pedagojik genişleme:**
+- ⓘ Bilim Modu — 5 hareket → 25+ hareket için edu metni (Ajan 7 ile tek tek)
+- Glossary 50-80 terim (RPE, RIR, MEV/MAV/MRV, mTOR, glikoliz...) L1/L2/L3 toggle altı çizim
+- "Bu hafta odak" haftalık kart (Pazartesi sabah, cycle fazına göre faz açıklaması — 200-400 kelime, ders planı kalitesinde)
+
+**Görselleştirme:**
+- Kas grubu balance heatmap (SVG body diagram, ön+arka, 9 ana kas grubu × MAV oranı)
+- Volume × MEV/MAV/MRV stacked bar (12 hafta × kas grubu)
+- Cycle × performance pattern emergence (3 cycle sonra Bengisu'nun PR atlası)
+
+**Beslenme:**
+- Mikronutrient gap kapatma (C vit ≥75 mg, K2 100 µg, lif 5-10g, omega-3)
+- Pre/post-WO zamanlama optimizasyonu (Calciday 2. doz 17:00→18:30, pre-WO 14:00 30g karb)
+
+**5 orijinal sentez fikri (sen "hepsi içeride" dedin):**
+- 🧪 Hacettepe Lab — bilim modu özel sekme (PMID kütüphanesi, hipotez defteri, pedagojik notlar)
+- 💬 Body Conversation — sabah niyet → akşam karşılaştırma somatic diyalog
+- 📊 Cycle Pattern Emergence — 3 cycle sonra "Bengisu'nun Cycle Atlası" + literatür kıyas
+- 💊 Levotiron Diary — ilaç × performance × mood pattern, doktor PDF export
+- 💍 Wedding Mirror — düğüne 60 gün kala özel mod, 14 gün önce kg suspension
 
 ⏳ **Bengisu'nun cevaplaması gereken açık sorular** (SYNTHESIS.md Bölüm 7):
 
@@ -525,9 +570,10 @@ Bengisu diyetine ekledi, koda entegrasyon ileride yapılacak (ayrı seans):
 - Ajan 1 + Ajan 4 referansları + doktor sorusu eklenecek
 
 🎯 **Sonraki adımlar:**
-- Bengisu SYNTHESIS.md'yi oku, açık soruları cevapla
-- Phase 2 Hafta 2 plan dosyası aç (set log altyapısı detayı)
-- Photo + AI flow iPhone test (1 May'dan beri bekliyor)
+- **iPhone'da gerçek kullanım testi** — Bengisu Phase 2 P0'ın hepsini canlı dener. Set log akışı, Wake Lock, auto-timer, cycle-aware banner, ovulasyon substitusyon, akşam check-in (19:00+), pazar haftalık özet (haftaya pazar 20:00), ⓘ Bilim Modu (5 hareket), 5-metrik Eylül hedefi.
+- **Test feedback** sonrası rötuş seansı (UI ayarları, kopya iyileştirmeleri).
+- **P1 öncelik karar** — pedagojik genişleme (Glossary, "Bu hafta odak" kartı) vs. görselleştirme (kas haritası heatmap) vs. 5 orijinal fikirden başlama. Kullanıcının duyguları ve enerjisine göre.
+- Photo + AI flow iPhone test (hâlâ bekliyor).
 
 ---
 
