@@ -923,6 +923,31 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .sg-empty-grid{padding:20px 12px;text-align:center;font-size:13px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
 
 /* ════════════════════════════════════════════ */
+/* KAS HEATMAP · SVG body diagram (Phase 2 Hafta 6B — Ajan 9 + Ajan 3) */
+/* Haftalık volume × MEV/MAV/MRV oranı → 5-renk gradient */
+/* ════════════════════════════════════════════ */
+.muscle-heatmap-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(90,122,79,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.mh-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.mh-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
+.mh-bodies{display:flex;justify-content:center;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.mh-body{flex:1;max-width:160px;}
+.mh-body-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);text-align:center;margin-bottom:6px;font-weight:600;}
+.mh-svg{width:100%;height:auto;display:block;}
+.mh-region{stroke:rgba(232,221,196,0.20);stroke-width:0.6;cursor:pointer;transition:stroke-width 0.15s, filter 0.15s;}
+.mh-region:hover,.mh-region.active{stroke:var(--cream);stroke-width:1.4;filter:drop-shadow(0 0 4px rgba(232,178,63,0.55));}
+.mh-silhouette{fill:rgba(15,30,38,0.30);stroke:rgba(232,221,196,0.18);stroke-width:0.5;}
+.mh-legend{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:10px 0 12px;font-size:9px;text-align:center;color:var(--cream-mute);}
+.mh-legend-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.mh-legend-dot{width:12px;height:12px;border-radius:50%;}
+.mh-detail{margin-top:8px;padding:12px 14px;border-radius:12px;background:rgba(232,221,196,0.04);border-left:3px solid var(--sage-leaf);font-size:13px;color:var(--cream-soft);line-height:1.55;display:none;}
+.mh-detail.open{display:block;animation:eveSlideIn 0.25s ease-out;}
+.mh-detail-name{font-weight:700;color:var(--cream);font-size:14px;margin-bottom:4px;text-transform:capitalize;}
+.mh-detail-meta{font-size:11px;color:var(--cream-mute);margin-bottom:8px;}
+.mh-detail-list{font-size:12px;line-height:1.6;}
+.mh-detail-list li{padding:2px 0;list-style:none;}
+.mh-empty{text-align:center;padding:22px 12px;font-size:13px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1052,6 +1077,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
   <!-- Güç Trendi · 6 lift × 1RM tahmini sparkline grid (Phase 2 Hafta 6A) -->
   <div id="e-strength-grid"></div>
+  <!-- Kas Heatmap · 9 kas grubu SVG body diagram (Phase 2 Hafta 6B) -->
+  <div id="e-muscle-heatmap"></div>
   <div style="height:8px;"></div>
 </div>
 
@@ -5206,7 +5233,7 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();}
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -5538,6 +5565,224 @@ function renderStrengthGrid(){
     <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
     <div class="sg-subtitle">6 ana hareket · Brzycki+Epley+RPE · cycle-aware tint</div>
     <div class="sg-grid">${cells}</div>
+  </div>`;
+}
+
+// ── Kas Heatmap · 9 kas grubu SVG body diagram (Phase 2 Hafta 6B — Ajan 9 + Ajan 3)
+// Haftalık volume × MEV/MAV/MRV oranı → 5-renk gradient (Akşam Bahçesi paletten)
+// Tap → detay accordion (kas adı + bu hafta toplam set + hareket dökümü + bilim notu)
+
+// Hareket id → kas grubu ağırlık mapping (toplam = 1.0). Kas grubu key'leri:
+// chest, shoulder, back, biceps, triceps, quad, hamstring, glute, core
+const EXERCISE_MUSCLE_MAP={
+  // Pzt — Alt
+  'sq':{quad:0.50,glute:0.30,core:0.20},
+  'bss':{quad:0.45,glute:0.40,core:0.15},
+  'gobl':{quad:0.50,glute:0.25,core:0.25},
+  'gbr':{glute:0.70,hamstring:0.30},
+  'step':{quad:0.50,glute:0.40,core:0.10},
+  'cc':{core:1.00},
+  // Sal — Push
+  'dbp':{chest:0.60,shoulder:0.25,triceps:0.15},
+  'dsp':{shoulder:0.60,triceps:0.30,chest:0.10},
+  'ccf':{chest:0.85,shoulder:0.15},
+  'lr':{shoulder:1.00},
+  'tc':{triceps:1.00},
+  'pall':{core:1.00},
+  // Çar — Glute & Posterior
+  'ht':{glute:0.80,hamstring:0.20},
+  'rdl':{hamstring:0.50,glute:0.40,back:0.10},
+  'bsht':{glute:0.75,hamstring:0.20,core:0.05},
+  'cpt':{glute:0.55,hamstring:0.40,back:0.05},
+  'db':{core:1.00},
+  // Per — Pull
+  'lat':{back:0.70,biceps:0.30},
+  'cr':{back:0.70,biceps:0.25,shoulder:0.05},
+  'dbrow':{back:0.70,biceps:0.30},
+  'fp':{back:0.55,shoulder:0.45},
+  'curl':{biceps:1.00},
+  'ham':{biceps:1.00},
+  // Cum — Hibrid
+  'apu':{back:0.60,biceps:0.40},
+  'kbs':{glute:0.40,hamstring:0.30,back:0.15,core:0.15},
+  'plk':{core:0.90,shoulder:0.10},
+  'fc':{back:0.40,core:0.30,glute:0.20,biceps:0.10},
+  'rt':{core:1.00}
+  // not: cal (calf raise) heatmap dışında — 9 kas grubunda calf yok
+};
+
+// Kas grubu hedef set aralıkları haftalık (Israetel 2018 — Renaissance Periodization MEV/MAV/MRV)
+// MEV: minimum büyüme, MAV: optimal, MRV: aşımı stagnation
+const MUSCLE_TARGETS={
+  chest:    {mev:8, mav:14, mrv:22, label:'Göğüs',          face:'front'},
+  shoulder: {mev:8, mav:16, mrv:24, label:'Omuz',           face:'front'},
+  back:     {mev:10,mav:18, mrv:26, label:'Sırt',           face:'back'},
+  biceps:   {mev:8, mav:14, mrv:22, label:'Biceps',         face:'front'},
+  triceps:  {mev:6, mav:12, mrv:20, label:'Triceps',        face:'back'},
+  quad:     {mev:8, mav:16, mrv:24, label:'Quadriceps',     face:'front'},
+  hamstring:{mev:6, mav:12, mrv:20, label:'Hamstring',      face:'back'},
+  glute:    {mev:8, mav:16, mrv:24, label:'Glute',          face:'back'},
+  core:     {mev:8, mav:16, mrv:24, label:'Core',           face:'front'}
+};
+
+// Bu haftanın (Pazartesi 00:00 → bugün) yapılan set sayıları, kas grubu başına
+// Çıktı: { chest: 12.5, glute: 18, ..., _exDetail: { glute:[{exId,sets,date}], ... } }
+function getMuscleHitsThisWeek(now){
+  now=now||new Date();
+  // Haftanın Pazartesi 00:00'ı
+  const dow=now.getDay();
+  const offset=dow===0?6:dow-1; // Pazar=0 → 6 gün geri
+  const monday=new Date(now);monday.setHours(0,0,0,0);monday.setDate(monday.getDate()-offset);
+  const log=S.workoutLog||{};
+  const hits={};
+  const detail={}; // kas grubu → [{exId, sets, dateKey}]
+  Object.keys(MUSCLE_TARGETS).forEach(k=>{hits[k]=0;detail[k]=[];});
+  Object.keys(log).forEach(dk=>{
+    const d=new Date(dk);
+    if(isNaN(d.getTime()))return;
+    if(d.getTime()<monday.getTime())return;
+    if(d.getTime()>now.getTime()+86400000)return; // future ignore
+    Object.keys(log[dk]).forEach(exId=>{
+      const entry=log[dk][exId];
+      if(!entry||!entry.sets)return;
+      const doneSets=entry.sets.filter(s=>s.state==='done').length;
+      if(!doneSets)return;
+      const map=EXERCISE_MUSCLE_MAP[exId];
+      if(!map)return;
+      Object.keys(map).forEach(muscle=>{
+        if(!(muscle in MUSCLE_TARGETS))return;
+        hits[muscle]+=doneSets*map[muscle];
+        detail[muscle].push({exId,sets:doneSets,dk,weight:map[muscle]});
+      });
+    });
+  });
+  return{hits,detail,monday};
+}
+
+// volume / target → renk + status (Akşam Bahçesi paletten)
+// 0: rgba(180,121,144,0.18) mauve soluk = kullanılmadı
+// <50% MEV: rgba(180,121,144,0.55) mauve = az
+// 50-100% MEV: rgba(90,122,79,0.55) sage = MEV doldu
+// MEV-MAV: rgba(232,178,63,0.65) mustard = optimal
+// MAV-MRV: rgba(232,178,63,0.85) mustard parlak = peak
+// >MRV: rgba(217,89,30,0.65) coral = aşım uyarı
+function getMuscleVolumeColor(volume,target){
+  if(!volume||volume<0.5)return{color:'rgba(180,121,144,0.18)',status:'idle',label:'Kullanılmadı'};
+  if(volume<target.mev*0.5)return{color:'rgba(180,121,144,0.50)',status:'low',label:'Az volume'};
+  if(volume<target.mev)return{color:'rgba(90,122,79,0.45)',status:'building',label:'MEV altı (gelişiyor)'};
+  if(volume<target.mav)return{color:'rgba(90,122,79,0.78)',status:'mev',label:'MEV-MAV (etkin)'};
+  if(volume<=target.mrv)return{color:'rgba(232,178,63,0.78)',status:'optimal',label:'MAV-MRV (optimal)'};
+  return{color:'rgba(217,89,30,0.70)',status:'over',label:'MRV aşıldı (uyarı)'};
+}
+
+// Soyut SVG body silüet path'leri (front view ve back view)
+// ViewBox: 100×260 her body için
+const BODY_PATHS={
+  silhouette_front:'M50 6 Q60 6 62 22 Q62 32 56 36 L56 40 L70 44 Q90 50 92 70 L88 100 Q78 110 72 110 L72 160 L82 200 L82 240 Q82 252 76 252 L70 252 Q66 240 64 220 L60 168 L50 168 L40 168 L36 220 Q34 240 30 252 L24 252 Q18 252 18 240 L18 200 L28 160 L28 110 Q22 110 12 100 L8 70 Q10 50 30 44 L44 40 L44 36 Q38 32 38 22 Q40 6 50 6 Z',
+  silhouette_back:'M50 6 Q60 6 62 22 Q62 32 56 36 L56 40 L70 44 Q90 50 92 70 L88 100 Q78 110 72 110 L72 160 L82 200 L82 240 Q82 252 76 252 L70 252 Q66 240 64 220 L60 168 L50 168 L40 168 L36 220 Q34 240 30 252 L24 252 Q18 252 18 240 L18 200 L28 160 L28 110 Q22 110 12 100 L8 70 Q10 50 30 44 L44 40 L44 36 Q38 32 38 22 Q40 6 50 6 Z',
+  // Front kas grupları
+  chest:    'M30 50 Q30 62 38 68 L48 70 L62 70 L72 68 Q78 62 78 50 Q70 47 50 47 Q34 47 30 50 Z',
+  shoulder: 'M14 52 Q12 64 18 72 L24 72 L26 60 Q22 50 18 48 Q14 50 14 52 Z M86 52 Q88 64 82 72 L76 72 L74 60 Q78 50 82 48 Q86 50 86 52 Z',
+  biceps:   'M14 76 Q12 92 16 104 L22 104 L24 88 L24 76 Z M86 76 Q88 92 84 104 L78 104 L76 88 L76 76 Z',
+  core:     'M36 78 L64 78 L66 110 Q60 118 50 118 Q40 118 34 110 Z',
+  quad:     'M30 124 L48 124 L48 162 Q44 168 38 168 L28 168 Q26 156 28 142 Z M52 124 L70 124 L72 142 Q74 156 72 168 L62 168 Q56 168 52 162 Z',
+  // Back kas grupları (mirror in second body)
+  back:     'M28 50 Q22 62 24 90 L26 110 Q40 116 50 116 Q60 116 74 110 L76 90 Q78 62 72 50 Q60 47 50 47 Q40 47 28 50 Z',
+  triceps:  'M14 76 Q12 92 16 104 L22 104 L24 88 L24 76 Z M86 76 Q88 92 84 104 L78 104 L76 88 L76 76 Z',
+  glute:    'M30 118 Q26 130 30 144 L46 144 L48 124 L52 124 L54 144 L70 144 Q74 130 70 118 Q60 116 50 116 Q40 116 30 118 Z',
+  hamstring:'M30 144 L48 144 L48 168 Q42 174 36 174 L28 174 Q26 158 30 144 Z M52 144 L70 144 Q74 158 72 174 L64 174 Q58 174 52 168 Z'
+};
+
+let _activeMuscleDetail=null;
+
+function expandMuscleDetail(muscleKey){
+  _activeMuscleDetail=(_activeMuscleDetail===muscleKey)?null:muscleKey;
+  renderMuscleHeatmap();
+}
+
+function renderMuscleHeatmap(){
+  const el=document.getElementById('e-muscle-heatmap');
+  if(!el)return;
+  const{hits,detail,monday}=getMuscleHitsThisWeek(new Date());
+  const totalSets=Object.values(hits).reduce((a,b)=>a+b,0);
+  if(totalSets<0.5){
+    el.innerHTML=`<div class="muscle-heatmap-card">
+      <div class="mh-title">Kas Dengesi · Bu Hafta</div>
+      <div class="mh-subtitle">9 kas grubu × MEV/MAV/MRV oranı</div>
+      <div class="mh-empty">Bu hafta henüz set log'u tamamlanmadı. Pazartesi'ten itibaren ✓ ettiğin setler kas grubu dağılımına işlenir, vücut diyagramında renkli alanlar olarak görünür.</div>
+    </div>`;
+    return;
+  }
+  // SVG body — front + back
+  const muscles=Object.keys(MUSCLE_TARGETS);
+  const buildBody=(face)=>{
+    const regions=muscles.filter(m=>MUSCLE_TARGETS[m].face===face).map(m=>{
+      const target=MUSCLE_TARGETS[m];
+      const v=hits[m]||0;
+      const vc=getMuscleVolumeColor(v,target);
+      const path=BODY_PATHS[m];
+      if(!path)return '';
+      const isActive=_activeMuscleDetail===m;
+      return `<path class="mh-region${isActive?' active':''}" d="${path}" fill="${vc.color}" data-muscle="${m}" onclick="expandMuscleDetail('${m}')"><title>${target.label}: ${v.toFixed(1)} set · ${vc.label}</title></path>`;
+    }).join('');
+    return `<div class="mh-body">
+      <div class="mh-body-label">${face==='front'?'Ön':'Arka'}</div>
+      <svg class="mh-svg" viewBox="0 0 100 260" preserveAspectRatio="xMidYMid meet" aria-label="${face==='front'?'Vücut ön':'Vücut arka'} kas grubu volume haritası">
+        <path class="mh-silhouette" d="${BODY_PATHS.silhouette_front}"/>
+        ${regions}
+      </svg>
+    </div>`;
+  };
+  // Detail card
+  let detailHTML='';
+  if(_activeMuscleDetail && MUSCLE_TARGETS[_activeMuscleDetail]){
+    const m=_activeMuscleDetail;
+    const target=MUSCLE_TARGETS[m];
+    const v=hits[m]||0;
+    const vc=getMuscleVolumeColor(v,target);
+    const exList=detail[m]||[];
+    // Aggregate per exercise
+    const byEx={};
+    exList.forEach(e=>{
+      if(!byEx[e.exId])byEx[e.exId]={sets:0};
+      byEx[e.exId].sets+=e.sets*e.weight;
+    });
+    const exItems=Object.keys(byEx).map(exId=>{
+      const name=findExerciseName(exId)||exId.toUpperCase();
+      return `<li>• <strong>${name}</strong>: ${byEx[exId].sets.toFixed(1)} effective sets</li>`;
+    }).join('');
+    const guidance=
+      vc.status==='idle'?'Bu hafta hiç çalışılmamış. Sonraki seansta dahil etmeyi düşün.':
+      vc.status==='low'?`MEV ${target.mev}/hafta — şu an çok altta. Volume ekleme penceresi var.`:
+      vc.status==='building'?`MEV (${target.mev}) yaklaştın. 1-2 set daha = etkin yük.`:
+      vc.status==='mev'?`MEV-MAV bandında — büyüme aktif. Hedef: MAV ${target.mav}.`:
+      vc.status==='optimal'?`MAV-MRV optimal aralık. Recovery yeterliyse aynı volume sürdür.`:
+      `MRV ${target.mrv} aşıldı — stagnation/aşırı yorgunluk riski. Sonraki hafta -%20 volume.`;
+    detailHTML=`<div class="mh-detail open">
+      <div class="mh-detail-name">${target.label}</div>
+      <div class="mh-detail-meta">${v.toFixed(1)} effective set · ${vc.label} · MEV ${target.mev} / MAV ${target.mav} / MRV ${target.mrv}</div>
+      <div class="mh-detail-list"><ul style="margin:0;padding:0;">${exItems||'<li>Bu hafta hareket yok</li>'}</ul></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.10);font-size:12px;color:var(--cream-soft);font-style:italic;">${guidance}</div>
+    </div>`;
+  }
+  // Legend (5 renk)
+  const legend=`<div class="mh-legend">
+    <div class="mh-legend-item"><div class="mh-legend-dot" style="background:rgba(180,121,144,0.18);"></div><span>Kullanılmadı</span></div>
+    <div class="mh-legend-item"><div class="mh-legend-dot" style="background:rgba(180,121,144,0.50);"></div><span>Az</span></div>
+    <div class="mh-legend-item"><div class="mh-legend-dot" style="background:rgba(90,122,79,0.78);"></div><span>MEV</span></div>
+    <div class="mh-legend-item"><div class="mh-legend-dot" style="background:rgba(232,178,63,0.78);"></div><span>Optimal</span></div>
+    <div class="mh-legend-item"><div class="mh-legend-dot" style="background:rgba(217,89,30,0.70);"></div><span>MRV+</span></div>
+  </div>`;
+  el.innerHTML=`<div class="muscle-heatmap-card">
+    <div class="mh-title">Kas Dengesi · Bu Hafta</div>
+    <div class="mh-subtitle">9 kas grubu × ${totalSets.toFixed(0)} effective set · MEV/MAV/MRV (Israetel 2018)</div>
+    <div class="mh-bodies">
+      ${buildBody('front')}
+      ${buildBody('back')}
+    </div>
+    ${legend}
+    <div style="text-align:center;font-size:11px;color:var(--cream-mute);font-style:italic;">Kas grubuna tıkla → bu hafta detay</div>
+    ${detailHTML}
   </div>`;
 }
 
