@@ -751,6 +751,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .rest-timer-actions button:active{transform:scale(0.92);background:rgba(232,221,196,0.18);}
 .rest-timer.done{border-color:var(--mustard);background:rgba(232,178,63,0.18);box-shadow:0 12px 40px rgba(232,178,63,0.4),inset 0 1px 0 rgba(255,255,255,0.18);}
 .rest-timer.done .rest-timer-progress{background:linear-gradient(90deg,var(--mustard),var(--coral));width:100% !important;}
+/* Set arası bilim mikro-balon (Phase 2 P2.1 — Ajan 7 + Ajan 10) */
+.rest-timer-microtip{position:relative;z-index:1;margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.12);font-size:11.5px;line-height:1.5;color:var(--cream-soft);font-style:italic;}
+.rest-timer-microtip-emoji{font-style:normal;margin-right:4px;}
+.rest-timer-microtip-tag{font-size:9px;text-transform:uppercase;letter-spacing:0.7px;color:var(--sage-leaf);font-weight:700;font-style:normal;margin-right:4px;}
 @keyframes pulseLow{0%,100%{opacity:1;}50%{opacity:0.55;}}
 @keyframes timerSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @media (prefers-reduced-motion: reduce){
@@ -5904,6 +5908,171 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 // ── Auto rest timer (Phase 2 Hafta 2B)
+// ── Set arası bilim mikro-balon (Phase 2 P2.1 — Ajan 7 + Ajan 10)
+// 90sn dinlenme bandında 1 cümle mekanizma ipucu. Sweller cognitive load uygun (~12 char/word, 1-2 sentence).
+// Egzersiz id'sine göre özel havuz, hareket-spesifik yoksa '*' genel havuza düşer.
+const SCIENCE_MICRO_TIPS={
+  'sq':[
+    'Smith barı dikey iz takip ettiği için kuadricepsler iniş/kalkışta sürekli yük altında — TUT yüksek.',
+    'Diz ayak parmağıyla aynı yön = vastus medialis aktivasyonu artar (VMO patellar tracking).',
+    'mTORC1 mekanik gerilim ile aktive olur; kaliteli derin set bir set yarım-ROM\'dan iyi.'
+  ],
+  'bss':[
+    'Single-leg loading bilateral squat\'ın ~%50 yüküyle aynı quad EMG verir (Speirs 2016).',
+    'Gluteus medius pelvis düşmesini önler — Trendelenburg testi pozitifse buradan başla.',
+    'Cross-education: tek bacak çalıştırmak karşı bacak nöral aktivasyonunu da arttırır.'
+  ],
+  'gobl':[
+    'Anterior load → core anti-flexion talebi bilateral squat\'tan %30 fazla.',
+    'Smith squat\'ın quad EMG\'sini düşük yükle elde edersin — ovulasyon haftası safe.',
+    'Dik gövde lumbar shear ↓ — bel hassasiyetinde tercih edilen squat varyasyonu.'
+  ],
+  'gbr':[
+    'Bant + 2 sn squeeze EMG glute max %75 MVIC üretir (Contreras 2015).',
+    'Topuktan it (parmaktan değil) → quadriceps yerine glute baskın olur.',
+    'Hip thrust\'a köprü hareketi — beginner-friendly bone loading.'
+  ],
+  'step':[
+    'Hip extensor power output bilateral squat\'tan %15 yüksek (McCurdy 2018).',
+    'Lateral knee compartment yükü Bulgarian\'dan ~%30 düşük.',
+    'Atletik kesme + sprint için en yüksek transfer (Reiman 2009).'
+  ],
+  'cc':[
+    'Cable Crunch rectus abdominis EMG %80+ MVIC (Escamilla 2010).',
+    'Lokal yağ yakımı yok (Kostek 2007) — six-pack %80 beslenme.',
+    'Hip sabit, sadece omurga flexionu — yoksa iliopsoas alır.'
+  ],
+  'dbp':[
+    'Incline 30-45° pec üst clavicular %85 EMG (Trebs 2010).',
+    'Dirsek 45° açı = omuz impingement minimum, pec aktive maksimum.',
+    'Stretch reflex eccentric ROM derin → mTOR sinyali güçlü.'
+  ],
+  'dsp':[
+    'Behind-the-neck press labrum + rotator cuff yırtık riski (Gross 1993) — yapma.',
+    'Dirsekler hafif öne (90° pure lateral değil) → impingement ↓.',
+    'Anterior dominans için Face Pull 1:2 oranı kritik.'
+  ],
+  'ccf':[
+    'Pec stretch alt pozisyonda fly\'da press\'ten %40 fazla (Welsch 2005).',
+    'Cable mid-range gerilim sürekli — free weight\'te tepede gerilim azalır.',
+    'Multi-angle (yukarı/orta/aşağı pulley) full pec hipertrofi (Soncin 2018).'
+  ],
+  'lr':[
+    'Lateral raise medial delt %75 MVIC, >90° trapezius dominant geçer.',
+    'Hafif yük + 12-15 rep + 2 sn squeeze = optimal medial delt hipertrofi.',
+    'Bideltoid breadth ~2-4 cm artırılabilir — kıyafet düşüşü hissi azalır.'
+  ],
+  'tc':[
+    'Pushdown lateral + medial head baskın — long head için overhead extension gerekir.',
+    'Halatla dipte abduction = lateral head aktivasyonu artar.',
+    'Triceps brachii kol kütlesinin 2/3\'ü — biceps\'ten büyük.'
+  ],
+  'pall':[
+    'Pallof external oblique %70+ MVIC, lumbar disk shear minimum (Boren 2011).',
+    'McGill Big 3: anti-rotation > rotation lumbar sağlığı için.',
+    'Athletic cutting + sprint transfer değeri en yüksek core egzersizi.'
+  ],
+  'ht':[
+    'Glute max EMG hip thrust\'ta squat ve deadlift\'ten yüksek (Contreras 2015).',
+    'Posterior pelvic tilt + 2 sn squeeze = aktivasyon zirvesi.',
+    'Femur boynu yatay yük → bone loading post-tiroidektomi KMY için kritik.'
+  ],
+  'rdl':[
+    'Hamstring eccentric loading strain riskini %50 azaltır (Petersen 2011).',
+    'Bel sabit kalır — hareket kalçadan, omurga nötr (anti-flexion).',
+    'Folliküler/ovulasyon\'da kollajen sentezi peak (östrojen-aracılı, Hansen 2017).'
+  ],
+  'bsht':[
+    'B-stance ana bacak %80 yük taşır — single-leg HT\'ye köprü.',
+    'Bilateral hip thrust\'ta dominant glute %60+ alır → asimetri büyür.',
+    'Sakroiliac stabilite tek-bacak loading ile gelişir.'
+  ],
+  'cpt':[
+    'Cable line of pull → kalça ekstansör torque maksimum.',
+    'Lumbar yükü RDL\'den düşük → ovulasyon Day 11-15 alternatifi.',
+    'Glute neural drive RDL\'den yüksek (Andersen 2019).'
+  ],
+  'cal':[
+    'Baldır lifleri %50 yavaş kasılan — tip I dayanıklılık baskın.',
+    'Achilles tendon stiffness sıçrama performansı belirler.',
+    'Yüksek rep (15-25) + uzun TUT optimal hipertrofi.'
+  ],
+  'db':[
+    'Dead Bug lumbar disk yükü <100 lb, Crunch 700+ lb (McGill 2007).',
+    'TVA aktivasyonu → bracing → spinal stabilizasyon.',
+    'Kontralateral movement → multifidus + obliques cross-pattern.'
+  ],
+  'lat':[
+    'Bar göğse > boyun arkası: EMG fark minimum, risk maksimum (Lehman 2004).',
+    'Lat lifleri mültifibriler — geniş tutuş üst, dar tutuş alt.',
+    'Modern oturma kültürü için sırt çekme bel sağlığı için kritik.'
+  ],
+  'cr':[
+    'Lat lower fibers EMG: dumbbell row > seated cable row > pulldown.',
+    'Push:pull oranı 1:1 (bench:row volume eşit) postür için kritik.',
+    'Mid-trap + rhomboid retraction = scapular nötr-stabil.'
+  ],
+  'dbrow':[
+    'Tek-kol core anti-rotation EMG bilateral row\'dan yüksek (Fenwick 2009).',
+    'Asimetri (sağ-sol fark) tedavisi için altın standart.',
+    'Stretch reflex daha derin (kol tam asılır eccentric tepe).'
+  ],
+  'fp':[
+    'Push:Pull dengesi: posterior delt:anterior delt 1:2 hedef volume.',
+    'Posterior delt + ext rot kompozisyonu — supraspinatus impingement koruma.',
+    'Olimpik atletler haftada 4-6 set Face Pull (omuz sağlığı).'
+  ],
+  'curl':[
+    'Long head incline curl\'de hipertrofi (omuzdan extension → stretch).',
+    'Tip II baskın → 8-15 rep + 2-3 sn eccentric optimal.',
+    'Multi-angle: curl + hammer + reverse = comprehensive (Wakahara 2012).'
+  ],
+  'ham':[
+    'Brachialis bicep\'in altında derin kas — kol sleeve doluluğu.',
+    'Neutral grip nötr bilek → önkol straini minimum.',
+    'Brachialis pure dirsek fleksör — bicep curl\'den izole.'
+  ],
+  'apu':[
+    'Pull-up lat EMG lat pulldown\'dan %25 yüksek (Doma 2013).',
+    'Bantlı progresyon: büyük → küçük bant → tam pull-up.',
+    'Eccentric pull-up + bantlı = en hızlı yol.'
+  ],
+  'kbs':[
+    'Form doğru → glute powermove. Form yanlış → bel risk (McGill 2010).',
+    'Kalça patlamasıyla swing (omuzdan değil) — RFD training.',
+    'Ovulasyon Day 11-15 dynamic plyometric kontrindike (relaxin).'
+  ],
+  'plk':[
+    '60+ sn plank → form bozulur (McGill 2007). 30-45 sn × 3-4 set + perfect form.',
+    'Side plank quadratus lumborum + obliques %75+ MVIC.',
+    'Time yerine varyasyon (side, shoulder tap, leg lift) önerilir.'
+  ],
+  'fc':[
+    'Grip strength = mortality predictor (Leong 2015) — total fonksiyon proxy.',
+    'Bone loading: GRF + statik kompresyon → osteojenik stimülüs.',
+    'Trap pattern: shrug ≠ carry; carry\'de scapular nötr-stabil.'
+  ],
+  'rt':[
+    'Hızlı + ağır rotation → disk shear ↑ (McGill kritiği).',
+    'Yavaş + kontrollü + orta yük → güvenli + etkili.',
+    'Ovulasyon haftası Pallof\'a geç (anti-rotation, omurga rotasyonu yok).'
+  ],
+  '*':[
+    'Set arası 90 sn = ATP-CP sistemi yenilenir (compound için min standart).',
+    'Set arası mikro-okuma çalışma belleği için olumlu — ders gibi düşün.',
+    'Su iç + nefes 4-7-8 → kalp hızı düşer, sonraki set RPE -1 olur.',
+    'Eccentric tempo 2-3 sn → mekanik gerilim mTORC1 sinyali maksimum.',
+    'Her set sonu RPE düşünce: bedeninle konuşmaya zaman verdin.',
+    'Cycle phase × performance pattern Hacettepe Lab\'da 3 cycle sonra belirir.'
+  ]
+};
+
+function getRandomMicroTip(exId){
+  const pool=SCIENCE_MICRO_TIPS[exId]||SCIENCE_MICRO_TIPS['*'];
+  if(!pool||!pool.length)return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
 function startSetTimer(exId,nextSetIdx,durationSec){
   stopSetTimer();
   S.activeTimer={
@@ -5912,7 +6081,8 @@ function startSetTimer(exId,nextSetIdx,durationSec){
     remainingSec:durationSec,
     startedAt:Date.now(),
     intervalId:null,
-    completed:false
+    completed:false,
+    microTip:getRandomMicroTip(exId) // Phase 2 P2.1 — set başında 1 tip seçilir, timer süresince sabit
   };
   renderRestTimer();
   S.activeTimer.intervalId=setInterval(()=>{
@@ -5977,7 +6147,10 @@ function renderRestTimer(){
   const display=t.completed
     ?`<span class="rest-timer-time done-msg">🎯 Hazır</span>`
     :`<span class="rest-timer-time ${isLow?'low':''}">${mins}:${secs.toString().padStart(2,'0')}</span><span class="rest-timer-label">/ ${totalMins}:${totalSecs.toString().padStart(2,'0')}</span>`;
-  el.innerHTML=`<div class="rest-timer-progress" style="width:${pct}%;"></div><div class="rest-timer-content"><div class="rest-timer-text">${display}</div><div class="rest-timer-actions"><button onclick="adjustTimer(-10)" aria-label="10 saniye azalt">−10</button><button onclick="stopSetTimer()" aria-label="Atla">Atla</button><button onclick="adjustTimer(10)" aria-label="10 saniye ekle">+10</button></div></div>`;
+  // Mikro-tip: timer >=30 sn ve henüz bitmediyse görünür (kısa timer'larda overload yapma)
+  const showTip=t.microTip && !t.completed && t.durationSec>=30;
+  const tipHTML=showTip?`<div class="rest-timer-microtip"><span class="rest-timer-microtip-tag">🔬 BİLİM</span><span class="rest-timer-microtip-emoji">💡</span>${t.microTip}</div>`:'';
+  el.innerHTML=`<div class="rest-timer-progress" style="width:${pct}%;"></div><div class="rest-timer-content"><div class="rest-timer-text">${display}</div><div class="rest-timer-actions"><button onclick="adjustTimer(-10)" aria-label="10 saniye azalt">−10</button><button onclick="stopSetTimer()" aria-label="Atla">Atla</button><button onclick="adjustTimer(10)" aria-label="10 saniye ekle">+10</button></div></div>${tipHTML}`;
 }
 function hideRestTimer(){
   const el=document.getElementById('rest-timer');
