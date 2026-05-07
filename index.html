@@ -1023,6 +1023,36 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mc-doctor-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:6px;}
 
 /* ════════════════════════════════════════════ */
+/* BODY CONVERSATION · sabah niyet → akşam diyalog (Phase 2 Hafta 8A — Ajan 6 + sentezci) */
+/* ════════════════════════════════════════════ */
+.bc-morning-card,.bc-evening-card{margin:0 16px 16px;padding:16px 18px;border-radius:18px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.10);animation:eveSlideIn 0.3s ease-out;}
+.bc-morning-card{border:1px solid rgba(232,178,63,0.36);}
+.bc-evening-card{border:1px solid rgba(180,121,144,0.32);}
+.bc-tag{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:6px;}
+.bc-morning-card .bc-tag{color:var(--mustard);}
+.bc-evening-card .bc-tag{color:var(--mauve-evening);}
+.bc-prompt{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--cream-soft);line-height:1.4;margin-bottom:12px;}
+.bc-chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px;}
+.bc-chip{background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(--cream-soft);transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.bc-chip:active{transform:scale(0.92);background:rgba(232,178,63,0.18);}
+.bc-chip-e{font-size:22px;}
+.bc-chip-l{font-size:9px;font-weight:600;letter-spacing:0.3px;text-align:center;line-height:1.15;}
+.bc-hint{font-size:10px;color:var(--cream-mute);text-align:center;font-style:italic;margin-top:4px;}
+.bc-done{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(232,178,63,0.10);border:1px solid rgba(232,178,63,0.32);font-size:13px;color:var(--cream-soft);}
+.bc-done-icon{font-size:18px;}
+.bc-done-edit{margin-left:auto;background:transparent;border:none;color:var(--cream-mute);cursor:pointer;font-size:11px;font-style:italic;}
+.bc-eve-q{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;margin-bottom:10px;}
+.bc-eve-q em{font-style:normal;font-weight:600;color:var(--mustard);}
+.bc-rating{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.bc-rating-btn{background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);border-radius:12px;padding:12px 4px;cursor:pointer;color:var(--cream-soft);font-size:18px;font-weight:600;text-align:center;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.bc-rating-btn:active{transform:scale(0.92);background:rgba(180,121,144,0.18);}
+.bc-rating-anchor{display:flex;justify-content:space-between;font-size:10px;color:var(--cream-mute);margin-top:4px;font-style:italic;}
+.bc-pattern-card{margin:0 16px 16px;padding:14px 16px;border-radius:14px;background:rgba(15,30,38,0.45);border:1px solid var(--glass-border);color:var(--cream-soft);}
+.bc-pattern-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-mute);font-weight:700;margin-bottom:6px;}
+.bc-pattern-body{font-size:13px;line-height:1.55;color:var(--cream-soft);}
+.bc-pattern-emoji{font-size:16px;margin-right:4px;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1053,6 +1083,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
+  <div id="bc-morning"></div>          <!-- Body Conversation sabah niyet (06:00-12:00) — Phase 2 Hafta 8A -->
+  <div id="bc-pattern"></div>          <!-- 7 gün niyet pattern özeti — Phase 2 Hafta 8A -->
+  <div id="bc-evening"></div>          <!-- Body Conversation akşam karşılık (21:30+) — Phase 2 Hafta 8A -->
   <div id="evening-checkin"></div>     <!-- Akşam 30sn check-in (19:00-23:59 görünür) — Phase 2 Hafta 4B -->
   <div id="weekly-digest"></div>       <!-- Pazar 20:00+ haftalık özet — Phase 2 Hafta 4C -->
 
@@ -2519,6 +2552,12 @@ function renderDashboard(){
   }
   // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
   renderMondayFocus();
+  // Body Conversation sabah niyet (Phase 2 Hafta 8A) — 06:00-12:00 her gün
+  renderBodyConversationMorning();
+  // 7 gün niyet pattern özeti (Phase 2 Hafta 8A)
+  renderBodyConversationPattern();
+  // Body Conversation akşam karşılık (Phase 2 Hafta 8A) — 21:30+
+  renderBodyConversationEvening();
   // Akşam check-in kartı (Phase 2 Hafta 4B) — 19:00-23:59 arası, henüz check-in yapılmadıysa
   renderEveningCheckIn();
   // Haftalık özet kartı (Phase 2 Hafta 4C) — pazar ≥20:00
@@ -2756,6 +2795,161 @@ function renderMondayFocus(){
     <div class="mf-section nutrition"><div class="mf-section-title">🥩 Beslenme</div><div class="mf-section-text">${_glx(f.nutrition)}</div></div>
     <div class="mf-section risk"><div class="mf-section-title">⚠️ Dikkat</div><div class="mf-section-text">${_glx(f.risk)}</div></div>
     <div class="mf-closing">${f.closing}</div>
+  </div>`;
+}
+
+// ── Body Conversation · sabah niyet → akşam diyalog (Phase 2 Hafta 8A — Ajan 6 + sentezci)
+// 5 niyet seçeneği — her sabah Bengisu birini seçer ("bedeniyle ne istersin?")
+// Akşam 21:30+ aynı niyet için karşılık ("istediğin geldi mi?" 1-5 skala)
+// 7 gün pattern: sıklıkla seçilen + karşılık ortalaması düşük niyetler → ihtiyaç sinyali
+const BODY_INTENTIONS=[
+  {id:'strength',  e:'💪', l:'Güçlenmek',     prompt:'kuvvet bulmak',         eveQ:'Kuvvet hissi geldi mi?'},
+  {id:'lightness', e:'🌊', l:'Hafiflik',       prompt:'hafifliği hissetmek',   eveQ:'İstediğin hafiflik geldi mi?'},
+  {id:'rest',      e:'🧘', l:'Dinlenme',       prompt:'gerçekten dinlenmek',   eveQ:'Bedenin gerçekten dinlendi mi?'},
+  {id:'energy',    e:'🌱', l:'Enerji',         prompt:'enerjiyi geri almak',   eveQ:'Enerjin geldi mi?'},
+  {id:'be',        e:'🤍', l:'Sadece olmak',   prompt:'sadece olmak',          eveQ:'"Olmak" alanı yaşadın mı?'}
+];
+
+function getBodyConversation(d){
+  const dk=ymd(d||new Date());
+  const all=JSON.parse(localStorage.getItem('body_conv')||'{}');
+  return all[dk]||null;
+}
+function saveBodyConversation(d,patch){
+  const dk=ymd(d||new Date());
+  const all=JSON.parse(localStorage.getItem('body_conv')||'{}');
+  all[dk]={...(all[dk]||{}),...patch};
+  localStorage.setItem('body_conv',JSON.stringify(all));
+}
+
+function pickBodyIntention(intentId){
+  saveBodyConversation(new Date(),{intent:intentId,morningTs:Date.now()});
+  const m=BODY_INTENTIONS.find(x=>x.id===intentId);
+  showToast(`${m.e} ${m.l} · niyetin kayıtlı`,'pr');
+  renderBodyConversationMorning();
+}
+function pickBodyEveningRating(rating){
+  saveBodyConversation(new Date(),{eveningRating:rating,eveningTs:Date.now()});
+  showToast(`Karşılık alındı · ${rating}/5`,'pr');
+  renderBodyConversationEvening();
+}
+function resetBodyMorning(){
+  const dk=ymd(new Date());
+  const all=JSON.parse(localStorage.getItem('body_conv')||'{}');
+  if(all[dk]){delete all[dk].intent;delete all[dk].morningTs;localStorage.setItem('body_conv',JSON.stringify(all));}
+  renderBodyConversationMorning();
+}
+function resetBodyEvening(){
+  const dk=ymd(new Date());
+  const all=JSON.parse(localStorage.getItem('body_conv')||'{}');
+  if(all[dk]){delete all[dk].eveningRating;delete all[dk].eveningTs;localStorage.setItem('body_conv',JSON.stringify(all));}
+  renderBodyConversationEvening();
+}
+
+function renderBodyConversationMorning(){
+  const el=document.getElementById('bc-morning');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  const h=now.getHours();
+  if(h<6||h>=12){el.innerHTML='';return;}
+  const conv=getBodyConversation(now);
+  if(conv && conv.intent){
+    const i=BODY_INTENTIONS.find(x=>x.id===conv.intent);
+    el.innerHTML=`<div class="bc-morning-card"><div class="bc-tag">🌅 Sabah Niyet · ${i.l}</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span>Bugün bedeninle ${i.prompt} istedin.</span><button class="bc-done-edit" onclick="resetBodyMorning()">değiştir</button></div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="bc-morning-card">
+    <div class="bc-tag">🌅 Sabah · 2 Dakika</div>
+    <div class="bc-prompt">Bugün bedeninle ne istersin?</div>
+    <div class="bc-chips">${BODY_INTENTIONS.map(i=>`<button class="bc-chip" onclick="pickBodyIntention('${i.id}')" aria-label="${i.l}"><span class="bc-chip-e">${i.e}</span><span class="bc-chip-l">${i.l}</span></button>`).join('')}</div>
+    <div class="bc-hint">Doğru cevap yok — sadece bedeninin sözüne kulak ver.</div>
+  </div>`;
+}
+
+function renderBodyConversationEvening(){
+  const el=document.getElementById('bc-evening');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  const h=now.getHours();
+  if(h<21||h>=24){el.innerHTML='';return;}
+  // 21:30 keskinliği için minute kontrolü
+  if(h===21 && now.getMinutes()<30){el.innerHTML='';return;}
+  const conv=getBodyConversation(now);
+  if(!conv||!conv.intent){
+    // Sabah niyeti yok — akşam karşılık sormaya gerek yok
+    el.innerHTML='';
+    return;
+  }
+  const i=BODY_INTENTIONS.find(x=>x.id===conv.intent);
+  if(conv.eveningRating){
+    el.innerHTML=`<div class="bc-evening-card"><div class="bc-tag">🌙 Akşam Karşılık</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span><em>${i.l}</em>: ${conv.eveningRating}/5 — kayıtlı, iyi geceler.</span><button class="bc-done-edit" onclick="resetBodyEvening()">değiştir</button></div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="bc-evening-card">
+    <div class="bc-tag">🌙 Akşam Karşılık · 30 Saniye</div>
+    <div class="bc-eve-q">Sabah <em>${i.l}</em> dedin. ${i.eveQ}</div>
+    <div class="bc-rating">${[1,2,3,4,5].map(n=>`<button class="bc-rating-btn" onclick="pickBodyEveningRating(${n})">${n}</button>`).join('')}</div>
+    <div class="bc-rating-anchor"><span>Hayır, gelmedi</span><span>Evet, tam geldi</span></div>
+  </div>`;
+}
+
+// 7 gün niyet pattern özeti — sabah niyetin sıklığı + akşam karşılık ortalaması
+function getBodyConversationPattern(daysBack){
+  daysBack=daysBack||7;
+  const all=JSON.parse(localStorage.getItem('body_conv')||'{}');
+  const now=new Date();
+  const cutoff=new Date(now);cutoff.setDate(cutoff.getDate()-daysBack);
+  const intentCount={};const intentRating={};
+  Object.keys(all).forEach(dk=>{
+    const d=fromYmd(dk);
+    if(!d||d<cutoff||d>now)return;
+    const e=all[dk];
+    if(e.intent){
+      intentCount[e.intent]=(intentCount[e.intent]||0)+1;
+      if(e.eveningRating){
+        if(!intentRating[e.intent])intentRating[e.intent]=[];
+        intentRating[e.intent].push(e.eveningRating);
+      }
+    }
+  });
+  const ranked=Object.keys(intentCount).map(id=>{
+    const ratings=intentRating[id]||[];
+    const avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:null;
+    return{id,count:intentCount[id],avgRating:avg,ratingsCount:ratings.length};
+  }).sort((a,b)=>b.count-a.count);
+  return ranked;
+}
+
+function renderBodyConversationPattern(){
+  const el=document.getElementById('bc-pattern');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const ranked=getBodyConversationPattern(7);
+  if(!ranked.length){el.innerHTML='';return;}
+  // En yüksek count + düşük rating = ihtiyaç sinyali
+  const top=ranked[0];
+  const topIntent=BODY_INTENTIONS.find(x=>x.id===top.id);
+  let signal='';
+  if(top.count>=4){
+    if(top.avgRating!==null && top.avgRating<3){
+      signal=`Bu hafta <em>${topIntent.l}</em> niyetini ${top.count} kez seçtin ama karşılık ortalaması ${top.avgRating.toFixed(1)}/5 — bedeninin bu ihtiyacı henüz karşılanmadı. Yarın belki bu niyete daha çok alan açabilirsin.`;
+    }else if(top.avgRating!==null && top.avgRating>=4){
+      signal=`Bu hafta <em>${topIntent.l}</em> niyetini ${top.count} kez seçtin ve karşılık ortalaması ${top.avgRating.toFixed(1)}/5 — pattern bedeninin söylediğiyle uyumlu. ✨`;
+    }else{
+      signal=`Bu hafta en sık seçtiğin niyet: <em>${topIntent.l}</em> (${top.count}/${ranked.reduce((a,r)=>a+r.count,0)} gün).`;
+    }
+  }else if(ranked.length>=3){
+    signal=`Bu hafta <em>${topIntent.l}</em> baskın (${top.count} gün). Çeşitlilik beden bilincinin sağlık göstergesi.`;
+  }else{
+    return; // Yeterli pattern yok
+  }
+  // Sadece "anlamlı" pattern göster (çok az veri varsa gizle)
+  if(!signal){el.innerHTML='';return;}
+  el.innerHTML=`<div class="bc-pattern-card">
+    <div class="bc-pattern-title">🪞 7 Gün Body Conversation</div>
+    <div class="bc-pattern-body"><span class="bc-pattern-emoji">${topIntent.e}</span>${signal}</div>
   </div>`;
 }
 
