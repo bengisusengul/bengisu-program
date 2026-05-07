@@ -1053,6 +1053,33 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .bc-pattern-emoji{font-size:16px;margin-right:4px;}
 
 /* ════════════════════════════════════════════ */
+/* LEVOTIRON DIARY · ilaç × timing × mood (Phase 2 Hafta 8B — Ajan 1 + sentezci) */
+/* ════════════════════════════════════════════ */
+.lv-morning-card{margin:0 16px 16px;padding:14px 16px;border-radius:16px;background:rgba(15,30,38,0.58);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.36);color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35);animation:eveSlideIn 0.3s ease-out;}
+.lv-tag{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:4px;}
+.lv-row{display:flex;align-items:center;gap:10px;}
+.lv-prompt{font-size:13px;color:var(--cream-soft);line-height:1.45;flex:1;}
+.lv-tap-btn{padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,rgba(123,168,176,0.42),rgba(123,168,176,0.22));border:1px solid rgba(123,168,176,0.55);color:var(--cream);font-weight:700;font-size:13px;cursor:pointer;letter-spacing:0.3px;-webkit-tap-highlight-color:transparent;transition:transform 0.15s;}
+.lv-tap-btn:active{transform:scale(0.95);}
+.lv-done{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:rgba(123,168,176,0.10);font-size:13px;color:var(--cream-soft);}
+.lv-done-icon{font-size:16px;}
+.lv-done-edit{margin-left:auto;background:transparent;border:none;color:var(--cream-mute);cursor:pointer;font-size:11px;font-style:italic;}
+.lv-diary-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
+.lvd-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.lvd-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:12px;font-weight:600;}
+.lvd-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 0;border-top:1px dashed rgba(255,255,255,0.10);border-bottom:1px dashed rgba(255,255,255,0.10);margin-bottom:12px;}
+.lvd-stat{text-align:center;}
+.lvd-stat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream);line-height:1.1;}
+.lvd-stat-l{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;margin-top:2px;}
+.lvd-corr{margin-top:10px;padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:12px;color:var(--cream-soft);line-height:1.55;}
+.lvd-corr-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:6px;}
+.lvd-list{display:flex;gap:3px;flex-wrap:wrap;margin-top:10px;}
+.lvd-day-pill{font-size:10px;padding:4px 8px;border-radius:8px;background:rgba(232,221,196,0.06);color:var(--cream-mute);}
+.lvd-day-pill.taken{background:rgba(90,122,79,0.20);color:var(--sage-leaf);}
+.lvd-day-pill.missed{background:rgba(217,89,30,0.20);color:var(--coral);}
+.lvd-empty{text-align:center;padding:18px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.55;}
+
+/* ════════════════════════════════════════════ */
 /* BİLİM MODU ⓘ EDU PANEL (Phase 2 Hafta 4D — Ajan 7) */
 /* ════════════════════════════════════════════ */
 .edu-chip{background:rgba(90,122,79,0.18) !important;border:1px solid rgba(90,122,79,0.50) !important;color:var(--sage-leaf) !important;font-weight:600 !important;letter-spacing:0.3px;}
@@ -1083,6 +1110,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
+  <div id="lv-morning"></div>          <!-- Levotiron sabah tap (06:00-09:30) — Phase 2 Hafta 8B -->
   <div id="bc-morning"></div>          <!-- Body Conversation sabah niyet (06:00-12:00) — Phase 2 Hafta 8A -->
   <div id="bc-pattern"></div>          <!-- 7 gün niyet pattern özeti — Phase 2 Hafta 8A -->
   <div id="bc-evening"></div>          <!-- Body Conversation akşam karşılık (21:30+) — Phase 2 Hafta 8A -->
@@ -1147,6 +1175,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama) -->
   <div id="micronutrient-wrap"></div>
+
+  <!-- Levotiron Diary haftalık özet (Phase 2 Hafta 8B) -->
+  <div id="levotiron-diary"></div>
 
   <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:16px;">
@@ -2552,6 +2583,8 @@ function renderDashboard(){
   }
   // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
   renderMondayFocus();
+  // Levotiron sabah tap (Phase 2 Hafta 8B) — 06:00-09:30 her gün
+  renderLevotironMorning();
   // Body Conversation sabah niyet (Phase 2 Hafta 8A) — 06:00-12:00 her gün
   renderBodyConversationMorning();
   // 7 gün niyet pattern özeti (Phase 2 Hafta 8A)
@@ -2950,6 +2983,157 @@ function renderBodyConversationPattern(){
   el.innerHTML=`<div class="bc-pattern-card">
     <div class="bc-pattern-title">🪞 7 Gün Body Conversation</div>
     <div class="bc-pattern-body"><span class="bc-pattern-emoji">${topIntent.e}</span>${signal}</div>
+  </div>`;
+}
+
+// ── Levotiron Diary · ilaç × timing × mood (Phase 2 Hafta 8B — Ajan 1 + sentezci)
+// Sabah 06:30 hedef saatinde Levotiron alımı tap kayıt + 7/30 gün timing varyasyonu
+// + mood correlation (cycle_logs.mood ile cross-reference)
+// localStorage 'levotiron_log' = {YYYY-MM-DD: {time:'HH:MM', ts:epoch}}
+
+function getLevotironLog(){return JSON.parse(localStorage.getItem('levotiron_log')||'{}');}
+function saveLevotironEntry(d,timeStr,ts){
+  const dk=ymd(d||new Date());
+  const log=getLevotironLog();
+  log[dk]={time:timeStr,ts:ts||Date.now()};
+  localStorage.setItem('levotiron_log',JSON.stringify(log));
+}
+function deleteLevotironEntry(d){
+  const dk=ymd(d||new Date());
+  const log=getLevotironLog();
+  delete log[dk];
+  localStorage.setItem('levotiron_log',JSON.stringify(log));
+}
+
+function markLevotironTaken(){
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  saveLevotironEntry(now,hh+':'+mm);
+  showToast(`💊 Levotiron ${hh}:${mm} kayıtlı`,'pr');
+  renderLevotironMorning();
+  if(typeof renderLevotironDiary==='function')renderLevotironDiary();
+}
+
+function renderLevotironMorning(){
+  const el=document.getElementById('lv-morning');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  const h=now.getHours();
+  // 06:00-09:30 arası görünür (henüz alınmadıysa)
+  if(h<6 || h>=10){el.innerHTML='';return;}
+  if(h===9 && now.getMinutes()>=30){el.innerHTML='';return;}
+  const log=getLevotironLog();
+  const dk=ymd(now);
+  const entry=log[dk];
+  if(entry && entry.time){
+    el.innerHTML=`<div class="lv-morning-card"><div class="lv-tag">💊 Levotiron · Bugün</div><div class="lv-done"><span class="lv-done-icon">✓</span><span>Alındı · ${entry.time}</span><button class="lv-done-edit" onclick="if(confirm('Bugünkü Levotiron kaydını sıfırla?')){deleteLevotironEntry(new Date());renderLevotironMorning();renderLevotironDiary();}">sıfırla</button></div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="lv-morning-card">
+    <div class="lv-tag">💊 Levotiron · Sabah Aç Karna</div>
+    <div class="lv-row">
+      <div class="lv-prompt">Hedef <strong>06:30</strong> · Yemek/kahveden ≥30 dk önce. Aldığında tek tap.</div>
+      <button class="lv-tap-btn" onclick="markLevotironTaken()">✓ Aldım</button>
+    </div>
+  </div>`;
+}
+
+// İstatistikler: ortalama saat, std dev, missed günler, mood correlation
+function getLevotironStats(daysBack){
+  daysBack=daysBack||7;
+  const log=getLevotironLog();
+  const cycleLogs=getCycleLogs();
+  const now=new Date();
+  const cutoff=new Date(now);cutoff.setDate(cutoff.getDate()-daysBack+1);cutoff.setHours(0,0,0,0);
+  // Her gün için: alındı mı, kaçta?
+  const days=[];
+  for(let i=0;i<daysBack;i++){
+    const d=new Date(cutoff);d.setDate(d.getDate()+i);
+    if(d>now)break;
+    const dk=ymd(d);
+    const e=log[dk];
+    days.push({date:new Date(d),dk,taken:!!(e&&e.time),time:e?.time||null,minutes:e?_timeToMinutes(e.time):null,mood:cycleLogs[dk]?.mood||null});
+  }
+  const taken=days.filter(d=>d.taken);
+  const missed=days.filter(d=>!d.taken && d.date<=now);
+  // Avg time + std (minutes)
+  let avgMinutes=null,stdMinutes=null;
+  if(taken.length){
+    const minsArr=taken.map(d=>d.minutes).filter(m=>m!==null);
+    avgMinutes=minsArr.reduce((a,b)=>a+b,0)/minsArr.length;
+    const variance=minsArr.reduce((a,m)=>a+(m-avgMinutes)*(m-avgMinutes),0)/minsArr.length;
+    stdMinutes=Math.sqrt(variance);
+  }
+  // Mood correlation — early (≤06:35) vs late (>06:35)
+  // mood: happy(5)/calm(4)/irritable(2)/sad(2)/anxious(2) → kabaca skorlama
+  const moodScore={happy:5,calm:4,irritable:2,sad:2,anxious:2};
+  const earlyMoods=[];const lateMoods=[];
+  taken.forEach(d=>{
+    if(!d.mood||!d.minutes)return;
+    const sc=moodScore[d.mood];if(!sc)return;
+    if(d.minutes<=395)earlyMoods.push(sc); // 06:35 = 395
+    else lateMoods.push(sc);
+  });
+  const avgEarly=earlyMoods.length?earlyMoods.reduce((a,b)=>a+b,0)/earlyMoods.length:null;
+  const avgLate=lateMoods.length?lateMoods.reduce((a,b)=>a+b,0)/lateMoods.length:null;
+  return{days,taken:taken.length,missed:missed.length,avgMinutes,stdMinutes,avgEarly,avgLate,earlyN:earlyMoods.length,lateN:lateMoods.length};
+}
+function _timeToMinutes(t){if(!t)return null;const[h,m]=t.split(':').map(Number);return h*60+m;}
+function _minutesToTime(m){if(m===null||m===undefined)return '—';const h=Math.floor(m/60),mm=Math.round(m%60);return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0');}
+
+function renderLevotironDiary(){
+  const el=document.getElementById('levotiron-diary');
+  if(!el)return;
+  const log=getLevotironLog();
+  if(Object.keys(log).length===0){
+    el.innerHTML=`<div class="lv-diary-card">
+      <div class="lvd-title">💊 Levotiron Diary</div>
+      <div class="lvd-subtitle">Sabah aç karna · timing × mood pattern</div>
+      <div class="lvd-empty">Henüz Levotiron kaydı yok. Bugün sayfasında sabah ✓ Aldım butonuna basınca burada haftalık özet + saat varyasyon + mood korelasyonu çıkar.</div>
+    </div>`;
+    return;
+  }
+  const s7=getLevotironStats(7);
+  const s30=getLevotironStats(30);
+  // 7 günlük gün pillsları (taken/missed)
+  const dayPills=s7.days.map(d=>{
+    const cls=d.taken?'taken':d.date<=new Date()?'missed':'';
+    const lbl=d.taken?d.time:'—';
+    return `<span class="lvd-day-pill ${cls}" title="${d.dk}">${d.date.getDate()}/${d.date.getMonth()+1} ${lbl}</span>`;
+  }).join('');
+  // Korelasyon yorumu
+  let corr='';
+  if(s30.avgEarly!==null && s30.avgLate!==null && s30.earlyN>=3 && s30.lateN>=3){
+    const diff=s30.avgEarly-s30.avgLate;
+    if(Math.abs(diff)>=0.5){
+      const dir=diff>0?'erken alındığında':'geç alındığında';
+      corr=`30 günlük pattern: <strong>${dir}</strong> mood ortalama ${diff>0?s30.avgEarly.toFixed(1):s30.avgLate.toFixed(1)}/5 vs karşıt ${diff>0?s30.avgLate.toFixed(1):s30.avgEarly.toFixed(1)}/5. Levotiron timing'in mood'a etkisi var (henüz nedensel değil — sadece korelasyon).`;
+    }else{
+      corr=`30 günlük pattern: erken vs geç timing arasında mood farkı belirgin değil (Δ=${Math.abs(diff).toFixed(1)}/5). Timing kararlılığı zaten iyi olabilir.`;
+    }
+  }else if(s30.taken<5){
+    corr='Mood korelasyon için 30 günde minimum 5 alım + cycle log gerekli. Devam et, pattern 2-3 hafta içinde belirir.';
+  }else{
+    corr='Mood verisi cycle log\'da 30 günde yeterli kayıt değil — Döngü sekmesinde günlük mood ekleyince bu pattern belirir.';
+  }
+  el.innerHTML=`<div class="lv-diary-card">
+    <div class="lvd-title">💊 Levotiron Diary</div>
+    <div class="lvd-subtitle">Sabah aç karna · timing × mood pattern (3 ay → doktor PDF)</div>
+    <div class="lvd-stats">
+      <div class="lvd-stat"><div class="lvd-stat-v">${s7.taken}/${s7.days.length}</div><div class="lvd-stat-l">7 gün alım</div></div>
+      <div class="lvd-stat"><div class="lvd-stat-v">${_minutesToTime(s7.avgMinutes)}</div><div class="lvd-stat-l">Ort saat (7g)</div></div>
+      <div class="lvd-stat"><div class="lvd-stat-v">±${s7.stdMinutes!==null?Math.round(s7.stdMinutes):'—'}<small style="font-size:11px;color:var(--cream-mute);"> dk</small></div><div class="lvd-stat-l">Std varyasyon</div></div>
+    </div>
+    <div class="lvd-list">${dayPills}</div>
+    <div class="lvd-corr">
+      <div class="lvd-corr-title">📊 30 Gün Mood Korelasyonu</div>
+      ${corr}
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--cream-mute);font-style:italic;text-align:center;">
+      ⚕️ Doktor için: 3 ay birikmiş timing+mood verisi PDF rapor olarak ileride çıkarılabilir.
+    </div>
   </div>`;
 }
 
@@ -4190,7 +4374,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderLevotironDiary();}
 
 // ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
 // 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
