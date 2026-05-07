@@ -836,6 +836,33 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .cs-num:active{transform:scale(0.92);}
 .cs-num.selected{background:var(--gold-soft);border-color:var(--gold);color:var(--text);font-weight:700;}
 .cs-anchor{display:flex;justify-content:space-between;font-size:10px;color:var(--text-light);margin-top:6px;}
+
+/* ════════════════════════════════════════════ */
+/* WEEKLY DIGEST (Phase 2 Hafta 4C) */
+/* ════════════════════════════════════════════ */
+.weekly-digest-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);animation:eveSlideIn 0.3s ease-out;}
+.wd-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;letter-spacing:0.3px;}
+.wd-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin:4px 0 16px;font-weight:600;}
+.wd-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.wd-ring{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;}
+.wd-ring-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;}
+.wd-ring-circle.full{box-shadow:0 0 12px rgba(232,178,63,0.45);}
+.wd-ring-inner{width:42px;height:42px;border-radius:50%;background:rgba(15,30,38,0.92);display:flex;align-items:center;justify-content:center;}
+.wd-ring-emoji{font-size:20px;}
+.wd-ring-num{font-size:11px;font-weight:700;color:var(--cream-soft);}
+.wd-ring-lbl{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.4px;}
+.wd-stats{display:flex;gap:10px;justify-content:center;padding:10px 0;border-top:1px dashed rgba(255,255,255,0.10);border-bottom:1px dashed rgba(255,255,255,0.10);margin-bottom:12px;}
+.wd-stat{text-align:center;flex:1;}
+.wd-stat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
+.wd-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;margin-top:2px;}
+.wd-pr-row{text-align:center;margin-bottom:12px;}
+.wd-pr-badge{display:inline-block;padding:6px 14px;border-radius:14px;background:linear-gradient(135deg,var(--mustard),var(--coral));color:var(--ink);font-weight:700;font-size:12px;letter-spacing:0.5px;}
+.wd-list-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-mute);font-weight:600;margin:6px 0 8px;}
+.wd-list-item{font-size:12px;color:var(--cream-soft);line-height:1.5;padding:4px 8px;border-radius:6px;background:rgba(232,221,196,0.04);margin-bottom:3px;}
+.wd-list-note{font-size:11px;color:var(--cream-mute);font-style:italic;margin-top:6px;text-align:center;}
+.wd-phase-note{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(180,121,144,0.14);border:1px solid rgba(180,121,144,0.32);font-size:12px;color:var(--cream-soft);line-height:1.55;font-style:italic;}
+.wd-closing{margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.10);font-size:12px;color:var(--cream-mute);line-height:1.6;text-align:center;}
+.wd-closing em{color:var(--mustard-soft);font-style:normal;font-weight:600;}
 </style>
 </head>
 <body>
@@ -850,6 +877,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="evening-checkin"></div>     <!-- Akşam 30sn check-in (19:00-23:59 görünür) — Phase 2 Hafta 4B -->
+  <div id="weekly-digest"></div>       <!-- Pazar 20:00+ haftalık özet — Phase 2 Hafta 4C -->
 
   <!-- Hidden carrier element for legacy cycle strip render (used internally) -->
   <div id="cycle-strip-el" style="display:none;"></div>
@@ -1455,6 +1483,84 @@ function shouldShowEveningCheckIn(){
   const h=now.getHours();
   if(h<19 || h>=24)return false; // 19:00-23:59 arası görünür
   return !getEveningCheckIn(now);
+}
+
+// ── Plan vs gerçek haftalık özet (Phase 2 Hafta 4C — Ajan 8 + 9)
+// Multiple streak (yürüyüş/antrenman/öğün/su/dinlenme/cycle log) + volume/RPE/PR + atlanan/modify
+function getWeeklyDigest(){
+  const today=new Date();
+  // Pzt-başlangıç bul (Türkiye: hafta pzt başlar)
+  const startOfWeek=new Date(today);
+  const dow=today.getDay();
+  const back=dow===0?6:dow-1; // Paz=6 gün geri, Pzt=0, Sal=1...
+  startOfWeek.setDate(today.getDate()-back);
+  startOfWeek.setHours(0,0,0,0);
+  let walks=0,workouts=0,meal1s=0,meal2s=0,waters=0,rests=0,cycles=0;
+  let totalVolume=0,totalRPE=0,rpeCount=0,prCount=0;
+  const skipped=[],modified=[];
+  const dayNames=['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'];
+  const mealsDone=JSON.parse(localStorage.getItem('meals_done')||'{}');
+  const waterLog=JSON.parse(localStorage.getItem('water_log')||'{}');
+  const health=(typeof getHealthLog==='function')?getHealthLog():{};
+  const cycleLogs=(typeof getCycleLogs==='function')?getCycleLogs():{};
+  for(let i=0;i<7;i++){
+    const d=new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate()+i);
+    if(d>today)break;
+    const dk_full=d.toDateString();
+    const dk_iso=ymd(d);
+    const dayDow=d.getDay();
+    // Yürüyüş — Apple Health adım >5000 veya yürüyüş günü ise sayılır
+    if(health[dk_full]?.steps>5000)walks++;
+    // Antrenman
+    const log=S.workoutLog?.[dk_full];
+    if(log){
+      let hasDone=false;
+      for(const exId in log){
+        const e=log[exId];
+        e.sets?.forEach(s=>{
+          if(s.state==='done'){
+            hasDone=true;
+            if(s.actual.weight&&s.actual.reps)totalVolume+=s.actual.weight*s.actual.reps;
+            if(s.actual.rpe){totalRPE+=s.actual.rpe;rpeCount++;}
+          }else if(s.state==='modified'){
+            modified.push({exId,day:dayNames[dayDow],reason:s.modifyReason||'değişti'});
+          }else if(s.state==='skipped'){
+            skipped.push({exId,day:dayNames[dayDow],reason:s.skipReason||'atlandı'});
+          }
+        });
+        if(e.isPR)prCount++;
+      }
+      if(hasDone)workouts++;
+    }
+    // 1. öğün
+    if(mealsDone[dk_full+'_m1_main']||mealsDone[dk_full+'_m1_side'])meal1s++;
+    if(mealsDone[dk_full+'_m2_main']||mealsDone[dk_full+'_m2_side'])meal2s++;
+    // Su (cycle context'e göre 8-10 bardak hedef)
+    const wTarget=(typeof inP==='function'&&inP(d))?10:8;
+    if(waterLog[dk_iso]>=wTarget)waters++;
+    // Dinlenme planı — Cmt (6) veya Paz (0)
+    if(dayDow===0||dayDow===6)rests++;
+    // Cycle log
+    if(cycleLogs[dk_iso]&&(cycleLogs[dk_iso].mood||cycleLogs[dk_iso].eveningCheckIn||cycleLogs[dk_iso].note))cycles++;
+  }
+  const avgRPE=rpeCount?(totalRPE/rpeCount).toFixed(1):null;
+  // Faza göre yumuşak ton
+  const c=ci(today);
+  let phaseNote='';
+  if(c){
+    if(inP(today))phaseNote='Bu hafta regl döngüsündeydin — bedeninle yumuşak gitmek doğru.';
+    else if(c.phase==='Ovulation')phaseNote='Bu hafta ovulasyon penceresinde — kuvvetin parlaktı, ama ligamentler hassas.';
+    else if(c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6)phaseNote='Bu hafta geç luteal — BMR yüksek, vücut sıkı çalıştı. Hafifletmek mantıklı.';
+    else if(c.phase==='Follicular Phase')phaseNote='Bu hafta folliküler — östrojen yükseldi, kas yapımı için iyi pencere.';
+    else phaseNote='Bu hafta erken luteal — volume ve fat oxidation için iyi hafta.';
+  }
+  return{walks,workouts,meal1s,meal2s,waters,rests,cycles,totalVolume:Math.round(totalVolume),avgRPE,prCount,skipped:skipped.slice(0,3),modified:modified.slice(0,3),phaseNote};
+}
+function shouldShowWeeklyDigest(){
+  const now=new Date();
+  // Pazar (0) ve >=20:00
+  return now.getDay()===0 && now.getHours()>=20;
 }
 
 // ── Anti-kompulsif haftalık compulsive screening (Phase 2 Hafta 4B — Ajan 6 + 8)
@@ -2203,6 +2309,66 @@ function renderDashboard(){
   }
   // Akşam check-in kartı (Phase 2 Hafta 4B) — 19:00-23:59 arası, henüz check-in yapılmadıysa
   renderEveningCheckIn();
+  // Haftalık özet kartı (Phase 2 Hafta 4C) — pazar ≥20:00
+  renderWeeklyDigest();
+}
+
+// Haftalık özet render — pazar gece otomatik görünür
+function renderWeeklyDigest(){
+  const el=document.getElementById('weekly-digest');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  if(!shouldShowWeeklyDigest()){el.innerHTML='';return;}
+  const w=getWeeklyDigest();
+  // Multiple streak rozetleri (plan: 5 yürüyüş + 5 antrenman + 5 öğün + 5 su + 2 dinlenme)
+  const ringTarget={walks:5,workouts:5,meal1s:7,meal2s:7,waters:7,rests:2,cycles:7};
+  const ring=(actual,target,emoji,label)=>{
+    const pct=Math.min(100,(actual/target)*100);
+    const ok=actual>=target;
+    return `<div class="wd-ring">
+      <div class="wd-ring-circle ${ok?'full':''}" style="background:conic-gradient(var(--mustard) ${pct}%, rgba(232,221,196,0.10) 0);">
+        <div class="wd-ring-inner"><span class="wd-ring-emoji">${emoji}</span></div>
+      </div>
+      <div class="wd-ring-num">${actual}/${target}</div>
+      <div class="wd-ring-lbl">${label}</div>
+    </div>`;
+  };
+  const skippedHTML=w.skipped.length
+    ?`<div class="wd-list-title">⚡ Modify / 🛌 Skip kararları</div>${[...w.skipped.map(s=>`<div class="wd-list-item">🛌 <strong>${(s.exId||'').toUpperCase()}</strong> · ${s.day} · ${reasonLabel(s.reason)}</div>`),...w.modified.map(s=>`<div class="wd-list-item">⚡ <strong>${(s.exId||'').toUpperCase()}</strong> · ${s.day} · ${reasonLabel(s.reason)}</div>`)].slice(0,5).join('')}<div class="wd-list-note">Bu kararlar zayıflık değil — bedeninle ilişki yarısı.</div>`
+    :(w.modified.length?`<div class="wd-list-title">⚡ Modify kararları</div>${w.modified.map(s=>`<div class="wd-list-item">⚡ <strong>${(s.exId||'').toUpperCase()}</strong> · ${s.day} · ${reasonLabel(s.reason)}</div>`).slice(0,5).join('')}`:'');
+  const prHTML=w.prCount>0?`<div class="wd-pr-row"><span class="wd-pr-badge">🏆 ${w.prCount} PR</span></div>`:'';
+  el.innerHTML=`<div class="weekly-digest-card">
+    <div class="wd-title">🌸 Hafta Tamamlandı</div>
+    <div class="wd-subtitle">Gerçekleşen · Yargısız bilgi</div>
+    <div class="wd-rings">
+      ${ring(w.walks,ringTarget.walks,'🚶','Yürüyüş')}
+      ${ring(w.workouts,ringTarget.workouts,'💪','Antrenman')}
+      ${ring(w.meal1s,ringTarget.meal1s,'🥩','1. öğün')}
+      ${ring(w.waters,ringTarget.waters,'💧','Su hedef')}
+      ${ring(w.rests,ringTarget.rests,'🌙','Dinlenme')}
+      ${ring(w.cycles,ringTarget.cycles,'🌸','Cycle log')}
+    </div>
+    ${w.totalVolume>0?`<div class="wd-stats"><div class="wd-stat"><div class="wd-stat-v">${w.totalVolume.toLocaleString('tr-TR').replace(/,/g,'.')} kg×rep</div><div class="wd-stat-l">Haftalık volume</div></div>${w.avgRPE?`<div class="wd-stat"><div class="wd-stat-v">${w.avgRPE}/10</div><div class="wd-stat-l">Ort. RPE</div></div>`:''}</div>`:''}
+    ${prHTML}
+    ${skippedHTML}
+    ${w.phaseNote?`<div class="wd-phase-note">${w.phaseNote}</div>`:''}
+    <div class="wd-closing">Bu hafta yarım değil — <em>stratejik</em>. Bedeninle ilişki kurdun, ona bütün notlar düştün. Pazartesi taze başlangıç hakkın saklı.</div>
+  </div>`;
+}
+
+// Skip/modify reason label sözlüğü (Hafta 2A bottom sheet'te tanımlanan)
+function reasonLabel(r){
+  const map={
+    weight_down:'ağırlık düşürdüm',
+    reps_down:'rep azalttım',
+    movement_changed:'hareket değiştirdim',
+    time_short:'sürem dardı',
+    tired:'yorgundum',
+    period:'reglim',
+    no_time:'zamanım dardı',
+    no_motivation:'canım istemedi'
+  };
+  return map[r]||(r||'—');
 }
 
 // Akşam 30sn check-in render
