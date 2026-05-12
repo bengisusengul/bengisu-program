@@ -1439,17 +1439,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
     </div>
   </div>
 
-  <div class="slbl">Öğün Kuralları</div>
-  <div class="card">
-    <div class="cb">
-      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">✅</div><div><strong>Serbest:</strong> Roka, semizotu, maydanoz, dereotu (favori) · Avokado yarım/gün · EVOO bol</div></div>
-      <div class="notice ng" style="margin-bottom:10px;"><div class="nicon">⚖️</div><div><strong>Sınırlı:</strong> Süt günde 1 bardak · Peynir (feta/kaşar/parmesan/lor) az miktar · Ispanak nadiren · Soğan/sarımsak ölçülü</div></div>
-      <div class="notice nm" style="margin-bottom:10px;"><div class="nicon">🍳</div><div><strong>Yağlar:</strong> Pişirmede <b>az</b> sade yağ → <b>EVOO tercih</b> (LDL 8.1, doymuş yağ &lt;30g/gün) · Sabah 1 yk EVOO + limon + tuz shot</div></div>
-      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">🥗</div><div><strong>Esnek:</strong> 1. öğün ET kuralı kaldırıldı · 2. öğün salata önerilir ama zorunlu değil</div></div>
-      <div class="notice np" style="margin-bottom:10px;"><div class="nicon">🚫</div><div><strong>Yok:</strong> Karalahana (Hashimoto goitrojen) · Tahıl, baklagil, tatlandırıcı, alkol</div></div>
-      <div class="notice nm" style="margin-bottom:0;"><div class="nicon">🎉</div><div><strong>Pazar Brunch ödül öğünü:</strong> Tek büyük öğün serbest, anti-kompulsif, "iyi eğlenceler"</div></div>
-    </div>
-  </div>
+  <!-- Öğün Kuralları kartı kaldırıldı (Phase 3.C feedback · 12 May) — Bengisu: "bunlar benim kendime koyduğum sınırlar, gerek yok" -->
 
   <div class="slbl">1. Öğün — 10:00 · Yumurta + Peynir/Lor + Avokado + Yeşillik (esnek)</div>
   <div class="card"><div class="cb" id="m1b"></div></div>
@@ -1461,10 +1451,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama) -->
   <div id="micronutrient-wrap"></div>
 
-  <!-- Levotiron Diary haftalık özet (Phase 2 Hafta 8B) -->
-  <div id="levotiron-diary"></div>
+  <!-- Levotiron Diary Diyet sekmesinden kaldırıldı (Phase 3.C feedback · 12 May) — Bugün sekmesinde hâlâ aktif -->
 
-  <!-- Tiroidektomi Destek Modülü (Phase 2 P2.5) -->
+  <!-- Benim Bedenim modülü (eski adı: Bedenim ve Tiroidim, Phase 2 P2.5) -->
   <div id="thyroid-support"></div>
 
   <!-- Daily macro summary -->
@@ -1626,10 +1615,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
     </div>
   </div>
 
-  <!-- History -->
+  <!-- History (collapsible · Phase 3.C feedback) -->
   <div class="slbl" id="cy-hist-lbl" style="display:none;">Cycle Geçmişi</div>
   <div class="card" id="cy-hist-card" style="display:none;">
-    <div class="cb" id="cy-hist"></div>
+    <div class="ch" style="cursor:pointer;" onclick="toggleCyHist()">
+      <h3 id="cy-hist-toggle-title">📜 Geçmişi göster</h3>
+      <span id="cy-hist-toggle-icon" style="font-size:18px;color:var(--cream-mute);">▾</span>
+    </div>
+    <div class="cb" id="cy-hist" style="display:none;"></div>
   </div>
 
   <!-- Insights -->
@@ -3996,13 +3989,126 @@ let _thySupportTab='tests'; // tests | questions | physiology
 
 function setThyTab(t){_thySupportTab=t;renderThyroidSupport();}
 
+// Phase 3.C feedback (12 May) — Kan tahlili PDF/foto upload + Claude AI analiz
+async function handleLabUpload(event,kind){
+  const file=event.target.files[0];
+  if(!file)return;
+  const statusEl=document.getElementById('lab-upload-status');
+  if(!statusEl)return;
+  statusEl.innerHTML='<div style="padding:14px;background:rgba(232,178,63,0.10);border-radius:10px;color:var(--cream);font-size:13px;text-align:center;">⏳ Dosya işleniyor...</div>';
+  let apiKey=localStorage.getItem('anthropic_key');
+  if(!apiKey){
+    apiKey=prompt('Anthropic API key (Diyet/Renpho için kullandığın aynı):');
+    if(!apiKey){statusEl.innerHTML='';return;}
+    localStorage.setItem('anthropic_key',apiKey.trim());
+  }
+  // Geçmiş sonuçları context için al
+  const labResults=JSON.parse(localStorage.getItem('lab_results')||'[]');
+  const lastResult=labResults.length?labResults[labResults.length-1]:null;
+  const prevContext=lastResult?`\nÖnceki sonucum (${lastResult.date}):\n${JSON.stringify(lastResult.values||{},null,2).substring(0,1000)}`:'';
+  // Dosyayı base64'e çevir
+  const reader=new FileReader();
+  reader.onload=async(e)=>{
+    const dataUrl=e.target.result;
+    const base64=dataUrl.split(',')[1];
+    const mediaType=kind==='pdf'?'application/pdf':file.type;
+    try{
+      statusEl.innerHTML='<div style="padding:14px;background:rgba(232,178,63,0.10);border-radius:10px;color:var(--cream);font-size:13px;text-align:center;">🤖 Claude AI sonucu okuyor + analiz ediyor (15-30 sn)...</div>';
+      const content=kind==='pdf'
+        ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:getLabAnalysisPrompt(prevContext)}]
+        : [{type:'image',source:{type:'base64',media_type:mediaType,data:base64}},{type:'text',text:getLabAnalysisPrompt(prevContext)}];
+      const headers={'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
+      if(kind==='pdf')headers['anthropic-beta']='pdfs-2024-09-25';
+      const r=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers,
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content}]})
+      });
+      if(!r.ok){const t=await r.text();throw new Error('API '+r.status+': '+t.substring(0,200));}
+      const data=await r.json();
+      const responseText=data.content?.[0]?.text||'';
+      // JSON kısmını yakala
+      const jsonMatch=responseText.match(/\{[\s\S]*\}/);
+      let parsed={analysis:responseText,values:null};
+      if(jsonMatch){
+        try{
+          const j=JSON.parse(jsonMatch[0]);
+          parsed={analysis:j.analysis||responseText,values:j.values||null,summary:j.summary||null,date:j.date||null};
+        }catch(e){parsed.analysis=responseText;}
+      }
+      // Kayıt
+      const newResult={
+        date:parsed.date||new Date().toISOString().slice(0,10),
+        kind,
+        fileName:file.name,
+        values:parsed.values,
+        summary:parsed.summary,
+        aiAnalysis:parsed.analysis,
+        ts:Date.now()
+      };
+      labResults.push(newResult);
+      localStorage.setItem('lab_results',JSON.stringify(labResults));
+      // Lipid bilgisi varsa lipid_log'a da otomatik kayıt
+      if(parsed.values && parsed.values.ldl){
+        const ll=JSON.parse(localStorage.getItem('lipid_log')||'[]');
+        if(!ll.find(e=>e.date===newResult.date)){
+          ll.push({date:newResult.date,total:parsed.values.totalCholesterol||parsed.values.total||null,ldl:parsed.values.ldl,hdl:parsed.values.hdl||null,tg:parsed.values.tg||parsed.values.triglycerides||null,apoB:parsed.values.apoB||null,ts:Date.now()});
+          ll.sort((a,b)=>a.date.localeCompare(b.date));
+          localStorage.setItem('lipid_log',JSON.stringify(ll));
+        }
+      }
+      statusEl.innerHTML='<div style="padding:14px;background:rgba(90,122,79,0.18);border-radius:10px;color:var(--cream);font-size:13px;text-align:center;">✅ Analiz tamamlandı · sayfa yenileniyor</div>';
+      setTimeout(()=>renderThyroidSupport(),800);
+    }catch(err){
+      statusEl.innerHTML=`<div style="padding:14px;background:rgba(217,89,30,0.20);border-radius:10px;color:var(--coral-soft);font-size:13px;">❌ Hata: ${err.message}</div>`;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function getLabAnalysisPrompt(prevContext){
+  return `Bengisu'nun yeni kan tahlili sonucunu analiz et.
+
+BENGİSU'NUN DURUMU:
+- 32 y kadın, 166 cm, ~76 kg
+- Papiller tiroid karsinom remisyon (bilateral total tiroidektomi 21.10.2025) + Hashimoto + post-cerrahi hipoparatiroidi (E89.2)
+- Tedavi: Levotiron alterne (Pzt-Sal-Çar 125 / Per-Paz 100 mcg) + Calciday 2 tab/gün + Qalyviz 2 cap/gün
+- Supplement: Selenometyonin 200mcg (Solgar) + Methylated B-Complex (Igennus) + Pure Encap Mg Glycinate cycle-aware (2-4 cap/gün) + Vitabiotics Zn 15mg+Cu 1mg + MAV Omega-3 4g + Bulk Creapure 5g + Marine Collagen
+- FH ŞÜPHESİ: Dayı 18y kalp ölümü + anne yüksek kolesterol → LDL Aralık 5.4 → Nisan 8.1 mmol/L
+- AKTİF SEMPTOM (resolved 10 May): Mg form değişimi (oxide → bisglycinate) sonrası kramp/karıncalanma geçti
+
+${prevContext}
+
+GÖREV:
+1. Sonuçlardaki tüm değerleri çıkar (TSH, sT4, sT3, Anti-TPO, Anti-Tg, Tg, Kalsiyum, iPTH, 25(OH)D, Mg, Ferritin, B12, Folate, LDL, HDL, TG, Total cholesterol, ApoB, Lp(a), hsCRP, HbA1c, kreatinin vb.)
+2. Önceki sonuçla karşılaştır (varsa)
+3. YALIN TÜRKÇE 4-6 paragraf analiz yaz:
+   - **Durum nasıl?** (1 paragraf · genel resim)
+   - **Önceden vs şimdi:** (artmış/azalmış/aynı, % değişim)
+   - **Hangi değerler iyi, hangileri dikkat?** (yumuşak ton, panik etmeden)
+   - **Supplementlerin etkisi görünüyor mu?** (Selenium TPO etkisi, Mg form etkisi, Omega-3 lipid etkisi)
+   - **Yeni sonuçlara göre supplement önerin var mı?** (örn. ferritin <70 → demir ekle, K2 yok → ekle vb.)
+   - **Hakan Bey'le konuşulacak 2-3 madde**
+
+TON: Şefkatli, yargısız. "Başarısız" gibi kelimeler kullanma. Klinik ama anlaşılır. Endokrinolog + diyetisyen sentezi.
+
+YANIT FORMATI: Önce JSON (sıkı format), sonra ek metin yok:
+{
+  "date": "YYYY-MM-DD (testin tarihi, dosyadan)",
+  "summary": "1 cümle özet",
+  "values": { "tsh": N, "sT4": N, "sT3": N, "anti_tpo": N, "ldl": N, "hdl": N, "tg": N, "totalCholesterol": N, "ferritin": N, "b12": N, "folate": N, "calcium_adjusted": N, "ipth": N, "vitD": N, "mg": N, "hba1c": N, ... } (sadece tahlilde olanlar, mmol/L veya orijinal birim),
+  "analysis": "YALIN TÜRKÇE markdown ile 4-6 paragraf detaylı analiz · **Durum** · **Önceden vs şimdi** · **İyi vs dikkat** · **Supplement etkisi** · **Yeni öneri** · **Doktor konuşma**"
+}`;
+}
+
 function renderThyroidSupport(){
   const el=document.getElementById('thyroid-support');
   if(!el)return;
   const tabs=[
-    {id:'tests',l:'🩸 Kan Tahlili'},
-    {id:'questions',l:'❓ Doktor Soruları'},
-    {id:'physiology',l:'🧬 T4→T3 Fizyoloji'}
+    {id:'tests',l:'🩸 Plan'},
+    {id:'results',l:'📄 Sonuçlar + AI'},
+    {id:'questions',l:'❓ Sorular'},
+    {id:'physiology',l:'🧬 Fizyoloji'}
   ];
   const tabBtns=tabs.map(t=>`<button class="thy-tab${t.id===_thySupportTab?' active':''}" onclick="setThyTab('${t.id}')">${t.l}</button>`).join('');
   let pane='';
@@ -4020,6 +4126,30 @@ function renderThyroidSupport(){
       <div style="font-size:11px;color:var(--cream-mute);margin-bottom:10px;font-style:italic;">${totCount} test · ${priCount} öncelikli (3-6 ay) · diğerleri rutin (1-3 yıl). Hepsini tek istek panelinde toplu istemek mümkün.</div>
       ${rows}
     </div>`;
+  }else if(_thySupportTab==='results'){
+    // Phase 3.C feedback (12 May) — PDF upload + AI analiz + yalın dil
+    const labResults=JSON.parse(localStorage.getItem('lab_results')||'[]');
+    const lastResult=labResults.length?labResults[labResults.length-1]:null;
+    const prev=labResults.length>=2?labResults[labResults.length-2]:null;
+    pane=`<div class="thy-pane">
+      <div style="font-size:12px;color:var(--cream);margin-bottom:14px;line-height:1.6;">Yeni kan tahlilin geldiğinde <strong>PDF veya fotoğraf yükle</strong> → Claude AI analiz etsin: <em>"Durumum şu, önceden böyleydi, supplementlerim böyle değişmeli."</em> Yalın Türkçe.</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+        <button class="btn bp bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-pdf-input').click()">📄 PDF yükle</button>
+        <button class="btn bsoft bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-img-input').click()">📷 Foto yükle</button>
+        <input type="file" id="lab-pdf-input" accept="application/pdf" style="display:none;" onchange="handleLabUpload(event,'pdf')">
+        <input type="file" id="lab-img-input" accept="image/*" style="display:none;" onchange="handleLabUpload(event,'image')">
+      </div>
+      <div id="lab-upload-status"></div>
+      ${lastResult?`<div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);">📊 Son Sonuç</div>
+          <div style="font-size:11px;color:var(--cream-mute);">${lastResult.date||'tarih?'}</div>
+        </div>
+        ${lastResult.aiAnalysis?`<div style="font-size:13px;color:var(--cream);line-height:1.7;white-space:pre-wrap;">${lastResult.aiAnalysis}</div>`:'<div style="font-size:12px;color:var(--cream-mute);">AI analiz henüz yapılmamış</div>'}
+        ${lastResult.values?`<details style="margin-top:10px;"><summary style="font-size:11px;color:var(--mustard-soft);cursor:pointer;">📋 Ham değerleri göster</summary><pre style="font-size:11px;color:var(--cream-mute);background:rgba(0,0,0,0.20);padding:10px;border-radius:6px;margin-top:6px;white-space:pre-wrap;max-height:200px;overflow-y:auto;">${JSON.stringify(lastResult.values,null,2)}</pre></details>`:''}
+      </div>`:'<div style="font-size:12px;color:var(--cream-mute);font-style:italic;text-align:center;padding:14px 0;">Henüz kan tahlili sonucu yüklenmemiş. Yeni sonucun geldiğinde PDF/foto yükle.</div>'}
+      ${labResults.length>1?`<details style="margin-top:14px;"><summary style="font-size:12px;color:var(--mustard-soft);cursor:pointer;">📜 Geçmiş sonuçlar (${labResults.length-1} adet)</summary><div style="margin-top:8px;">${labResults.slice(0,-1).reverse().map(r=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-bottom:6px;font-size:11px;color:var(--cream-mute);"><strong>${r.date||'?'}</strong> · ${r.summary||'özet yok'}</div>`).join('')}</div></details>`:''}
+    </div>`;
   }else if(_thySupportTab==='questions'){
     const cats=Object.keys(THYROID_DOCTOR_QUESTIONS).map(cat=>{
       const items=THYROID_DOCTOR_QUESTIONS[cat].map(q=>`<div class="thy-question-item">${q}</div>`).join('');
@@ -4035,7 +4165,7 @@ function renderThyroidSupport(){
     pane=`<div class="thy-pane"><div class="thy-phys">${_glx(THYROID_PHYSIOLOGY_TEXT)}</div></div>`;
   }
   el.innerHTML=`<div class="thy-card">
-    <div class="thy-title">🦋 Bedenim ve Tiroidim</div>
+    <div class="thy-title">🌿 Benim Bedenim</div>
     <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Total tiroidektomi sonrası ihtiyaç olan <strong>kapsamlı destek</strong>: 12 kan tahlili planı + 18 doktor sorusu + T4→T3 fizyolojisi. <em>Endokrinologa randevuya boş gitme.</em></div>
     ${getEduLevel()!=='L1'?'<div class="thy-subtitle">Total tiroidektomi destek modülü · Wiersinga 2014</div>':''}
     <div class="thy-tabs">${tabBtns}</div>
@@ -4758,12 +4888,21 @@ fit kuralı:
     const match=content.match(/\{[\s\S]*\}/);
     if(!match)throw new Error('JSON bulunamadı');
     const parsed=JSON.parse(match[0]);
-    // ⚠️ AUTO-FILL ETMİYORUZ — kullanıcının kendi tahminini koruyoruz, AI'yı yan'da gösteriyoruz
-    // (self-trust building: önce sen, sonra Claude ile karşılaştır)
-    const userK=parseInt(document.getElementById('cfm-k').value)||0;
-    const userP=parseInt(document.getElementById('cfm-p').value)||0;
-    const userF=parseInt(document.getElementById('cfm-f').value)||0;
-    const userC=parseInt(document.getElementById('cfm-c').value)||0;
+    // Phase 3.C feedback (12 May) — Kullanıcı kendi tahmini girmediyse AI değerlerini OTOMATİK doldur
+    // (macro hesap bug'ı: kullanıcı sadece AI tahminini görüp Kaydet'e basıyordu → 0/0/0/0 kayıt oluyordu)
+    const userK=parseFloat(document.getElementById('cfm-k').value)||0;
+    const userP=parseFloat(document.getElementById('cfm-p').value)||0;
+    const userF=parseFloat(document.getElementById('cfm-f').value)||0;
+    const userC=parseFloat(document.getElementById('cfm-c').value)||0;
+    if(userK===0 && userP===0 && userF===0 && userC===0){
+      // Tüm input boş → AI değerlerini otomatik doldur, kullanıcı sonra düzeltebilir
+      document.getElementById('cfm-k').value=parsed.kcal||0;
+      document.getElementById('cfm-p').value=parsed.protein||0;
+      document.getElementById('cfm-f').value=parsed.fat||0;
+      document.getElementById('cfm-c').value=parsed.carbs||0;
+    }
+    // Damak Atlası için ham veriyi kaydet
+    window._lastAIParsed=parsed;
     const diff=(a,b)=>a&&b?Math.round(((b-a)/a)*100):null;
     const dK=diff(userK,parsed.kcal);
     const confTr={high:'yüksek güven',medium:'orta güven',low:'düşük güven'};
@@ -4803,16 +4942,25 @@ fit kuralı:
 }
 function saveCustomFood(){
   const text=document.getElementById('cfm-text').value.trim();
-  const k=parseInt(document.getElementById('cfm-k').value)||0;
-  const p=parseInt(document.getElementById('cfm-p').value)||0;
-  const f=parseInt(document.getElementById('cfm-f').value)||0;
-  const c=parseInt(document.getElementById('cfm-c').value)||0;
+  let k=parseFloat(document.getElementById('cfm-k').value)||0;
+  let p=parseFloat(document.getElementById('cfm-p').value)||0;
+  let f=parseFloat(document.getElementById('cfm-f').value)||0;
+  let c=parseFloat(document.getElementById('cfm-c').value)||0;
   if(!text){alert('Yemek adı boş olamaz');return;}
-  if(!k && !p && !f && !c){alert('En az bir makro değer gir');return;}
-  const ai=document.getElementById('cfm-ai-result').innerHTML.includes('AI tahmini hazır');
-  addCustomMeal(S.dD,{n:text,k,p,f,c,slot:S.cfmContext.slot,ai});
+  // Phase 3.C feedback fix — input boşsa AI fallback (Bengisu macro toplamı 0/0/0/0 bug)
+  if(!k && !p && !f && !c && window._lastAIParsed){
+    k=window._lastAIParsed.kcal||0;
+    p=window._lastAIParsed.protein||0;
+    f=window._lastAIParsed.fat||0;
+    c=window._lastAIParsed.carbs||0;
+  }
+  if(!k && !p && !f && !c){alert('En az bir makro değer gir (AI tahmini de boş)');return;}
+  const ai=!!window._lastAIParsed;
+  addCustomMeal(S.dD,{n:text,k:Math.round(k),p:Math.round(p),f:Math.round(f),c:Math.round(c),slot:S.cfmContext.slot,ai});
+  window._lastAIParsed=null;
   closeM('custom-food-modal');
   renderDietDay();
+  showToast(`💾 "${text.substring(0,30)}" kayıt · ${Math.round(k)}kcal/${Math.round(p)}gP/${Math.round(f)}gY/${Math.round(c)}gK`,'pr');
 }
 
 // ─── WEEKLY MENU ───
@@ -5375,9 +5523,10 @@ function renderStreakBadge(){
   const burnout=detectBurnout();
   const onPeriod=inP(new Date());
 
-  // BURNOUT DETECTION — Last 5 days mostly low → caring intervention
-  if(burnout){
-    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);"><span class="streak-flame">🩹</span><div><strong style="color:#7a5a20;">Dur biraz, sende bir şeyler oluyor.</strong><br><span style="font-size:12px;color:var(--text-mid);">Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.</span></div></div>`;
+  // BURNOUT DETECTION — Last 5 days mostly low → caring intervention (dismissible · Phase 3.C feedback)
+  const burnoutDismissed=localStorage.getItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10))==='1';
+  if(burnout && !burnoutDismissed){
+    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);position:relative;"><span class="streak-flame">🩹</span><div><strong style="color:#7a5a20;">Dur biraz, sende bir şeyler oluyor.</strong><br><span style="font-size:12px;color:var(--text-mid);">Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.</span></div><button onclick="localStorage.setItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10),'1');renderStreakBadge();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:#7a5a20;" aria-label="Kapat">✕</button></div>`;
     return;
   }
 
@@ -5655,7 +5804,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderLevotironDiary();renderThyroidSupport();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderThyroidSupport();}
 
 // ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
 // 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
@@ -5744,17 +5893,21 @@ function renderDietDay(){
   const safetyEl=document.getElementById('d-safety-alert');
   if(safetyEl){
     let html='';
+    const todayKey=new Date().toISOString().slice(0,10);
+    const dismissBtn=(key)=>`<button onclick="localStorage.setItem('${key}_dismissed_${todayKey}','1');document.getElementById('d-safety-alert').innerHTML=document.getElementById('d-safety-alert').innerHTML.replace(/<div class=\\\\\"notice[^]*?<\\/div>\\\\s*<\\/div>/,'')||'';renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button>`;
     const alert=getLowIntakeAlert();
-    if(alert && alert.type==='critical'){
-      html+=`<div class="notice np" style="margin:0 16px 12px;border:1.5px solid var(--pink-deep);"><div class="nicon">⚠️</div><div><strong>Düşük kalori uyarısı:</strong> ${alert.msg}</div></div>`;
-    } else if(alert && alert.type==='warning'){
-      html+=`<div class="notice ng" style="margin:0 16px 12px;"><div class="nicon">🟡</div><div><strong>Heads up:</strong> ${alert.msg}</div></div>`;
+    const alertDismissed=localStorage.getItem('lowintake_alert_dismissed_'+todayKey)==='1';
+    if(alert && !alertDismissed && alert.type==='critical'){
+      html+=`<div class="notice np" style="margin:0 16px 12px;border:1.5px solid var(--pink-deep);position:relative;"><div class="nicon">⚠️</div><div><strong>Düşük kalori uyarısı:</strong> ${alert.msg}</div><button onclick="localStorage.setItem('lowintake_alert_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
+    } else if(alert && !alertDismissed && alert.type==='warning'){
+      html+=`<div class="notice ng" style="margin:0 16px 12px;position:relative;"><div class="nicon">🟡</div><div><strong>Heads up:</strong> ${alert.msg}</div><button onclick="localStorage.setItem('lowintake_alert_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
     }
-    // Skipped meal pattern — son 3 hafta üst üste aynı slot atlanırsa → caring intervention
+    // Skipped meal pattern — son 3 hafta üst üste aynı slot atlanırsa → caring intervention (dismissible)
+    const skipDismissed=localStorage.getItem('skip_pattern_dismissed_'+todayKey)==='1';
     const skipPatterns=detectSkippedMealPattern();
-    if(skipPatterns.length){
+    if(skipPatterns.length && !skipDismissed){
       const list=skipPatterns.map(p=>`<strong>${p.label}</strong>`).join(' ve ');
-      html+=`<div class="notice nm" style="margin:0 16px 12px;"><div class="nicon">💭</div><div><strong>Bir şey fark ettim:</strong> Son 3 haftada ${list} sık sık atlanmış. Plan değişikliği gerekiyor mu? Yorgunluk, iştahsızlık, zaman yokluğu veya başka bir şey? Saatleri kaydırmak veya öğünü esneklik moduna almak yardımcı olabilir — sen seç.</div></div>`;
+      html+=`<div class="notice nm" style="margin:0 16px 12px;position:relative;"><div class="nicon">💭</div><div><strong>Bir şey fark ettim:</strong> Son 3 haftada ${list} sık sık atlanmış. Plan değişikliği gerekiyor mu? Yorgunluk, iştahsızlık, zaman yokluğu veya başka bir şey? Saatleri kaydırmak veya öğünü esneklik moduna almak yardımcı olabilir — sen seç.</div><button onclick="localStorage.setItem('skip_pattern_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
     }
     safetyEl.innerHTML=html;
   }
@@ -6691,7 +6844,9 @@ const BACKUP_KEYS=[
   'fasting_hidden','protected_days','onboarded_seen','fix_period_20260504',
   'workout_log','health_log','edu_level','body_conv','levotiron_log',
   'hypotheses','wedding_mirror_mode','wedding_mirror_seen60','wedding_reframe_manual',
-  'wedding_moments','notification_settings','plate_mode','active_profile'
+  'wedding_moments','notification_settings','plate_mode','active_profile',
+  // Phase 3.C P0+P1+P2 yeni anahtarlar
+  'lipid_log','lipid_seeded_v1','active_modes','gut_log','lab_results'
 ];
 
 function exportAllData(){
@@ -10130,6 +10285,17 @@ function renderCyPredictions(){
   document.getElementById('cy-pred-disclaimer').textContent=conf;
 }
 
+function toggleCyHist(){
+  const body=document.getElementById('cy-hist');
+  const title=document.getElementById('cy-hist-toggle-title');
+  const icon=document.getElementById('cy-hist-toggle-icon');
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(title)title.textContent=open?'📜 Geçmişi göster':'📜 Geçmişi gizle';
+  if(icon)icon.textContent=open?'▾':'▴';
+}
+
 function renderCyHistory(){
   const ps=getPeriods();
   if(!ps.length){
@@ -10139,6 +10305,12 @@ function renderCyHistory(){
   }
   document.getElementById('cy-hist-lbl').style.display='block';
   document.getElementById('cy-hist-card').style.display='block';
+  // Toggle başlığını cycle sayısı ile zenginleştir
+  const tt=document.getElementById('cy-hist-toggle-title');
+  if(tt && tt.textContent.startsWith('📜')){
+    const isOpen=document.getElementById('cy-hist').style.display!=='none';
+    tt.textContent=`📜 Cycle geçmişi (${ps.length} kayıt) ${isOpen?'· gizle':'· göster'}`;
+  }
   const fmt=ds=>{const d=fromYmd(ds);return d.getDate()+' '+MN[d.getMonth()];};
   const flowL={spotting:'Damlayan',light:'Hafif Akan',medium:'Akan',heavy:'Bol Akan'};
   const html=[...ps].reverse().map((p,revIdx)=>{
