@@ -993,6 +993,184 @@ Bu önemli bir bilimsel hipotez doğrulaması:
 
 ---
 
+## 🚀 12 MAYIS 2026 — PHASE 3.D · Sekme Mimarisi + Ayarlar Modal + UI Fixes
+
+> **Bengisu kullanım sonrası feedback (3 round, tek oturum):**
+> 1. "Cycle history collapsible · Diyet uyarıları dismissible · Öğün Kuralları sil · Levotiron Diary diyetten kaldır · Bedenim ve Tiroidim → Benim Bedenim · Macro hesaplama bug · Kan tahlili PDF/AI"
+> 2. "Bu hafta + Başarılarım + Haftalık tamamlama % kaldır — anti-kompulsif"
+> 3. "Özel Modlar diyete · Hatırlatmalar dashboard'a"
+> 4. "Ölçüm sekmesini egzersize taşı · Medical Records sekmesi · Tahminler quick actions altına · Diyet yazıları okunmuyor · Su takibi taşmış · Günlük Akış 2 kere · Ayarlar modal'a"
+
+### ✅ Round 1 — 7 düzeltme + Kan Tahlili AI modülü (commit 9944b5b)
+- **Cycle Geçmişi collapsible** — `toggleCyHist()` · default kapalı
+- **Diyet uyarıları dismissible** — burnout / lowintake / skip-pattern hepsi ✕ butonlu, gün bazlı dismiss
+- **"Öğün Kuralları" kartı KALDIRILDI** — Bengisu: "kendime koyduğum sınırlar"
+- **Levotiron Diary Diyet'ten kaldırıldı** — Bugün'de duruyor (sabah tap)
+- **"Bedenim ve Tiroidim" → "🌿 Benim Bedenim"** rebrand
+- **🚨 MACRO BUG FIX** — Custom Food saveCustomFood: AI tahmini geldiğinde input boşsa otomatik dolduruyor + parseFloat + window._lastAIParsed fallback + toast bildirim
+- **🆕 Kan Tahlili AI modülü** — "Benim Bedenim" → "📄 Sonuçlar + AI" yeni tab:
+  - PDF/Foto upload (claude-sonnet-4 + anthropic-beta: pdfs-2024-09-25)
+  - Yalın Türkçe 4-6 paragraf analiz (Durum / Önceden vs şimdi / İyi vs dikkat / Supplement etkisi / Yeni öneri / Doktor konuşma)
+  - lab_results localStorage array · Lipid değerleri varsa lipid_log'a otomatik kayıt
+
+### ✅ Round 2 — Anti-kompulsif sadeleştirme (commit 8fba06a)
+- **Diyet "Bu Hafta" (weekly-wrap)** → display:none (7 günlük menü grid)
+- **Diyet "Başarılarım" (achievements-wrap)** → Cycle Settings'e taşındı, **collapsible default kapalı** (toggleAchSettings · localStorage `ach_settings_open`)
+- **Bugün "Haftalık tamamlama % " (weekly-digest)** → display:none
+
+### ✅ Round 3 — Kart yer değişiklikleri (commit 4aa6ada)
+- **🎭 Özel Modlar** Cycle'dan → Diyet sekmesine (d-strip altında, mantıksal — diyetle ilgili)
+- **🔔 Hatırlatmalar** Cycle'dan → Bugün dashboard collapsible buton (toggleRemindersDashboard)
+- Cycle Settings daha temiz: sadece Achievements + Supplementler + Aile Öyküsü + Lipid + Yedekleme + API Proxy + Profil
+
+### ✅ Round 4 — SEKME MİMARİSİ YENİDEN YAPILANDIRMASI (commit 77af960)
+
+**Karar (3 soru AskUserQuestion ile):**
+- Cilt KALSIN, İlaç+Sağlık birleşsin → 6 sekme korunur
+- İsim: 🩺 Medical Records (alt-tab içinde 💊 Drugs)
+- Egzersiz: üst tab seçici (💪 Antrenman / 📊 Ölçüm)
+
+**Yeni Bottom Nav (6 sekme):**
+```
+🏠 Bugün · 🌸 Döngü · 🥩 Diyet · 💪 Egzersiz · ✨ Cilt · 🩺 Medical
+```
+
+**💪 Egzersiz alt-tab (üst seçici):**
+- 💪 Antrenman — mevcut tüm Egzersiz içeriği
+- 📊 Ölçüm — eski Ölçüm sekmesi içeriği taşındı (5 metrik pano, Renpho, Apple Health, monthly milestones)
+- `setExUTab('antrenman'|'olcum')` — topbar label/title senkronu
+
+**🩺 Medical Records alt-tab (5 tab · yatay scroll):**
+- **💊 Drugs** — Aldığım Supplementler (taşındı)
+- **🩸 Lipid** — Lipid Takibi (taşındı)
+- **🧪 Kan Testi** — PDF/Foto upload + AI analiz (yeni renderMedicalLabs)
+- **🧬 Aile** — Aile Öyküsü (taşındı)
+- **❓ Doktor** — Hakan Bey'e Soracaklarım (THYROID_DOCTOR_QUESTIONS · yeni renderDoctorQuestionsCard)
+
+**Routing:**
+- `showP('olcum')` → otomatik `showP('egzersiz')` + `setExUTab('olcum')` redirect (backward compat)
+- `body[data-page="medical"]::after` gradient (mauve→su mavisi→petrol)
+- #page-medical accent (#D4A4B5 + #B47990)
+
+**Diyet temizliği:** thyroid-support (Benim Bedenim) gizlendi, Medical/Kan Testi'ne taşındı
+
+### ✅ Round 5 — Tahminler kartı sıralama (commit 1c6e54c)
+- Döngü sayfa sırası: Hero → Quick Actions → **Tahminler** (yeni yer) → Bugünün Günlüğü → History → ...
+- Bengisu: "tahminler kartını bugün regl başladı/geçmiş regl kaydı butonlarının hemen altına koyalım"
+
+### ✅ Round 6 — Ayarlar Modal + Diyet UI Fixes (commit b1ebc4d)
+
+**1. ⚙️ Ayarlar Modal (Bengisu seçimi modal/overlay)**
+- Bugün dashboard topbar sağ üst köşede ⚙️ butonu
+- `openSettingsModal()` — Cycle ayarları + Bilim Modu + Profiller + Yedekleme + API Proxy (hepsi tek modal'da)
+- Döngü sekmesinden 5 kart kaldırıldı (Settings modal'a taşındı)
+
+**2. Diyet okunabilirlik fix**
+- Bengisu: "yazıların renkleri çok açık kalmış, okunmuyor"
+- body[data-page="diyet"] CSS override: krem opak kart bg (rgba(255,250,235,0.92)) + koyu kahve text (#1a1208)
+- card-plain border-left #8C6520 · slbl light cream + text-shadow
+
+**3. Su takibi taşma fix**
+- `.water-row` → flex-wrap:wrap
+- `.water-cup` → flex:0 0 calc + min/max-width responsive (@media max-width:380px)
+- 9-10 bardak rahat sığar
+
+**4. "Günlük Akış" duplikasyon fix**
+- Eski hardcoded "Günlük Akış" kartı silindi
+- `renderCycleDietCard()` genişletildi: cycle-aware mesaj (Ovulasyon · Yaz · Anne) + altında timeline (EVOO shot / 1. öğün / Pre-WO / 2. öğün / Pencere kapanış)
+- Cycle-aware kalori değerleri (`getMacroTarget(d).kcal × 0.40`)
+
+### Yeni JS fonksiyonları (Phase 3.D)
+- `toggleCyHist()` — Cycle Geçmişi collapsible
+- `toggleAchSettings()` — Achievements collapsible
+- `toggleRemindersDashboard()` — Hatırlatmalar collapsible
+- `setExUTab()` — Egzersiz alt-tab seçici + topbar senkron
+- `setMedTab()` + `renderMedical()` — Medical Records alt-tab routing
+- `renderMedicalLabs()` — Kan Testi PDF/AI modülü
+- `renderDoctorQuestionsCard()` — Doktor soruları kart
+- `handleLabUpload()` + `getLabAnalysisPrompt()` — Lab PDF/Foto AI workflow
+- `openSettingsModal()` — Ayarlar modal opener
+
+### Yeni localStorage anahtarları (Phase 3.D)
+- `lab_results` — Kan tahlili AI analizleri + ham değerler
+- `burnout_alert_dismissed_YYYY-MM-DD` — burnout uyarı dismiss (gün bazlı)
+- `lowintake_alert_dismissed_YYYY-MM-DD` — düşük kalori uyarı dismiss
+- `skip_pattern_dismissed_YYYY-MM-DD` — skip pattern uyarı dismiss
+- `ach_settings_open` — Başarılarım collapsible durum
+
+### sw.js cache version
+`v3-2026-05-10` → `v4-2026-05-12` → `v5-2026-05-12b` → `v6-2026-05-12c` → `v7-2026-05-12d` → `v8-2026-05-12e` → **`v9-2026-05-12f`**
+
+### Boyut + commit sayısı
+- index.html: 707K → **741K chars** (+34K satır, ~%5)
+- 6 commit (9944b5b → 8fba06a → 4aa6ada → 77af960 → 1c6e54c → b1ebc4d)
+- BACKUP_KEYS güncel (`lab_results` dahil)
+
+### Bilimsel hipotez DOĞRULANDI (10 May)
+- Bengisu: "magnezyum değişikliğinden sonra kramplarım geçti"
+- H&B Mg oxide (%4 emilim) → Pure Encap Glycinate (%25-40 emilim) tek başına yetti
+- Calciday/Calcitriol doz artırmaya gerek kalmadı (Hakan Bey "2 ay aynı" kararı doğru)
+
+### Phase 3.C + 3.D TOPLAM ÖZET
+- **Phase 3.C P0:** 16/16 ✅
+- **Phase 3.C P1+P2:** 21/21 ✅
+- **Phase 3.D:** 6 round feedback fixes ✅
+- **TOPLAM:** 37 ana madde + 21 feedback iyileştirme = 58 değişiklik
+
+---
+
+## 📍 12 MAYIS 2026 OTURUM SONU — TAM DURUM (Sonraki Sohbet İçin)
+
+**Bengisu:** "progress dosyasini guncelle"
+
+### ✅ Bu oturumda tamamlananlar (12 May)
+1. Phase 3.D · 6 round kullanıcı feedback'i tamamlandı
+2. Sekme mimarisi yeniden yapılandırıldı: 6 sekme (Bugün · Döngü · Diyet · Egzersiz · Cilt · Medical Records)
+3. Ayarlar Modal eklendi (Bugün dashboard ⚙️ → modal)
+4. Cycle Settings çok temizlendi (5 kart Settings Modal'a, 3 kart Medical'a, 2 kart başka sekmelere taşındı)
+5. Diyet okunabilirlik fix + su takibi taşma fix + Günlük Akış duplikasyon fix
+6. Macro hesaplama bug fix (AI tahmin → input fallback)
+7. Kan Tahlili AI modülü (PDF/Foto upload → Claude analiz)
+
+### 🎯 Sonraki Sohbete Geldiğinde Önce Bunu Oku
+1. **PROGRESS.md** § "12 MAYIS 2026 — PHASE 3.D" (yukarıda)
+2. **PROGRESS.md** § "9-10 MAYIS — PHASE 3.C P0+P1+P2 TAMAMLANDI"
+3. **[medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md](medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md)** — 2.5 ay sonra randevu
+
+### Critical bilgiler (özet)
+- **Tanılar:** Papiller karsinom + Hashimoto + post-cerrahi hipopara (E89.2)
+- **Levotiron:** Pzt-Sal-Çar 125 / Per-Cum-Cmt-Paz 100 mcg (alterne)
+- **Calciday + Qalyviz:** 2 tab + 2 cap/gün — Hakan Bey kararı **2 ay daha aynı**
+- **Mg form değişimi DOĞRULANDI** → kramplar geçti (10 May)
+- **FH şüphesi:** Dayı 18y kalp ölümü + anne yüksek kolesterol · LDL 8.1
+- **Hedef:** 76 → 62-63 kg Eylül 2026 (kompromis sürdürülebilir)
+- **Aktif supplementler:** Solgar Selenium · Igennus B-Complex · Pure Encap Mg cycle-aware · Bulk Creapure · MAV Omega-3 4g · Vitabiotics Zn+Cu · Marine Collagen · UC-II
+- **Hakan Bey randevusu:** 2.5 ay sonra (yaklaşık Eylül başı)
+- **Tartılma:** 10 gün kuralı (anti-kompulsif çerçeve)
+- **Phase 3.C+D:** 58 değişiklik tamamlandı
+
+### ❓ Bengisu'ya Sorulacak (Sonraki Oturum)
+1. **Yeni sekme mimarisi (Egzersiz alt-tab + Medical) kullanıyor musun?** Beklenti karşılandı mı?
+2. **Ayarlar modal** rahat erişilir mi? Eksik bir ayar var mı?
+3. **Diyet okunabilirlik** çözüldü mü? Başka kontrast sorunu var mı?
+4. **Kan Testi AI** test ettin mi? Hakan Bey'in yeni sonuçları yüklenebildi mi?
+5. **Kilo durum?** (76 kg son nokta · 10 gün tartılma kuralı sonrası)
+6. **Hakan Bey randevu** 2.5 ay nereye düştü? Yaklaşıyor mu?
+7. **Phase 4 başlatma zamanı geldi mi?** (Backend gerçek + multi-cihaz sync)
+
+### Bekleyen Phase 4 gündemi (uzun vadeli)
+- Real backend (Supabase/Firebase)
+- Push notification arka plan (iOS PWA limited)
+- Multi-cihaz sync
+- Wedding Mirror son haftalar tweaks (Bosna Eylül 2026)
+
+### Deploy + Test notu
+- Son commit: `b1ebc4d` · main'de
+- sw.js v9-2026-05-12f — iPhone tab kapat-aç ile yeni cache yüklenir
+- GitHub Pages otomatik deploy (~30-60 sn)
+
+---
+
 ## 📍 10 MAYIS 2026 OTURUM SONU — TAM DURUM (Sonraki Sohbet İçin)
 
 **Bengisu:** "progress dosyasini guncelle bugunluk bu kadar"
