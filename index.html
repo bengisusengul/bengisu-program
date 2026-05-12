@@ -98,11 +98,13 @@ body[data-page="cilt"]::after{
     #8A4F3A 75%,
     #3C1F14 100%);                  /* derin kahve alt */
 }
-body[data-page="olcum"]::after{
+body[data-page="olcum"]::after,
+body[data-page="medical"]::after{
   background:linear-gradient(180deg,
-    #7BA8B0 0%,                     /* SU mavisi net */
-    #1A5A5F 55%,
-    #0F4147 100%);
+    #B47990 0%,                     /* Mauve akşam üst */
+    #7BA8B0 35%,                    /* Su mavisi orta */
+    #1A5A5F 75%,
+    #0F4147 100%);                  /* Petrol derin */
 }
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
@@ -161,7 +163,7 @@ body[data-page="olcum"]::after{
 #page-diyet{--tab-accent:#A8C0A0;--tab-accent-deep:#5A7A4F;--tab-accent-glow:rgba(90,122,79,0.22);}     /* Yaprak Sage */
 #page-egzersiz{--tab-accent:#A8D2DA;--tab-accent-deep:#7BA8B0;--tab-accent-glow:rgba(123,168,176,0.22);} /* Su Mavisi */
 #page-cilt{--tab-accent:#D4A4B5;--tab-accent-deep:#B47990;--tab-accent-glow:rgba(180,121,144,0.22);}    /* Mauve Akşam */
-#page-olcum{--tab-accent:#7A9B6A;--tab-accent-deep:#3E5A3A;--tab-accent-glow:rgba(62,90,58,0.28);}      /* Servi Koyu */
+#page-olcum,#page-medical{--tab-accent:#D4A4B5;--tab-accent-deep:#B47990;--tab-accent-glow:rgba(180,121,144,0.28);}      /* Mauve + su mavisi karışım — Medical */
 
 /* CYCLE STRIP */
 .cstrip{margin:0 16px 16px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);}
@@ -1468,8 +1470,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Levotiron Diary Diyet sekmesinden kaldırıldı (Phase 3.C feedback · 12 May) — Bugün sekmesinde hâlâ aktif -->
 
-  <!-- Benim Bedenim modülü (eski adı: Bedenim ve Tiroidim, Phase 2 P2.5) -->
-  <div id="thyroid-support"></div>
+  <!-- Phase 3.D · 12 May 2026 — 'Benim Bedenim' modülü Medical Records sekmesine taşındı
+       - Plan/Kan Testi → 🧪 Kan Testi alt-tab (PDF/Foto AI analiz)
+       - Sorular → ❓ Doktor alt-tab
+       - Fizyoloji → Hacettepe Lab Bilim Modu (mevcut yerinde) -->
+  <div id="thyroid-support" style="display:none;"></div>
 
   <!-- Daily macro summary -->
   <div class="card" style="margin-bottom:16px;">
@@ -1494,10 +1499,18 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <!-- WORKOUT -->
 <div id="page-egzersiz" class="page">
   <div class="topbar">
-    <div class="tb-label">Antrenman Planı</div>
+    <div class="tb-label" id="ex-tb-label">Antrenman Planı</div>
     <h1 id="ex-title"><em>Egzersiz</em> 💪</h1>
     <div class="tb-sub" id="ex-sub"></div>
   </div>
+  <!-- Phase 3.D — Üst tab seçici (Antrenman / Ölçüm) -->
+  <div style="margin:0 16px 14px;display:flex;gap:6px;background:rgba(255,255,255,0.06);border-radius:14px;padding:5px;">
+    <button class="ex-utab active" id="ex-utab-antrenman" onclick="setExUTab('antrenman')" style="flex:1;padding:10px 12px;border:none;background:transparent;color:var(--cream-soft);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s;">💪 Antrenman</button>
+    <button class="ex-utab" id="ex-utab-olcum" onclick="setExUTab('olcum')" style="flex:1;padding:10px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">📊 Ölçüm</button>
+  </div>
+  <style>.ex-utab.active{background:rgba(232,178,63,0.20);color:var(--cream-soft);}</style>
+
+  <div id="ex-pane-antrenman">
   <div class="wstrip" id="e-strip"></div>
   <div id="e-phase-notice"></div>
   <div id="e-health-info"></div>
@@ -1526,6 +1539,70 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Cycle Pattern Emergence · 3 cycle sonra atlas (Phase 2 Hafta 8E) -->
   <div id="e-cycle-pattern"></div>
   <div style="height:8px;"></div>
+  </div><!-- /ex-pane-antrenman -->
+
+  <!-- Phase 3.D — Ölçüm alt-tab (eski #page-olcum içeriği taşındı) -->
+  <div id="ex-pane-olcum" style="display:none;">
+    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
+    <button class="health-paste-btn" style="right:96px;background:rgba(123,168,176,0.18);border-color:rgba(123,168,176,0.45);" onclick="openHealthJsonPicker()" title="Health Auto Export JSON · toplu çoklu gün">📁 JSON</button>
+    <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
+    <input type="file" accept="application/json,.json" id="health-json-input" style="display:none;" onchange="handleHealthJson(event)">
+    <div id="health-paste-msg"></div>
+    <div id="milestone-celebration"></div>
+    <div class="card">
+      <div class="ch"><h3>Eylül'e Doğru</h3><span style="font-size:12px;color:var(--text-light);">5 metrik · vücudunla uyum</span></div>
+      <div class="cb">
+        <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sadece kg değil, <strong>5 metrik birlikte</strong> takip ediliyor: kg + bel + squat 1RM + 7-gün adım ortalaması + ruh hali. <em>"Hız bedenine ait"</em> — Mayıs 73-74 → Eylül 62-63 kg <strong>kompromis sürdürülebilir hedef</strong> (RED-S sınırı içi · 9-12 kg toplam · diyetisyen önerisi).</div>
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">76.90</div>
+          <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
+        </div>
+        <div class="pw">
+          <div class="plbls"><span>76.9 kg</span><span>62-63 kg <span style="opacity:0.7;font-weight:400;">(yumuşak 60-65)</span></span></div>
+          <div class="pt"><div class="pf" id="pbar"></div></div>
+        </div>
+        <div class="pnote" id="pnote"></div>
+        <div id="multi-metrics" style="margin-top:18px;padding-top:14px;border-top:1px dashed var(--glass-border);"></div>
+      </div>
+    </div>
+
+    <div class="slbl">Aylık Aralıklar · Yön Eylül'e Doğru</div>
+    <div class="card">
+      <div class="cb">
+        <div style="font-size:11px;color:var(--text-mid);margin-bottom:10px;font-style:italic;">Hız bedenine ait — bu aralıklar yumuşak yön. Tutarsa tut, kaçırsan yargılama yok; cycle, uyku, regl, stres etkili.</div>
+        <div class="tl" id="milestone-tl">
+          <div class="tli"><div class="tlt">26 Nis</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Başlangıç</div><div class="tlde">76.9 kg</div><span class="tltag tm">Start</span></div></div>
+          <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 1 sonu</div><div class="tlde">73-74.5 kg · reverse + sT3 testi</div><span class="tltag td">Aralık</span></div></div>
+          <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 2 sonu</div><div class="tlde">70.5-72.5 kg · refeed döngüsü</div><span class="tltag td">Aralık</span></div></div>
+          <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 ortası</div><div class="tlde">67-69 kg · plato yönetimi</div><span class="tltag td">Aralık</span></div></div>
+          <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 sonu</div><div class="tlde">64-67 kg · Bosna hazırlık</div><span class="tltag td">Aralık</span></div></div>
+          <div class="tli"><div class="tlt">5 Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Bosna düğün</div><div class="tlde">62-63 kg · sürdürülebilir kompromis</div><span class="tltag tg">Final</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sgrid" id="sgrid"></div>
+    <div class="slbl">Pazartesi Ölçümü</div>
+    <div class="card"><div class="cb"><div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Renpho terazisinin ekran görüntüsünü</strong> ekle, Claude AI rakamları okuyup cycle context'iyle yorum yapsın. <em>±%5-8 hata payı</em> (karnivor diyette su tutma değişkenliği) açıkça belirtilir.</div>
+      <div class="up"><label class="uplab" for="rp"><div class="upi">📷</div><div class="uptxt"><strong>Renpho ekran görüntüsünü yükle</strong><br>Haftada 1 — Pazartesi sabahı</div><input type="file" id="rp" accept="image/*" multiple style="display:none;" onchange="handleUp(event)"></label></div>
+      <div class="prev" id="rprev"></div>
+      <button id="abtn" class="btn bp bfull" disabled onclick="analyzeR()">🤖 Claude'la analiz et</button>
+      <div id="rres"></div>
+    </div></div>
+    <div class="slbl">Manuel Ölçüm Girişi</div>
+    <div class="card"><div class="cb">
+      <div class="fgrid">
+        <div class="fr"><label>Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="76.9"></div>
+        <div class="fr"><label>Yağ (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
+        <div class="fr"><label>Kas (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
+        <div class="fr"><label>Bel (cm)</label><input type="number" id="mwa" step="0.1" placeholder="84"></div>
+        <div class="fr"><label>Kalça (cm)</label><input type="number" id="mh" step="0.1" placeholder="110"></div>
+        <div class="fr"><label>Bacak (cm)</label><input type="number" id="mt" step="0.1" placeholder="68"></div>
+      </div>
+      <button class="btn bp bfull" onclick="saveM()">Kaydet</button>
+    </div></div>
+    <div class="slbl">Ölçüm Geçmişi</div>
+    <div class="card"><div class="cb" id="mhist"></div></div>
+  </div><!-- /ex-pane-olcum -->
 </div>
 
 <!-- SKIN -->
@@ -1670,14 +1747,15 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Phase 3.C feedback (12 May) — Achievements buradan göster (Diyet sekmesinden taşındı) -->
   <div id="achievements-settings-wrap"></div>
 
-  <!-- Phase 3.C P0 #14 — Aldığım Supplementler kartı (gerçek marka + 4 ALARM) -->
-  <div id="supplements-inventory"></div>
-
-  <!-- Phase 3.C P0 #16 — Aile Öyküsü kartı (FH şüphesi) -->
-  <div id="family-history-card"></div>
-
-  <!-- Phase 3.C P0 #9 — Lipid Takibi (FH şüphesi + 6 hafta tekrar test) -->
-  <div id="lipid-tracking-card"></div>
+  <!-- Phase 3.D · 12 May 2026 — Aşağıdaki 3 kart Medical Records sekmesine taşındı:
+       - Aldığım Supplementler (medical → 💊 Drugs alt-tab)
+       - Aile Öyküsü (medical → 🧬 Aile alt-tab)
+       - Lipid Takibi (medical → 🩸 Lipid alt-tab) -->
+  <!-- Container'lar Medical sekmesinde tek nüsha olarak duruyor (#supplements-inventory, #family-history-card, #lipid-tracking-card) -->
+  <div id="medical-tab-link-card" style="margin:16px 16px 0;padding:14px;background:rgba(180,121,144,0.10);border:1px solid rgba(180,121,144,0.30);border-radius:14px;text-align:center;cursor:pointer;" onclick="showP('medical',document.querySelectorAll('.nb')[5])">
+    <div style="font-size:13px;color:var(--cream-soft);">🩺 <strong>Sağlık Kayıtları</strong> · Medical Records sekmesinde</div>
+    <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">İlaçlar · Lipid takibi · Kan testi AI · Aile öyküsü · Doktor soruları</div>
+  </div>
 
   <!-- Backup/Export (Phase 3.B-B) -->
   <div id="backup-export"></div>
@@ -1691,84 +1769,55 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div style="height:8px;"></div>
 </div>
 
-<!-- METRICS -->
-<div id="page-olcum" class="page">
+<!-- MEDICAL RECORDS — Phase 3.D · 12 May 2026 · Ölçüm yerine geldi -->
+<div id="page-medical" class="page">
   <div class="topbar">
-    <div class="tb-label">Vücudumla Uyum</div>
-    <h1><em>Ölçüm</em> 📊</h1>
-    <div class="tb-sub">Eylül'e doğru · 5 metrik birlikte</div>
-    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
-    <button class="health-paste-btn" style="right:96px;background:rgba(123,168,176,0.18);border-color:rgba(123,168,176,0.45);" onclick="openHealthJsonPicker()" title="Health Auto Export JSON · toplu çoklu gün">📁 JSON</button>
-    <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
-    <input type="file" accept="application/json,.json" id="health-json-input" style="display:none;" onchange="handleHealthJson(event)">
-  </div>
-  <div id="health-paste-msg"></div>
-  <div id="milestone-celebration"></div>
-  <div class="card">
-    <div class="ch"><h3>Eylül'e Doğru</h3><span style="font-size:12px;color:var(--text-light);">5 metrik · vücudunla uyum</span></div>
-    <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sadece kg değil, <strong>5 metrik birlikte</strong> takip ediliyor: kg + bel + squat 1RM + 7-gün adım ortalaması + ruh hali. <em>"Hız bedenine ait"</em> — Mayıs 73-74 → Eylül 62-63 kg <strong>kompromis sürdürülebilir hedef</strong> (RED-S sınırı içi · 9-12 kg toplam · diyetisyen önerisi).</div>
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">76.90</div>
-        <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
-      </div>
-      <div class="pw">
-        <div class="plbls"><span>76.9 kg</span><span>62-63 kg <span style="opacity:0.7;font-weight:400;">(yumuşak 60-65)</span></span></div>
-        <div class="pt"><div class="pf" id="pbar"></div></div>
-      </div>
-      <div class="pnote" id="pnote"></div>
-      <!-- 5-metrik pano: kg + 4 ek metrik (Phase 2 Hafta 4A — Ajan 6 body neutrality) -->
-      <div id="multi-metrics" style="margin-top:18px;padding-top:14px;border-top:1px dashed var(--glass-border);"></div>
-    </div>
+    <div class="tb-label">Sağlık Kayıtları</div>
+    <h1><em>Medical</em> 🩺</h1>
+    <div class="tb-sub">İlaçlar · Lipid · Kan Testi · Aile · Doktor</div>
   </div>
 
-  <div class="slbl">Aylık Aralıklar · Yön Eylül'e Doğru</div>
-  <div class="card">
-    <div class="cb">
-      <div style="font-size:11px;color:var(--text-mid);margin-bottom:10px;font-style:italic;">Hız bedenine ait — bu aralıklar yumuşak yön. Tutarsa tut, kaçırsan yargılama yok; cycle, uyku, regl, stres etkili.</div>
-      <div class="tl" id="milestone-tl">
-        <div class="tli"><div class="tlt">26 Nis</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Başlangıç</div><div class="tlde">76.9 kg</div><span class="tltag tm">Start</span></div></div>
-        <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 1 sonu</div><div class="tlde">73-74.5 kg · reverse + sT3 testi</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 2 sonu</div><div class="tlde">70.5-72.5 kg · refeed döngüsü</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 ortası</div><div class="tlde">67-69 kg · plato yönetimi</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 sonu</div><div class="tlde">64-67 kg · Bosna hazırlık</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">5 Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Bosna düğün</div><div class="tlde">62-63 kg · sürdürülebilir kompromis</div><span class="tltag tg">Final</span></div></div>
-      </div>
-    </div>
+  <!-- Üst tab seçici -->
+  <div style="margin:0 16px 14px;display:flex;gap:5px;background:rgba(255,255,255,0.06);border-radius:14px;padding:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+    <button class="med-utab active" id="med-utab-drugs" onclick="setMedTab('drugs')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-soft);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s;">💊 Drugs</button>
+    <button class="med-utab" id="med-utab-lipid" onclick="setMedTab('lipid')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🩸 Lipid</button>
+    <button class="med-utab" id="med-utab-labs" onclick="setMedTab('labs')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🧪 Kan Testi</button>
+    <button class="med-utab" id="med-utab-family" onclick="setMedTab('family')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🧬 Aile</button>
+    <button class="med-utab" id="med-utab-questions" onclick="setMedTab('questions')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">❓ Doktor</button>
   </div>
-  <div class="sgrid" id="sgrid"></div>
-  <div class="slbl">Pazartesi Ölçümü</div>
-  <div class="card">
-    <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Renpho terazisinin ekran görüntüsünü</strong> ekle, Claude AI rakamları okuyup cycle context'iyle yorum yapsın. <em>±%5-8 hata payı</em> (karnivor diyette su tutma değişkenliği) açıkça belirtilir.</div>
-      <div class="upzone" onclick="document.getElementById('rinp').click()">
-        <input type="file" id="rinp" accept="image/*" multiple onchange="handleUp(event)">
-        <div class="upicon">📱</div>
-        <div class="uptxt"><strong>Renpho ekran görüntüsünü yükle</strong><br>Haftada 1 — Pazartesi sabahı</div>
-      </div>
-      <div id="rprev" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"></div>
-      <button class="btn bp bfull" style="margin-top:12px;" onclick="analyzeR()" id="abtn" disabled>🤖 AI Analizi</button>
-      <div id="rres"></div>
-    </div>
+  <style>.med-utab.active{background:rgba(180,121,144,0.22);color:var(--cream-soft);}</style>
+
+  <!-- Pane: Drugs -->
+  <div id="med-pane-drugs">
+    <div id="supplements-inventory"></div>
   </div>
-  <div class="slbl">Ölçüm Ekle</div>
-  <div class="card">
-    <div class="cb">
-      <div class="fgrid">
-        <div class="fr"><label>Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="76.9"></div>
-        <div class="fr"><label>Vücut Yağı (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
-        <div class="fr"><label>Kas Kütlesi (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
-        <div class="fr"><label>Bel (cm)</label><input type="number" id="mwa" step="0.5" placeholder="84"></div>
-        <div class="fr"><label>Kalça (cm)</label><input type="number" id="mh" step="0.5" placeholder="110"></div>
-        <div class="fr"><label>Uyluk (cm)</label><input type="number" id="mt" step="0.5" placeholder="65"></div>
-      </div>
-      <button class="btn bp bfull" onclick="saveM()">💾 Kaydet</button>
-    </div>
+
+  <!-- Pane: Lipid -->
+  <div id="med-pane-lipid" style="display:none;">
+    <div id="lipid-tracking-card"></div>
   </div>
-  <div class="slbl">Geçmiş</div>
-  <div class="card"><div class="cb" id="mhist" style="overflow-x:auto;"></div></div>
+
+  <!-- Pane: Labs (Kan Testi PDF/Foto upload + AI) -->
+  <div id="med-pane-labs" style="display:none;">
+    <div id="thyroid-support-medical"></div>
+  </div>
+
+  <!-- Pane: Family History -->
+  <div id="med-pane-family" style="display:none;">
+    <div id="family-history-card"></div>
+  </div>
+
+  <!-- Pane: Doktor Soruları -->
+  <div id="med-pane-questions" style="display:none;">
+    <div id="doctor-questions-card"></div>
+  </div>
+
   <div style="height:8px;"></div>
 </div>
+
+<!-- LEGACY page-olcum kaldırıldı · Phase 3.D · 12 May 2026
+     İçerik Egzersiz sekmesi alt-tab 'Ölçüm'e taşındı (ex-pane-olcum) -->
+
 
 <!-- BOTTOM NAV -->
 <nav class="bnav" role="navigation" aria-label="Ana menü">
@@ -1777,7 +1826,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <button class="nb" onclick="showP('diyet',this)" aria-label="Diyet"><span class="ni">🥩</span><span class="nl">Diyet</span></button>
   <button class="nb" onclick="showP('egzersiz',this)" aria-label="Egzersiz"><span class="ni">💪</span><span class="nl">Egzersiz</span></button>
   <button class="nb" onclick="showP('cilt',this)" aria-label="Cilt"><span class="ni">✨</span><span class="nl">Cilt</span></button>
-  <button class="nb" onclick="showP('olcum',this)" aria-label="Ölçüm"><span class="ni">📊</span><span class="nl">Ölçüm</span></button>
+  <button class="nb" onclick="showP('medical',this)" aria-label="Medical Records"><span class="ni">🩺</span><span class="nl">Medical</span></button>
 </nav>
 
 <!-- FOOD ALTS MODAL -->
@@ -2772,9 +2821,17 @@ const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
 // NAV
 function showP(n,b){
+  // Phase 3.D · 12 May — 'olcum' → Egzersiz alt-tab redirect
+  if(n==='olcum'){
+    const navBtn=document.querySelectorAll('.nb')[3]; // Egzersiz button index
+    showP('egzersiz',navBtn);
+    setTimeout(()=>setExUTab('olcum'),50);
+    return;
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+n).classList.add('active');
+  const pageEl=document.getElementById('page-'+n);
+  if(pageEl)pageEl.classList.add('active');
   if(b)b.classList.add('active');
   // TEMA A — body'ye data-page koyar, scrim rengi sekmeye göre değişir
   document.body.dataset.page=n;
@@ -2789,8 +2846,102 @@ function showP(n,b){
   if(n==='diyet')renderDiet();
   if(n==='egzersiz')renderEx();
   if(n==='cilt')renderSkin();
-  if(n==='olcum')renderMeas();
+  if(n==='medical')renderMedical();
   if(n==='cycle')renderCycle();
+}
+
+// Phase 3.D · Egzersiz üst tab seçici
+function setExUTab(tab){
+  const ant=document.getElementById('ex-pane-antrenman');
+  const olc=document.getElementById('ex-pane-olcum');
+  const tA=document.getElementById('ex-utab-antrenman');
+  const tO=document.getElementById('ex-utab-olcum');
+  const isOlcum=tab==='olcum';
+  if(ant)ant.style.display=isOlcum?'none':'block';
+  if(olc)olc.style.display=isOlcum?'block':'none';
+  if(tA){tA.classList.toggle('active',!isOlcum);tA.style.color=isOlcum?'var(--cream-mute)':'var(--cream-soft)';}
+  if(tO){tO.classList.toggle('active',isOlcum);tO.style.color=isOlcum?'var(--cream-soft)':'var(--cream-mute)';}
+  if(isOlcum && typeof renderMeas==='function')renderMeas();
+  // Topbar label/title senkronu (Antrenman ↔ Ölçüm)
+  const lbl=document.getElementById('ex-tb-label');
+  const title=document.getElementById('ex-title');
+  if(lbl)lbl.textContent=isOlcum?'Vücudumla Uyum':'Antrenman Planı';
+  if(title)title.innerHTML=isOlcum?'<em>Ölçüm</em> 📊':'<em>Egzersiz</em> 💪';
+}
+
+// Phase 3.D · Medical üst tab seçici
+function setMedTab(tab){
+  const tabs=['drugs','lipid','labs','family','questions'];
+  tabs.forEach(t=>{
+    const pane=document.getElementById('med-pane-'+t);
+    const btn=document.getElementById('med-utab-'+t);
+    if(pane)pane.style.display=t===tab?'block':'none';
+    if(btn){
+      btn.classList.toggle('active',t===tab);
+      btn.style.color=t===tab?'var(--cream-soft)':'var(--cream-mute)';
+      btn.style.fontWeight=t===tab?'600':'500';
+    }
+  });
+  renderMedical();
+}
+
+// Phase 3.D · Medical sekme render — tüm 5 alt-tab içeriğini çağırır
+function renderMedical(){
+  if(typeof renderSupplementsInventory==='function')renderSupplementsInventory();
+  if(typeof renderLipidTrackingCard==='function')renderLipidTrackingCard();
+  if(typeof renderFamilyHistoryCard==='function')renderFamilyHistoryCard();
+  // Labs (Kan Testi) ve Doktor Soruları için yeni render fonksiyonları
+  if(typeof renderMedicalLabs==='function')renderMedicalLabs();
+  if(typeof renderDoctorQuestionsCard==='function')renderDoctorQuestionsCard();
+}
+
+// Phase 3.D · Kan Testi (Labs) ayrı render — Bedenim ve Tiroidim'in Sonuçlar+AI tab'ı modüler
+function renderMedicalLabs(){
+  const el=document.getElementById('thyroid-support-medical');
+  if(!el)return;
+  // Eski renderThyroidSupport sadece labs/AI kısmını burada göster (yeni Medical bağlamında)
+  const labResults=JSON.parse(localStorage.getItem('lab_results')||'[]');
+  const lastResult=labResults.length?labResults[labResults.length-1]:null;
+  el.innerHTML=`<div class="card">
+    <div class="ch"><h3>🧪 Kan Testi · PDF/Foto Upload + AI Analiz</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Yeni kan tahlilin geldiğinde <strong>PDF veya foto yükle</strong> → Claude AI yalın Türkçe analiz eder: <em>"Durumun nasıl, önceden böyleydi, supplementlerin böyle değişmeli."</em></div>
+      <div style="display:flex;gap:8px;margin:14px 0;flex-wrap:wrap;">
+        <button class="btn bp bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-pdf-input').click()">📄 PDF yükle</button>
+        <button class="btn bsoft bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-img-input').click()">📷 Foto yükle</button>
+        <input type="file" id="lab-pdf-input" accept="application/pdf" style="display:none;" onchange="handleLabUpload(event,'pdf')">
+        <input type="file" id="lab-img-input" accept="image/*" style="display:none;" onchange="handleLabUpload(event,'image')">
+      </div>
+      <div id="lab-upload-status"></div>
+      ${lastResult?`<div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);">📊 Son Sonuç</div>
+          <div style="font-size:11px;color:var(--cream-mute);">${lastResult.date||'tarih?'}</div>
+        </div>
+        ${lastResult.aiAnalysis?`<div style="font-size:13px;color:var(--cream);line-height:1.7;white-space:pre-wrap;">${lastResult.aiAnalysis}</div>`:'<div style="font-size:12px;color:var(--cream-mute);">AI analiz henüz yapılmamış</div>'}
+        ${lastResult.values?`<details style="margin-top:10px;"><summary style="font-size:11px;color:var(--mustard-soft);cursor:pointer;">📋 Ham değerleri göster</summary><pre style="font-size:11px;color:var(--cream-mute);background:rgba(0,0,0,0.20);padding:10px;border-radius:6px;margin-top:6px;white-space:pre-wrap;max-height:200px;overflow-y:auto;">${JSON.stringify(lastResult.values,null,2)}</pre></details>`:''}
+      </div>`:'<div style="font-size:12px;color:var(--cream-mute);font-style:italic;text-align:center;padding:14px 0;">Henüz kan tahlili sonucu yüklenmemiş. Yeni sonucun geldiğinde PDF/foto yükle.</div>'}
+      ${labResults.length>1?`<details style="margin-top:14px;"><summary style="font-size:12px;color:var(--mustard-soft);cursor:pointer;">📜 Geçmiş sonuçlar (${labResults.length-1} adet)</summary><div style="margin-top:8px;">${labResults.slice(0,-1).reverse().map(r=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-bottom:6px;font-size:11px;color:var(--cream-mute);"><strong>${r.date||'?'}</strong> · ${r.summary||'özet yok'}</div>`).join('')}</div></details>`:''}
+    </div>
+  </div>`;
+}
+
+// Phase 3.D · Doktor Soruları kart (mevcut THYROID_DOCTOR_QUESTIONS verisi)
+function renderDoctorQuestionsCard(){
+  const el=document.getElementById('doctor-questions-card');
+  if(!el || typeof THYROID_DOCTOR_QUESTIONS==='undefined')return;
+  const cats=Object.keys(THYROID_DOCTOR_QUESTIONS).map(cat=>{
+    const items=THYROID_DOCTOR_QUESTIONS[cat].map(q=>`<div class="thy-question-item">${q}</div>`).join('');
+    return `<div class="thy-question-cat"><div class="thy-question-cat-title">${cat}</div>${items}</div>`;
+  }).join('');
+  const total=Object.values(THYROID_DOCTOR_QUESTIONS).reduce((a,b)=>a+b.length,0);
+  el.innerHTML=`<div class="card">
+    <div class="ch"><h3>❓ Hakan Bey'e Soracaklarım</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>${total} soru</strong> · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} kategori. Endokrinologa randevu öncesi ihtiyacın olanları seç. <em>medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</em> dosyasıyla birlikte götür.</div>
+      ${cats}
+    </div>
+  </div>`;
 }
 
 // CALENDAR
