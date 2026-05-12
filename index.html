@@ -1392,6 +1392,17 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
   <div id="pazar-brunch"></div>        <!-- Phase 3.C P0 #8 — Pazar Brunch Festival Card -->
+
+  <!-- Phase 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard butonu (collapsible)
+       Bengisu: "hatırlatmalar kısmını dashboard'a buton olarak koyalım" -->
+  <div id="reminders-dashboard-wrap" style="margin:0 16px 16px;">
+    <button class="btn bsoft bfull" onclick="toggleRemindersDashboard()" style="text-align:left;padding:14px 16px;justify-content:flex-start;gap:10px;">
+      <span style="font-size:20px;">🔔</span>
+      <span style="flex:1;">Hatırlatmalar</span>
+      <span id="reminders-arrow" style="font-size:16px;color:var(--cream-mute);">▾</span>
+    </button>
+    <div id="notification-settings" style="display:none;margin-top:8px;"></div>
+  </div>
   <div id="wedding-mirror"></div>      <!-- Wedding Mirror countdown (≤60 gün event'a kala) — Phase 2 Hafta 8D -->
   <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
   <div id="lv-morning"></div>          <!-- Levotiron sabah tap (06:00-09:30) — Phase 2 Hafta 8B -->
@@ -1417,6 +1428,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="wstrip" id="d-strip"></div>
   <div id="d-safety-alert"></div>
   <div id="d-hero-action"></div>
+  <!-- Phase 3.C feedback (12 May) — Özel Modlar Diyet sekmesine taşındı -->
+  <div id="special-modes-card"></div>
   <div id="fasting-bar"></div>
   <div id="cycle-diet-wrap"></div>
   <div id="streak-wrap"></div>
@@ -1650,11 +1663,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Bilim Modu global seviye seçici (Phase 3.A) -->
   <div id="edu-global"></div>
 
-  <!-- Notification Settings (Phase 2 P2.6) -->
-  <div id="notification-settings"></div>
-
-  <!-- Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat) -->
-  <div id="special-modes-card"></div>
+  <!-- Notification Settings + Special Modes (Phase 3.C 12 May 2. round feedback)
+       Bengisu: "özel modlar diyete taşı · hatırlatmalar bugün dashboard'a buton olarak"
+       → Bu iki kart Cycle'dan kaldırıldı, yeni yerleri Diyet ve Bugün sekmelerinde -->
 
   <!-- Phase 3.C feedback (12 May) — Achievements buradan göster (Diyet sekmesinden taşındı) -->
   <div id="achievements-settings-wrap"></div>
@@ -3037,6 +3048,8 @@ function renderDashboard(){
   renderHeroCard();
   // Phase 3.C P0 #8 — Pazar Brunch Festival Card (sadece Pazar 09:00-13:00)
   renderPazarBrunch();
+  // Phase 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard butonu
+  if(typeof renderNotificationSettings==='function')renderNotificationSettings();
   // Wedding Mirror countdown (Phase 2 Hafta 8D) — event date varsa ≤60 gün kala görünür
   renderWeddingMirror();
   // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
@@ -3565,6 +3578,19 @@ const WEDDING_REFRAME_PROMPTS=[
   'Bu süreçte bedeninle hatırlamak istediğin bir his',
   'Düğün gününe bedenine söyleyeceğin bir cümle'
 ];
+
+// ══════════════════════════════════════════
+// PHASE 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard collapsible toggle
+// ══════════════════════════════════════════
+function toggleRemindersDashboard(){
+  const body=document.getElementById('notification-settings');
+  const arrow=document.getElementById('reminders-arrow');
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.textContent=open?'▾':'▴';
+  if(!open && typeof renderNotificationSettings==='function')renderNotificationSettings();
+}
 
 // ══════════════════════════════════════════
 // PHASE 3.C P0 #6 — SAAT-BAZLI HERO CARD (4 mode)
@@ -4300,8 +4326,9 @@ function renderNotificationSettings(){
     :status==='granted'
       ?`<button class="notif-test-btn" onclick="fireTestNotification()">Test bildirimi</button>`
       :'';
-  el.innerHTML=`<div class="notif-card">
-    <div class="notif-title">🔔 Hatırlatmalar</div>
+  // Phase 3.C feedback (12 May 2. round) — Bugün dashboard'a buton + dropdown olarak gösterildi
+  // notif-title kart başlığı kaldırıldı (zaten buton "🔔 Hatırlatmalar" diyor)
+  el.innerHTML=`<div class="notif-card" style="margin:0;">
     <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>5 zamanlı bildirim:</strong> 06:30 Levotiron, 09:00 sabah niyet, 14:00 pre-WO, 18:30 Calciday 2. doz, 21:30 akşam check-in. Tab açıkken çalışır — iOS'ta <em>"Ana Ekrana Ekle"</em> yapılırsa daha iyi.</div>
     ${getEduLevel()!=='L1'?'<div class="notif-subtitle">5 zamanlı bildirim · iOS 16.4+ PWA destekli</div>':''}
     ${statusHTML}
@@ -5829,7 +5856,7 @@ function selectFoodAlt(foodId, slot, dayKey, idx) {
 // ══════════════════════════════════════════
 // DIET RENDER
 // ══════════════════════════════════════════
-function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderThyroidSupport();}
+function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});renderDietDay();startFastingTimer();renderMicronutrientCard();renderThyroidSupport();if(typeof renderSpecialModesCard==='function')renderSpecialModesCard();}
 
 // ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
 // 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
@@ -10130,10 +10157,9 @@ function renderCycle(){
 
   // Bilim Modu global seviye seçici (Phase 3.A)
   if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
-  // Notification settings (Phase 2 P2.6)
-  if(typeof renderNotificationSettings==='function')renderNotificationSettings();
-  // Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat/Düğün)
-  if(typeof renderSpecialModesCard==='function')renderSpecialModesCard();
+  // Phase 3.C feedback (12 May 2. round) — Notification Settings + Special Modes Cycle'dan kaldırıldı:
+  //   - renderSpecialModesCard() → Diyet sekmesinde çağrılıyor
+  //   - renderNotificationSettings() → Bugün sekmesinde buton olarak çağrılıyor
   // Phase 3.C feedback (12 May) — Başarılarım Cycle Settings'te opsiyonel collapsible
   if(typeof renderAchievements==='function')renderAchievements();
   // Phase 3.C P0 #14, #15 — Aldığım Supplementler kartı + 4 ALARM
