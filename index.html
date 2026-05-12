@@ -84,6 +84,41 @@ body[data-page="diyet"]::after{
     #8C6520 75%,
     #3C2A0A 100%);
 }
+/* Phase 3.D feedback (12 May 2026) — Diyet sekmesi okunabilirlik
+   Bengisu: "yazıların renkleri çok açık kalmış, okunmuyor"
+   Koyu hardal gradient üzerinde kart text'leri koyulaştırılır */
+body[data-page="diyet"] .card,
+body[data-page="diyet"] .cycle-diet-card,
+body[data-page="diyet"] .notice,
+body[data-page="diyet"] .water-card{
+  color:#1a1208 !important; /* Koyu kahve · hardal üzerinde max kontrast */
+  background:rgba(255,250,235,0.92) !important; /* Krem opak arka plan · saydam kalkıyor */
+  border:1px solid rgba(60,42,10,0.25) !important;
+}
+body[data-page="diyet"] .card-plain{
+  color:#2a1f0a !important;
+  background:rgba(255,250,235,0.78) !important;
+  border-left-color:#8C6520 !important;
+}
+body[data-page="diyet"] .card-plain strong,
+body[data-page="diyet"] .card .ch h3,
+body[data-page="diyet"] .water-title{color:#1a1208 !important;font-weight:600 !important;}
+body[data-page="diyet"] .cb,
+body[data-page="diyet"] .ch h3,
+body[data-page="diyet"] .tlti,
+body[data-page="diyet"] .tlt,
+body[data-page="diyet"] .tlde,
+body[data-page="diyet"] .water-title,
+body[data-page="diyet"] .mrow,
+body[data-page="diyet"] .slbl{color:#1a1208 !important;text-shadow:none !important;}
+body[data-page="diyet"] .slbl{color:#fdf3e0 !important;text-shadow:0 2px 8px rgba(0,0,0,0.50) !important;} /* Section labels arka plan üzerinde - light */
+body[data-page="diyet"] .pnote,
+body[data-page="diyet"] .cdc-msg,
+body[data-page="diyet"] .ach-desc{color:#3a2c14 !important;}
+body[data-page="diyet"] .water-cup{border-color:#5d9ab1 !important;}
+body[data-page="diyet"] .water-cup.full{background:#7eb5cc !important;color:white !important;}
+body[data-page="diyet"] .tlbar,body[data-page="diyet"] .tlline{background:rgba(60,42,10,0.30) !important;}
+body[data-page="diyet"] .tldot{background:#8C6520 !important;border:2px solid #fdf3e0 !important;}
 body[data-page="egzersiz"]::after{
   background:linear-gradient(180deg,
     #5A7A4F 0%,                     /* SAGE ormanı net */
@@ -585,8 +620,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .water-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .water-title{font-size:13px;font-weight:600;color:var(--cream-soft);}
 .water-count{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#A8D2DA;}
-.water-row{display:flex;justify-content:space-between;gap:6px;}
-.water-cup{flex:1;aspect-ratio:1;border:2px solid #b5d2dd;border-radius:50%;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:all 0.2s;max-width:48px;min-height:44px;}
+.water-row{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:6px;}
+.water-cup{flex:0 0 calc((100% - 54px) / 10);min-width:30px;max-width:40px;aspect-ratio:1;border:2px solid #b5d2dd;border-radius:50%;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:all 0.2s;}
+@media (max-width:380px){.water-cup{flex:0 0 calc((100% - 48px) / 9);min-width:28px;}}
 .water-cup.full{background:#7eb5cc;border-color:#5d9ab1;color:white;transform:scale(1.05);}
 .water-cup.full::after{content:'💧';}
 .water-cup:active{transform:scale(0.92);}
@@ -1385,10 +1421,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- DASHBOARD / BUGÜN -->
 <div id="page-takvim" class="page active">
-  <div class="topbar">
+  <div class="topbar" style="position:relative;">
     <div class="tb-label" id="dash-greeting-label">KİŞİSEL PROGRAM</div>
     <h1 style="font-size:42px;letter-spacing:1.5px;"><em>Bengisu</em> <span style="font-style:normal;display:inline-block;filter:drop-shadow(0 0 16px rgba(232,178,63,0.65));">☀️</span></h1>
     <div class="tb-sub" id="today-str" style="margin-top:8px;"></div>
+    <!-- Phase 3.D · 12 May 2026 — ⚙️ Ayarlar butonu (modal açar) -->
+    <button onclick="openSettingsModal()" aria-label="Ayarlar" style="position:absolute;top:56px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(15,30,38,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">⚙️</button>
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
@@ -1444,17 +1482,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <div id="macro-bonus-note" style="margin-top:10px;"></div>
     </div>
   </div>
-  <div class="slbl">Günlük Akış</div>
-  <div class="card">
-    <div class="cb">
-      <div class="tl">
-        <div class="tli"><div class="tlt">~12:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🫒 Polifenol Shot</div><div class="tlde">1 yk sızma zeytinyağ + ½ limon + sumak + kaya tuzu</div><span class="tltag ts">~120 kcal</span></div></div>
-        <div class="tli"><div class="tlt">13:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥚 1. Öğün</div><div class="tlde">Yumurta + avokado + lor + ghee/zeytinyağ + yeşillik</div><span class="tltag td">~600 kcal</span></div></div>
-        <div class="tli"><div class="tlt">17:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">🥩 2. Öğün</div><div class="tlde">Et / tavuk / balık + yeşillik</div><span class="tltag td">~630 kcal</span></div></div>
-        <div class="tli"><div class="tlt">18:00</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">⏱ Açlık Penceresi Kapanır</div><div class="tlde">18:00 sonrası sadece su, bitki çayı, sade kahve</div><span class="tltag te">IF</span></div></div>
-      </div>
-    </div>
-  </div>
+  <!-- Phase 3.D feedback (12 May 2026) — Hardcoded "Günlük Akış" kartı kaldırıldı
+       Bengisu: "günlük akış 2 kere görünüyor · birleştirelim"
+       Cycle-diet-wrap renderCycleDietCard() içine timeline entegre edildi
+       (cycle-aware ovulasyon/luteal mesaj + altında saat-saat timeline) -->
 
   <!-- Öğün Kuralları kartı kaldırıldı (Phase 3.C feedback · 12 May) — Bengisu: "bunlar benim kendime koyduğum sınırlar, gerek yok" -->
 
@@ -1725,48 +1756,58 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="cb" id="cy-ins"></div>
   </div>
 
-  <!-- Settings -->
-  <div class="slbl">Ayarlar</div>
-  <div class="card">
-    <div class="cb">
-      <div class="fr"><label>Varsayılan Döngü Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
-      <div class="fr"><label>Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
-      <div class="fr"><label>💕 Önemli Tarih (opsiyonel · ör. kız kardeşin düğünü)</label><input type="date" id="cy-set-event-date"></div>
-      <div class="fr"><label>Önemli Tarih Etiketi</label><input type="text" id="cy-set-event-label" placeholder="Örn: Bosna düğünü 💍" maxlength="40"></div>
-      <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Ayarları Kaydet</button>
-    </div>
-  </div>
+  <!-- Phase 3.D feedback (12 May 2026) — Cycle Settings + Bilim Modu + Profiller + Backup + API Proxy
+       Bugün dashboard'da ⚙️ Ayarlar butonu ile MODAL olarak açılır
+       Bengisu: "regl sekmesi bu şekilde çok kalabalık ve gereksiz şeyler kalmış" -->
 
-  <!-- Bilim Modu global seviye seçici (Phase 3.A) -->
-  <div id="edu-global"></div>
-
-  <!-- Notification Settings + Special Modes (Phase 3.C 12 May 2. round feedback)
-       Bengisu: "özel modlar diyete taşı · hatırlatmalar bugün dashboard'a buton olarak"
-       → Bu iki kart Cycle'dan kaldırıldı, yeni yerleri Diyet ve Bugün sekmelerinde -->
-
-  <!-- Phase 3.C feedback (12 May) — Achievements buradan göster (Diyet sekmesinden taşındı) -->
+  <!-- Phase 3.C feedback (12 May) — Achievements collapsible buradan (Diyet'ten taşındı) -->
   <div id="achievements-settings-wrap"></div>
 
-  <!-- Phase 3.D · 12 May 2026 — Aşağıdaki 3 kart Medical Records sekmesine taşındı:
-       - Aldığım Supplementler (medical → 💊 Drugs alt-tab)
-       - Aile Öyküsü (medical → 🧬 Aile alt-tab)
-       - Lipid Takibi (medical → 🩸 Lipid alt-tab) -->
-  <!-- Container'lar Medical sekmesinde tek nüsha olarak duruyor (#supplements-inventory, #family-history-card, #lipid-tracking-card) -->
+  <!-- Phase 3.D · 12 May 2026 — Aşağıdaki 3 kart Medical Records sekmesine taşındı -->
   <div id="medical-tab-link-card" style="margin:16px 16px 0;padding:14px;background:rgba(180,121,144,0.10);border:1px solid rgba(180,121,144,0.30);border-radius:14px;text-align:center;cursor:pointer;" onclick="showP('medical',document.querySelectorAll('.nb')[5])">
     <div style="font-size:13px;color:var(--cream-soft);">🩺 <strong>Sağlık Kayıtları</strong> · Medical Records sekmesinde</div>
     <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">İlaçlar · Lipid takibi · Kan testi AI · Aile öyküsü · Doktor soruları</div>
   </div>
 
-  <!-- Backup/Export (Phase 3.B-B) -->
-  <div id="backup-export"></div>
-
-  <!-- API Proxy ayarı (Phase 3.B-D) -->
-  <div id="api-proxy-card"></div>
-
-  <!-- Profil sistemi (Phase 3.B-E) -->
-  <div id="profile-card"></div>
+  <!-- Ayarlar link kartı (Phase 3.D · ⚙️ butonu Bugün dashboard'a taşındı) -->
+  <div style="margin:12px 16px;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:14px;text-align:center;cursor:pointer;font-size:13px;color:var(--cream-soft);" onclick="openSettingsModal()">
+    ⚙️ <strong>Ayarlar</strong> · döngü varsayılan · bilim modu · profiller · yedekleme · API proxy
+  </div>
 
   <div style="height:8px;"></div>
+</div>
+
+<!-- AYARLAR MODAL — Phase 3.D · 12 May 2026 -->
+<div class="mo" id="settings-modal">
+  <div class="modal" style="max-width:500px;max-height:90vh;overflow-y:auto;">
+    <div class="mhandle"></div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:14px;">⚙️ Ayarlar</h3>
+
+    <div class="slbl" style="padding:0;margin:0 0 8px;">🌸 Döngü Varsayılanları</div>
+    <div class="card" style="margin:0 0 14px;">
+      <div class="cb">
+        <div class="fr"><label>Varsayılan Döngü Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
+        <div class="fr"><label>Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
+        <div class="fr"><label>💕 Önemli Tarih (opsiyonel)</label><input type="date" id="cy-set-event-date"></div>
+        <div class="fr"><label>Önemli Tarih Etiketi</label><input type="text" id="cy-set-event-label" placeholder="Örn: Bosna düğünü 💍" maxlength="40"></div>
+        <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Kaydet</button>
+      </div>
+    </div>
+
+    <div class="slbl" style="padding:0;margin:0 0 8px;">🔬 Bilim Modu</div>
+    <div id="edu-global"></div>
+
+    <div class="slbl" style="padding:0;margin:14px 0 8px;">👤 Profiller</div>
+    <div id="profile-card"></div>
+
+    <div class="slbl" style="padding:0;margin:14px 0 8px;">💾 Yedekleme</div>
+    <div id="backup-export"></div>
+
+    <div class="slbl" style="padding:0;margin:14px 0 8px;">🔌 API Proxy</div>
+    <div id="api-proxy-card"></div>
+
+    <button class="btn bp bfull" style="margin-top:14px;" onclick="closeM('settings-modal')">Kapat</button>
+  </div>
 </div>
 
 <!-- MEDICAL RECORDS — Phase 3.D · 12 May 2026 · Ölçüm yerine geldi -->
@@ -5846,11 +5887,23 @@ function renderCycleDietCard(d){
   if(!c){wrap.innerHTML='';return;}
   const conf=PHASE_DIET[c.phase]||PHASE_DIET['Luteal Phase'];
   const mt=getMacroTarget(d);
+  // Phase 3.D feedback (12 May 2026) — Eski hardcoded "Günlük Akış" kartı ile birleştirildi
+  // Cycle-aware mesaj + timeline tek kart altında
   wrap.innerHTML=`<div class="cycle-diet-card" style="background:${conf.bg};">
     <div class="cdc-icon">${conf.icon}</div>
-    <div class="cdc-title">${conf.title} · Gün ${c.day}</div>
-    <div class="cdc-msg">${conf.msg}</div>
+    <div class="cdc-title" style="color:#2a1f0a;">${conf.title} · Gün ${c.day}</div>
+    <div class="cdc-msg" style="color:#3a2c14;">${conf.msg}</div>
     ${mt.bonus?`<div class="cdc-bonus">⬆️ ${mt.bonus} bugün</div>`:''}
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.12);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#3a2c14;margin-bottom:8px;">⏰ Bugün'ün Akışı</div>
+      <div class="tl" style="color:#2a1f0a;">
+        <div class="tli"><div class="tlt" style="color:#3a2c14;">07:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥄 EVOO + limon + tuz shot</div><div class="tlde" style="color:#4a3a1c;">1 yk high-phenolic + ½ limon + kaya tuzu</div><span class="tltag ts">~120 kcal</span></div></div>
+        <div class="tli"><div class="tlt" style="color:#3a2c14;">10:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥚 1. Öğün</div><div class="tlde" style="color:#4a3a1c;">Yumurta + peynir + ½ avokado + yeşillik (esnek)</div><span class="tltag td">${mt.kcal?Math.round(mt.kcal*0.40):'~600'} kcal</span></div></div>
+        <div class="tli"><div class="tlt" style="color:#3a2c14;">14:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🍯 Pre-WO</div><div class="tlde" style="color:#4a3a1c;">30g karb + 15-25g protein · WO öncesi 60 dk</div><span class="tltag ts">~200 kcal</span></div></div>
+        <div class="tli"><div class="tlt" style="color:#3a2c14;">17:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥩 2. Öğün</div><div class="tlde" style="color:#4a3a1c;">Et/balık + salata · post-WO</div><span class="tltag td">${mt.kcal?Math.round(mt.kcal*0.40):'~700'} kcal</span></div></div>
+        <div class="tli"><div class="tlt" style="color:#3a2c14;">19:00</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">⏱ Açlık Penceresi Kapanır</div><div class="tlde" style="color:#4a3a1c;">Sadece su · bitki çayı · sade kahve</div><span class="tltag te">IF</span></div></div>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -10199,6 +10252,28 @@ function renderStrip(id,activeD,cb){
   }
 }
 function closeM(id){document.getElementById(id).classList.remove('open');}
+
+// Phase 3.D · 12 May 2026 — Ayarlar modal (Cycle ayarları + Bilim Modu + Profiller + Backup + API Proxy)
+function openSettingsModal(){
+  // Render sub-cards (mevcut fonksiyonlar zaten ID'ye yazıyor; modal'da aynı ID'ler var)
+  if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
+  if(typeof renderProfileCard==='function')renderProfileCard();
+  if(typeof renderBackupExport==='function')renderBackupExport();
+  if(typeof renderApiProxyCard==='function')renderApiProxyCard();
+  // Cycle settings inputlarını mevcut değerlerle doldur
+  if(typeof getCycleSettings==='function'){
+    const s=getCycleSettings();
+    const lenEl=document.getElementById('cy-set-len');
+    const durEl=document.getElementById('cy-set-dur');
+    const evDateEl=document.getElementById('cy-set-event-date');
+    const evLblEl=document.getElementById('cy-set-event-label');
+    if(lenEl)lenEl.value=s.defaultCycleLength||28;
+    if(durEl)durEl.value=s.defaultPeriodDuration||5;
+    if(evDateEl && s.eventDate)evDateEl.value=s.eventDate;
+    if(evLblEl && s.eventLabel)evLblEl.value=s.eventLabel;
+  }
+  document.getElementById('settings-modal').classList.add('open');
+}
 // Tüm modal/pop-up'lara dismissible özelliği — dışına tıkla VEYA ESC tuşu
 function closeAllModals(){
   document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
@@ -10306,25 +10381,12 @@ function renderCycle(){
   // Onboarding banner kaldırıldı — auto-seed init()'te yapılıyor
   document.getElementById('cy-onboard-wrap').innerHTML='';
 
-  // Bilim Modu global seviye seçici (Phase 3.A)
-  if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
-  // Phase 3.C feedback (12 May 2. round) — Notification Settings + Special Modes Cycle'dan kaldırıldı:
-  //   - renderSpecialModesCard() → Diyet sekmesinde çağrılıyor
-  //   - renderNotificationSettings() → Bugün sekmesinde buton olarak çağrılıyor
+  // Phase 3.D · 12 May 2026 — Bilim Modu + Backup + API Proxy + Profil Settings Modal'a taşındı
+  // (Bugün dashboard'da ⚙️ butonu açar). Cycle render'da çağırmıyoruz artık.
   // Phase 3.C feedback (12 May) — Başarılarım Cycle Settings'te opsiyonel collapsible
   if(typeof renderAchievements==='function')renderAchievements();
-  // Phase 3.C P0 #14, #15 — Aldığım Supplementler kartı + 4 ALARM
-  if(typeof renderSupplementsInventory==='function')renderSupplementsInventory();
-  // Phase 3.C P0 #16 — Aile öyküsü kartı (FH şüphesi)
-  if(typeof renderFamilyHistoryCard==='function')renderFamilyHistoryCard();
-  // Phase 3.C P0 #9 — Lipid Takibi (FH şüphesi)
-  if(typeof renderLipidTrackingCard==='function')renderLipidTrackingCard();
-  // Backup/Export (Phase 3.B-B)
-  if(typeof renderBackupExport==='function')renderBackupExport();
-  // API Proxy ayarı (Phase 3.B-D)
-  if(typeof renderApiProxyCard==='function')renderApiProxyCard();
-  // Profil sistemi (Phase 3.B-E)
-  if(typeof renderProfileCard==='function')renderProfileCard();
+  // Phase 3.D · Supplements/Family/Lipid Medical sekmesine taşındı; Cycle'da çağırmıyoruz
+  // Render'lar Medical sekmesi açıldığında çalışır (renderMedical içinde)
 
   // ─── Hero card (current phase) ───
   renderCyHero();
