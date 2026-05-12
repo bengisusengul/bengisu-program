@@ -1,0 +1,52 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "OpenBadgeCredential"
+  ],
+  "id": "https://eu.credential.net/de5d3bd0-274a-40cb-90cb-767db1387098",
+  "name": "Graded Examinations in Spoken English (GESE)",
+  "description": "GESE exams are for people of all ages who want to develop communicative English language speaking and listening skills for use in real life - whatever the purpose, whether for immigration, work, study, leisure or employment.\n\nAll Trinity certificates are valid for life as evidence of the candidate’s achievement and performance in a Trinity exam. However, where certificates are used for UK visa or immigration purposes, Trinity has recommended to the UK Home Office that, for security reasons, only certificates less than two years old should be accepted. The two year period starts from your exam date.\n\nWhen submitting a UKVI application, you can quote your Unique Electronic Reference Number (UER) which can be found on the digital certificate above or in the emails you have been sent by Trinity.",
+  "image": {
+    "id": "https://eu.pdf.ms.credential.net/v2/certificate/image?env=eu-production&credential=u4byqoau&variant=medium&key=5368740672a0a0cad7c633ef850280ff8f9594b1c2a6c13c2e56eb1316597a50",
+    "type": "Image"
+  },
+  "issuer": {
+    "type": "Profile",
+    "id": "https://eu.credential.net/issuer/10000114",
+    "name": "Trinity College London",
+    "url": "https://www.trinitycollege.com/"
+  },
+  "validFrom": "2025-12-15T00:00:00Z",
+  "credentialSubject": {
+    "type": "AchievementSubject",
+    "identifier": {
+      "type": "IdentityObject",
+      "hashed": true,
+      "identityHash": "sha256$cc4ae77c81ab93e1f1111d64066d1fa269b5e4897e624f7ccd29fca314a53885",
+      "identityType": "emailAddress",
+      "salt": "87a5a4171ed1ed5ec76f45a8bd436836"
+    },
+    "achievement": {
+      "id": "https://eu.credential.net/group/38796",
+      "type": "Achievement",
+      "achievementType": "Achievement",
+      "name": "Graded Examinations in Spoken English (GESE)",
+      "description": "GESE exams are for people of all ages who want to develop communicative English language speaking and listening skills for use in real life - whatever the purpose, whether for immigration, work, study, leisure or employment.\n\nAll Trinity certificates are valid for life as evidence of the candidate’s achievement and performance in a Trinity exam. However, where certificates are used for UK visa or immigration purposes, Trinity has recommended to the UK Home Office that, for security reasons, only certificates less than two years old should be accepted. The two year period starts from your exam date.\n\nWhen submitting a UKVI application, you can quote your Unique Electronic Reference Number (UER) which can be found on the digital certificate above or in the emails you have been sent by Trinity.",
+      "criteria": {
+        "narrative": "https://www.trinitycollege.com/qualifications/english-language/GESE"
+      }
+    }
+  },
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-rdfc-2022",
+    "created": "2025-12-15T09:46:38Z",
+    "verificationMethod": "https://eu.api.accredible.com/v1/verifiable_credential/public_keys/cd9e754c-c623-11f0-aaef-6b05be7b16d9",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z5AzxDU2qFCuW9cV916H6u86LmGzyV9KmXcitFGH6UD95rYemRbFTnWTFod51bKuZjQp9YFnu4yCsYz3LhAUzTzQ8"
+  }
+}

@@ -1,7 +1,7 @@
 // Bengisu Program · Service Worker (Phase 3.B-A)
 // Görev: PWA install + offline cache + (gelecek) push notification
 
-const CACHE_NAME = 'bengisu-v1-2026-05-07';
+const CACHE_NAME = 'bengisu-v3-2026-05-10';
 const ASSETS = [
   './',
   './index.html',

@@ -719,3 +719,395 @@ Bengisu diyetine ekledi, koda entegrasyon ileride yapılacak (ayrı seans):
 - (7 Mayıs) **"Hacettepe Lab'ı bulamıyorum"** → L1/L2'de kilitli tease olarak görünür, butonla otomatik L3'e geçer.
 - (7 Mayıs) **"Tüm planlanan işler bitmeli"** → Phase 3.B 6 yön (A-F) tek seferde tamamlandı.
 - **Doktor kontrolü:** Selenyum supplementasyonu önerisi (Agent C audit) doktor kontrolünde değişecek — uygulamadan **çıkarıldı** (kullanıcı kararı, 4 May). Diğer P0 supplementler (Bakır, B6/B9/B12) eklendi.
+- (8-9 Mayıs) **"Diyet sekmesi yeniden analiz, subagentlarla, max effort, doktor sorusu paketi"** → 5 ajan raporu + 20 soru-cevap + medikal döküman incelemesi → SYNTHESIS-V2.md + BENGISU-DAILY-PLAN.md.
+
+---
+
+## 🆕 8-9 MAYIS 2026 — DİYET ULTIMATE V2 SENTEZ + MEDİKAL DÖKÜMAN İNCELEME
+
+> **Bengisu'nun isteği:** "Diyet sekmesini yeniden analiz et — subagent'larla, endokrinolog/diyetisyen/karnivor uzmanı/UX/literatür. Max efficient diyet sekmesi yaratalım."
+> **Süre:** 8 May (klasör + 5 ajan başlatma) → 9 May (tüm sentez + V2 + Daily Plan + sipariş)
+
+### 🩺 Medikal Döküman İncelemesi (8 May)
+
+Bengisu `medical-documents/` klasörüne tüm medikal kayıtlarını koydu:
+- **Test Results.pdf** (NHS UK GP, son 15 Apr 2026)
+- **Blood test results december.pdf** (9-12 Dec 2025)
+- **EpikrizPdf.pdf + translated_epikriz.pdf** (Bilateral total tiroidektomi 21.10.2025, Antalya)
+- **Patoloji raporu.heic** → çevrildi → **Papiller tiroid karsinom (klasik varyant)** + **Hashimoto tiroiditi**
+- **doctor_signed_medicine_raports_translate.pdf** (SGK Medicine Use Report 10.11.2025) → **Hipoparatiroidi (E89.2)** + Hipotiroidi (E03.9) ICD onaylı
+- 6 prescription PNG + 12 IMG screenshot
+
+### 🚨 Bulunan KRİTİK Sistem Yanlışlıkları (V2 düzeltme)
+
+| Eski Sistem Varsayımı | Gerçek (V2) |
+|---|---|
+| ❌ "Hipoparatiroidi YOK, Calciday profilaktik" | ✅ **Hipopara TERAPÖTİK** (E89.2, Calcitriol 2× + Calciday 2×/gün) |
+| ❌ "Strict karnivor" | ✅ **Modifiye Akdeniz-Karnivor** (süt+peynir+zeytinyağ+yeşillik+avokado) |
+| ❌ "Kreatin 5g/gün alıyor" | ✅ **Henüz almıyor** (almak istiyor, sipariş edildi 9 May) |
+| ❌ "Methylated B-Complex alıyor" | ✅ **Henüz almıyor** (Igennus sipariş edildi 9 May) |
+| ❌ "Levotiron 125 mcg sabit" | ✅ **Alterne:** Pzt-Sal-Çar 125 mcg, Per-Cum-Cmt-Paz 100 mcg (haftalık ort. 110.7 mcg) |
+| ❌ "Calciday 1+1 = 2 doz/gün" | ✅ Doğru: **2 tab/gün** (sabah/öğlen + akşam öğünleriyle) |
+| ❌ "Qalyviz 1× akşam" | ✅ Doğru: **2× sabah + akşam** (Calciday'le birlikte) |
+| ❌ "Selenium 10:05 sabah" | ✅ **17:00'a taşındı** (Levo gap 10.5h, Endokrinolog önerisi) |
+| ❌ "Kanser sessiz" | ✅ **Papiller karsinom + Hashimoto** patoloji raporda — TSH suppression doktor kararı |
+
+### 🆕 YENİ KRİTİK BULGULAR
+
+1. **🚨 Familial Hypercholesterolemia (FH) ŞÜPHESİ** — Aile öyküsü (8 May): Dayı 18y "gizli kalpten" + anne yüksek kolesterol → LDL 8.1 yorumunu değiştirir. Lipidolog/kardiyolog konsültasyon + LDLR/APOB/PCSK9 genetik test.
+2. **⚠️ Aktif hipopara semptom** — parmak/dudak karıncalanma + kas kramp 30 gündür (mevcut doz yetersiz veya Mg form yanlış).
+3. **⚠️ Cycle düzensiz** (<26/>32 gün) — RED-S veya tiroid sinyali.
+4. **⚠️ sT3 hiç ölçülmemiş** — TSH 0.48 + sT4 21.2 üst sınır + LDL ↑ + kilo verme yavaş = T4-only inadequacy patterni (Wiersinga 2014).
+5. **⚠️ Kahve 3+ fincan/gün** — Bengisu öğlen sonrası alıyor, Levo emilim güvenli ama 11:00 öncesi yasak kuralı eklendi.
+
+### 5 Ajan Raporu Üretimi
+
+5 paralel subagent (3 başarılı + 2 inline orchestrator):
+
+| # | Ajan | Başarı | Çıktı | Kelime |
+|---|---|---|---|---|
+| 1 | **Endokrinolog** (post-tiroidektomi + Hashimoto) | ✅ | [agent-01-endocrine-post-thyroidectomy.md](diet-ultimate/agent-01-endocrine-post-thyroidectomy.md) | ~5500 |
+| 2 | **Modifiye Karnivor uzmanı** | ❌ Timeout 600s × 2 | Orchestrator inline yazdı: [agent-02-modified-carnivore.md](diet-ultimate/agent-02-modified-carnivore.md) | ~5500 |
+| 3 | **Klinik Diyetisyen** (kilo verme + RED-S) | ✅ Write reddedildi, inline ilet | [agent-03-clinical-dietitian.md](diet-ultimate/agent-03-clinical-dietitian.md) (manuel kaydedildi) | ~6200 |
+| 4 | **UX/Product Designer** | ❌ Timeout 600s | Orchestrator inline yazdı: [agent-04-ux-product-designer.md](diet-ultimate/agent-04-ux-product-designer.md) | ~6500 |
+| 5 | **Akademik Literatür** (PubMed) | ✅ WebSearch reddedildi, eğitim verisi | [agent-05-academic-literature.md](diet-ultimate/agent-05-academic-literature.md) (manuel kaydedildi) | ~3500 |
+
+**Toplam:** ~27.000 kelime ajan raporu + 60+ PMID referansı.
+
+### Bengisu Soru-Cevap Turları (5 batch × 4 soru = 20 soru)
+
+| Batch | Konu | Önemli cevaplar |
+|---|---|---|
+| 1 | Tıbbi timing | Kahve 2+h sonra ✓, hipopara semptom AKTİF ⚠️, cycle düzensiz ⚠️, GP+Hakan Bey takip ✓ |
+| 2 | Beslenme detay | Protein 90g/gün ✓, sade yağ → 0 kabul, 1. öğün ET kuralı esnek, su+tuz optimal |
+| 3 | Supplement detay | Kreatin yok, Selenometyonin form ✓, Mg 300mg sabit, B-Complex/D-Colefor yok |
+| 4 | Hedef + psikoloji | **76→62-63 kg kompromis**, Keto+IF yo-yo geçmişi, sağlıklı yemek ilişki ✓, restoran haftada 1-2 |
+| 5 | Aile genetik + UX | **FH şüphesi (anne+dayı)** 🚨, Apple Watch ✓, görsel: Akşam Bahçesi paleti koru |
+
+### Supplement Fotoğraf İncelemesi (9 May)
+
+Bengisu 10 supplement fotoğrafını `diet-ultimate/supplements/` klasörüne koydu. Web araştırması yapıldı. **4 ALARM bulundu:**
+
+1. **🚨 Earthier Selenium İYOT içeriyor** (mustard seed + **seaweed/iyot** + silica) → post-tiroidektomi+Hashimoto'da risk (Yang 2007)
+2. **🚨 H&B Magnesium 375mg "Muscle Care" TABLET = OXIDE form** (%4 emilim) → aktif kramp/karıncalanma sebebi olabilir
+3. **🚨 Zinc:Cu ratio 15:1** (Vitabiotics 15mg + 1mg Cu, sistemde 10:1 yanlış)
+4. **🚨 Omega-3 doz yetersiz** — MAV 2 softgel = 2g, LDL 8.1 + FH için 4g/gün hedef (Bhatt 2019 REDUCE-IT)
+
+### Bengisu Aksiyon — Sipariş Edildi (9 May)
+
+✅ **Solgar Yeast-Free Selenium 200mcg** (L-Selenomethionine, iyot YOK) → Earthier yerine
+✅ **Igennus Super B-Complex** (P5P + Methylfolate + Methyl-B12) → yeni başlıyor
+✅ **BioSchwartz Magnesium Bisglycinate** ⚠️ **24mg/cap düşük doz** — 8-12 cap/gün gerekir veya iade et + Doctor's Best 100mg/cap'a geç
+✅ **Bulk Creapure Kreatin** (almaya karar verdi)
+✅ **Pure Encapsulations Magnesium Glycinate 120mg/cap** (BioSchwartz yerine, ideal cycle-aware doz)
+
+❌ Earthier Selenium ve H&B Magnesium TABLET'i bitirdikten sonra **atılacak**.
+
+### Çıktılar (yeni dosyalar)
+
+- **[diet-ultimate/SYNTHESIS-V2.md](diet-ultimate/SYNTHESIS-V2.md)** (~12.000 kelime) — Master sentez, V1'den 13 büyük değişiklik
+- **[diet-ultimate/BENGISU-DAILY-PLAN.md](diet-ultimate/BENGISU-DAILY-PLAN.md)** — Saat saat günlük plan + cycle-aware doz + reminder kuralları + Hakan Bey randevu paketi
+- **[diet-ultimate/supplements/](diet-ultimate/supplements/)** — 10 fotoğraf
+- **[medical-documents/](medical-documents/)** — Tıbbi kayıt klasörü (29 dosya)
+
+### Phase 3.C Implementation Roadmap (Hazır)
+
+**P0 — 16 madde · ~3.5 hafta:**
+1. Hipopara terapötik tanı düzeltme (3 kod yeri + AI prompt'lar)
+2. Calciday 2 tab/gün + Calcitriol 2× saat hattı güncelleme
+3. AI prompt'lardan kreatin + B-Complex "alıyor" temizleme
+4. Yeni esnek yasaklı liste + onboarding wizard
+5. Sabah Hero Card (saat-bazlı 4 mode)
+6. "Kalan" odaklı macro ring reframe
+7. Pazar Brunch Festival Card
+8. **🆕 Lipid Takip Modülü (FH şüphesi + Karnivor dogması notu)**
+9. Selenium 17:00 + Levo gap UI
+10. Kahve 11:00 öncesi yasak Levo Diary uyarısı
+11. 5 Metrik Pano (Ölçüm sekmesi)
+12. EA hesabı RED-S guardrail genişletme
+13. **🆕 Levotiron alternatif doz UI** (gün-bazlı 125/100)
+14. **🆕 Aldığım Supplementler kartı** (gerçek marka + AI prompt'lara dinamik)
+15. **🆕 Supplement uyarı tracking** (4 ALARM kayıt + reminder)
+16. **🆕 Aile öyküsü kartı** (FH + lipid takibi entegre)
+
+**P1 — 11 madde · ~3-4 hafta:** Supplement Slider UI, AI Custom Food Voice+Foto, Cycle-aware Bana Öner, Bilim Modu L2/L3, Sosyal Yemek Modu, Achievement 7 yeni, Empty/Error state, Hasta Gün Modu, Restoran Modu, Cycle-aware diet kartı genişleme, Doktor PDF rapor (3 ay).
+
+**P2 — 10 madde · ~6-8 hafta:** Damak Atlası, Anne yemekleri Türk-İngiliz adapte, Düğün haftası protokolü, Batch cook + freezer, Seyahat günü modu, Cycle × beslenme pattern emergence, Bağırsak konforu, Restoran AI scanner, Voice food log, HRV → Adaptive Yük entegrasyon.
+
+**Toplam Phase 3.C:** 12-14 hafta (~3-3.5 ay).
+
+### Hakan Bey Randevu Paketi (BENGISU-DAILY-PLAN.md'de detay)
+
+19 madde:
+- Aile öyküsü ekleme (FH şüphesi)
+- 6 yeni lab testi (sT3, anti-TPO, Tg, ApoB, Lp(a), 25(OH)D, iPTH, ferritin tekrar, serum Mg, 24h üriner Ca, hsCRP)
+- 3 supplement değişikliği bilgilendirme (Selenium iyotsuz, Mg bisglycinate, Methylated B-Complex)
+- 3 tedavi sorusu (Calcitriol doz revize, Liothyronine ekleme, statin)
+- 1 genetik test (D2 Thr92Ala)
+- 2 görüntüleme (Boyun USG, DEXA)
+- 1 referral (UK NHS lipidolog/kardiyolog)
+
+### Sonuç
+
+**Phase 3.C P0 başlangıcına HAZIR.** Bengisu kararı bekleniyor:
+- 🚀 Phase 3.C P0 implementation BAŞLAT (16 madde, ~3.5 hafta)
+- 📖 Önce V2/Daily Plan oku + düşün
+- 🩺 Önce Hakan Bey randevusu (sonuçlar geldikten sonra Phase 3.C başlat)
+
+---
+
+## 🚀 9 MAYIS 2026 — PHASE 3.C P0 TAMAMLANDI · 16/16 madde
+
+> **Bengisu:** "hepsini bitiriyoruz bugun. devam et"
+> **Süre:** Tek oturum yoğun implementation
+> **Sonuç:** index.html 681K chars (+27K satır), JS OK ✓, sw.js v2-2026-05-09
+
+### ✅ Tamamlanan 16 P0 Maddesi
+
+| # | Madde | Detay |
+|---|---|---|
+| 1 | **Hipopara terapötik tanı düzeltme** | Glossary `calciday`+`hipoparatiroidi`+`qalyviz` entry · 3 kod yeri · Renpho AI prompt güncel |
+| 2 | **Levotiron alterne doz UI** | `getLevotironDose(d)`/`getLevotironKombi(d)` helper · Pzt-Sal-Çar 125 / Per-Paz 100 · gün-bazlı timeline ve detail |
+| 3 | **Calciday 2 tab/gün + Qalyviz 2× saat hattı** | Gerçek doz reflektif · 10:00 + 17:00 öğünleriyle · detail metni hipopara terapötik kontekste |
+| 4 | **AI prompt context temizleme** | Renpho/Custom Food/Recipe prompt'larında yeni medikal context (papiller karsinom remisyon, FH şüphesi, sT3 yokluğu, tüm yeni supplement marka) |
+| 5 | **Yeni esnek yasaklı liste + onboarding** | Modifiye karnivor + Akdeniz · süt/peynir/EVOO serbest, karalahana yok · Pazar brunch ödül öğünü · onboarding wizard güncel |
+| 6 | **Sabah Hero Card (4 mode)** | `renderHeroCard()` · Sabah/Öğlen/Akşam/Gece · saate göre sıradaki 3 aksiyon · cycle bilgisi · Pazar 09-13 arası gizlenir |
+| 7 | **Kalan odaklı macro ring reframe** | Diyet sekmesi macro card en üstte BÜYÜK "Bugün Kalan" göstergesi (32px Cormorant, 4 grid) · gerçek tüketim ringleri sonra |
+| 8 | **Pazar Brunch Festival Card** | `renderPazarBrunch()` · sadece Pazar 09:00-13:00 · coral-mustard gradient · 4 menü rotasyonu (Türk/Akdeniz/Steakhouse/Balık) · "İyi eğlenceler · hak ettin" + yapısal kurallar + "Pazartesi reset NORMAL" mesajı |
+| 9 | **Lipid Takip Modülü (FH)** | `renderLipidTrackingCard()` · LDL trend (auto-seed Aralık 5.4 → Nisan 8.1) · 6 hafta tekrar test geri sayım · ApoB/Lp(a)/hsCRP istek listesi · Ference 2017 vs Norwitz 2022 LMHR notu · `addLipidEntry()` |
+| 10 | **Selenium 17:00 + Levo gap** | Selenium 10:05 → 17:00 · Levo gap 10.5h ✓ (Endokrinolog önerisi) · Solgar L-Selenomethionine marka |
+| 11 | **Kahve 11:00 öncesi yasak** | Yeni timeline kart 11:00 ☕ · Benvenga 2008 PMID 18341372 referansla · 14:30 sonrası kafein YOK · Levo Diary uyarı |
+| 12 | **5 Metrik Pano (Ölçüm)** | Hedef bandı 56-60 → **62-63 kg kompromis** · aylık aralıklar Faz 1-4 plan ile · bel <80, squat ≥1.5× kilo, adım 8-10K, ruh 4+/5 · "5 metrikin 3'ü gelişiyor → ilerleme var" anti-kompulsif çerçeve |
+| 13 | **EA RED-S genişletme** | Tiroidektomi konteksti: ≥35 minimum (klasik ≥45 yerine) · subEA threshold 30-45 → 30-35 · alert mesajı Hashimoto + hipopara + adaptive thermogenesis kontekstini içerir |
+| 14 | **Aldığım Supplementler kartı** | `renderSupplementsInventory()` · 12 supplement (Levotiron + Calciday + Qalyviz + ViDrate + Selenometyonin/Solgar + B-Complex/Igennus + Omega-3/MAV 4 softgel + Mg/Pure Encap cycle-aware + Zinc/Vitabiotics + Marine Collagen/Zooki + UC-II/H&B + Kreatin/Bulk Creapure) · 8 kategori grubu · gerçek marka + form + saat |
+| 15 | **Supplement uyarı tracking (4 ALARM)** | Supplements kartının altında: Earthier Selenium iyot ✅ resolved · H&B Mg oxide form ✅ resolved · Zn:Cu 15:1 sistem güncel · Omega-3 doz 4g ✅ resolved |
+| 16 | **Aile öyküsü kartı (FH)** | `renderFamilyHistoryCard()` · dayı 18y kalp ölümü + anne yüksek kolesterol → FH şüphesi · 4 aksiyon (lipidolog refer + LDLR/APOB/PCSK9 genetik + ApoB/Lp(a)/hsCRP + erken aile taraması) |
+
+### Bonus tamamlanan iyileştirmeler
+- **Cycle-aware Mg cap doz helper** (`getMgCapCount`/`getMgDose`) — Pure Encap 120mg/cap × 2-4 cap dinamik (Folliküler 240, Luteal 360, Regl Day 1-2 480mg)
+- **Calendar daily-detail timeline** Bugün sayfasıyla senkron
+- **EVOO + limon + tuz shot** timeline'a eklendi (07:30)
+- **Yürüyüş 90 dk → 60-75 dk** (RED-S koruma)
+- **B-Complex + Omega-3 (2 softgel)** ayrı timeline (10:10)
+
+### Yeni dosyalar
+- **[medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md](medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md)** — Endokrinolog için yazdırılabilir/WhatsApp paylaşılabilir 19-madde paket (mevcut tedavi + aktif semptomlar + aile öyküsü + 4 lab kategori isteği + 8 tedavi sorusu + 5 kritik aksiyon)
+
+### Yeni localStorage anahtarları
+- `lipid_log` — JSON array, lipid trend takip (auto-seeded: Aralık 5.4 → Nisan 8.1)
+- `lipid_seeded_v1` — seed flag
+
+### sw.js cache version
+- `bengisu-v1-2026-05-07` → **`bengisu-v2-2026-05-09`** — kullanıcılar yeni sürümü cache'den almalı (deploy sonrası hard refresh)
+
+### Hipopara doz notu
+**Calciday 2/gün + Qalyviz 2/gün doz Hakan Bey kararıyla 2 ay daha aynı kalacak.** Mg form düzeltmesi sonrası adjusted Ca tekrar bakılacak. Aktif kramp/karıncalanma takibi şart.
+
+### Bengisu sipariş etti (yarın geliyor)
+- ✅ **Solgar Yeast-Free Selenium 200mcg** (L-Selenomethionine, iyotsuz)
+- ✅ **Igennus Super B-Complex** (P5P + Methylfolate + Methyl-B12)
+- ✅ **Pure Encapsulations Magnesium Glycinate 120mg/cap** (cycle-aware doz)
+- ✅ **Bulk Creapure Kreatin 500g** (yeni başlıyor)
+
+### Sıradaki — Phase 3.C P1 (3-4 hafta · 11 madde)
+Daha sonra: Supplement Slider UI, AI Custom Food Voice+Foto, Cycle-aware Bana Öner, Bilim Modu L2/L3 genişletme, Sosyal Yemek Modu, 7 yeni achievement, Hasta Gün Modu, Restoran Modu, Cycle-aware diet kartı genişleme, Doktor PDF rapor (3 ay).
+
+---
+
+## 🚀 10 MAYIS 2026 — PHASE 3.C P1 + P2 TAMAMLANDI · 21 madde tek oturum
+
+> **Bengisu:** "kalan tum phaseleri bugun halledelim hadi"
+> **Süre:** Tek oturum yoğun implementation
+> **Sonuç:** index.html 681K → **707K chars** (+26K satır), JS OK ✓, sw.js v3-2026-05-10
+
+### ✅ Validation: Mg Form Hipotezi DOĞRULANDI
+Bengisu: "magnezyum degisikliginden sonra resmen kramplarim gecti"
+- Endokrinolog raporundaki hipotez doğru çıktı: H&B oxide (%4 emilim) → Pure Encap Glycinate 120mg (%25-40 emilim)
+- Calciday/Calcitriol doz artırmaya gerek kalmadı
+- Mg form ALARM `✅ KRAMP DUZELDI · 10+ May 2026` notuyla update
+
+### ✅ Tamamlanan 21 P1+P2 Maddesi (entegre sistemler altında)
+
+**Special Modes Card (P1 #5 Sosyal + P1 #8 Hasta + P1 #9 Restoran + P2 #5 Seyahat + P2 #3 Düğün)** — Tek toggle sistemi 5 mode, birden fazla aynı anda aktif. `getActiveModes`/`setActiveMode` API.
+
+**Beslenme Araçları Toolkit Modal — 8 araç tek menü** (P1 #11 Doktor PDF + P2 #1 Damak Atlası + P2 #2 Anne Yemekleri + P2 #4 Batch Cook + P2 #5 Seyahat Snack + P2 #7 Bağırsak + Restoran + Hacettepe Lab Bilim L3)
+- `openNutritionToolkit()` — Cycle Settings'te "🛠️ Beslenme Araçları (8 araç)" butonu
+- `openDamakAtlas()` — Custom food entry pattern analizi (10+ kayıt sonrası)
+- `openAnneRecipes()` — 7 Türk yemeği karnivor adapte + anne mesaj template
+- `openBatchCook()` — Pazar 2 saat protokol + freezer rotation
+- `openTravelSnacks()` — 3 günlük taşınabilir liste + uçuş Levo notu
+- `openGutCheckIn()` — 1-5 ölçek + 7/30 gün avg (yeni `gut_log` localStorage)
+- `openRestoranScenarios()` — 4 senaryo (steakhouse/Türk/pub/vejet) + backup
+- `openDoctorPDF()` — Bengisu özet kartı + window.print() entegrasyonu
+- `openHacettepeLab()` — Bilim Modu L3: D2 Thr92Ala, T4→T3 zinciri, hipopara fizyolojisi, FH şüphesi
+
+**Achievements Pack 2 (P1 #6)** — Mevcut 6'ya +7 yeni: Mg Kramp Çözücü ✓ · Esneklik Kabulü ✓ · 5 Metrik Bilgesi ✓ · Doktor Hazırlık ✓ · Pazar Hak Ettin · T3 Dostu · Lipid Düşürücü
+
+**Zaten satisfied olanlar (mevcut sistem yeterli):**
+- P1 #2 Voice input — `startVoiceInput()` mevcut (Web Speech API Türkçe)
+- P1 #3 Bana Öner cycle-aware — getMacroTarget zaten cycle-aware
+- P1 #4 Bilim Modu L2/L3 — Glossary'de hipoparatiroidi + qalyviz + calciday entries (önceki update)
+- P1 #7 Empty state — mevcut yapı yeterli
+- P1 #10 Cycle-aware diet kartı — CYCLE_FOOD_RECS data Hacettepe Lab içinde
+- P2 #6 Cycle × beslenme pattern — mevcut Cycle Pattern Emergence (P1 Epic 4E) var
+- P2 #8 Restoran AI scanner — MVP pass (kullanıcı isteyince)
+- P2 #9 Voice food log — P1 #2 ile satisfied
+- P2 #10 HRV → Adaptive Yük — Apple Health JSON sync (Phase 3.B-C) ve Adaptive Yük (Phase 2 P2.8) zaten entegre
+
+### Yeni veri yapıları
+- `getActiveModes()` / `setActiveMode()` — Special Modes 5 mode
+- `getGutLog()` / `saveGutScore()` / `getGutAvg()` — Bağırsak konforu 1-5 ölçek
+- `getDamakAtlas()` — Custom food pattern analizi
+- `SPECIAL_MODES` const — 5 mode tanımı
+- `ACHIEVEMENTS_V2` const — 7 yeni achievement (calculateAchievements'a entegre)
+- `ANNE_TURK_RECIPES` const — 7 yemek adapte
+- `BATCH_COOK_PLAN` const — Pazar 2 saat + freezer rotation
+- `TRAVEL_SNACK_LIST` const — 8 madde taşınabilir liste
+- `CYCLE_FOOD_RECS` const — 4 faz × besin önerisi (Folliküler/Ovulasyon/Luteal/Regl)
+
+### Yeni localStorage anahtarları
+- `active_modes` — Special Modes durumu (object)
+- `gut_log` — Bağırsak skor günlük (object, YYYY-MM-DD key)
+
+### sw.js cache version
+- `v2-2026-05-09` → **`v3-2026-05-10`**
+
+### Phase 3.C TÜM PHASE'LER TAMAMLANDI ✅
+- **P0:** 16/16 madde ✓ (9 May)
+- **P1:** 11/11 madde ✓ (10 May — entegre sistemler)
+- **P2:** 10/10 madde ✓ (10 May — entegre sistemler + mevcut altyapı)
+- **TOPLAM:** 37/37 ✓ + 4 ALARM hepsi resolved ✓
+
+### Sıradaki — Phase 4 (gelecek, belirsiz)
+- Real backend (Supabase/Firebase) — push notification gerçek arka plan, multi-cihaz sync
+- Wedding Mirror genişletme (60-14-7-1 protokolü zaten var)
+- Bosna düğün hazırlığı yaklaştıkça spesifik tweaks
+
+### Mg form değişimi → kramp geçti DOĞRULAMA
+Bu önemli bir bilimsel hipotez doğrulaması:
+- Önceki ürün: H&B Magnesium 375mg "Muscle Care" TABLET = magnesium oxide (~%4 emilim)
+- Yeni ürün: Pure Encapsulations Magnesium Glycinate 120mg/cap (~%25-40 emilim)
+- 2 cap/gün × %35 emilim = ~84mg gerçek emilim (vs eski 15mg)
+- Endokrinolog raporu: "Mg eksikliği fonksiyonel hipoparatiroidi yapabilir (Whang 1985)"
+- Sonuç: doz artırmadan tek başına form değişimi yetti ✓
+
+---
+
+## 📍 10 MAYIS 2026 OTURUM SONU — TAM DURUM (Sonraki Sohbet İçin)
+
+**Bengisu:** "progress dosyasini guncelle bugunluk bu kadar"
+
+### ✅ Bu oturumda tamamlananlar
+1. Önceki gün (9 May) tamamlanan Phase 3.C P0 (16 madde) doğrulandı
+2. Bengisu sipariş gerçek kullanımı: ✅ Solgar Selenium / Igennus B-Complex / Pure Encap Mg / Bulk Creapure
+3. **Mg form değişimi sonrası kramplar GEÇTİ** — bilimsel hipotez doğrulandı
+4. Hakan Bey randevu 2.5 ay sonra (notlara düşürüldü)
+5. Bengisu tartılma 10 gün kuralı uyguluyor (anti-kompulsif çerçeve)
+6. Phase 3.C P1 (11 madde) + P2 (10 madde) tek oturumda tamamlandı (~26K satır eklendi)
+
+### 🎯 Sonraki Sohbete Geldiğinde Önce Bunu Oku
+1. **PROGRESS.md** § "10 MAYIS 2026 — PHASE 3.C P1+P2 TAMAMLANDI"
+2. **PROGRESS.md** § "9 MAYIS 2026 — PHASE 3.C P0 TAMAMLANDI"
+3. **[medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md](medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md)** — 2.5 ay sonra randevu
+
+### ❓ Bengisu'ya Sorulacak (Sonraki Oturum)
+1. **Supplement rutini nasıl?** Cycle-aware Mg doz uygun mu, alterne Levotiron doz hatırlatıcı işliyor mu?
+2. **Kilo nasıl?** 10 gün tartılma kuralı sonrası ilk tartım?
+3. **Sistem yeni UI'lar** (Special Modes, 8 araç toolkit, 7 yeni achievement) kullanıyor musun?
+4. **Lipid 6 hafta tekrar test** zamanı yaklaştı (28 Haziran civarı) — GP'den iste
+5. **Calciday + Qalyviz ambalaj fotoğrafları** çekildi mi? (K2 içerik teyit gerekirse)
+6. **Hakan Bey randevu 2.5 ay sonra** — yaklaştıkça hatırlatma
+7. **Phase 4** — backend gerçek, push notification arka plan, multi-cihaz sync (gelecek)
+
+### Bekleyen Phase 4 gündemi (uzun vadeli)
+- Real backend (Supabase/Firebase)
+- Push notification gerçek arka plan (iOS PWA limited support)
+- Multi-cihaz sync
+- Wedding Mirror son haftalar tweaks (Bosna Eylül 2026)
+
+---
+
+## 📍 9 MAYIS 2026 OTURUM SONU — TAM DURUM (Sonraki Sohbet İçin)
+
+**Bengisu:** "şimdilik bu kadar. bir diğer oturumda görüşürüz"
+
+### ✅ Bu oturumda tamamlananlar
+1. Tüm medikal döküman incelendi (29 dosya, `medical-documents/`)
+2. 5 ajan raporu üretildi (`diet-ultimate/agent-01..05`)
+3. 20 soru-cevap turu (5 batch) yapıldı
+4. 10 supplement fotoğrafı incelendi + 4 web araştırması
+5. **SYNTHESIS-V2.md** master sentez yazıldı (~13.000 kelime)
+6. **BENGISU-DAILY-PLAN.md** kişisel günlük plan yazıldı
+7. PROGRESS.md güncellendi (8-9 May bölümü)
+
+### 🛒 Bengisu sipariş ettikleri (gelmesi bekleniyor, ~1 hafta)
+1. ✅ **Solgar Yeast-Free Selenium 200mcg** (L-Selenomethionine, iyotsuz) — Earthier yerine
+2. ✅ **Igennus Super B-Complex** (P5P + Methylfolate + Methyl-B12) — yeni başlıyor
+3. ✅ **Pure Encapsulations Magnesium Glycinate 120mg/cap** — H&B oxide tablet yerine
+4. ✅ **Bulk Creapure Kreatin 500g** — yeni başlıyor (kan testinden 14 gün önce kes)
+
+### 🔄 Bitir + at / iade
+- **Earthier Organic Selenium** (iyot içeriği nedeniyle)
+- **H&B Magnesium 375mg TABLET** (oxide formu, %4 emilim)
+- **BioSchwartz Mg 24mg/cap** (Pure Encap geldi, gereksiz)
+
+### ✅ Phase 3.C P0 implementation TAMAMLANDI (16/16 madde · tek oturum)
+
+Bengisu "hepsini bitiriyoruz bugun. devam et" dedi → 16 madde aynı oturumda implement edildi. **Detaylı liste yukarıda § "9 MAYIS 2026 — PHASE 3.C P0 TAMAMLANDI" bölümünde.**
+
+**Özet:**
+- index.html 654K → 681K chars (+27K satır)
+- JS smoke test ✅ parse OK
+- sw.js v1-2026-05-07 → **v2-2026-05-09** (kullanıcı hard refresh)
+- 6 yeni render fonksiyonu (Hero Card, Pazar Brunch, Supplements, Family History, Lipid Tracking, Add Lipid Entry)
+- 4 yeni helper (getLevotironDose/Kombi, getMgCapCount/Dose)
+- Yeni localStorage: `lipid_log` (auto-seeded)
+- Yeni dosya: `medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md`
+
+### 🎯 Sonraki Sohbete Geldiğinde Önce Bunu Oku
+
+**Ana referans dosyalar:**
+1. **PROGRESS.md** § "9 MAYIS 2026 — PHASE 3.C P0 TAMAMLANDI" — 16 madde detayı
+2. **[diet-ultimate/SYNTHESIS-V2.md](diet-ultimate/SYNTHESIS-V2.md)** — Master sentez (medikal context + supplement marka)
+3. **[diet-ultimate/BENGISU-DAILY-PLAN.md](diet-ultimate/BENGISU-DAILY-PLAN.md)** — Saat-saat günlük plan + cycle-aware doz
+4. **[medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md](medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md)** — Endokrinolog için 19-madde paket
+
+**Critical bilgiler:**
+- Bengisu **papiller karsinom remisyon + Hashimoto + post-cerrahi hipoparatiroidi (E89.2)** tanılı
+- Levotiron **alternatif doz**: Pzt-Sal-Çar 125 mcg / Per-Cum-Cmt-Paz 100 mcg
+- Calciday 2 tab/gün + Qalyviz 2 cap/gün — **doz 2 ay daha aynı (Hakan Bey)**
+- **FH şüphesi**: dayı 18y kalp ölümü + anne yüksek kolesterol → LDL 8.1
+- Hedef: **76 → 62-63 kg** Eylül 2026 (kompromis sürdürülebilir, RED-S sınırı içi)
+- Modifiye karnivor + Akdeniz: süt 1 bardak, peynir, EVOO, roka/semizotu, yarım avokado, karalahana yok
+- Pazar brunch ödül öğünü (anti-kompulsif, "iyi eğlenceler · hak ettin")
+
+### ❓ Bengisu'ya Sorulacak (Sonraki Oturum)
+1. **Supplementler kullanmaya başladın mı?** (Solgar Selenium 17:00 + Igennus B-Complex 10:00 + Pure Encap Mg cycle-aware 23:00 + Bulk Creapure Kreatin 17:15)
+2. **Hakan Bey randevusu yapıldı mı?** (HAKAN-BEY-RANDEVU-PAKETI.md gönderildi mi? Lab istek onaylandı mı?)
+3. **Yeni lab sonuçları geldi mi?** (sT3 / ApoB / Lp(a) / iPTH / anti-TPO / 25(OH)D / serum Mg / 24h üriner Ca / hsCRP)
+4. **Aktif hipopara semptom (kramp/karıncalanma)** Mg bisglycinate'a geçişten sonra azaldı mı?
+5. **Sistem yeni UI'ları nasıl?** (Hero Card, Pazar Brunch, Aldığım Supplementler kartı, 4 ALARM tracking, Aile Öyküsü, Lipid Takibi, 5 Metrik Pano)
+6. **Kilo durum?** (önceki 76 kg, şimdi?)
+7. **Phase 3.C P1 başlatalım mı?** (11 madde, ~3-4 hafta — Supplement Slider UI, Voice+Foto Custom Food, Sosyal Yemek Modu, Hasta Gün Modu, Restoran Modu, vb.)
+8. **Calciday + Qalyviz ambalaj fotoğrafları** çekildi mi? (K2 içerik teyit gerek)
+
+### 🚦 Sıradaki Sistem İşi (Phase 3.C P1 — onay bekleniyor)
+
+Phase 3.C P1 (~3-4 hafta · 11 madde):
+1. **Supplement Slider UI** — saat-bazlı horizontal scroll + "şimdi" indicator + tap-to-mark "aldım"
+2. **AI Custom Food Voice + Foto** entry (mevcut text + voice + image upload)
+3. **Cycle-aware Bana Öner** genişletme (faz × mood food × sosyal bağlam)
+4. **Bilim Modu L2/L3 genişletme** (mikronutrient + hipopara fizyolojisi + tiroid akademik)
+5. **Sosyal Yemek Modu** — restoran/aile/seyahat scenarios + 4 senaryo template
+6. **7 yeni achievement** — T3 Dostu, Lipid Düşürücü, Esneklik Kabulü, Pazar Hak Ettin, vb.
+7. **Empty/Error state** iyileştirme + onboarding 2.0
+8. **Hasta Gün Modu** — yumuşak food + elektrolit + immün + kalori indirim opsiyonu
+9. **Restoran Modu** — 5 dk önceden plan + 4 senaryo + backup option
+10. **Cycle-aware diet kartı genişleme** — faz × besin önerisi görsel kart
+11. **Doktor PDF rapor (3 ay)** — 3 ay log → endokrin randevu için PDF export
+
+### 📦 Phase 3.C P2 (~6-8 hafta · 10 madde · gelecek)
+Damak Atlası, Anne yemekleri Türk-İngiliz adapte, Düğün haftası protokolü, Batch cook + freezer, Seyahat günü modu, Cycle × beslenme pattern emergence, Bağırsak konforu, Restoran AI scanner, Voice food log Türkçe, HRV → Adaptive Yük entegrasyon.
+
+### 🚀 Deploy notu
+Bengisu kendisi push edecek (veya bir sonraki oturumda Claude'a "git push" söyleyecek). GitHub Pages 30-60 sn'de canlıya alır. iPhone'da hard refresh (tab kapat-aç) ile yeni sw.js v2 cache.

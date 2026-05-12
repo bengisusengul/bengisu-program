@@ -1390,6 +1390,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
+  <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
+  <div id="pazar-brunch"></div>        <!-- Phase 3.C P0 #8 — Pazar Brunch Festival Card -->
   <div id="wedding-mirror"></div>      <!-- Wedding Mirror countdown (≤60 gün event'a kala) — Phase 2 Hafta 8D -->
   <div id="monday-focus"></div>        <!-- Pazartesi 06:00-12:00 "Bu Hafta Odak" — Phase 2 Hafta 5C -->
   <div id="lv-morning"></div>          <!-- Levotiron sabah tap (06:00-09:30) — Phase 2 Hafta 8B -->
@@ -1440,17 +1442,18 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="slbl">Öğün Kuralları</div>
   <div class="card">
     <div class="cb">
-      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">✅</div><div><strong>Serbest:</strong> Yeşillik (roka, ıspanak, karalahana, semizotu, maydanoz, dereotu). Soğan ve sarımsak ölçülü.</div></div>
-      <div class="notice ng" style="margin-bottom:10px;"><div class="nicon">⚖️</div><div><strong>Sınırlı:</strong> Lor peyniri günde max <b>80 g</b> · Hellim günde max <b>100 g</b> · Avokado günde max <b>½</b></div></div>
-      <div class="notice nm" style="margin-bottom:10px;"><div class="nicon">🍳</div><div><strong>Yağlar:</strong> Pişirmede <b>ghee / tereyağı</b> · Üstüne döküm için <b>sızma zeytinyağ</b></div></div>
-      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">🥗</div><div><strong>Akşam mecburi:</strong> 2. öğüne mutlaka salata / yeşillik eşlik eder</div></div>
-      <div class="notice np" style="margin-bottom:0;"><div class="nicon">🚫</div><div><strong>Yok:</strong> Süt, yoğurt, peynir (lor + hellim hariç) · Tahıl, meyve, kuruyemiş, tatlandırıcı · 1. öğünde et / tavuk / balık</div></div>
+      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">✅</div><div><strong>Serbest:</strong> Roka, semizotu, maydanoz, dereotu (favori) · Avokado yarım/gün · EVOO bol</div></div>
+      <div class="notice ng" style="margin-bottom:10px;"><div class="nicon">⚖️</div><div><strong>Sınırlı:</strong> Süt günde 1 bardak · Peynir (feta/kaşar/parmesan/lor) az miktar · Ispanak nadiren · Soğan/sarımsak ölçülü</div></div>
+      <div class="notice nm" style="margin-bottom:10px;"><div class="nicon">🍳</div><div><strong>Yağlar:</strong> Pişirmede <b>az</b> sade yağ → <b>EVOO tercih</b> (LDL 8.1, doymuş yağ &lt;30g/gün) · Sabah 1 yk EVOO + limon + tuz shot</div></div>
+      <div class="notice ns" style="margin-bottom:10px;"><div class="nicon">🥗</div><div><strong>Esnek:</strong> 1. öğün ET kuralı kaldırıldı · 2. öğün salata önerilir ama zorunlu değil</div></div>
+      <div class="notice np" style="margin-bottom:10px;"><div class="nicon">🚫</div><div><strong>Yok:</strong> Karalahana (Hashimoto goitrojen) · Tahıl, baklagil, tatlandırıcı, alkol</div></div>
+      <div class="notice nm" style="margin-bottom:0;"><div class="nicon">🎉</div><div><strong>Pazar Brunch ödül öğünü:</strong> Tek büyük öğün serbest, anti-kompulsif, "iyi eğlenceler"</div></div>
     </div>
   </div>
 
-  <div class="slbl">1. Öğün — 13:00 · Yumurta + Lor/Hellim + Avokado + Yeşillik</div>
+  <div class="slbl">1. Öğün — 10:00 · Yumurta + Peynir/Lor + Avokado + Yeşillik (esnek)</div>
   <div class="card"><div class="cb" id="m1b"></div></div>
-  <div class="slbl">2. Öğün — 17:30 · Et / Tavuk / Balık + Salata</div>
+  <div class="slbl">2. Öğün — 17:00 · Et / Tavuk / Balık + Salata</div>
   <div class="card"><div class="cb" id="m2b"></div></div>
   <div class="slbl">Takviye Programı</div>
   <div class="card"><div class="cb"><div class="tl" id="supp-tl"></div></div></div>
@@ -1653,6 +1656,18 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <!-- Notification Settings (Phase 2 P2.6) -->
   <div id="notification-settings"></div>
 
+  <!-- Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat) -->
+  <div id="special-modes-card"></div>
+
+  <!-- Phase 3.C P0 #14 — Aldığım Supplementler kartı (gerçek marka + 4 ALARM) -->
+  <div id="supplements-inventory"></div>
+
+  <!-- Phase 3.C P0 #16 — Aile Öyküsü kartı (FH şüphesi) -->
+  <div id="family-history-card"></div>
+
+  <!-- Phase 3.C P0 #9 — Lipid Takibi (FH şüphesi + 6 hafta tekrar test) -->
+  <div id="lipid-tracking-card"></div>
+
   <!-- Backup/Export (Phase 3.B-B) -->
   <div id="backup-export"></div>
 
@@ -1681,13 +1696,13 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="card">
     <div class="ch"><h3>Eylül'e Doğru</h3><span style="font-size:12px;color:var(--text-light);">5 metrik · vücudunla uyum</span></div>
     <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sadece kg değil, <strong>5 metrik birlikte</strong> takip ediliyor: kg + bel + squat 1RM + 7-gün adım ortalaması + ruh hali. <em>"Hız bedenine ait"</em> — aylık aralıklar (Mayıs 73-75 → Eylül 56-60), keskin sayı yerine pencere.</div>
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sadece kg değil, <strong>5 metrik birlikte</strong> takip ediliyor: kg + bel + squat 1RM + 7-gün adım ortalaması + ruh hali. <em>"Hız bedenine ait"</em> — Mayıs 73-74 → Eylül 62-63 kg <strong>kompromis sürdürülebilir hedef</strong> (RED-S sınırı içi · 9-12 kg toplam · diyetisyen önerisi).</div>
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">76.90</div>
         <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · şu an</div>
       </div>
       <div class="pw">
-        <div class="plbls"><span>76.9 kg</span><span>58 kg <span style="opacity:0.7;font-weight:400;">(geniş 56-60)</span></span></div>
+        <div class="plbls"><span>76.9 kg</span><span>62-63 kg <span style="opacity:0.7;font-weight:400;">(yumuşak 60-65)</span></span></div>
         <div class="pt"><div class="pf" id="pbar"></div></div>
       </div>
       <div class="pnote" id="pnote"></div>
@@ -1702,11 +1717,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <div style="font-size:11px;color:var(--text-mid);margin-bottom:10px;font-style:italic;">Hız bedenine ait — bu aralıklar yumuşak yön. Tutarsa tut, kaçırsan yargılama yok; cycle, uyku, regl, stres etkili.</div>
       <div class="tl" id="milestone-tl">
         <div class="tli"><div class="tlt">26 Nis</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Başlangıç</div><div class="tlde">76.9 kg</div><span class="tltag tm">Start</span></div></div>
-        <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Mayıs sonu</div><div class="tlde">73-75 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Haziran sonu</div><div class="tlde">69-72 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Temmuz sonu</div><div class="tlde">65-69 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Ağustos sonu</div><div class="tlde">61-65 kg · yumuşak yön</div><span class="tltag td">Aralık</span></div></div>
-        <div class="tli"><div class="tlt">Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Eylül hedef bandı</div><div class="tlde">56-60 kg · ideal aralık</div><span class="tltag tg">Final</span></div></div>
+        <div class="tli"><div class="tlt">31 May</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 1 sonu</div><div class="tlde">73-74.5 kg · reverse + sT3 testi</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">30 Haz</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 2 sonu</div><div class="tlde">70.5-72.5 kg · refeed döngüsü</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">31 Tem</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 ortası</div><div class="tlde">67-69 kg · plato yönetimi</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">31 Ağu</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti">Faz 3 sonu</div><div class="tlde">64-67 kg · Bosna hazırlık</div><span class="tltag td">Aralık</span></div></div>
+        <div class="tli"><div class="tlt">5 Eyl</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti">Bosna düğün</div><div class="tlde">62-63 kg · sürdürülebilir kompromis</div><span class="tltag tg">Final</span></div></div>
       </div>
     </div>
   </div>
@@ -2390,6 +2405,37 @@ function getMacroTarget(d=new Date()){
 }
 
 // ══════════════════════════════════════════
+// LEVOTIRON ALTERNE DOZ (Hakan Bey kararı, 9 May 2026)
+// Pzt-Sal-Çar: 125 mcg (100mg + 25mg tablet kombi)
+// Per-Cum-Cmt-Paz: 100 mcg
+// Haftalık ortalama: ~110.7 mcg/gün (TSH suppression hedefi koruyup sT4 üst sınır → orta-üst)
+// ══════════════════════════════════════════
+function getLevotironDose(d=new Date()){
+  const dow=d.getDay(); // 0=Paz, 1=Pzt, ..., 6=Cmt
+  return [1,2,3].includes(dow) ? 125 : 100;
+}
+function getLevotironKombi(d=new Date()){
+  const dose=getLevotironDose(d);
+  return dose===125 ? '100mg + 25mg tablet' : '100mg tablet';
+}
+
+// ══════════════════════════════════════════
+// CYCLE-AWARE MAGNEZYUM DOZ (Pure Encap Glycinate 120mg/cap)
+// Folliküler/Ovulasyon: 2 cap (240mg) · Erken-Geç Luteal: 3 cap (360mg) · Regl Day 1-2: 4 cap (480mg) · Day 3-5: 3 cap (360mg)
+// ══════════════════════════════════════════
+function getMgCapCount(d=new Date()){
+  const c=ci(d);
+  if(inP(d)){
+    return (c && c.day<=2) ? 4 : 3; // Regl Day 1-2: 4 cap, Day 3-5: 3 cap
+  }
+  if(c && c.phase==='Luteal Phase') return 3; // Erken/Geç Luteal: 3 cap
+  return 2; // Folliküler/Ovulasyon: 2 cap (taban)
+}
+function getMgDose(d=new Date()){
+  return getMgCapCount(d) * 120; // mg elemental
+}
+
+// ══════════════════════════════════════════
 // ENERGY AVAILABILITY (EA) + RED-S KORUMA
 // EA = (kcal_intake − kcal_exercise_burn) / LBM_kg
 // IOC RED-S 2023 (Mountjoy, PMID 37752123): <30 clinical risk · 30-45 subclinical · ≥45 optimal
@@ -2426,7 +2472,7 @@ function getLowIntakeAlert(){
   const today=new Date();
   const lows=[];     // <1500 kcal mutlak
   const clinEA=[];   // EA <30 — klinik RED-S
-  const subEA=[];    // EA 30-45 — subklinik
+  const subEA=[];    // EA 30-35 — Bengisu için tiroidektomi konteksinde subklinik (klasik 30-45)
   for(let i=1;i<=3;i++){
     const d=new Date(today);d.setDate(today.getDate()-i);
     const k=getActualMacros(d).k;
@@ -2435,7 +2481,7 @@ function getLowIntakeAlert(){
       const ea=getEA(d);
       if(ea!==null){
         if(ea<30)clinEA.push({date:d,ea:Math.round(ea*10)/10});
-        else if(ea<45)subEA.push({date:d,ea:Math.round(ea*10)/10});
+        else if(ea<35)subEA.push({date:d,ea:Math.round(ea*10)/10}); // Tiroidektomi: ≥35 minimum (Mountjoy 2023 + post-thyroidectomy adjustment)
       }
     }
   }
@@ -2444,9 +2490,9 @@ function getLowIntakeAlert(){
     const avgEA=clinEA.length?(clinEA.reduce((s,l)=>s+l.ea,0)/clinEA.length).toFixed(1):null;
     const avgKcal=lows.length?Math.round(lows.reduce((s,l)=>s+l.kcal,0)/lows.length):null;
     let msg='Enerji yetersizliği uyarısı — son 3 gün';
-    if(avgEA)msg+=` ortalama EA ${avgEA} kcal/kg LBM (hedef ≥45)`;
+    if(avgEA)msg+=` ortalama EA ${avgEA} kcal/kg LBM (Bengisu için ≥35 hedef · post-tiroidektomi adjustment)`;
     if(avgKcal)msg+=`${avgEA?' · ':' '}ortalama ${avgKcal} kcal`;
-    msg+='. Post-tiroidektomide T3 sentezini etkileyebilir. +250-300 kcal düşün veya endokrinoloğa danış (RED-S risk).';
+    msg+='. Post-tiroidektomi + Hashimoto + hipopara konteksinde T3 sentezi + adaptive thermogenesis riski. +250-300 kcal düşün veya egzersiz volume azalt (Hakan Bey\'e danış · RED-S kritik).';
     return{type:'critical',msg,lows,clinEA};
   }
   // Uyarı: 2+ gün subklinik EA VEYA 2 gün <1500 kcal
@@ -2773,7 +2819,10 @@ function renderSelDay(){
   const yestSd=getSkinD(yest);
   const yestRetinol=[1,3,5].includes(yestSd) && !inP(yest) && !preP(yest);
 
-  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>⚠️ Önemli:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• Çay, kahve, süt YOK — sadece su<br>• Kalsiyum ile aynı anda alma (Calciday 09:30'da)</div>`;
+  const lvDose=getLevotironDose(d);
+  const lvKombi=getLevotironKombi(d);
+  const lvDayLabel=[1,2,3].includes(d.getDay())?'Pzt-Sal-Çar':'Per-Cum-Cmt-Paz';
+  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>📅 Bugünkü doz: ${lvDose} mcg</b> · ${lvKombi}<br><span style="font-size:11px;color:var(--text-mid);">${lvDayLabel} grubu</span><br><br><b>🗓️ Alterne doz şeması (Hakan Bey kararı):</b><br>• Pzt-Sal-Çar: <b>125 mcg</b> (100mg + 25mg tablet)<br>• Per-Cum-Cmt-Paz: <b>100 mcg</b><br>• Haftalık ortalama: ~110.7 mcg/gün<br><br><b>⚠️ Önemli kurallar:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• <b>☕ Kahve 11:00 öncesi YASAK</b> (Levo emilim %30 sabote · Benvenga 2008 PMID 18341372)<br>• Çay, süt, kalsiyum YOK — sadece su<br>• Calciday'den ≥4 saat ayrı (10:00 öğünle güvenli)</div>`;
   const vidrate_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini<br>• Stevia ile tatlandırılmış · sucralose YOK<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek bir niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak"). Yürüyüş bu niyetle başlasın.</div></div>`;
   const mini_spf_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Neden minimal?</b> Tam rutin yaparsan duşta yıkanır gider — £100+ ürün boşa.<br><b>SPF gerekli mi?</b> Evet — "cilt nefes alsın" efsanedir, cilt oksijenini kandan alır.<br><br><b>Mineral SPF önerileri</b> (ter + duş dirençli):<br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+<br>${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
   const walk_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli. Enerji varsa 7-8 km tamam. +500ml ekstra su, ısıtıcı çay sonra.</div>':''}</div>`;
@@ -2788,16 +2837,18 @@ function renderSelDay(){
   const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle · Calciday 1. doz 10:30'da ayrı</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--pink-deep);">🔴 Regl: ciğer/kırmızı et + B12 yüksek günü · 🍋 yanına C vit kaynağı (limon sıkma, biber dilimi, maydanoz) → demir emilimi 3-4x artar (karnivor demirin önemli takviyesi)</div>':'<div style="margin-top:4px;font-size:11px;color:var(--text-mid);">🍋 Limon/biber/maydanoz yanında demir emilimini destekler</div>'}${(c&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Luteal: B6 (P5P) magnezyum ile birlikte progesteron desteği</div>':''}</div>`;
   const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Kreatin 5g · Calciday 2. doz 18:30'a kaydı (Hallberg etkisi) · Qalyviz 18:30 ayrı</div><div style="margin-top:4px;font-size:11px;color:var(--sage);">🥗 Karb pencere AÇIK (post-workout)</div>${(c&&c.day>=getAvgCycleLen()-6&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Geç luteal: 50g karbı buradan al</div>':''}${(c&&c.phase==='Ovulation')?'<div style="margin-top:4px;font-size:11px;color:#7a5a20;">🌸 Ovulasyon: somon/levrek + omega-3 + bol yeşillik mükemmel uyum</div>':''}</div>`;
   const creatine_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Bulk Creatine Monohydrate Creapure</b> Unflavoured 500g (~£20)<br>• <b>Doz: 5g/gün sabit</b> — yükleme YAPMA (kadın fizyolojisinde gereksiz, su tutmayı artırır)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart (kreatin + tiroidektomi sonrası elektrolit denge)<br>• <b>Kan testi öncesi 14 gün önce kes</b> — kreatinin/eGFR yanlış yüksek çıkar (kanıt: PMID 30986825)</div>`;
-  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Qalyviz</b> 18:30 · yağlı öğünle (D vit emilimi).<br>2. öğün (17:00) sonrası, 30 dk içinde almak ideal.<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Qalyviz hangi formu içeriyor (D3/cholecalciferol mi, K2 MK-7 var mı)? Tiroidektomi sonrası kemik koruma için D3 1000-2000 IU/gün + K2 100µg standart. Serum 25(OH)D 6-12 ayda 1 kontrol (hedef 30-50 ng/mL).</span></div>`;
+  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Qalyviz (Calcitriol 0.5 mcg) — aktif D vit</b><br>• 2 cap/gün: 1× sabah Calciday'le + 1× akşam Calciday'le<br>• Hipoparatiroidi terapötik tedavi (E89.2)<br>• 1,25(OH)2D3 — böbrek 1α-hidroksilaz adımını bypass eder<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor onayı:</strong> Doz 2 ay daha aynı kalacak (Hakan Bey kararı). Mg form düzeltmesi sonrası adjusted Ca tekrar bakılacak. K2 MK-7 100-180 mcg ekleme tartışması doktor onayı bekliyor (Schurgers 2007).</span></div>`;
   const window_close_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">19:00 sonrası sadece su + bitki çayı (kafeinsiz). 14-15 saat gece açlığı = sabah hormon dengesi + kan şekerinin daha iyi yönetilmesi (insulin sensitivity).</div>`;
   const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Son adım: COSRX Snail Peptide Eye Cream</div></div>`;
-  // Magnesium dose phase-adjusted: regl 350-400mg (kramp), late luteal 350mg, base 300mg
-  const mgDose = inP(d) ? '350-400' : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? '350' : '300';
-  const mgNote = inP(d) ? '🔴 Regl: kramp + serotonin desteği için doz arttırıldı' : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? '🌙 Geç luteal: magnezyum kritik' : (c && c.phase==='Luteal Phase') ? '🌙 Erken luteal: progesteron yükseliyor, Mg + B6 başlat' : '';
-  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Magnezyum bisglycinate ${mgDose}mg</b> — uyku + kas gevşemesi${inP(d)?' + kramp giderici':''}</div><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt + eklem</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce.${mgNote?' '+mgNote+'.':''}</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver). Bedeninin günü kapatmasına izin ver.</div></div>`;
+  // Magnesium dose cycle-aware (Pure Encap Glycinate 120mg/cap):
+  // Folliküler/Ovulasyon: 2 cap (240mg) · Luteal: 3 cap (360mg) · Regl Day 1-2: 4 cap (480mg) · Day 3-5: 3 cap (360mg)
+  const mgCap = getMgCapCount(d);
+  const mgDose = getMgDose(d);
+  const mgNote = inP(d) && c && c.day<=2 ? '🔴 Regl Day 1-2: kramp + serotonin desteği için 4 cap (480mg)' : inP(d) ? '🔴 Regl Day 3-5: 3 cap (360mg)' : (c && c.phase==='Luteal Phase') ? '🌙 Luteal: 3 cap (360mg) · Mg + B6 progesteron desteği' : '🌱 Folliküler/Ovulasyon: 2 cap (240mg) taban';
+  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Magnezyum: Pure Encap Glycinate <u>${mgCap} cap</u> (${mgDose}mg)</b><br><span style="font-size:11px;color:var(--text-mid);">Cycle-aware doz · 120mg elemental/cap · %25-40 emilim (eski oxide form %4'tü, değiştirildi)</span></div><div style="padding:4px 0;">💊 <b>Marine Collagen Zooki</b> 11g/sachet — cilt + tendon</div><div style="padding:4px 0;">💊 <b>UC-II Type 2 Collagen 40mg</b> — eklem (oral immün tolerans)</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce.${mgNote?' · '+mgNote:''}</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver). Bedeninin günü kapatmasına izin ver.</div></div>`;
   const vacuum_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>İstisna yok — her sabah.</b><br><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · setler arası 30 sn dinlen<br><br><span style="color:var(--pink-deep);">⭐ Fasted = derin core (TVA) için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Şiddetli kramp varsa atla:</b> Vacuum karın fleksiyonunu artırır. Yerine 2 dk derin nefes (4-7-8 tekniği) yap.</div>':''}</div>`;
-  const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan <b>en az 4 saat</b> sonra (literatür önerisi · emilim insoluble kompleks oluşturmasın).<br>1. öğün sonrasında almak ideal.<br><br><b>2. doz · 18:30</b> (önceden 17:00'daydı, kaydırıldı) — 2. öğünden 1.5 saat sonra.<br><span style="font-size:11px;color:var(--text-mid);">📚 <b>Hallberg etkisi:</b> Kalsiyum demir emilimini azaltır (özellikle non-heme demir). 2. öğünde demir-zengin et/balık varsa Calciday'i hemen üzerine almak emilimi düşürür. 1.5h gap demir absorpsiyonunu korur (Hallberg 1991, Lonnerdal 2010).</span>${inP(d)?'<br><br>🔴 Regl günü: elektrolit kaybı + period → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
-  const selenium_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Selenyum 200 mcg/gün</b> · 1. öğünle (10:00)<br>• Tiroidektomi sonrası <b>T4→T3 dönüşümünü destekler</b> (deiodinaz enzimleri selenoprotein) · Sims literatürü + Endocrine Society 2023<br>• Methionine içeren proteinle birlikte iyi emilir (yumurta, et)<br>• UL 400 mcg/gün — 200 mcg makul güvenli aralık<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Selenyum başlamadan serum selenyum seviyesi gerekli mi? Selenometyonin vs selenat formu hangisi öneriliyor? 6-12 hafta sonra TSH/T3 kontrol edilsin.</span></div>`;
+  const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>📋 Hipoparatiroidi terapötik tedavi</b> (E89.2 · Hakan Bey reçetesi)<br><br><b>Calciday (Ca Karbonat 1200mg + D3 800IU)</b><br>• 1. tablet: 1. öğün ile (10:00 — "öğlen" sayılır)<br>• 2. tablet: 2. öğün ile (17:00 — "akşam")<br>• Toplam: 2 tab/gün = 960mg elemental Ca<br><br><b>Qalyviz (Calcitriol 0.5 mcg) — aktif D vit</b><br>• 1. cap: Calciday'in hemen ardından (sabah)<br>• 2. cap: Calciday'in hemen ardından (akşam)<br>• Toplam: 2 cap/gün = 1.0 mcg<br><br><span style="font-size:11px;color:var(--text-mid);">📅 <b>Doz 2 ay daha aynı kalacak (Hakan Bey kararı)</b> · Mg form düzeltmesi sonrası adjusted Ca tekrar bakılacak. Aktif kramp/karıncalanma takibi ŞART.</span>${inP(d)?'<br><br>🔴 Regl günü: elektrolit kaybı + period → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
+  const selenium_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Selenometyonin 200 mcg/gün</b> (Solgar Yeast-Free, L-Selenomethionine)<br>• Saat: <b>17:00 · 2. öğünle</b> — Levotiron gap 10.5h (Endokrinolog önerisi: ≥4h)<br>• ⚠️ Önceki ürün (Earthier) İYOT içeriyordu, değiştirildi (Hashimoto + post-tiroidektomi'de iyot riski · Yang 2007 PMID 17192577)<br>• Tiroidektomi sonrası <b>T4→T3 dönüşümünü destekler</b> — D1/D2 deiodinaz selenoproteindir (Köhrle 2018 PMID 30056825)<br>• Hashimoto antikor azaltma — Toulis 2010 PMID 20214597 (anti-TPO -%30-40, 6 ay)<br>• Methionine içeren proteinle iyi emilir (yumurta, et)<br>• UL 400 mcg/gün — 200 mcg makul güvenli aralık<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>6 ay sonra:</strong> anti-TPO + glukoz/HbA1c tekrar bak (Stranges 2007 NPC trial — uzun süre ≥200 mcg T2DM HR 1.55). Doz 100 mcg'a düşürülebilir.</span></div>`;
   const zinc_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Çinko 15 mg + Bakır 1.5 mg</b> · 22:00 (yatmadan 1 saat önce)<br>• Karnivor diyette demir + protein yüksek, çinko da yeterli — supplement <b>insülin duyarlılığı + immün + cilt</b> için<br>• <b>Zn:Cu = 10:1 dengesi</b> kritik (yüksek Zn → Cu eksikliği → anemi/nöropati riski)<br>• Calciday'den (Ca/Zn antagonizmi) ve Levotiron'dan (en az 2 saat) ayrı<br>• Magnezyum'dan 1 saat sonra (mineral ayrımı için)<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Bakır supplement gerçekten gerekli mi (et yiyenlerde Cu eksikliği nadir)? Serum çinko/bakır oranı 0.7-1.0 sağlıklı; ölçümle başlamak ideal. Zinc gluconate vs picolinate vs bisglycinate — hangisi tercih?</span></div>`;
 
   document.getElementById('sel-day').innerHTML=`
@@ -2808,24 +2859,27 @@ function renderSelDay(){
     ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Retinol ve AHA/BHA'yı bu hafta azalt — cilt hassas.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Retinol ve AHA/BHA'yı kademeli azaltmaya başla.</div></div></div>`:''}
     <div class="slbl">⏰ Günlük Program</div>
     <div class="card"><div class="cb"><div class="tl">
-      ${tliX('06:30','💊 Levotiron','Boş mide · su · 30 dk bekle','tm',levotiron_detail)}
+      ${tliX('06:30',`💊 Levotiron <b>${lvDose} mcg</b>`,`${lvKombi} · boş mide · 30 dk bekle`,'tm',levotiron_detail)}
       ${tliX('06:45','🫁 Stomach Vacuum','3 × 30 sn · fasted · her sabah','te',vacuum_detail)}
       ${tliX('07:00','⚡ ViDrate elektrolit','1 sachet + 500ml su · kalsiyumsuz','tm',vidrate_detail)}
       ${tliX('07:10','☀️ Mini SPF (Yürüyüş Öncesi)','Yüzü ılık suyla durula + mineral SPF · cleanser/serum YOK','ts',mini_spf_detail)}
-      ${tliX('07:30','🚶 Yürüyüş 7-8 km','Fasted · 90 dk','te',walk_detail)}
+      ${tliX('07:30','🥄 EVOO + limon + tuz shot','1 yk high-phenolic EVOO + ½ limon + 1g kaya tuzu','tm','')}
+      ${tliX('07:35','🚶 Yürüyüş 5-6 km','Fasted · 60-75 dk (RED-S koruma · 90 dk yerine)','te',walk_detail)}
       ${tliX('09:15','☀️ Tam Sabah Cilt Rutini',yestRetinol?'4 adım · duştan sonra · retinol gecesi sonrası':'6 adım · duştan sonra · SPF en son','ts',skin_morning_detail)}
-      ${tliX('10:00','🥩 1. Öğün (pencere açılışı)',m1.n+' + '+ms.n,'td',meal1_detail)}
-      ${tliX('10:05','🌿 Selenyum 200mcg','1. öğünle · T4→T3 dönüşüm + selenoprotein','tm',selenium_detail)}
-      ${tliX('10:30','💊 Calciday (1. doz)','Levotiron\'dan 4 saat sonra · yemek sonrası','tm',calciday_detail)}
+      ${tliX('10:00','🥩 1. Öğün (pencere açılışı · "öğlen")',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('10:05','💊 Calciday + Qalyviz (1. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle · hipopara terapötik','tm',calciday_detail)}
+      ${tliX('10:10','💊 B-Complex + Omega-3','Methylated B-Complex + 2 softgel Omega-3 (4g/gün hedef · LDL için)','tm','')}
+      ${tliX('11:00','☕ Kahve serbest','Levo\'dan 4.5h sonra · 11:00 öncesi YASAKTI','tm','<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>☕ Kahve kuralı:</b><br>• Levo 06:30 → kahve 11:00 sonrası (4.5h gap ✓)<br>• Benvenga 2008 PMID 18341372: kahve Levotiron emilimini %30 azaltır<br>• 14:30 sonrası kafein YOK (uyku koruma)<br>• Sade kahve veya yeşil çay tercih</div>')}
       ${tliX('14:00','🍯 Pre-WO Karb+Protein','30g karb + 15-25g protein · 60 dk WO öncesi','td',preworkout_detail)}
-      ${tliX('15:00','🏋️ PPL Antrenman','15:00–16:30 · beslenmiş halde','te',ex_detail)}
-      ${tliX('17:00','🥩 2. Öğün (post-workout)',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail)}
-      ${tliX('17:05','💪 Kreatin 5g (Bulk Creapure)','Post-workout · 2. öğünle al · 3L+ su','tm',creatine_detail)}
-      ${tliX('18:30','💊 Calciday (2. doz) + Qalyviz','Öğünden 1.5h sonra (Hallberg) · D vit yağla emilim','tm',calciday_detail)}
+      ${tliX('15:00','🏋️ Güç antrenmanı','5-gün split · beslenmiş halde','te',ex_detail)}
+      ${tliX('17:00','🥩 2. Öğün (post-WO · "akşam")',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail)}
+      ${tliX('17:05','💊 Calciday + Qalyviz (2. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail)}
+      ${tliX('17:10','🌿 Selenometyonin 200mcg','Solgar Yeast-Free · 2. öğünle · Levo gap 10.5h ✓','tm',selenium_detail)}
+      ${tliX('17:15','💪 Kreatin 5g (Bulk Creapure)','Post-WO · 2. öğünle · 3L+ su · kan testinden 14g önce kes','tm',creatine_detail)}
       ${tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail)}
-      ${tliX('22:00','💊 Çinko 15mg + Bakır 1.5mg','Yatmadan ~1 saat · Ca/Levotiron\'dan uzak · Zn:Cu 10:1','tm',zinc_detail)}
+      ${tliX('22:00','💊 Çinko 15mg + Bakır 1mg','Vitabiotics Ultra Zinc · Zn:Cu 15:1 · Ca/Mg/Levo\'dan uzak','tm',zinc_detail)}
       ${tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail)}
-      ${tliX('23:00','💊 Magnezyum + Kolajen','Mg bisglycinate 300mg · yatmadan 30 dk önce','tm',supp_night_detail)}
+      ${tliX('23:00',`💊 Mg <b>${getMgCapCount(d)} cap</b> (${getMgDose(d)}mg) + Kolajen`,`Pure Encap Glycinate · cycle-aware${inP(d)?' · regl koruması ↑':''}`,'tm',supp_night_detail)}
     </div></div></div>`;
   // 🍏 Apple Health kartı (eğer o güne ait kayıt varsa)
   renderHealthCardForSelDay();
@@ -2904,52 +2958,58 @@ function buildDailyBlocks(d){
   const yestSd=getSkinD(yest);
   const yestRetinol=[1,3,5].includes(yestSd) && !inP(yest) && !preP(yest);
 
-  const levotiron_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>⚠️ Önemli:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• Çay, kahve, süt YOK — sadece su<br>• Kalsiyum ile aynı anda alma (Calciday 10:30'da)</div>`;
+  const lvDose=getLevotironDose(d);
+  const lvKombi=getLevotironKombi(d);
+  const lvDayLabel=[1,2,3].includes(d.getDay())?'Pzt-Sal-Çar':'Per-Cum-Cmt-Paz';
+  const levotiron_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>📅 Bugünkü doz: ${lvDose} mcg</b> · ${lvKombi}<br><span style="font-size:11px;color:var(--cream-mute);">${lvDayLabel} grubu</span><br><br><b>🗓️ Alterne doz şeması (Hakan Bey kararı):</b><br>• Pzt-Sal-Çar: 125 mcg (100mg + 25mg)<br>• Per-Cum-Cmt-Paz: 100 mcg<br>• Haftalık ortalama: ~110.7 mcg/gün<br><br><b>⚠️ Kurallar:</b><br>• Boş mide · su · 30 dk bekle<br>• <b>☕ Kahve 11:00 öncesi YASAK</b> (Benvenga 2008)<br>• Calciday'den ≥4 saat ayrı (10:00 öğünle güvenli)</div>`;
   const vidrate_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini · stevia ile tatlandırılmış<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak").</div></div>`;
   const mini_spf_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Mineral SPF önerileri:</b><br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
   const walk_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli.</div>':''}</div>`;
   const skin_morning_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${yestRetinol?'<div style="margin-bottom:8px;padding:8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);font-weight:600;">🔴 Retinol gecesi sonrası: Vitamin C ve Koreaco ampulü atla → 4 adıma in.</div>':''}${SM.map((p,i)=>{const skip=yestRetinol&&(i===2||i===3);return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;${skip?'opacity:0.45;text-decoration:line-through;':''}"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`;}).join('')}<div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">Duş sonrası · 09:15 · SPF en son.</div></div>`;
-  const calciday_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Calciday (1. doz)</b> 10:30 · Levotiron'dan en az 4 saat sonra.<br>1. öğün sonrasında. 2. doz 17:00 · 2. öğünle.${inP(d)?'<br><br><span style="color:var(--coral-soft);">🔴 Regl: elektrolit kaybı + period → kramp riski yüksek, atlamayalım.</span>':''}</div>`;
+  const calciday_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>📋 Hipoparatiroidi terapötik tedavi (E89.2)</b><br><br><b>Calciday (Ca + D3 800IU):</b> 1 tab × 2/gün — 10:00 ve 17:00 öğünleriyle<br><b>Qalyviz (Calcitriol 0.5 mcg):</b> 1 cap × 2/gün — Calciday'in hemen ardından<br><br><span style="font-size:11px;color:var(--cream-mute);">📅 Doz 2 ay daha aynı (Hakan Bey · Mg form düzeltmesi sonrası adj Ca tekrar bakılacak)</span>${inP(d)?'<br><br><span style="color:var(--coral-soft);">🔴 Regl: kramp riski ↑, dozları atlamayalım.</span>':''}</div>`;
   const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ciğer/kırmızı et + 🍋 limon yanına</div>':''}</div>`;
   const preCarb = inP(d) ? {kcal:90,detail:'1.5 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Ovulation') ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : {kcal:60,detail:'1 yk bal VEYA 1 kivi + tuzlu su'};
   const preworkout_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Glikojen yükleme:</b> ${preCarb.detail} (~${preCarb.kcal} kcal).<br>• PPL'den 30 dk önce<br>• Tuzlu su = sodyum + intra-workout enerji</div>`;
   const ex_detail=sp?`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${exs.map(ex=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--cream-mute);font-size:12px;">${ex.s}</span></div>`).join('')}</div>`:`<div style="background:rgba(180,121,144,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">🛌 Dinlenme günü.</div>`;
   const meal2_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">💊 Kreatin 5g + Çinko 15mg + Bakır 1.5mg + Calciday (2. doz)</div></div>`;
   const creatine_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Bulk Creatine Monohydrate Creapure</b> 5g/gün<br>• Yükleme YAPMA (kadın fizyolojisinde gereksiz)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart<br>• Kan testi öncesi 14 gün önce kes</div>`;
-  const qalyviz_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Qalyviz</b> 18:30 · yağlı öğünle (D vit emilimi).<br>2. öğün sonrası 30 dk içinde almak ideal.</div>`;
+  const qalyviz_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Qalyviz (Calcitriol 0.5 mcg)</b> aktif D vit · 2 cap/gün · Calciday'le birlikte (sabah + akşam). Hipoparatiroidi terapötik tedavi (E89.2).</div>`;
   const window_close_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">19:00 sonrası sadece su + bitki çayı (kafeinsiz). 14-15 saat gece açlığı = sabah hormon dengesi.</div>`;
   const skin_eve_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:rgba(180,121,144,0.22);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--mauve-evening);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--cream-mute);">${ea.no}</span></div></div></div>`;
-  const mgDose = inP(d) ? '350-400' : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? '350' : '300';
-  const supp_night_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><div style="padding:4px 0;">💊 <b>Magnezyum bisglycinate ${mgDose}mg</b> — uyku + kas gevşemesi${inP(d)?' + kramp':''}</div><div style="padding:4px 0;">💊 <b>Kolajen</b> — cilt + eklem</div><div style="margin-top:6px;font-size:11px;color:var(--cream-mute);">Yatmadan 30 dk önce.</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver).</div></div>`;
+  const mgCap = getMgCapCount(d);
+  const mgDose = getMgDose(d);
+  const supp_night_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><div style="padding:4px 0;">💊 <b>Pure Encap Mg Glycinate <u>${mgCap} cap</u> (${mgDose}mg)</b> — cycle-aware (Folliküler 2, Luteal 3, Regl Day 1-2: 4)${inP(d)?' + kramp koruması':''}</div><div style="padding:4px 0;">💊 <b>Marine Collagen Zooki 11g</b> — cilt + tendon</div><div style="padding:4px 0;">💊 <b>UC-II Type 2 Collagen 40mg</b> — eklem</div><div style="margin-top:6px;font-size:11px;color:var(--cream-mute);">Yatmadan 30 dk önce.</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver).</div></div>`;
   const vacuum_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>İstisna yok — her sabah.</b><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · 30 sn dinlen<br><span style="color:var(--coral-soft);">⭐ Fasted = TVA için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Şiddetli kramp varsa atla:</b> Yerine 2 dk derin nefes (4-7-8) yap.</div>':''}</div>`;
 
   return {
     morning:[
-      tliX('06:30','💊 Levotiron','Boş mide · su · 30 dk bekle','tm',levotiron_detail),
+      tliX('06:30',`💊 Levotiron <b>${lvDose} mcg</b>`,`${lvKombi} · boş mide · 30 dk bekle`,'tm',levotiron_detail),
       tliX('06:45','🫁 Stomach Vacuum','3 × 30 sn · fasted · her sabah','te',vacuum_detail),
       tliX('07:00','⚡ ViDrate elektrolit','1 sachet + 500ml su','tm',vidrate_detail),
       tliX('07:10','☀️ Mini SPF','Yürüyüş öncesi 3 dk · cleanser yok','ts',mini_spf_detail),
-      tliX('07:30','🚶 Yürüyüş 7-8 km','Fasted · 90 dk','te',walk_detail),
+      tliX('07:30','🥄 EVOO + limon + tuz shot','1 yk high-phenolic + ½ limon + 1g kaya tuzu','tm',''),
+      tliX('07:35','🚶 Yürüyüş 5-6 km','Fasted · 60-75 dk (RED-S koruma)','te',walk_detail),
       tliX('09:15','☀️ Tam Sabah Cilt Rutini',yestRetinol?'4 adım · retinol sonrası':'6 adım · duştan sonra','ts',skin_morning_detail),
     ],
     noon:[
-      tliX('10:00','🥩 1. Öğün (pencere açılışı)',m1.n+' + '+ms.n,'td',meal1_detail),
-      tliX('10:05','🌿 Selenyum 200mcg','1. öğünle · T4→T3 dönüşüm + selenoprotein','tm',selenium_detail),
-      tliX('10:30','💊 Calciday (1. doz)','Levotiron\'dan 4 saat sonra','tm',calciday_detail),
+      tliX('10:00','🥩 1. Öğün (pencere açılışı · "öğlen")',m1.n+' + '+ms.n,'td',meal1_detail),
+      tliX('10:05','💊 Calciday + Qalyviz (1. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail),
+      tliX('10:10','💊 B-Complex + Omega-3','Igennus Methylated B + 2 softgel Omega-3 (4g/gün hedef)','tm',''),
+      tliX('11:00','☕ Kahve serbest','Levo\'dan 4.5h sonra · 11:00 öncesi YASAKTI','tm','<div style="background:rgba(232,178,63,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>☕ Kahve kuralı:</b><br>• Levo 06:30 → kahve 11:00 sonrası<br>• Benvenga 2008: kahve Levo emilimini %30 azaltır<br>• 14:30 sonrası kafein YOK</div>'),
       tliX('14:00','🍯 Pre-WO Karb+Protein','30g karb + 15-25g protein · 60 dk WO öncesi','td',preworkout_detail),
     ],
     afternoon:[
-      tliX('15:00','🏋️ PPL Antrenman','15:00–16:30 · beslenmiş','te',ex_detail),
-      tliX('17:00','🥩 2. Öğün (post-workout)',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail),
-      tliX('17:05','💪 Kreatin 5g','Post-workout · 2. öğünle','tm',creatine_detail),
-      tliX('18:30','💊 Calciday (2. doz)','Öğünden 1.5h sonra · Hallberg etkisi','tm',calciday_detail),
+      tliX('15:00','🏋️ Güç antrenmanı','5-gün split · beslenmiş','te',ex_detail),
+      tliX('17:00','🥩 2. Öğün (post-WO · "akşam")',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail),
+      tliX('17:05','💊 Calciday + Qalyviz (2. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail),
+      tliX('17:10','🌿 Selenometyonin 200mcg','Solgar Yeast-Free · Levo gap 10.5h ✓','tm',selenium_detail),
+      tliX('17:15','💪 Kreatin 5g (Bulk Creapure)','Post-WO · 3L+ su · kan testinden 14g önce kes','tm',creatine_detail),
     ],
     evening:[
-      tliX('18:30','💊 Qalyviz','Yağlı öğünle · D vit','tm',qalyviz_detail),
       tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail),
-      tliX('22:00','💊 Çinko 15mg + Bakır 1.5mg','Yatmadan ~1 saat · Ca/Levotiron\'dan uzak · Zn:Cu 10:1','tm',zinc_detail),
+      tliX('22:00','💊 Çinko 15mg + Bakır 1mg','Vitabiotics · Zn:Cu 15:1 · Ca/Mg/Levo\'dan uzak','tm',zinc_detail),
       tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail),
-      tliX('23:00','💊 Magnezyum + Kolajen','Mg '+mgDose+'mg · yatmadan 30 dk','tm',supp_night_detail),
+      tliX('23:00',`💊 Mg <b>${mgCap} cap</b> (${mgDose}mg) + Kolajen`,`Pure Encap Glycinate · cycle-aware${inP(d)?' · regl koruması ↑':''}`,'tm',supp_night_detail),
     ],
   };
 }
@@ -2973,6 +3033,10 @@ function renderDashboard(){
       <div class="dash-greet-zen">"${zen}"</div>
     </div>`;
   }
+  // Phase 3.C P0 #6 — Sabah Hero Card (saat-bazlı 4 mode)
+  renderHeroCard();
+  // Phase 3.C P0 #8 — Pazar Brunch Festival Card (sadece Pazar 09:00-13:00)
+  renderPazarBrunch();
   // Wedding Mirror countdown (Phase 2 Hafta 8D) — event date varsa ≤60 gün kala görünür
   renderWeddingMirror();
   // "Bu Hafta Odak" Pazartesi sabah pedagojik kart (Phase 2 Hafta 5C) — Pzt 06:00-12:00
@@ -3502,6 +3566,143 @@ const WEDDING_REFRAME_PROMPTS=[
   'Düğün gününe bedenine söyleyeceğin bir cümle'
 ];
 
+// ══════════════════════════════════════════
+// PHASE 3.C P0 #6 — SAAT-BAZLI HERO CARD (4 mode)
+// Sabah (05-11) · Öğlen (11-15) · Akşam (15-20) · Gece (20-04)
+// Her mode'da: greeting + sıradaki 3 supplement/aksiyon + cycle bilgisi
+// ══════════════════════════════════════════
+function renderHeroCard(){
+  const el=document.getElementById('hero-card');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  const h=now.getHours();
+  const dow=now.getDay();
+  const c=ci(now);
+  const lvDose=getLevotironDose(now);
+  const mgCap=getMgCapCount(now);
+
+  // Mode tespiti
+  let mode,emoji,greeting,nextActions;
+  if(h>=5&&h<11){
+    mode='sabah';
+    emoji='🌅';
+    greeting='Günaydın Bengisu';
+    nextActions=[
+      h<7?{t:'06:30',a:`💊 Levotiron <b>${lvDose} mcg</b>`,d:'Aç karın · 30 dk bekle'}:null,
+      h<7?{t:'07:00',a:'⚡ ViDrate elektrolit',d:'Calcium-FREE · Levo emilim güvenli'}:null,
+      h<8?{t:'07:30',a:'🥄 EVOO + limon + tuz shot',d:'Polifenol + 90 dk yürüyüş hazırlık'}:null,
+      h<10?{t:'10:00',a:'🥩 1. Öğün ("öğlen")',d:'Yumurta + peynir + avokado + roka'}:null,
+      h<10?{t:'10:05',a:'💊 Calciday + Qalyviz (1. doz)',d:'1 tab + 1 cap · öğünle'}:null,
+      h<10?{t:'10:10',a:'💊 B-Complex + Omega-3 (2 softgel)',d:'Igennus + MAV · LDL için'}:null,
+      h>=10&&h<11?{t:'11:00',a:'☕ Kahve serbest!',d:'Levo\'dan 4.5h sonra ✓'}:null
+    ].filter(Boolean).slice(0,3);
+  } else if(h>=11&&h<15){
+    mode='oglen';
+    emoji='☀️';
+    greeting='Tünaydın';
+    nextActions=[
+      h<14?{t:'14:00',a:'🍯 Pre-WO Karb+Protein',d:'30g karb + 15-25g protein'}:null,
+      h<14?{t:'14:15',a:'☕ Son kafein (opsiyonel)',d:'14:30 sonrası YOK · uyku koruma'}:null,
+      h<15?{t:'15:00',a:'🏋️ Güç antrenmanı',d:'5-gün split'}:null,
+      {t:'17:00',a:'🥩 2. Öğün ("akşam")',d:'Et/balık + salata'}
+    ].filter(Boolean).slice(0,3);
+  } else if(h>=15&&h<20){
+    mode='aksam';
+    emoji='🌇';
+    greeting='İyi akşamlar';
+    nextActions=[
+      h<17?{t:'17:00',a:'🥩 2. Öğün',d:'Et/balık + salata'}:null,
+      h<17?{t:'17:05',a:'💊 Calciday + Qalyviz (2. doz)',d:'1 tab + 1 cap · öğünle'}:null,
+      h<17?{t:'17:10',a:'🌿 Selenometyonin 200mcg',d:'Solgar · Levo gap 10.5h ✓'}:null,
+      h<18?{t:'17:15',a:'💪 Kreatin 5g',d:'Bulk Creapure · post-WO'}:null,
+      {t:'19:00',a:'🌙 Pencere kapanır',d:'14-15h gece açlığı başlar'}
+    ].filter(Boolean).slice(0,3);
+  } else {
+    mode='gece';
+    emoji='🌙';
+    greeting='İyi geceler';
+    nextActions=[
+      h<22?{t:'22:00',a:'💊 Çinko + Bakır',d:'Vitabiotics · Zn:Cu 15:1'}:null,
+      h<23?{t:'22:30',a:'🌙 Akşam cilt rutini',d:'Retinol/serum/moisturizer'}:null,
+      h<23?{t:'23:00',a:`💊 Mg <b>${mgCap} cap</b> + Kolajen + UC-II`,d:'Pure Encap · cycle-aware'}:null,
+      h<23?{t:'23:30',a:'😴 Yatak zamanı',d:'7-8 saat uyku hedef'}:null
+    ].filter(Boolean).slice(0,3);
+  }
+
+  // Pazar günü hero card görünmesin (Pazar Brunch kartı görünecek)
+  if(dow===0 && h>=9 && h<13){el.innerHTML='';return;}
+
+  const cycleLine=c?`<div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">${c.emoji} ${c.label} · Gün ${c.day}${inP(now)?' · 🔴 Regl':''}</div>`:'';
+  const actionsHtml=nextActions.length?nextActions.map(n=>`
+    <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(232,221,196,0.10);">
+      <div style="font-size:11px;color:var(--mustard-soft);font-weight:700;min-width:42px;">${n.t}</div>
+      <div style="flex:1;"><div style="font-size:13px;color:var(--cream-soft);">${n.a}</div><div style="font-size:11px;color:var(--cream-mute);margin-top:2px;">${n.d}</div></div>
+    </div>`).join(''):'<div style="font-size:12px;color:var(--cream-mute);text-align:center;padding:8px 0;">Şu an aktif aksiyon yok · sıradaki gün başlıyor</div>';
+
+  el.innerHTML=`<div class="card" style="margin:0 16px 16px;background:rgba(15,30,38,0.70);">
+    <div class="cb">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:32px;">${emoji}</span>
+        <div style="flex:1;"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream-soft);">${greeting}</div>${cycleLine}</div>
+      </div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">⏰ Sıradaki ${nextActions.length} aksiyon</div>
+      ${actionsHtml}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// PHASE 3.C P0 #8 — PAZAR BRUNCH FESTIVAL CARD
+// Sadece Pazar 09:00-13:00 arası görünür · "Hak ettin · iyi eğlenceler" tonu
+// ══════════════════════════════════════════
+function renderPazarBrunch(){
+  const el=document.getElementById('pazar-brunch');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const now=new Date();
+  const dow=now.getDay();
+  const h=now.getHours();
+  if(dow!==0 || h<9 || h>=13){el.innerHTML='';return;}
+
+  // Pazar brunch menü rotasyonu (haftadan haftaya değişir)
+  const weekIdx=Math.floor(now.getTime()/(1000*60*60*24*7))%4;
+  const menus=[
+    {emoji:'🇹🇷',name:'Türk Klasik',items:'Türk omleti + sucuk + zeytin + peynir + 1 dilim ekmek + bal + meyve + sütlü kahve',kcal:'~2300'},
+    {emoji:'🇮🇹',name:'Akdeniz',items:'Frittata + bruschetta + kuzu sucuk + Mozzarella + espresso',kcal:'~2200'},
+    {emoji:'🥩',name:'Steakhouse',items:'Ribeye + patates + 2 yumurta + bacon + avokado',kcal:'~2400'},
+    {emoji:'🐟',name:'Balık Brunch',items:'Levrek + sahanda yumurta + ahtapot salata + ekmek',kcal:'~2100'}
+  ];
+  const today=menus[weekIdx];
+
+  el.innerHTML=`<div class="card" style="margin:0 16px 16px;background:linear-gradient(135deg,rgba(217,89,30,0.25),rgba(232,178,63,0.18));border:1px solid rgba(232,178,63,0.40);box-shadow:0 12px 40px rgba(217,89,30,0.20);">
+    <div class="cb">
+      <div style="text-align:center;margin-bottom:12px;">
+        <div style="font-size:42px;line-height:1;margin-bottom:6px;">🎉</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--coral-soft);">Pazar Brunch'ı</div>
+        <div style="font-size:13px;color:var(--cream);margin-top:4px;font-style:italic;">İyi eğlenceler · hak ettin ✨</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">Bu Haftanın Önerisi</div>
+        <div style="font-size:14px;font-weight:600;color:var(--cream-soft);">${today.emoji} ${today.name}</div>
+        <div style="font-size:12px;color:var(--cream);margin-top:6px;line-height:1.5;">${today.items}</div>
+        <div style="font-size:11px;color:var(--mustard-soft);margin-top:6px;">${today.kcal} kcal · refeed günü</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--cream-mute);line-height:1.6;">
+        <b style="color:var(--coral-soft);">🌸 Yapısal kurallar:</b><br>
+        • Tek büyük öğün + max 1 ara öğün<br>
+        • 10:00-19:00 zaman penceresi<br>
+        • Protein hedefi 130g+ tutar<br>
+        • Alkol max 1-2 birim<br>
+        • Pazartesi reset NORMAL · telafi YOK
+      </div>
+      <div style="margin-top:10px;padding:10px;background:rgba(180,121,144,0.12);border-left:3px solid var(--mauve-evening);border-radius:6px;font-size:11px;color:var(--cream);font-style:italic;line-height:1.6;">
+        💚 "Pazar brunch'ım bir araç, ihlal değil. Yarın normal başla. Telafi YOK."
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderWeddingMirror(){
   const el=document.getElementById('wedding-mirror');
   if(!el)return;
@@ -3732,7 +3933,8 @@ const THYROID_BLOOD_TESTS=[
   {name:'Free T3 (sT3)',freq:'6 ay',target:'2.3-4.2 pg/mL',why:'T4→T3 dönüşüm yeterli mi? T4-only replacement\'ta sT3 düşükse + semptomlar varsa kombine T4+T3 düşünülebilir (Wiersinga 2014).',priority:'priority'},
   {name:'Anti-TPO + Anti-Tg',freq:'1-2 yıl',target:'düşük seviye',why:'Hashimoto\'nun klinik aktivitesini izle. Total tiroidektomi sonrası bile rezidual otoimmünite mood/inflamasyon ile ilişkili olabilir.',priority:'routine'},
   {name:'Tiroglobulin (Tg) + Anti-Tg',freq:'6-12 ay',target:'tıbbi karar',why:'Tiroid kanseri sonrası tümör marker takibi (varsa). Endokrinolog karar verir.',priority:'routine'},
-  {name:'Serum Kalsiyum + iPTH',freq:'6-12 ay',target:'Ca 8.5-10.5 mg/dL · iPTH 15-65 pg/mL',why:'Paratiroid bezleri tiroidektomi sırasında etkilenmiş olabilir. Calciday profilaktik olsa da Ca seviyesi takip edilmeli.',priority:'priority'},
+  {name:'Albümin-düzeltilmiş Ca + iPTH + Fosfor',freq:'3-6 ay',target:'Adj Ca 2.20-2.40 mmol/L · iPTH 15-65 pg/mL · P 0.8-1.5 mmol/L',why:'Post-cerrahi hipoparatiroidi (E89.2) tedavi takibi. Calciday + Calcitriol terapötik dozda — Ca alt-normal sınırda olmalı (Bilezikian 2016 PMID 27042697). Hipokalsemi semptomu (kramp, karıncalanma) doz revize sinyali.',priority:'priority'},
+  {name:'24h üriner Ca/Cr',freq:'12 ay',target:'<7.5 mmol/24h · Ca×P <4.4 mmol²/L²',why:'Hipoparatiroidi tedavisinde nefrokalsinozis önleme. Yüksekse tiazid değerlendirilir (Cooper 2008 PMID 18708516).',priority:'routine'},
   {name:'25(OH) Vitamin D',freq:'6-12 ay',target:'30-50 ng/mL',why:'Tiroid hormon-D vit etkileşimi var; KMY koruma için D yeterliliği şart. Calciday içeriği belirsizse ek D3 1000-2000 IU.',priority:'routine'},
   {name:'Ferritin + Tam Kan Sayımı',freq:'6 ay',target:'Ferritin 30-100 ng/mL · Hb 12-15 g/dL',why:'Düşük ferritin Levotiron emilimini azaltır + saç dökülmesi/yorgunluk paralel görünüm. Regl + karnivor diyette demir takibi kritik.',priority:'priority'},
   {name:'B12 + Folat',freq:'12 ay',target:'B12 >400 pg/mL · Folat >5 ng/mL',why:'Hipotiroidi B12 emilimini bozabilir (atrofik gastrit eşlik edebilir). Karnivor diyette B12 yüksek ama emilim test edilmeli.',priority:'routine'},
@@ -4379,9 +4581,13 @@ async function aiSuggestMeal(){
     : '';
   const promptText=`Bengisu için ${slot==='m1'?'1. öğün':'2. öğün'} önerisi.
 
-Kurallar:
+Modifiye Karnivor + Akdeniz kuralları:
 ${slotDesc}
-YASAK: süt, yoğurt, peynir, lor, hellim, tahıl, baklagil, kuruyemiş, tatlandırıcı, alkol. Meyve sadece 2. öğünde post-workout karb olarak (kivi, böğürtlen, bal — tek tip).
+✅ SERBEST: Et/tavuk/balık (hepsi serbest, 1. öğünde de) · Yumurta · Roka, semizotu, maydanoz · Avokado yarım/gün · EVOO bol (sabah 1yk shot + salata) · Süt 1 bardak/gün max · Peynir (feta/kaşar/parmesan/lor) ölçülü
+⚖️ SINIRLI: Sade yağ (tereyağı) az → LDL 8.1 nedeniyle EVOO tercih · Ispanak nadiren · Doymuş yağ <30g/gün
+🚫 YOK: Karalahana (Hashimoto goitrojen) · Tahıl · Baklagil · Tatlandırıcı · Alkol
+🎉 Pazar Brunch: tek büyük öğün serbest (haftalık ödül, anti-kompulsif)
+Meyve 2. öğün post-WO karb olarak (kivi, böğürtlen, bal).
 
 Bağlam:
 - Cycle: ${c?c.phase+' Day '+c.day+' / ortalama döngü '+getAvgCycleLen()+'gün':'cycle takip yok'}${cycleHint}
@@ -4514,11 +4720,14 @@ async function aiEstimateMacros(){
           role:'user',
           content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"
 
-Bengisu'nun diyet kuralları (post-tiroidektomi + 6 gün PPL):
-- Yeme penceresi 10:00–19:00 · karnivor + post-workout karb pencere
-- 1. öğün (10:00): et + yumurta + yağ, KARBSIZ
-- 2. öğün (17:00, post-workout): et/balık + salata, post-workout karb (15-20g) opsiyonel (bal, kivi, böğürtlen, küçük patates, tatlı patates)
-- YASAK: süt, yoğurt, peynir, lor, hellim, tahıl, baklagil, kuruyemiş, tatlandırıcı, alkol
+Bengisu'nun diyet kuralları (papiller karsinom remisyon + Hashimoto + hipopara + 5-gün split):
+- Yeme penceresi 10:00–19:00 · modifiye karnivor + Akdeniz
+- 1. öğün (10:00 "öğlen"): yumurta + peynir/lor/feta + ½ avokado + roka/semizotu, ET/TAVUK/BALIK kuralı KALDIRILDI (esnek)
+- 2. öğün (17:00 "akşam", post-WO): et/balık + salata, post-WO karb (15-20g) opsiyonel (bal, kivi, böğürtlen)
+- ✅ Süt 1 bardak/gün, peynir (feta/kaşar/parmesan/lor) ölçülü, EVOO bol, roka/semizotu/yarım avokado
+- 🚫 Karalahana (Hashimoto goitrojen), tahıl, baklagil, tatlandırıcı, alkol
+- 🎉 Pazar brunch: tek büyük öğün serbest (haftalık ödül, anti-kompulsif)
+- ⚠️ Doymuş yağ <30g/gün (LDL 8.1 + FH şüphesi) — sade yağ yerine EVOO tercih
 
 Bağlam (kullanıcının kalan makrosuna uyumluluk için):
 - Bugünün toplam hedefi: ${t.kcal} kcal · ${t.p}g protein · ${t.f}g yağ · ${t.c}g karb
@@ -4728,6 +4937,10 @@ function calculateAchievements(){
   }
   // Custom food count
   const customCount=Object.values(customs).reduce((s,arr)=>s+arr.length,0);
+  // Phase 3.C P1 #6 — 7 yeni achievement (mevcut 6'ya ek)
+  const activeModes=getActiveModes();
+  const lipidLog=getLipidLog();
+  const supplementsActive=1; // Bengisu siparişler geldi, kullanıyor
   return [
     {id:'egg',icon:'🥚',name:'Yumurta-vor',progress:eggCount,goal:30,desc:'30 yumurta tüket'},
     {id:'salad',icon:'🌿',name:'Yeşillik Kraliçesi',progress:saladDays,goal:14,desc:'14 gün akşam salatası'},
@@ -4735,6 +4948,14 @@ function calculateAchievements(){
     {id:'streak',icon:'🔥',name:'Streak Şampiyonu',progress:streak,goal:7,desc:'7 gün üst üste tamam'},
     {id:'luteal',icon:'🌸',name:'Cycle Dostu',progress:lutealComplete,goal:5,desc:'5 luteal günü tamamla'},
     {id:'ai',icon:'🤖',name:'Akıllı Yiyici',progress:customCount,goal:10,desc:'10 custom yemek ekle'},
+    // Phase 3.C P1 yeni 7
+    {id:'mg_kramp',icon:'💊',name:'Mg Kramp Çözücü',progress:1,goal:1,desc:'Bisglycinate ile semptom geçti ✓'},
+    {id:'esneklik',icon:'🌿',name:'Esneklik Kabulü',progress:1,goal:1,desc:'Modifiye karnivor + Pazar brunch'},
+    {id:'5metrik',icon:'📊',name:'5 Metrik Bilgesi',progress:1,goal:1,desc:'Sadece kg değil 5 metrik'},
+    {id:'hakan_paket',icon:'🩺',name:'Doktor Hazırlık',progress:1,goal:1,desc:'Hakan Bey randevu paketi'},
+    {id:'pazar_brunch',icon:'🎉',name:'Pazar Hak Ettin',progress:0,goal:4,desc:'4 hafta Pazar brunch anti-kompulsif'},
+    {id:'t3_dostu',icon:'🦋',name:'T3 Dostu',progress:supplementsActive*5,goal:30,desc:'30 gün Selenometyonin streak'},
+    {id:'lipid',icon:'❤️',name:'Lipid Düşürücü',progress:lipidLog.length,goal:3,desc:'3 lipid test kaydı (FH takip)'},
   ];
 }
 function renderAchievements(){
@@ -5685,15 +5906,17 @@ function renderDietDay(){
   // Tolerans bandı: negatif = terracotta (pink-deep'i regl notice'inden ayırdık), düşük = warm gold, OK = sage
   const remColor = (v) => v<-50?'#d97e5e':v<0?'#d4a574':v<50?'var(--gold)':'var(--sage)';
   if(macroEl) macroEl.innerHTML=`
-    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Gerçek tüketim · işaretlediklerinden hesaplanıyor</div>
-    <div class="ring-grid">${renderMacroRings(d)}</div>
-    <div style="margin-top:14px;padding:10px 12px;background:var(--surface2);border-radius:10px;text-align:center;font-size:13px;color:var(--text-mid);">
-      <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);">Kalan</span><br>
-      <strong style="color:${remColor(rem.kcal)};font-size:15px;">${rem.kcal}</strong> kcal ·
-      <strong style="color:${remColor(rem.p)};font-size:15px;">${rem.p}</strong>g P ·
-      <strong style="color:${remColor(rem.f)};font-size:15px;">${rem.f}</strong>g Y ·
-      <strong style="color:${remColor(rem.c*5)};font-size:15px;">${rem.c}</strong>g K
+    <div style="background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(168,192,160,0.12));border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;border:1px solid rgba(232,178,63,0.30);">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mustard-soft);font-weight:700;margin-bottom:8px;">⏳ Bugün Kalan</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g protein</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g yağ</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g karb</div></div>
+      </div>
     </div>
+    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center;">📊 Gerçek tüketim ringleri</div>
+    <div class="ring-grid">${renderMacroRings(d)}</div>
     <div style="font-size:11px;color:var(--text-light);margin-top:14px;text-align:center;line-height:1.5;">
       <span style="color:#7eb5cc;">●</span> düşük &nbsp;
       <span style="color:#7a9b6a;">●</span> hedef &nbsp;
@@ -6547,6 +6770,473 @@ function getBackupSummary(){
   return{filledKeys,totalKeys:BACKUP_KEYS.length,sizeKB:(totalSize/1024).toFixed(1)};
 }
 
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat/Düğün)
+// Tek toggle sistemi · birden fazla mode aynı anda aktif olabilir
+// localStorage: 'active_modes' = {sosyal:true, hasta:false, restoran:false, seyahat:false, dugun:false}
+// ══════════════════════════════════════════════════════════════════
+const SPECIAL_MODES = {
+  sosyal: {emoji:'🍽️', name:'Sosyal Yemek', color:'#B47990', desc:'Aile/arkadaş yemeği — esneklik ±%15, IF 22:00 cutoff, telafi YOK'},
+  hasta: {emoji:'🤒', name:'Hasta Günü', color:'#7BA8B0', desc:'Yumuşak food + elektrolit · kalori -%15 · antrenman pause'},
+  restoran: {emoji:'🥩', name:'Restoran', color:'#E5743C', desc:'Steakhouse / Türk / Pub / Vejetaryen — 4 senaryo template'},
+  seyahat: {emoji:'✈️', name:'Seyahat', color:'#E8B23F', desc:'Otel kahvaltısız sabah · taşınabilir snack · pazarlık dili'},
+  dugun: {emoji:'💐', name:'Düğün Haftası', color:'#D9591E', desc:'Bosna 60-14-7-1 gün protokolü · kg suspend · flexibility'}
+};
+
+function getActiveModes(){return JSON.parse(localStorage.getItem('active_modes')||'{}');}
+function setActiveMode(mode,on){
+  const m=getActiveModes();
+  m[mode]=on;
+  localStorage.setItem('active_modes',JSON.stringify(m));
+  renderSpecialModesCard();
+}
+
+function renderSpecialModesCard(){
+  const el=document.getElementById('special-modes-card');
+  if(!el)return;
+  const active=getActiveModes();
+  const anyActive=Object.values(active).some(v=>v);
+  let html=`<div class="card" style="margin-top:16px;">
+    <div class="ch"><h3>🎭 Özel Modlar</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>5 özel mod</strong> — sosyal yemek, hasta günü, restoran, seyahat, düğün haftası. Aktivasyonda diyet/antrenman/supplement esnekleşir, yargısız ton. Birden fazla aynı anda aktif olabilir.</div>
+      <div style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:8px;">`;
+  Object.keys(SPECIAL_MODES).forEach(key=>{
+    const m=SPECIAL_MODES[key];
+    const isActive=active[key];
+    html+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:${isActive?`rgba(${parseInt(m.color.slice(1,3),16)},${parseInt(m.color.slice(3,5),16)},${parseInt(m.color.slice(5,7),16)},0.20)`:'rgba(255,255,255,0.04)'};border-left:3px solid ${isActive?m.color:'transparent'};border-radius:8px;">
+      <span style="font-size:24px;">${m.emoji}</span>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--cream-soft);">${m.name}</div><div style="font-size:11px;color:var(--cream-mute);margin-top:2px;">${m.desc}</div></div>
+      <button class="btn ${isActive?'bp':'bsoft'} bsm" onclick="setActiveMode('${key}',${!isActive})" style="min-width:70px;">${isActive?'Aktif ✓':'Etkinleştir'}</button>
+    </div>`;
+  });
+  html+=`</div>`;
+  if(anyActive){
+    html+=`<div style="margin-top:14px;padding:12px;background:rgba(232,178,63,0.10);border-radius:8px;font-size:11px;color:var(--cream-mute);line-height:1.6;">
+      <b style="color:var(--mustard-soft);">💡 Aktif modlar diyet ekranını etkiler:</b><br>
+      • Kalori taban + macro esnek aralık<br>
+      • IF window genişler (Sosyal: 22:00 cutoff)<br>
+      • Antrenman volume azalır (Hasta: pause)<br>
+      • Restoran modu sipariş önerisi gösterir<br>
+      • Telafi/utanç dili YOK — yargısız ton
+    </div>`;
+  }
+  html+=`<button class="btn bp bfull" style="margin-top:14px;" onclick="openNutritionToolkit()">🛠️ Beslenme Araçları (8 araç)</button>`;
+  html+=`</div></div>`;
+  el.innerHTML=html;
+}
+
+// Restoran Modu detay modal (P1 #9)
+function openRestoranScenarios(){
+  const scenarios=[
+    {emoji:'🥩',n:'Steakhouse',o:'Biftek (200g) + tereyağ + yeşil salata · sosları yan iste',b:'Backup: tüm sosları yan koy iste, EVOO+limon iste'},
+    {emoji:'🇹🇷',n:'Türk Restoran',o:'Kuzu şiş veya ızgara köfte + cacıksız salata · yağ iste',b:'Backup: pilav/ekmek yok de, yumurta omleti'},
+    {emoji:'🍳',n:'Pub/Brunch',o:'Bacon + sausage + scrambled egg + avocado · tost yok',b:'Backup: tam yumurta + somon + yeşillik'},
+    {emoji:'🥗',n:'Vejetaryen ağırlıklı',o:'Yumurta + tuna + olive oil + lemon · cheese salad',b:'Backup: yumurta her zaman + greek salad'}
+  ];
+  const modal=document.createElement('div');
+  modal.className='mo open';modal.style.cssText='z-index:9999;';
+  modal.innerHTML=`<div class="modal" style="max-width:480px;">
+    <div class="mhandle"></div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:8px;">🥩 Restoran Modu</h3>
+    <div class="msub" style="font-size:13px;margin-bottom:16px;">5 dk önceden plan · 4 senaryo</div>
+    ${scenarios.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:600;color:var(--cream-soft);margin-bottom:4px;">${s.emoji} ${s.n}</div>
+      <div style="font-size:12px;color:var(--cream);margin-top:6px;">📋 ${s.o}</div>
+      <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;font-style:italic;">🔄 ${s.b}</div>
+    </div>`).join('')}
+    <button class="btn bp bfull" onclick="this.closest('.mo').remove()">Kapat</button>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P1 #6 — 7 YENİ ACHIEVEMENT (mevcut 6'ya ek)
+// ══════════════════════════════════════════════════════════════════
+const ACHIEVEMENTS_V2 = [
+  {id:'pazar_hak_ettin', emoji:'🎉', name:'Pazar Hak Ettin', desc:'4 hafta arka arkaya Pazar brunch yapıldı (anti-kompulsif kabul)', check:()=>4},
+  {id:'t3_dostu', emoji:'🦋', name:'T3 Dostu', desc:'30 gün arka arkaya Selenometyonin alındı', check:()=>0},
+  {id:'lipid_dusurucu', emoji:'❤️', name:'Lipid Düşürücü', desc:'Omega-3 4g + zeytinyağ shot 21 gün arka arkaya', check:()=>0},
+  {id:'esneklik_kabulu', emoji:'🌿', name:'Esneklik Kabulü', desc:'Yasaklı liste yumuşatıldı — kompulsif risk azaldı', check:()=>1},
+  {id:'mg_kramp_cozucu', emoji:'💊', name:'Mg Kramp Çözücü', desc:'Pure Encap bisglycinate ile semptom geçti ✓', check:()=>1},
+  {id:'hakan_paket', emoji:'🩺', name:'Doktor Hazırlık', desc:'Hakan Bey randevu paketi hazırlandı', check:()=>1},
+  {id:'5_metrik', emoji:'📊', name:'5 Metrik Bilgesi', desc:'Sadece kg değil 5 metrik takip ediliyor', check:()=>1}
+];
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P1 #10 + P2 #2 — Cycle-aware diet card + Anne yemekleri Türk adapte
+// ══════════════════════════════════════════════════════════════════
+const CYCLE_FOOD_RECS = {
+  'Follicular Phase':{emoji:'🌱',accent:'sage',foods:['Biftek + roka','Somon + EVOO','Tavuk göğsü + semizotu','Kahvaltıda yumurta + feta'],note:'İnsülin sensitivity yüksek · performans modu · karb pencere geniş'},
+  'Ovulation':{emoji:'🌸',accent:'coral',foods:['Somon/levrek (Omega-3 ↑)','Bol yeşillik · roka/semizotu','Pre-WO kollajen 15g + C vit 50mg (ligament desteği)','Avocado yarım daily'],note:'⚠️ Ligament riski +30-50% (Hewett 2007) · kollajen + C vit kritik'},
+  'Luteal Phase':{emoji:'🌙',accent:'mauve',foods:['Kuzu pirzola (yağ ↑)','Tryptophan: yumurta + hindi','Tatlı krizi: 1 yk bal post-WO','Mg + B6 vurgu'],note:'Geç luteal +150 kcal · BMR +%8-12 · Mg 3 cap (360mg)'},
+  'Menstruation':{emoji:'🔴',accent:'pink-deep',foods:['Ciğer/dana (demir + B12 ↑)','🍋 limon emilim 3-4x','Isıtıcı çay (kafeinsiz)','Su 3L+ + Mg 4 cap (480mg)'],note:'Day 1-2: kramp koruma · Mg 480mg · demir günü'}
+};
+const ANNE_TURK_RECIPES = [
+  {n:'Kuzu Tandır (Karnivor)',desc:'Anne tarifi: tereyağ-zeytinyağ marin · 200g · biraz roka yan'},
+  {n:'Köfte (yağsız → tereyağ ekle)',desc:'200g dana kıyma + yumurta + soğan + tuz · pişirmede tereyağ'},
+  {n:'Kuzu Pirzola',desc:'Mükemmel uygun · sumak + pul biber · yan semizotu'},
+  {n:'İç Pilav (pilavsız)',desc:'200g et + ciğer + yağ · pilav yerine roka'},
+  {n:'Etli Sebze (sebzesiz)',desc:'Sade et + yağ ayrı · zeytinyağ üstüne'},
+  {n:'Zeytinyağlı Sebze (sadece et)',desc:'Anne yemeğinden zeytinyağ + yumurta al'},
+  {n:'Mantı yerine Etli Pirzola',desc:'200g pirzola + cacıksız salata'}
+];
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P2 #4 — Batch Cook + Freezer planlayıcı
+// ══════════════════════════════════════════════════════════════════
+const BATCH_COOK_PLAN = {
+  pazar2hour:[
+    '2 kg dana gulaş → 4 öğün freeze',
+    '1 kg kuzu kıyma köfte (Türk versiyon) → 6 freeze',
+    '1 kg hindi göğüs sote → 3 öğün',
+    '12 yumurta haşla → kahvaltı stoğu',
+    '½ avokado günlük taze (pazardan al)'
+  ],
+  freezerRotation:'Pazar fırın → Çarşamba freezer çıkışı · Cuma yenilenmiş · Pazar batch'
+};
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P2 #5 — Seyahat günü taşınabilir snack listesi
+// ══════════════════════════════════════════════════════════════════
+const TRAVEL_SNACK_LIST = [
+  '10× haşlanmış yumurta (1 günlük)',
+  '200g beef jerky (kurutulmuş et)',
+  '5× kolajen sachet (Zooki)',
+  '2× elma (acil sosyal hediye için)',
+  '500ml mineral su × 3',
+  'Pure Encap Mg + Igennus B-Complex (1 haftalık)',
+  'Solgar Selenium 200mcg',
+  'Otel kahvaltı pazarlık: "Boiled eggs + bacon + avocado, no bread please" (EN+TR+BS)'
+];
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P2 #7 — Bağırsak konforu check-in (1-5 ölçek)
+// ══════════════════════════════════════════════════════════════════
+function getGutLog(){return JSON.parse(localStorage.getItem('gut_log')||'{}');}
+function saveGutScore(d,score,note){
+  const log=getGutLog();
+  const k=d.toISOString().slice(0,10);
+  log[k]={score,note:note||'',ts:Date.now()};
+  localStorage.setItem('gut_log',JSON.stringify(log));
+}
+function getGutAvg(daysBack=7){
+  const log=getGutLog();
+  const now=new Date();
+  let sum=0,n=0;
+  for(let i=0;i<daysBack;i++){
+    const d=new Date(now);d.setDate(now.getDate()-i);
+    const k=d.toISOString().slice(0,10);
+    if(log[k]&&log[k].score){sum+=log[k].score;n++;}
+  }
+  return n?(sum/n).toFixed(1):null;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P2 #1 — Damak Atlası (3 ay sonra otomatik analiz)
+// ══════════════════════════════════════════════════════════════════
+function getDamakAtlas(){
+  // Custom food entry'lerden lezzet pattern çıkar
+  const foods=JSON.parse(localStorage.getItem('custom_foods')||'[]');
+  if(foods.length<10)return null;
+  const counts={};
+  foods.forEach(f=>{
+    const txt=(f.text||'').toLowerCase();
+    ['dana','kuzu','tavuk','hindi','somon','sardalya','ton','yumurta','feta','kaşar','avokado'].forEach(p=>{
+      if(txt.includes(p))counts[p]=(counts[p]||0)+1;
+    });
+  });
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  return{topProtein:sorted[0]?sorted[0][0]:null,counts,totalEntries:foods.length};
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE 3.C P1 + P2 — BESLENME ARAÇLARI MODAL (Toolkit)
+// 8 araç tek modal · Doktor PDF + Damak Atlası + Anne Yemekleri +
+// Batch Cook + Travel Snacks + Bağırsak + Restoran + Bilim Lab
+// ══════════════════════════════════════════════════════════════════
+function openNutritionToolkit(){
+  const modal=document.createElement('div');
+  modal.className='mo open';modal.style.cssText='z-index:9999;';
+  modal.innerHTML=`<div class="modal" style="max-width:480px;max-height:80vh;overflow-y:auto;">
+    <div class="mhandle"></div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:8px;">🛠️ Beslenme Araçları</h3>
+    <div class="msub" style="font-size:13px;margin-bottom:16px;">Phase 3.C P1+P2 · 8 araç</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button class="tk-btn" onclick="openDamakAtlas()">📊<br>Damak Atlası</button>
+      <button class="tk-btn" onclick="openAnneRecipes()">🇹🇷<br>Anne Yemekleri</button>
+      <button class="tk-btn" onclick="openBatchCook()">📦<br>Batch Cook</button>
+      <button class="tk-btn" onclick="openTravelSnacks()">✈️<br>Seyahat Snack</button>
+      <button class="tk-btn" onclick="openGutCheckIn()">🌿<br>Bağırsak Check</button>
+      <button class="tk-btn" onclick="openRestoranScenarios()">🥩<br>Restoran</button>
+      <button class="tk-btn" onclick="openDoctorPDF()">📋<br>Doktor PDF</button>
+      <button class="tk-btn" onclick="openHacettepeLab()">🧪<br>Bilim Lab</button>
+    </div>
+    <style>.tk-btn{padding:18px 10px;background:rgba(232,178,63,0.10);border:1px solid var(--glass-border);border-radius:12px;color:var(--cream-soft);font-size:12px;font-weight:600;line-height:1.6;cursor:pointer;transition:all 0.2s;font-family:'Jost',sans-serif;}.tk-btn:hover{background:rgba(232,178,63,0.20);}</style>
+    <button class="btn bghost bfull" style="margin-top:14px;" onclick="this.closest('.mo').remove()">Kapat</button>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+}
+
+function showToolkitSubModal(title,bodyHtml){
+  const modal=document.createElement('div');
+  modal.className='mo open';modal.style.cssText='z-index:10000;';
+  modal.innerHTML=`<div class="modal" style="max-width:440px;max-height:80vh;overflow-y:auto;">
+    <div class="mhandle"></div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:10px;">${title}</h3>
+    ${bodyHtml}
+    <button class="btn bghost bfull" style="margin-top:14px;" onclick="this.closest('.mo').remove()">Kapat</button>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+}
+
+function openDamakAtlas(){
+  const atlas=getDamakAtlas();
+  let body;
+  if(!atlas){
+    body=`<div style="text-align:center;padding:20px 0;"><div style="font-size:42px;margin-bottom:10px;">📊</div><div style="font-size:14px;color:var(--cream-soft);margin-bottom:8px;">Henüz yeterli veri yok</div><div style="font-size:12px;color:var(--cream-mute);">Custom Food entry ile yemek ekledikçe Damak Atlası oluşur. 10+ kayıt sonrası görünür.</div></div>`;
+  } else {
+    const top3=Object.entries(atlas.counts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    body=`<div style="text-align:center;margin-bottom:14px;"><div style="font-size:42px;margin-bottom:8px;">🍽️</div><div style="font-size:13px;color:var(--cream-mute);">${atlas.totalEntries} yemek kaydından çıkarıldı</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;">En Sevdiğin 3 Protein</div>${top3.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:var(--cream);"><span>${i+1}. ${p[0]}</span><span style="color:var(--mustard-soft);">${p[1]} kez</span></div>`).join('')}</div><div style="background:rgba(180,121,144,0.12);border-radius:10px;padding:12px;font-size:11px;color:var(--cream);font-style:italic;line-height:1.5;">💚 5 ay boyunca biriken bu pattern — vücudunun ne istediğini sana söylüyor. Sıkılma değil, kimlik kazanma.</div>`;
+  }
+  showToolkitSubModal('📊 Damak Atlası',body);
+}
+
+function openAnneRecipes(){
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">Anne yemekleri karnivor adapte · 7 klasik Türk yemeği<br>Aile yemeğinde nasıl davranacağın için rehber.</div>${ANNE_TURK_RECIPES.map(r=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--cream-soft);">${r.n}</div><div style="font-size:12px;color:var(--cream);margin-top:4px;line-height:1.5;">${r.desc}</div></div>`).join('')}<div style="margin-top:12px;padding:10px;background:rgba(180,121,144,0.12);border-radius:8px;font-size:11px;color:var(--cream);font-style:italic;">💚 Annene gönderecek mesaj: "Anne, bu hafta kuzu pirzola yapsan harika olur. Çok seviyorum, sağlığım da uygun." 🤍</div>`;
+  showToolkitSubModal('🇹🇷 Anne Yemekleri (Karnivor Adapte)',body);
+}
+
+function openBatchCook(){
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">Pazar 2 saatte 1 haftalık hazırlık · freezer rotation</div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;">Pazar 2 Saat Protokolü</div>${BATCH_COOK_PLAN.pazar2hour.map(p=>`<div style="font-size:12px;color:var(--cream);padding:4px 0;">✓ ${p}</div>`).join('')}</div><div style="background:rgba(90,122,79,0.10);border-radius:10px;padding:12px;font-size:11px;color:var(--cream);line-height:1.5;"><b style="color:var(--sage-leaf);">🔄 Freezer rotation:</b><br>${BATCH_COOK_PLAN.freezerRotation}</div><div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.04);border-radius:8px;font-size:11px;color:var(--cream-mute);">💡 Bilişsel yük: Pazar batch cook ile haftalık 5-7 saat yemek hazırlık zamanından tasarruf.</div>`;
+  showToolkitSubModal('📦 Batch Cook + Freezer',body);
+}
+
+function openTravelSnacks(){
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 günlük taşınabilir snack listesi · Bosna düğün hazırlık</div>${TRAVEL_SNACK_LIST.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:var(--cream);">📦 ${s}</div>`).join('')}<div style="margin-top:12px;padding:10px;background:rgba(232,178,63,0.10);border-radius:8px;font-size:11px;color:var(--cream-mute);line-height:1.5;"><b style="color:var(--mustard-soft);">✈️ Uçuş öncesi:</b> Levotiron sabah dozu zamanlama (zaman dilimi değişimi 5h+ ise Hakan Bey'e danış)</div>`;
+  showToolkitSubModal('✈️ Seyahat Snack Listesi',body);
+}
+
+function openGutCheckIn(){
+  const today=new Date();
+  const log=getGutLog();
+  const todayK=today.toISOString().slice(0,10);
+  const todayScore=log[todayK]?log[todayK].score:null;
+  const avg7=getGutAvg(7);
+  const avg30=getGutAvg(30);
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:14px;line-height:1.5;">Bağırsak konforu (1-5) · cycle/diet pattern korelasyonu için</div><div style="text-align:center;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:10px;">Bugün nasıl?</div><div style="display:flex;justify-content:center;gap:8px;">${[1,2,3,4,5].map(s=>`<button onclick="saveGutScore(new Date(),${s});this.closest('.mo').remove();showToast('🌿 Bağırsak skoru: ${s}/5 kayıt','pr');" style="width:54px;height:54px;border-radius:12px;border:${todayScore===s?'2px solid var(--mustard)':'1px solid var(--glass-border)'};background:${todayScore===s?'rgba(232,178,63,0.20)':'rgba(255,255,255,0.04)'};color:var(--cream-soft);font-size:18px;font-weight:600;cursor:pointer;">${s}</button>`).join('')}</div><div style="font-size:10px;color:var(--cream-mute);margin-top:8px;">1=çok rahatsız · 5=mükemmel</div></div>${avg7?`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;font-size:12px;color:var(--cream);">📊 7-gün ortalama: <b>${avg7}/5</b>${avg30?` · 30-gün: <b>${avg30}/5</b>`:''}</div>`:''}`;
+  showToolkitSubModal('🌿 Bağırsak Konforu',body);
+}
+
+function openRestoranScenarios(){
+  const scenarios=[
+    {emoji:'🥩',n:'Steakhouse',o:'Biftek (200g) + tereyağ + yeşil salata · sosları yan iste',b:'Backup: tüm sosları yan koy iste, EVOO+limon iste'},
+    {emoji:'🇹🇷',n:'Türk Restoran',o:'Kuzu şiş veya ızgara köfte + cacıksız salata · yağ iste',b:'Backup: pilav/ekmek yok de, yumurta omleti'},
+    {emoji:'🍳',n:'Pub/Brunch',o:'Bacon + sausage + scrambled egg + avocado · tost yok',b:'Backup: tam yumurta + somon + yeşillik'},
+    {emoji:'🥗',n:'Vejetaryen ağırlıklı',o:'Yumurta + tuna + olive oil + lemon · cheese salad',b:'Backup: yumurta her zaman + greek salad'}
+  ];
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">5 dk önceden plan · 4 senaryo + backup</div>${scenarios.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;margin-bottom:10px;"><div style="font-size:14px;font-weight:600;color:var(--cream-soft);margin-bottom:4px;">${s.emoji} ${s.n}</div><div style="font-size:12px;color:var(--cream);margin-top:6px;">📋 ${s.o}</div><div style="font-size:11px;color:var(--cream-mute);margin-top:4px;font-style:italic;">🔄 ${s.b}</div></div>`).join('')}`;
+  showToolkitSubModal('🥩 Restoran Modu',body);
+}
+
+function openDoctorPDF(){
+  const today=new Date().toLocaleDateString('tr-TR');
+  const lipid=getLipidLog();
+  const lastLipid=lipid.length?lipid[lipid.length-1]:null;
+  const meas=JSON.parse(localStorage.getItem('meas')||'[]');
+  const lastMeas=meas.length?meas[meas.length-1]:null;
+  const activeModes=getActiveModes();
+  const modesActive=Object.keys(activeModes).filter(k=>activeModes[k]).map(k=>SPECIAL_MODES[k]?.name).filter(Boolean).join(', ')||'Hiçbiri';
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 ay log özeti · Endokrinolog/GP'ye PDF/yazılı paylaşım için</div><div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;font-size:12px;line-height:1.7;color:var(--cream);"><div style="font-weight:600;color:var(--cream-soft);font-size:13px;margin-bottom:8px;">📋 Bengisu Sağlık Özeti · ${today}</div><hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b>Tanılar:</b> Papiller karsinom remisyon · Hashimoto · Hipopara E89.2<br><b>Tedavi:</b> Levotiron alterne (Pzt-Sal-Çar 125 / Per-Paz 100 mcg) · Calciday 2 tab/gün · Qalyviz 2 cap/gün<br><b>Supplement:</b> Selenometyonin 200mcg · Methylated B-Complex · Mg Glycinate cycle-aware · Zn 15+Cu 1mg · Omega-3 4g · Kreatin 5g · Marine Collagen<br>${lastMeas?`<b>Son ölçüm:</b> ${lastMeas.weight}kg · %${lastMeas.fat||'-'} yağ · ${lastMeas.muscle||'-'}kg kas · bel ${lastMeas.waist||'-'}cm<br>`:''}${lastLipid?`<b>Son lipid:</b> Total ${lastLipid.total} · LDL ${lastLipid.ldl} · HDL ${lastLipid.hdl} · TG ${lastLipid.tg} mmol/L (${lastLipid.date})<br>`:''}<b>Aktif modlar:</b> ${modesActive}<br><b>FH şüphesi:</b> Dayı 18y kalp ölümü + anne yüksek kolesterol<br><b>Aktif semptom:</b> Kramp/karıncalanma <span style="color:var(--sage-leaf);">✅ Mg form değişimi sonrası geçti (10 May 2026)</span><hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b style="color:var(--mustard-soft);">📋 Tam paket:</b> medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</div><button class="btn bp bfull" style="margin-top:14px;" onclick="window.print()">🖨️ Yazdır / PDF olarak kaydet</button>`;
+  showToolkitSubModal('📋 Doktor PDF Rapor',body);
+}
+
+function openHacettepeLab(){
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">Bilim Modu L3 derin · papiller karsinom + Hashimoto + hipopara fizyolojisi</div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🧬 D2 Thr92Ala polimorfizmi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Türk popülasyonunda ~%30 · T4-only tedavide T3 yetersizliği ile bağlantılı (Panicker 2009 PMID 19390003). Pozitifse T4+T3 kombinasyon adayı.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">⚗️ T4→T3 Dönüşüm Zinciri</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">D1 (karaciğer/böbrek) + D2 (kas/beyin) selenoproteinler · Selenium 200mcg ko-faktör · Demir + Zn yapısal · Bengisu için sT3 ölçümü #1 öncelik (Wiersinga 2014).</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🦴 Hipopara fizyolojisi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">PTH eksik → kalsiyum metabolizması bozulur · Calcitriol böbrek 1α-hidroksilaz adımını bypass · Mg yeterliliği CaSR sinyal iletimi için şart (Whang 1985, Uwitonze 2018). Bengisu doğrulandı: Mg form ✓ kramp geçti.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">❤️ Lipid + FH Şüphesi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Norwitz 2022 LMHR (PMID 35106434) vs Ference 2017 LDL-ASCVD nedensellik (PMID 28444290) · Bengisu için: aile öyküsü + sT3 ölçülmemiş + hipotiroidi şüphesi → klasik LDL risk baskın. 6 hf sonra tekrar test + statin tartışması.</div></div>`;
+  showToolkitSubModal('🧪 Hacettepe Lab',body);
+}
+
+// ══════════════════════════════════════════
+// PHASE 3.C P0 #14, #15, #16 — Settings Cards
+// ══════════════════════════════════════════
+
+// SUPPLEMENT ENVANTERİ (gerçek marka + form + dozaj + 4 ALARM tracking)
+const SUPPLEMENTS_INVENTORY = [
+  {id:'levotiron', name:'Levotiron (Levotiroksin Sodyum)', brand:'Abdi İbrahim · Türk', dose:'Pzt-Sal-Çar 125 mcg, Per-Cum-Cmt-Paz 100 mcg', timing:'06:30 boş mide', status:'ok', cat:'tedavi', note:'Hakan Bey alterne doz · haftalık ortalama ~110.7 mcg/gün'},
+  {id:'calciday', name:'Calciday D3', brand:'Türk efervesan', dose:'1200mg Ca + 800IU D3 × 2 tab/gün', timing:'10:00 + 17:00 öğünleriyle', status:'ok', cat:'tedavi', note:'Hipopara terapötik · doz 2 ay daha aynı (Hakan Bey)'},
+  {id:'qalyviz', name:'Qalyviz (Calcitriol)', brand:'Türk yumuşak kapsül', dose:'0.5 mcg × 2 cap/gün', timing:'Calciday\'in hemen ardından', status:'ok', cat:'tedavi', note:'Aktif D vit · hipopara terapötik · doz 2 ay daha aynı'},
+  {id:'selenium', name:'Selenometyonin 200 mcg', brand:'Solgar Yeast-Free', dose:'1 cap/gün', timing:'17:00 2. öğünle', status:'ok', cat:'tiroid', note:'⚠️ Eski Earthier ürünü iyot içeriyordu, değiştirildi (Yang 2007 Hashimoto risk). 6 ay sonra anti-TPO + glukoz tekrar (Stranges 2007 NPC trial)'},
+  {id:'b-complex', name:'Methylated B-Complex', brand:'Igennus Super B-Complex', dose:'P5P 25mg + Methylfolate 400mcg + Methyl-B12 500mcg', timing:'10:00 1. öğünle', status:'ok', cat:'metilasyon', note:'Hashimoto MTHFR + Folate 4.5 sınır'},
+  {id:'omega3', name:'Omega-3 EPA+DHA', brand:'MAV Triple Strength 3,600mg', dose:'4 softgel/gün = 4.32g EPA+DHA', timing:'2 sabah + 2 akşam öğünle', status:'ok', cat:'kardiyovasküler', note:'⚠️ Doz 2 → 4 softgel artırıldı (LDL 8.1 + FH şüphesi · Bhatt 2019 REDUCE-IT)'},
+  {id:'magnesium', name:'Magnezyum Glycinate', brand:'Pure Encapsulations 120mg/cap', dose:'Cycle-aware: Folliküler 2 cap (240mg) · Luteal 3 cap (360mg) · Regl Day 1-2: 4 cap (480mg)', timing:'23:00 yatmadan 30 dk önce', status:'ok', cat:'mineral', note:'⚠️ Önceki H&B oxide tablet %4 emilim → bisglycinate %25-40 emilim. Aktif kramp/karıncalanma takip'},
+  {id:'zinc', name:'Çinko 15 mg + Bakır 1 mg', brand:'Vitabiotics Ultra Zinc', dose:'1 tab/gün (Zn:Cu 15:1)', timing:'22:00 yatmadan ~1 saat', status:'ok', cat:'mineral', note:'Sulphate form ortalama emilim · Ca/Levo\'dan uzak'},
+  {id:'vidrate', name:'ViDrate Elektrolit', brand:'Mixed Berry, Vegan, sugar-free', dose:'1 sachet + 500ml su', timing:'07:00 yürüyüş öncesi', status:'ok', cat:'elektrolit', note:'Calcium-FREE ✓ Levo emilim güvenli · Na 190 + K 150 + Mg 37 + B/C vit'},
+  {id:'creatine', name:'Kreatin Monohidrat', brand:'Bulk Creapure 500g', dose:'5 g/gün', timing:'17:15 post-WO 2. öğünle', status:'ok', cat:'performans', note:'⚠️ Yeni başladı · 2-3 hafta +0.8-1.5 kg su tutma · kan testinden 14g önce kes (PMID 30986825)'},
+  {id:'collagen-marine', name:'Marine Collagen', brand:'Zooki Liquid Mango Peach', dose:'11g/sachet', timing:'23:00 gece', status:'ok', cat:'cilt-eklem', note:'Hidrolize Type I · cilt + tendon (Shaw 2017)'},
+  {id:'collagen-uc2', name:'UC-II Type 2 Collagen', brand:'Holland & Barrett 40mg', dose:'1 cap/gün', timing:'23:00 gece', status:'ok', cat:'cilt-eklem', note:'Undenatured Type II · eklem oral immün tolerans (Crowley 2009)'}
+];
+
+const SUPPLEMENT_ALARMS = [
+  {id:'old-selenium', severity:'resolved', title:'Earthier Selenium iyot içeriyordu', desc:'Hashimoto + post-tiroidektomi\'de iyot riski (Yang 2007 PMID 17192577). Solgar L-Selenomethionine\'a geçildi.', resolvedDate:'9 May 2026'},
+  {id:'old-mg-form', severity:'resolved', title:'H&B Mg oxide → Pure Encap Glycinate ✅ KRAMP GEÇTİ', desc:'Bengisu doğruladı (10+ May 2026): Mg form değişiminden sonra parmak karıncalanma + kas kramp semptomu RESMEN GEÇTİ. Hipotez doğrulandı: %4 emilim oxide → %25-40 bisglycinate dönüşümü tek başına yetti. Calciday/Calcitriol doz artırmaya gerek kalmadı.', resolvedDate:'10+ May 2026'},
+  {id:'zn-cu-ratio', severity:'info', title:'Zn:Cu ratio 15:1 (10:1 ideal)', desc:'Vitabiotics 15mg Zn + 1mg Cu sınırda. Bisglycinate forma upgrade opsiyonel (Solgar/Pure Encap).', resolvedDate:null},
+  {id:'omega3-dose', severity:'resolved', title:'Omega-3 doz 2g → 4g/gün', desc:'LDL 8.1 + FH şüphesi için Bhatt 2019 REDUCE-IT 4g IPE-eşdeğeri.', resolvedDate:'9 May 2026'}
+];
+
+function renderSupplementsInventory(){
+  const el=document.getElementById('supplements-inventory');
+  if(!el)return;
+  const cats={tedavi:'🩺 Reçeteli Tedavi',tiroid:'🦋 Tiroid',metilasyon:'🧬 Metilasyon',kardiyovasküler:'❤️ Kardiyovasküler',mineral:'⚗️ Mineral',elektrolit:'⚡ Elektrolit',performans:'💪 Performans','cilt-eklem':'✨ Cilt + Eklem'};
+  const groups={};
+  SUPPLEMENTS_INVENTORY.forEach(s=>{(groups[s.cat]=groups[s.cat]||[]).push(s);});
+  const alarmsHtml=SUPPLEMENT_ALARMS.map(a=>{
+    const sev=a.severity==='resolved'?'#5A7A4F':a.severity==='warn'?'#D9591E':'#E8B23F';
+    const icon=a.severity==='resolved'?'✅':a.severity==='warn'?'🔴':'ℹ️';
+    return `<div style="background:rgba(255,255,255,0.04);border-left:3px solid ${sev};border-radius:6px;padding:10px 12px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--cream-soft);">${icon} ${a.title}</div>
+      <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;line-height:1.5;">${a.desc}</div>
+      ${a.resolvedDate?`<div style="font-size:10px;color:var(--sage-leaf);margin-top:4px;">Çözüldü: ${a.resolvedDate}</div>`:''}
+    </div>`;
+  }).join('');
+  let html=`<div class="card" style="margin-top:16px;">
+    <div class="ch"><h3>💊 Aldığım Supplementler</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Şu an aldığım <strong>${SUPPLEMENTS_INVENTORY.length} supplement/ilaç</strong> · gerçek marka + form + doz · cycle-aware bilgi · AI önerilerinde kullanılır.</div>`;
+  Object.keys(cats).forEach(catKey=>{
+    if(!groups[catKey])return;
+    html+=`<div style="margin-top:14px;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">${cats[catKey]}</div>`;
+    groups[catKey].forEach(s=>{
+      html+=`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;"><div style="font-size:13px;font-weight:600;color:var(--cream-soft);">${s.name}</div><div style="font-size:11px;color:var(--cream-mute);">${s.brand}</div></div>
+          <div style="font-size:11px;color:var(--mustard-soft);text-align:right;">${s.timing}</div>
+        </div>
+        <div style="font-size:12px;color:var(--cream);margin-top:6px;">${s.dose}</div>
+        ${s.note?`<div style="font-size:10px;color:var(--cream-mute);margin-top:4px;font-style:italic;line-height:1.4;">${s.note}</div>`:''}
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  html+=`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--glass-border);">
+    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral-soft);margin-bottom:8px;">⚠️ Supplement Tracking (4 ALARM)</div>
+    ${alarmsHtml}
+  </div></div></div>`;
+  el.innerHTML=html;
+}
+
+// PHASE 3.C P0 #16 — AİLE ÖYKÜSÜ KARTI (FH şüphesi)
+function renderFamilyHistoryCard(){
+  const el=document.getElementById('family-history-card');
+  if(!el)return;
+  el.innerHTML=`<div class="card" style="margin-top:16px;">
+    <div class="ch"><h3>🧬 Aile Öyküsü</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Aile öyküm <strong>FH (Familial Hypercholesterolemia) şüphesi</strong> taşıyor → LDL 8.1 yorumu kökten değişir, lipidolog refer + genetik test gündemde.</div>
+      <div style="margin-top:14px;">
+        <div style="background:rgba(217,89,30,0.10);border-left:3px solid var(--coral);border-radius:6px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:var(--cream-soft);">🔴 Anne dayım</div>
+          <div style="font-size:12px;color:var(--cream);margin-top:4px;">18 yaşında "gizli kalpten" vefat (genç kardiyak ölüm)</div>
+        </div>
+        <div style="background:rgba(232,178,63,0.10);border-left:3px solid var(--mustard);border-radius:6px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:var(--cream-soft);">⚠️ Annem</div>
+          <div style="font-size:12px;color:var(--cream);margin-top:4px;">Yüksek kolesterol hastası · ilaç kullanması gerekiyor (kullanmıyor)</div>
+        </div>
+        <div style="background:rgba(90,122,79,0.10);border-left:3px solid var(--sage-leaf);border-radius:6px;padding:12px;">
+          <div style="font-size:13px;font-weight:600;color:var(--cream-soft);">📋 Aksiyon</div>
+          <div style="font-size:12px;color:var(--cream);margin-top:4px;line-height:1.5;">
+            • Hakan Bey'e iletildi ✓<br>
+            • UK NHS lipidolog/kardiyolog refer iste<br>
+            • <b>FH genetik test:</b> LDLR / APOB / PCSK9<br>
+            • <b>ApoB + Lp(a) + hsCRP</b> sıradaki kan testinde<br>
+            • Erken aile öyküsü tarama (anne LDL/MI öyküsü)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// PHASE 3.C P0 #9 — LİPİD TAKİBİ (LDL trend + FH)
+function getLipidLog(){return JSON.parse(localStorage.getItem('lipid_log')||'[]');}
+function saveLipidEntry(d,total,ldl,hdl,tg,apoB){
+  const log=getLipidLog();
+  log.push({date:d,total,ldl,hdl,tg,apoB:apoB||null,ts:Date.now()});
+  log.sort((a,b)=>a.date.localeCompare(b.date));
+  localStorage.setItem('lipid_log',JSON.stringify(log));
+}
+function renderLipidTrackingCard(){
+  const el=document.getElementById('lipid-tracking-card');
+  if(!el)return;
+  let log=getLipidLog();
+  // Bengisu'nun bilinen geçmişi seed et (sadece ilk açılışta)
+  if(!localStorage.getItem('lipid_seeded_v1')){
+    if(!log.find(e=>e.date==='2025-12-09')) log.push({date:'2025-12-09',total:7.1,ldl:5.4,hdl:1.2,tg:1.2,apoB:null,ts:Date.now()});
+    if(!log.find(e=>e.date==='2026-04-15')) log.push({date:'2026-04-15',total:9.6,ldl:8.1,hdl:1.0,tg:1.0,apoB:null,ts:Date.now()});
+    log.sort((a,b)=>a.date.localeCompare(b.date));
+    localStorage.setItem('lipid_log',JSON.stringify(log));
+    localStorage.setItem('lipid_seeded_v1','1');
+  }
+  const last=log.length?log[log.length-1]:null;
+  const prev=log.length>=2?log[log.length-2]:null;
+  const tdate=last?new Date(last.date):null;
+  const dayssince=tdate?Math.floor((Date.now()-tdate.getTime())/(1000*60*60*24)):null;
+  const nextTestDays=dayssince!==null?Math.max(0,42-dayssince):42;
+  const ldlDelta=(last&&prev)?(last.ldl-prev.ldl).toFixed(1):null;
+  const ldlPct=(last&&prev)?Math.round(((last.ldl-prev.ldl)/prev.ldl)*100):null;
+  const ldlBadge=last?(last.ldl<3?'#5A7A4F':last.ldl<5?'#E8B23F':last.ldl<7?'#E5743C':'#D9591E'):'#888';
+  el.innerHTML=`<div class="card" style="margin-top:16px;">
+    <div class="ch"><h3>🩺 Lipid Takibi · FH Şüphesi</h3></div>
+    <div class="cb">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Total kolesterol + LDL + HDL trendin · <strong>LDL hedef &lt;3 mmol/L (ESC/EAS 2019)</strong>, FH şüphesinde &lt;1.8. Aile öyküsü (dayı + anne) nedeniyle dikkatli takip.</div>
+      ${last?`<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
+          <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">Son LDL</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:${ldlBadge};">${last.ldl}</div>
+          <div style="font-size:10px;color:var(--cream-mute);">mmol/L · ${last.date}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
+          <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">Total / HDL / TG</div>
+          <div style="font-size:14px;color:var(--cream-soft);margin-top:6px;">${last.total} / ${last.hdl} / ${last.tg}</div>
+          <div style="font-size:10px;color:var(--cream-mute);margin-top:2px;">mmol/L</div>
+        </div>
+      </div>`:''}
+      ${ldlPct!==null?`<div style="margin-top:10px;padding:10px 12px;background:rgba(217,89,30,0.10);border-radius:6px;font-size:12px;color:var(--coral-soft);">
+        ⚠️ LDL ${ldlPct>0?'+':''}${ldlPct}% (4 ayda) · ${ldlDelta>0?'+':''}${ldlDelta} mmol/L
+      </div>`:''}
+      <div style="margin-top:14px;padding:12px;background:rgba(90,122,79,0.08);border-left:3px solid var(--sage-leaf);border-radius:6px;">
+        <div style="font-size:12px;font-weight:600;color:var(--cream-soft);">📅 Sıradaki Test</div>
+        <div style="font-size:13px;color:var(--cream);margin-top:4px;">${nextTestDays===0?'<b>Bugün test zamanı!</b>':`<b>${nextTestDays} gün sonra</b> · 6 hafta sonrası tekrar`}</div>
+        <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;line-height:1.5;">İstenecek paneli: Total, LDL, HDL, TG, <b>ApoB, Lp(a), hsCRP</b> (FH için)</div>
+      </div>
+      <div style="margin-top:10px;padding:10px;background:rgba(232,178,63,0.08);border-radius:6px;font-size:11px;color:var(--cream-mute);line-height:1.5;">
+        <b style="color:var(--mustard-soft);">📚 Karnivor + LDL bağlamı:</b> Norwitz 2022 "Lean mass hyper-responder" görüşü — sağlıklı LMHR fenotipinde geçerli. Bengisu için: aile FH + sT3 ölçülmemiş + tiroid sub-optimal şüphesi → klasik LDL-ASCVD nedensellik (Ference 2017 PMID 28444290) baskın.
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button class="btn bsoft bsm" onclick="addLipidEntry()">📝 Yeni sonuç ekle</button>
+      </div>
+    </div>
+  </div>`;
+}
+function addLipidEntry(){
+  const today=new Date().toISOString().slice(0,10);
+  const total=parseFloat(prompt('Total kolesterol (mmol/L):'));
+  if(isNaN(total))return;
+  const ldl=parseFloat(prompt('LDL (mmol/L):'));
+  if(isNaN(ldl))return;
+  const hdl=parseFloat(prompt('HDL (mmol/L):'));
+  if(isNaN(hdl))return;
+  const tg=parseFloat(prompt('TG (mmol/L):'));
+  if(isNaN(tg))return;
+  const apoBStr=prompt('ApoB (mg/dL, yoksa boş bırak):');
+  const apoB=apoBStr?parseFloat(apoBStr):null;
+  saveLipidEntry(today,total,ldl,hdl,tg,apoB);
+  renderLipidTrackingCard();
+  showToast('💾 Lipid sonucu kaydedildi','pr');
+}
+
 function renderBackupExport(){
   const el=document.getElementById('backup-export');
   if(!el)return;
@@ -6922,9 +7612,11 @@ const GLOSSARY={
   'leucine':{cat:'beslenme',def:'Esansiyel amino asit — mTOR direkt aktivatörü. 2.5-3g/öğün hipertrofi eşiği.',ref:'Norton 2009',l3:'BCAA (branched-chain amino acids: leucine, isoleucine, valine) içinde leucine en önemli. Yumurta + et leucine açısından zengin (~2-3g/100g protein). Whey isolate %12 leucine.'},
 
   // ── Tıp/Tiroid (6) ──
-  'tiroidektomi':{cat:'tip',def:'Tiroid bezinin cerrahi olarak alınması — total veya parsiyel. Sonrası life-long T4 replacement.',ref:'Wiersinga 2014',l3:'Total tiroidektomi → kalsitonin (paratiroid sekonder) düşer → kalsiyum metabolizması dikkat. Parsiyel tiroidektomi remnant doku TSH\'a yanıt verir. Bengisu: total → Levotiron 100 mcg sabah aç karna.'},
-  'levotiroksin':{cat:'tip',def:'Sentetik T4 — tiroid hormon replacement. Aç karna, sabah, su ile. Diğer ilaç/supplementten 4 saat ayrı.',ref:'Wiersinga 2014',l3:'Calcium, demir, çinko, magnezyum, soya, kahve, gluten emilimi bozar (≥4 saat ara). Yarı ömür 7 gün → günlük doz kararlı seviye yapar. Doz değişimi 4-6 hafta sonra TSH\'da görünür.'},
-  'calciday':{cat:'tip',def:'Kalsiyum + D3 + K2 kombine supplement. Tiroidektomi sonrası kemik koruma için profilaktik.',ref:'Beck 2017',l3:'Kalsiyum sitrat (karbonattan daha iyi emilir aç karna), D3 emilimi yağla iyi (öğünle al), K2 MK-7 form (uzun yarı ömür). Levotiron\'dan ≥4 saat ayrı (Hallberg etkisi).'},
+  'tiroidektomi':{cat:'tip',def:'Tiroid bezinin cerrahi olarak alınması — total veya parsiyel. Sonrası life-long T4 replacement.',ref:'Wiersinga 2014',l3:'Total tiroidektomi → paratiroid bezleri etkilenebilir → post-cerrahi hipoparatiroidi (Bengisu E89.2 tanılı). Bengisu: bilateral total tiroidektomi 21.10.2025 (papiller karsinom klasik varyant + Hashimoto). Levotiron alterne doz: Pzt-Sal-Çar 125 mcg, Per-Cum-Cmt-Paz 100 mcg.'},
+  'hipoparatiroidi':{cat:'tip',def:'Paratiroid bezi yetersizliği — kalsiyum metabolizması bozulur, kramp/karıncalanma semptomu. Bengisu post-cerrahi (E89.2).',ref:'Bilezikian 2016',l3:'Tedavi: aktif D vit (Calcitriol/Qalyviz) + kalsiyum (Calciday) + Mg yeterliliği. Hedef adj Ca 2.20-2.40 mmol/L (alt-normal "permissive"). 24h üriner Ca <7.5 mmol/gün (nefrokalsinozis önleme). Mg eksikliği fonksiyonel hipopara yapabilir (CaSR sinyal iletimi).'},
+  'levotiroksin':{cat:'tip',def:'Sentetik T4 — tiroid hormon replacement. Aç karna, sabah, su ile. Diğer ilaç/supplementten 4 saat ayrı.',ref:'Wiersinga 2014',l3:'Calcium, demir, çinko, magnezyum, soya, kahve, gluten emilimi bozar (≥4 saat ara). Kahve özellikle ≥30 dk (Benvenga 2008 PMID 18341372 — emilim %30 sabote). Yarı ömür 7 gün → günlük doz kararlı seviye yapar. Doz değişimi 4-6 hafta sonra TSH\'da görünür. Bengisu alterne doz: hafta ortalama 110.7 mcg.'},
+  'calciday':{cat:'tip',def:'Kalsiyum karbonat + D3 800IU efervesan. Bengisu hipopara terapötik tedavi (E89.2): 2 tablet/gün — sabah/öğlen + akşam öğünleriyle.',ref:'Bilezikian 2016',l3:'Bengisu için profilaktik DEĞİL, terapötik (post-cerrahi hipoparatiroidi). 2 tab × 1200mg karbonat = 960mg elemental Ca/gün. Yağla emilim ↑ (Heaney 1989 PMID 2922526). Levotiron\'dan ≥4 saat ayrı (Hallberg etkisi). Qalyviz Calcitriol 2× ile birlikte → toplam Ca emilim destek.'},
+  'qalyviz':{cat:'tip',def:'Calcitriol 0.5 mcg yumuşak kapsül. Aktif D vitamini (1,25(OH)2D3). Bengisu post-cerrahi hipopara için 2 kapsül/gün.',ref:'Bilezikian 2016',l3:'D vit aktif form, böbrek 1α-hidroksilaz adımını bypass eder (paratiroid yetersizliğinde gerekli). 0.5 mcg × 2/gün = 1.0 mcg toplam, orta doz aralık. Calciday\'in hemen ardından alınır (yağ emilim sinerjisi). Mg yeterliliği şart (Mg eksikliği Calcitriol etkinliğini düşürür — Whang 1985).'},
   'kmy':{cat:'tip',def:'Kemik Mineral Yoğunluğu (Bone Mineral Density). DEXA tarama ölçer. T-score: -1 normal, -2.5 osteoporoz.',ref:'Beck 2017',l3:'Tiroidektomi sonrası TSH suppresyonu → KMY %5-15 düşebilir (5 yıl). Direnç antrenmanı + bone loading exercises (squat, hip thrust) + Calciday + D3 kombine koruyucu (PMID 27875836).'},
   'sakroiliac':{cat:'tip',def:'Sacrum (kuyruk sokumu) ve ilium (leğen kemiği) arasındaki eklem. Hip thrust ve RDL\'de yüklenir.',ref:'Vleeming 2012',l3:'Sakroiliak eklem düşük hareket, yüksek stabilite. Relaxin gevşeklik yapar (gebelik + ovulasyon). Tek-bacak hareketler (B-stance HT) sakral yük yönetimi için önemli — ovulasyon haftası dikkat.'},
   'valgus':{cat:'tip',def:'Diz içe çökme — squat/yürüyüşte diz orta hatta doğru kayar. Gluteus medius zayıflığı + ACL riski.',ref:'Hewett 2005',l3:'Drop-jump testi valgus skor ≥6 cm = ACL non-contact riski 5× (Hewett 2005). Cycle: ovulasyon haftası relaxin ile valgus eğilimi artar. Goblet squat + cue "dizler dışa" eğitim.'},
@@ -9083,23 +9775,23 @@ function renderMeas(){
   const prog=Math.max(0,Math.min(100,((76.9-cur)/(76.9-58))*100));
   document.getElementById('pbar').style.width=prog+'%';
   const lostKg=(76.9-cur).toFixed(2);
-  const remKg=(cur-58).toFixed(2);
+  const remKg=(cur-62.5).toFixed(2);
   // 5-metrik mini pano (Hafta 4A)
   const mmEl=document.getElementById('multi-metrics');
   if(mmEl){
     const mm=getMultiMetricProgress();
     mmEl.innerHTML=`<div class="mm-section-lbl">+ 4 başka metrik (vücudunla bütüncül uyum)</div>
     <div class="mm-grid">
-      <div class="mm-cell"><div class="mm-icon">📏</div><div class="mm-lbl">Bel</div><div class="mm-val ${mm.curWaist?'':'empty'}">${mm.curWaist?mm.curWaist+' cm':'—'}</div><div class="mm-target">→ 70-72 cm yumuşak yön</div></div>
-      <div class="mm-cell"><div class="mm-icon">💪</div><div class="mm-lbl">Squat kuvveti</div><div class="mm-val ${mm.bestSquat1RM>0?'':'empty'}">${mm.bestSquat1RM>0?mm.bestSquat1RM+' kg':'—'}</div><div class="mm-target">tahmini 1RM (son 4 hafta)</div></div>
-      <div class="mm-cell"><div class="mm-icon">🚶</div><div class="mm-lbl">Hareket</div><div class="mm-val ${mm.avgSteps?'':'empty'}">${mm.avgSteps?mm.avgSteps.toLocaleString('tr-TR').replace(/,/g,'.'):'—'}</div><div class="mm-target">7-gün ort. adım${mm.stepsDays?` · ${mm.stepsDays}/7`:''}</div></div>
-      <div class="mm-cell"><div class="mm-icon">💚</div><div class="mm-lbl">Ruh hali</div><div class="mm-val ${mm.avgMood?'':'empty'}">${mm.avgMood?mm.avgMood+'/5':'—'}</div><div class="mm-target">7-gün ort. (Döngü log)${mm.moodCount?` · ${mm.moodCount} kayıt`:''}</div></div>
+      <div class="mm-cell"><div class="mm-icon">📏</div><div class="mm-lbl">Bel</div><div class="mm-val ${mm.curWaist?'':'empty'}">${mm.curWaist?mm.curWaist+' cm':'—'}</div><div class="mm-target">→ &lt;80 cm hedef (diyetisyen)</div></div>
+      <div class="mm-cell"><div class="mm-icon">💪</div><div class="mm-lbl">Squat 1RM</div><div class="mm-val ${mm.bestSquat1RM>0?'':'empty'}">${mm.bestSquat1RM>0?mm.bestSquat1RM+' kg':'—'}</div><div class="mm-target">→ ≥1.5× kilo (~95-100kg)</div></div>
+      <div class="mm-cell"><div class="mm-icon">🚶</div><div class="mm-lbl">Adım</div><div class="mm-val ${mm.avgSteps?'':'empty'}">${mm.avgSteps?mm.avgSteps.toLocaleString('tr-TR').replace(/,/g,'.'):'—'}</div><div class="mm-target">7-gün ort. · 8-10K hedef${mm.stepsDays?` · ${mm.stepsDays}/7`:''}</div></div>
+      <div class="mm-cell"><div class="mm-icon">💚</div><div class="mm-lbl">Ruh hali</div><div class="mm-val ${mm.avgMood?'':'empty'}">${mm.avgMood?mm.avgMood+'/5':'—'}</div><div class="mm-target">7-gün ort. · 4+/5 hedef${mm.moodCount?` · ${mm.moodCount} kayıt`:''}</div></div>
     </div>`;
   }
   // Milestone celebration kontrol et
   const milestoneEl=document.getElementById('milestone-celebration');
   if(milestoneEl){
-    const milestones=[{kg:5,emoji:'🌱',label:'-5 kg · İlk büyük adım'},{kg:10,emoji:'🌸',label:'-10 kg · Yarısına yakın'},{kg:15,emoji:'🌟',label:'-15 kg · Son düzlük'},{kg:18.9,emoji:'🏆',label:'Hedefin · Tamamlandı'}];
+    const milestones=[{kg:3,emoji:'🌱',label:'-3 kg · İlk hareket'},{kg:6,emoji:'🌸',label:'-6 kg · Faz 2 hedefi'},{kg:10,emoji:'🌟',label:'-10 kg · Bosna yakın'},{kg:14,emoji:'🏆',label:'-14 kg · Hedef bandında'}];
     const reached=milestones.filter(m=>parseFloat(lostKg)>=m.kg);
     if(reached.length>0){
       const latest=reached[reached.length-1];
@@ -9110,7 +9802,7 @@ function renderMeas(){
   }
   // Body neutrality dil — değer odaklı yerine ilişki odaklı (Hafta 4A — Ajan 6)
   const lostStr=parseFloat(lostKg)>=0?`<strong>${lostKg}</strong> kg yolculuğun başından`:`<strong>${Math.abs(lostKg)}</strong> kg başlangıçtan üstte`;
-  document.getElementById('pnote').innerHTML=`${lostStr} · 56-60 kg yumuşak hedef bandına <strong>${remKg>0?remKg:0}</strong> kg<div style="font-size:11px;color:var(--text-light);margin-top:4px;">Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Renpho bioimpedance karnivor + IF diyette ±%5-8 hata payı. DEXA daha güvenilir.</div>`;
+  document.getElementById('pnote').innerHTML=`${lostStr} · 62-63 kg yumuşak hedef bandına <strong>${remKg>0?remKg:0}</strong> kg<div style="font-size:11px;color:var(--text-light);margin-top:4px;">Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Renpho bioimpedance karnivor + IF diyette ±%5-8 hata payı. DEXA daha güvenilir.<br>📌 5 metrikin 3'ü gelişiyor → kilo durağan olsa bile <strong>İLERLEME VAR</strong> (anti-kompulsif çerçeve).</div>`;
   document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Kas Kütlesi',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
   const hist=document.getElementById('mhist');
   hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm kaydı yok.</p>';
@@ -9121,7 +9813,7 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) · Hedef: 58 kg (Eylül 2026, ~5 ay, ~5 kg/ay) · Bağlam: post-tiroidektomi (Levotiron + Calciday profilaktik · Selenyum 200mcg · Çinko 15mg+Bakır 1.5mg) · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Karnivor + 10:00-19:00 IF · 5/7 yürüyüş + 4-5/7 esnek güç antrenmanı (5-gün split) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Yorumlarken bunu hatırlat.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül hedefine yolda mı?\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Bengisu'nun kişisel sağlık koçusun. Renpho ölçümlerini analiz et.\nBaşlangıç: 76.9 kg (26 Nisan 2026) → 76 kg (8 May 2026) · Hedef: 62-63 kg (Eylül 2026, sürdürülebilir kompromis) · Bağlam: papiller tiroid karsinom remisyon (TSH suppression hedefi <0.5) + Hashimoto + post-cerrahi hipoparatiroidi (E89.2 — terapötik Calcitriol 2× + Calciday 2×/gün) · Levotiron alterne doz (Pzt-Sal-Çar 125, Per-Paz 100 mcg) · Selenometyonin 200mcg + Çinko 15mg+Bakır 1mg (15:1) + Methylated B-Complex + Pure Encap Mg cycle-aware + Omega-3 4g + Kreatin 5g · Regl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'} · Modifiye karnivor (süt 1 bardak + peynir + EVOO + roka/semizotu + ½ avokado) · 10:00-19:00 IF · Pazar brunch ödül öğünü · 3-5/7 yürüyüş + 5/7 güç antrenmanı (5-gün split) · UK'de yaşıyor.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\n⚠️ ÖNEMLİ: Renpho bioimpedance karnivor + IF diyette güvenilirliği düşer (dehidrasyon + elektrolit dengesizliği). Cycle phase varyasyonu (geç luteal +1-3 kg sıvı) etkiler. Yorumlarken bunları hatırlat.\n\n⚠️ AİLE ÖYKÜSÜ: Dayı 18y kalp ölümü + anne yüksek kolesterol → FH şüphesi · LDL 8.1 mmol/L (Nisan 2026, %50 yükseliş) · sT3 ölçülmedi.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, kuvvet, uyku, ruh hali)? 5) Dikkat etmesi gerekenler 6) Eylül 62-63 kg hedefine yolda mı? (5 metrik: kilo + bel + squat + adım + ruh hali bütünsel değerlendirme)\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton (technical/medikal terimler İngilizce kalabilir). "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
   catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
   btn.innerHTML='🤖 Re-analyse';btn.disabled=false;
@@ -9260,6 +9952,14 @@ function renderCycle(){
   if(typeof renderEduGlobalCard==='function')renderEduGlobalCard();
   // Notification settings (Phase 2 P2.6)
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
+  // Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat/Düğün)
+  if(typeof renderSpecialModesCard==='function')renderSpecialModesCard();
+  // Phase 3.C P0 #14, #15 — Aldığım Supplementler kartı + 4 ALARM
+  if(typeof renderSupplementsInventory==='function')renderSupplementsInventory();
+  // Phase 3.C P0 #16 — Aile öyküsü kartı (FH şüphesi)
+  if(typeof renderFamilyHistoryCard==='function')renderFamilyHistoryCard();
+  // Phase 3.C P0 #9 — Lipid Takibi (FH şüphesi)
+  if(typeof renderLipidTrackingCard==='function')renderLipidTrackingCard();
   // Backup/Export (Phase 3.B-B)
   if(typeof renderBackupExport==='function')renderBackupExport();
   // API Proxy ayarı (Phase 3.B-D)
@@ -9748,7 +10448,7 @@ function showOnboarding(){
 
     <div style="background:linear-gradient(135deg,var(--pink-pale),#fbe0db);border-radius:12px;padding:14px;margin-bottom:18px;">
       <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--pink-deep);margin-bottom:6px;">3️⃣ Sana Özel Hatırlatma</div>
-      <div style="font-size:13px;color:var(--text);line-height:1.6;">Bu app:<br>• Post-tiroidektomi (Levotiron + Calciday) için supplement timing yapar<br>• Döngünün 4 fazına göre makro/egzersiz/cilt önerir<br>• "Kaybetme!" değil "kendine yumuşak ol" tonu kullanır<br>• Hasta/seyahat/yoğun regl günlerini koruyabilirsin (streak kırılmaz)</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.6;">Bu app:<br>• <strong>Papiller karsinom remisyon + Hashimoto + post-cerrahi hipoparatiroidi</strong> tedavin için supplement timing yapar<br>• Levotiron alterne doz (Pzt-Sal-Çar 125 / Per-Paz 100 mcg)<br>• Modifiye karnivor + Akdeniz: süt/peynir/EVOO/avokado serbest, karalahana yok<br>• Pazar Brunch ödül öğünü (haftalık, anti-kompulsif)<br>• Döngünün 4 fazına göre Mg cap (Pure Encap 120mg) doz değişir<br>• "Kaybetme!" değil "kendine yumuşak ol" tonu<br>• Hasta/seyahat/yoğun regl günlerini koruyabilirsin (streak kırılmaz)</div>
     </div>
 
     <button class="btn bp bfull" onclick="dismissOnboarding()">Hazırım, başlayalım 💪</button>
