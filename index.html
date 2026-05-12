@@ -1399,7 +1399,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="bc-pattern"></div>          <!-- 7 gün niyet pattern özeti — Phase 2 Hafta 8A -->
   <div id="bc-evening"></div>          <!-- Body Conversation akşam karşılık (21:30+) — Phase 2 Hafta 8A -->
   <div id="evening-checkin"></div>     <!-- Akşam 30sn check-in (19:00-23:59 görünür) — Phase 2 Hafta 4B -->
-  <div id="weekly-digest"></div>       <!-- Pazar 20:00+ haftalık özet — Phase 2 Hafta 4C -->
+  <!-- Haftalık tamamlama % kartı kaldırıldı (Phase 3.C feedback · 12 May)
+       Bengisu: "haftalık tamamlama yüzdesi kartı da çok stres yükleyebilecek bir şey · sürekli görünen kısımda olmamalı" -->
+  <div id="weekly-digest" style="display:none;"></div>
 
   <!-- Hidden carrier element for legacy cycle strip render (used internally) -->
   <div id="cycle-strip-el" style="display:none;"></div>
@@ -1463,10 +1465,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 
   <!-- 7-günlük menü -->
-  <div id="weekly-wrap"></div>
-
-  <!-- Achievements -->
-  <div id="achievements-wrap"></div>
+  <!-- Bu Hafta + Başarılarım Diyet sekmesinden kaldırıldı (Phase 3.C feedback · 12 May)
+       Bengisu: "bu hafta kısmını istemiyorum · kafayı yiyecek kadar takip yapmak istemiyorum"
+       Bengisu: "başarılarım kartı sayfada gerek yok · ayarlar kısmına koyarız"
+       Achievements → Cycle Settings'te opsiyonel olarak gösterilir (achievements-settings-wrap) -->
+  <div id="weekly-wrap" style="display:none;"></div>
+  <div id="achievements-wrap" style="display:none;"></div>
 
   <!-- Heatmap (son 28 gün) -->
   <div id="heatmap-wrap"></div>
@@ -1651,6 +1655,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat) -->
   <div id="special-modes-card"></div>
+
+  <!-- Phase 3.C feedback (12 May) — Achievements buradan göster (Diyet sekmesinden taşındı) -->
+  <div id="achievements-settings-wrap"></div>
 
   <!-- Phase 3.C P0 #14 — Aldığım Supplementler kartı (gerçek marka + 4 ALARM) -->
   <div id="supplements-inventory"></div>
@@ -5107,8 +5114,13 @@ function calculateAchievements(){
   ];
 }
 function renderAchievements(){
+  // Phase 3.C feedback (12 May) — Diyet sayfasından kaldırıldı, Cycle Settings'e taşındı
   const wrap=document.getElementById('achievements-wrap');
-  if(!wrap)return;
+  if(wrap)wrap.innerHTML=''; // legacy temizlik
+
+  // Cycle Settings'te opsiyonel collapsible kart
+  const settingsWrap=document.getElementById('achievements-settings-wrap');
+  if(!settingsWrap)return;
   const ach=calculateAchievements();
   const unlockedCount=ach.filter(a=>a.progress>=a.goal).length;
   const items=ach.map(a=>{
@@ -5124,10 +5136,23 @@ function renderAchievements(){
       </div>
     </div>`;
   }).join('');
-  wrap.innerHTML=`<div class="card" style="margin-bottom:16px;">
-    <div class="ch"><h3>🏆 Başarılarım</h3><span style="font-size:12px;color:var(--text-light);">${unlockedCount}/${ach.length} açıldı</span></div>
-    <div class="cb">${items}</div>
+  // Collapsible — Bengisu istediğinde açar, default kapalı
+  const isOpen=localStorage.getItem('ach_settings_open')==='1';
+  settingsWrap.innerHTML=`<div class="card" style="margin-top:16px;">
+    <div class="ch" style="cursor:pointer;" onclick="toggleAchSettings()">
+      <h3>🏆 Başarılarım <span style="font-size:11px;color:var(--cream-mute);font-weight:400;">(${unlockedCount}/${ach.length} açıldı)</span></h3>
+      <span style="font-size:18px;color:var(--cream-mute);">${isOpen?'▴':'▾'}</span>
+    </div>
+    <div class="cb" id="ach-settings-body" style="display:${isOpen?'block':'none'};">
+      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Anti-kompulsif çerçeve: <strong>opsiyonel</strong> görünüm. İstediğinde aç, istediğinde gizle. Sürekli görünmüyor — stres yaratmamak için.</div>
+      ${items}
+    </div>
   </div>`;
+}
+function toggleAchSettings(){
+  const isOpen=localStorage.getItem('ach_settings_open')==='1';
+  localStorage.setItem('ach_settings_open',isOpen?'0':'1');
+  renderAchievements();
 }
 
 // ─── APPLE HEALTH (Photo + AI parse) ───
@@ -10109,6 +10134,8 @@ function renderCycle(){
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
   // Phase 3.C P1 — Special Modes (Sosyal/Hasta/Restoran/Seyahat/Düğün)
   if(typeof renderSpecialModesCard==='function')renderSpecialModesCard();
+  // Phase 3.C feedback (12 May) — Başarılarım Cycle Settings'te opsiyonel collapsible
+  if(typeof renderAchievements==='function')renderAchievements();
   // Phase 3.C P0 #14, #15 — Aldığım Supplementler kartı + 4 ALARM
   if(typeof renderSupplementsInventory==='function')renderSupplementsInventory();
   // Phase 3.C P0 #16 — Aile öyküsü kartı (FH şüphesi)
